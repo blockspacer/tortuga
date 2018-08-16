@@ -135,6 +135,33 @@ public final class TortugaGrpc {
      return getCompleteTaskMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.google.protobuf.StringValue,
+      com.google.protobuf.BoolValue> getIsDoneMethod;
+
+  public static io.grpc.MethodDescriptor<com.google.protobuf.StringValue,
+      com.google.protobuf.BoolValue> getIsDoneMethod() {
+    io.grpc.MethodDescriptor<com.google.protobuf.StringValue, com.google.protobuf.BoolValue> getIsDoneMethod;
+    if ((getIsDoneMethod = TortugaGrpc.getIsDoneMethod) == null) {
+      synchronized (TortugaGrpc.class) {
+        if ((getIsDoneMethod = TortugaGrpc.getIsDoneMethod) == null) {
+          TortugaGrpc.getIsDoneMethod = getIsDoneMethod = 
+              io.grpc.MethodDescriptor.<com.google.protobuf.StringValue, com.google.protobuf.BoolValue>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "tortuga.Tortuga", "IsDone"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.google.protobuf.StringValue.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.google.protobuf.BoolValue.getDefaultInstance()))
+                  .setSchemaDescriptor(new TortugaMethodDescriptorSupplier("IsDone"))
+                  .build();
+          }
+        }
+     }
+     return getIsDoneMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<com.google.protobuf.Empty,
       com.google.protobuf.Empty> getPingMethod;
 
@@ -246,6 +273,17 @@ public final class TortugaGrpc {
 
     /**
      * <pre>
+     * The argument is the task handle.
+     * This is a temporary API pending proper listening.
+     * </pre>
+     */
+    public void isDone(com.google.protobuf.StringValue request,
+        io.grpc.stub.StreamObserver<com.google.protobuf.BoolValue> responseObserver) {
+      asyncUnimplementedUnaryCall(getIsDoneMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
      * admin commands (for now these are for tests)
      * </pre>
      */
@@ -291,6 +329,13 @@ public final class TortugaGrpc {
                 io.tortuga.TortugaProto.CompleteTaskReq,
                 com.google.protobuf.Empty>(
                   this, METHODID_COMPLETE_TASK)))
+          .addMethod(
+            getIsDoneMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.google.protobuf.StringValue,
+                com.google.protobuf.BoolValue>(
+                  this, METHODID_IS_DONE)))
           .addMethod(
             getPingMethod(),
             asyncUnaryCall(
@@ -361,6 +406,18 @@ public final class TortugaGrpc {
 
     /**
      * <pre>
+     * The argument is the task handle.
+     * This is a temporary API pending proper listening.
+     * </pre>
+     */
+    public void isDone(com.google.protobuf.StringValue request,
+        io.grpc.stub.StreamObserver<com.google.protobuf.BoolValue> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getIsDoneMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
      * admin commands (for now these are for tests)
      * </pre>
      */
@@ -423,6 +480,17 @@ public final class TortugaGrpc {
     public com.google.protobuf.Empty completeTask(io.tortuga.TortugaProto.CompleteTaskReq request) {
       return blockingUnaryCall(
           getChannel(), getCompleteTaskMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * The argument is the task handle.
+     * This is a temporary API pending proper listening.
+     * </pre>
+     */
+    public com.google.protobuf.BoolValue isDone(com.google.protobuf.StringValue request) {
+      return blockingUnaryCall(
+          getChannel(), getIsDoneMethod(), getCallOptions(), request);
     }
 
     /**
@@ -495,6 +563,18 @@ public final class TortugaGrpc {
 
     /**
      * <pre>
+     * The argument is the task handle.
+     * This is a temporary API pending proper listening.
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.BoolValue> isDone(
+        com.google.protobuf.StringValue request) {
+      return futureUnaryCall(
+          getChannel().newCall(getIsDoneMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
      * admin commands (for now these are for tests)
      * </pre>
      */
@@ -517,8 +597,9 @@ public final class TortugaGrpc {
   private static final int METHODID_REQUEST_TASK = 1;
   private static final int METHODID_HEARTBEAT = 2;
   private static final int METHODID_COMPLETE_TASK = 3;
-  private static final int METHODID_PING = 4;
-  private static final int METHODID_QUIT_QUIT_QUIT = 5;
+  private static final int METHODID_IS_DONE = 4;
+  private static final int METHODID_PING = 5;
+  private static final int METHODID_QUIT_QUIT_QUIT = 6;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -552,6 +633,10 @@ public final class TortugaGrpc {
         case METHODID_COMPLETE_TASK:
           serviceImpl.completeTask((io.tortuga.TortugaProto.CompleteTaskReq) request,
               (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
+          break;
+        case METHODID_IS_DONE:
+          serviceImpl.isDone((com.google.protobuf.StringValue) request,
+              (io.grpc.stub.StreamObserver<com.google.protobuf.BoolValue>) responseObserver);
           break;
         case METHODID_PING:
           serviceImpl.ping((com.google.protobuf.Empty) request,
@@ -626,6 +711,7 @@ public final class TortugaGrpc {
               .addMethod(getRequestTaskMethod())
               .addMethod(getHeartbeatMethod())
               .addMethod(getCompleteTaskMethod())
+              .addMethod(getIsDoneMethod())
               .addMethod(getPingMethod())
               .addMethod(getQuitQuitQuitMethod())
               .build();

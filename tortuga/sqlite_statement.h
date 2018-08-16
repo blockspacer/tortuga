@@ -23,6 +23,7 @@ class SqliteStatement : boost::noncopyable {
 
   bool IsNullColumn(int pos);
   int ColumnInt(int pos);
+  bool ColumnBool(int pos);
   int64_t ColumnLong(int pos);
   std::string ColumnText(int pos);
   // If the column is NULL this returns empty.

@@ -43,6 +43,8 @@ class TortugaHandler : boost::noncopyable {
   void HandlePing(RpcOpts opts);
   void HandleQuit(RpcOpts opts);
 
+  void HandleIsDone(RpcOpts opts);
+
   void CheckHeartbeatsLoop();
 
  private:
@@ -77,6 +79,9 @@ class TortugaHandler : boost::noncopyable {
   void UnassignTasksInExec(const std::vector<std::string>& uuids);
   void UnassignTaskInExec(const std::string& uuid);
 
+  bool IsDone(const std::string& task_id);
+  bool IsDoneInExec(const std::string& task_id);
+
   sqlite3* db_{ nullptr };
 
   // executor in which we perform sqlite tasks.
@@ -100,5 +105,7 @@ class TortugaHandler : boost::noncopyable {
 
   SqliteStatement unassign_tasks_stmt_;
   SqliteStatement update_worker_invalidated_uuid_stmt_;
+
+  SqliteStatement task_id_done_stmt_;
 };
 }  // namespace tortuga

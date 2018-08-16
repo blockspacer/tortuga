@@ -53,6 +53,11 @@ int SqliteStatement::ColumnInt(int pos) {
   return sqlite3_column_int(stmt_, pos);
 }
 
+bool SqliteStatement::ColumnBool(int pos) {
+  int val = ColumnInt(pos);
+  return val != 0;
+}
+
 int64_t SqliteStatement::ColumnLong(int pos) {
   return sqlite3_column_int64(stmt_, pos);
 }

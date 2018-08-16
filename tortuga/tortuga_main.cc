@@ -134,6 +134,10 @@ int main(int argc, char** argv) {
     tortuga.HandleQuit(rpc_opts);
   });
 
+  fibers.addTask([rpc_opts, &tortuga]() {
+    tortuga.HandleIsDone(rpc_opts);
+  });
+
   fibers.addTask([&tortuga]() {
     tortuga.CheckHeartbeatsLoop();
   });

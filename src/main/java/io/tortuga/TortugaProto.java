@@ -6697,17 +6697,19 @@ public final class TortugaProto {
       "esp\022\016\n\006handle\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"u\n\017" +
       "CompleteTaskReq\022\037\n\006worker\030\001 \001(\0132\017.tortug" +
       "a.Worker\022\016\n\006handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025" +
-      "\n\rerror_message\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t2\344\002\n\007" +
+      "\n\rerror_message\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t2\250\003\n\007" +
       "Tortuga\0225\n\nCreateTask\022\022.tortuga.CreateRe" +
       "q\032\023.tortuga.CreateResp\0222\n\013RequestTask\022\020." +
       "tortuga.TaskReq\032\021.tortuga.TaskResp\0224\n\tHe" +
       "artbeat\022\017.tortuga.Worker\032\026.google.protob" +
       "uf.Empty\022@\n\014CompleteTask\022\030.tortuga.Compl" +
-      "eteTaskReq\032\026.google.protobuf.Empty\0226\n\004Pi" +
-      "ng\022\026.google.protobuf.Empty\032\026.google.prot" +
-      "obuf.Empty\022>\n\014QuitQuitQuit\022\026.google.prot" +
-      "obuf.Empty\032\026.google.protobuf.EmptyB\032\n\nio" +
-      ".tortugaB\014TortugaProtob\006proto3"
+      "eteTaskReq\032\026.google.protobuf.Empty\022B\n\006Is" +
+      "Done\022\034.google.protobuf.StringValue\032\032.goo" +
+      "gle.protobuf.BoolValue\0226\n\004Ping\022\026.google." +
+      "protobuf.Empty\032\026.google.protobuf.Empty\022>" +
+      "\n\014QuitQuitQuit\022\026.google.protobuf.Empty\032\026" +
+      ".google.protobuf.EmptyB\032\n\nio.tortugaB\014To" +
+      "rtugaProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

@@ -114,7 +114,7 @@ public class TortugaIntegrationTest {
 
     TestServiceTortuga.ImplBase handler = new TestServiceTortuga.ImplBase() {
       @Override
-      public ListenableFuture<Status> HandleCustomMessage(TestMessage t, TortugaContext ctx) {
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
         LOG.info("received task to handle: {}", t);
         found.add(t.getId());
         latch.countDown();
@@ -127,12 +127,13 @@ public class TortugaIntegrationTest {
 
     Set<String> expected = new HashSet<>();
     TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+    TaskResult task = null;
     for (int i = 1; i <= 100; ++i) {
       TestMessage testMessage = TestMessage.newBuilder()
           .setId("field_" + i)
           .build();
       expected.add("field_" + i);
-      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask" + i), testMessage);
+      task = publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask" + i), testMessage);
     }
 
     Uninterruptibles.awaitUninterruptibly(latch);
@@ -143,6 +144,8 @@ public class TortugaIntegrationTest {
     Collections.sort(foundList);
 
     Assert.assertEquals(expectedList, foundList);
+    Assert.assertTrue(task.isDone());
+
     tortuga.shutdown();
     conn.shutdown();
   }
@@ -156,7 +159,7 @@ public class TortugaIntegrationTest {
     CountDownLatch checkedAllFour = new CountDownLatch(4);
     tortuga.addService(new ImplBase() {
       @Override
-      public ListenableFuture<Status> HandleCustomMessage(TestMessage t, TortugaContext ctx) {
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
         LOG.info("received task to handle: {}", t);
         checkedAllFour.countDown();
         SettableFuture<Status> f = SettableFuture.create();
@@ -191,7 +194,7 @@ public class TortugaIntegrationTest {
     Set<String> found = Collections.synchronizedSet(new HashSet<>());
     tortuga2.addService(new ImplBase() {
       @Override
-      public ListenableFuture<Status> HandleCustomMessage(TestMessage t, TortugaContext ctx) {
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
         LOG.info("received task to handle: {}", t);
         found.add(t.getId());
         latch.countDown();
@@ -226,7 +229,7 @@ public class TortugaIntegrationTest {
 
     tortuga.addService(new ImplBase() {
       @Override
-      public ListenableFuture<Status> HandleCustomMessage(TestMessage t, TortugaContext ctx) {
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
         LOG.info("received task to handle: {}", t);
         if ("field_1".equals(t.getId())) {
           int saw = sawFirst.incrementAndGet();

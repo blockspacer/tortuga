@@ -72,6 +72,10 @@ static const char* const kUnassignTasksStmt = R"(
 static const char* const kUpdateWorkerInvalidatedUuidStmt = R"(
     update workers set last_invalidated_uuid=? where uuid=?;
 )";
+
+static const char* const kTaskIsDoneStmt = R"(
+    select done from tasks where rowid=?;
+)";
 }  // anonymous namespace
 
 TortugaHandler::TortugaHandler(sqlite3* db)
@@ -88,7 +92,8 @@ TortugaHandler::TortugaHandler(sqlite3* db)
       complete_task_stmt_(db, kCompleteTaskStmt),
       select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
       unassign_tasks_stmt_(db, kUnassignTasksStmt),
-      update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt) {
+      update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
+      task_id_done_stmt_(db, kTaskIsDoneStmt) {
 }
 
 void TortugaHandler::HandleCreateTask(RpcOpts opts) {
@@ -511,5 +516,50 @@ void TortugaHandler::HandleQuit(RpcOpts opts) {
   resp.Finish(reply, grpc::Status::OK, &handler);
   handler.Wait();
   LOG(FATAL) << "received QuitQuitQuit command, there is no coming back";
+}
+
+void TortugaHandler::HandleIsDone(RpcOpts opts) {
+  BatonHandler handler;
+
+  grpc::ServerContext ctx;
+  google::protobuf::StringValue req;
+  grpc::ServerAsyncResponseWriter<google::protobuf::BoolValue> resp(&ctx);
+
+  // start a new RPC and wait.
+  opts.tortuga_grpc->RequestIsDone(&ctx, &req, &resp, opts.cq, opts.cq, &handler);
+  CHECK(handler.Wait());
+
+  // adds a new RPC processor.
+  opts.fibers->addTask([this, opts]() {
+    HandleIsDone(opts);
+  });
+
+  VLOG(5) << "received IsDone RPC: " << req.ShortDebugString();
+
+  google::protobuf::BoolValue reply;
+  reply.set_value(IsDone(req.value()));
+  handler.Reset();
+  resp.Finish(reply, grpc::Status::OK, &handler);
+  handler.Wait();
+}
+
+bool TortugaHandler::IsDone(const std::string& task_id) {
+  folly::fibers::await([&](folly::fibers::Promise<bool> p) {
+    exec_.add([this, &task_id, promise = std::move(p)]() mutable {
+      promise.setValue(IsDoneInExec(task_id));
+    });
+  });
+}
+
+bool TortugaHandler::IsDoneInExec(const std::string& task_id) {
+  SqliteReset x(&task_id_done_stmt_);
+  task_id_done_stmt_.BindLong(1, folly::to<int64_t>(task_id));
+  
+  int rc = task_id_done_stmt_.Step();
+  if (rc == SQLITE_DONE) {
+    return false;
+  }
+
+  return task_id_done_stmt_.ColumnBool(0);
 }
 }  // namespace tortuga

@@ -65,6 +65,10 @@ service Tortuga {
   rpc Heartbeat(Worker) returns (google.protobuf.Empty);
   rpc CompleteTask(CompleteTaskReq) returns (google.protobuf.Empty);
 
+  // The argument is the task handle.
+  // This is a temporary API pending proper listening.
+  rpc IsDone(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
+
   // admin commands (for now these are for tests)
   rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);
   rpc QuitQuitQuit(google.protobuf.Empty) returns (google.protobuf.Empty);

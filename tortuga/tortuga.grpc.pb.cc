@@ -20,6 +20,7 @@ static const char* Tortuga_method_names[] = {
   "/tortuga.Tortuga/RequestTask",
   "/tortuga.Tortuga/Heartbeat",
   "/tortuga.Tortuga/CompleteTask",
+  "/tortuga.Tortuga/IsDone",
   "/tortuga.Tortuga/Ping",
   "/tortuga.Tortuga/QuitQuitQuit",
 };
@@ -35,8 +36,9 @@ Tortuga::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   , rpcmethod_RequestTask_(Tortuga_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_Heartbeat_(Tortuga_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_CompleteTask_(Tortuga_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Ping_(Tortuga_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_QuitQuitQuit_(Tortuga_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_IsDone_(Tortuga_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Ping_(Tortuga_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_QuitQuitQuit_(Tortuga_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status Tortuga::Stub::CreateTask(::grpc::ClientContext* context, const ::tortuga::CreateReq& request, ::tortuga::CreateResp* response) {
@@ -87,6 +89,18 @@ Tortuga::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::google::protobuf::Empty>::Create(channel_.get(), cq, rpcmethod_CompleteTask_, context, request, false);
 }
 
+::grpc::Status Tortuga::Stub::IsDone(::grpc::ClientContext* context, const ::google::protobuf::StringValue& request, ::google::protobuf::BoolValue* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_IsDone_, context, request, response);
+}
+
+::grpc::ClientAsyncResponseReader< ::google::protobuf::BoolValue>* Tortuga::Stub::AsyncIsDoneRaw(::grpc::ClientContext* context, const ::google::protobuf::StringValue& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::google::protobuf::BoolValue>::Create(channel_.get(), cq, rpcmethod_IsDone_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::google::protobuf::BoolValue>* Tortuga::Stub::PrepareAsyncIsDoneRaw(::grpc::ClientContext* context, const ::google::protobuf::StringValue& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::google::protobuf::BoolValue>::Create(channel_.get(), cq, rpcmethod_IsDone_, context, request, false);
+}
+
 ::grpc::Status Tortuga::Stub::Ping(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::google::protobuf::Empty* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Ping_, context, request, response);
 }
@@ -135,10 +149,15 @@ Tortuga::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Tortuga_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::google::protobuf::StringValue, ::google::protobuf::BoolValue>(
+          std::mem_fn(&Tortuga::Service::IsDone), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Tortuga_method_names[5],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::google::protobuf::Empty, ::google::protobuf::Empty>(
           std::mem_fn(&Tortuga::Service::Ping), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      Tortuga_method_names[5],
+      Tortuga_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::google::protobuf::Empty, ::google::protobuf::Empty>(
           std::mem_fn(&Tortuga::Service::QuitQuitQuit), this)));
@@ -169,6 +188,13 @@ Tortuga::Service::~Service() {
 }
 
 ::grpc::Status Tortuga::Service::CompleteTask(::grpc::ServerContext* context, const ::tortuga::CompleteTaskReq* request, ::google::protobuf::Empty* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Tortuga::Service::IsDone(::grpc::ServerContext* context, const ::google::protobuf::StringValue* request, ::google::protobuf::BoolValue* response) {
   (void) context;
   (void) request;
   (void) response;

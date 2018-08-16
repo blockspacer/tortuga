@@ -3,6 +3,7 @@ package io.tortuga;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.protobuf.Any;
+import com.google.protobuf.StringValue;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -58,7 +59,7 @@ public class TortugaConnection {
         .withDeadlineAfter(10L, TimeUnit.SECONDS)
         .createTask(req.build());
 
-    return new TaskResult(resp.getHandle(), resp.getCreated());
+    return new TaskResult(resp.getHandle(), resp.getCreated(), this);
   }
 
   public ListenableFuture<TaskResult> publishTaskAsync(String type,
@@ -84,11 +85,20 @@ public class TortugaConnection {
         .withDeadlineAfter(10L, TimeUnit.SECONDS)
         .createTask(req.build());
     return Futures.transform(respF, (resp) -> {
-      return new TaskResult(resp.getHandle(), resp.getCreated());
+      return new TaskResult(resp.getHandle(), resp.getCreated(), this);
     });
   }
 
   public Tortuga newWorker(String workerId) {
     return new Tortuga(workerId, chan);
+  }
+
+  boolean isDone(String handle) {
+    return TortugaGrpc.newBlockingStub(chan)
+        .withDeadlineAfter(30L, TimeUnit.SECONDS)
+        .isDone(StringValue.newBuilder()
+            .setValue(handle)
+            .build())
+        .getValue();
   }
 }
