@@ -1,0 +1,72 @@
+// This file defines tortuga GRPC interface.
+syntax = "proto3";
+
+package tortuga;
+
+option java_package = "io.tortuga";
+option java_outer_classname = "TortugaProto";
+
+import "google/protobuf/any.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+message Worker {
+  string worker_id = 1;
+  string uuid = 2;
+
+  // name of the tasks that this worker can handle.
+  repeated string capabilities = 3;
+}
+
+message Heartbeat {
+  Worker worker = 1;
+}
+
+message TaskReq {
+  Worker worker = 1;
+}
+
+message TaskResp {
+  string id = 1;
+  string type = 2;
+  google.protobuf.Any data = 3;
+  string handle = 4;
+  bool none = 5;
+}
+
+message Task {
+  string id = 1;
+  string type = 2;
+  google.protobuf.Any data = 3;
+  google.protobuf.Int32Value priority = 4;
+  google.protobuf.Int32Value max_retries = 5;  
+}
+
+message CreateReq {
+  Task task = 1;
+}
+
+message CreateResp {
+  string handle = 1;
+  bool created = 2;
+}
+
+message CompleteTaskReq {
+  Worker worker = 1;
+  string handle = 2;
+  int32 code = 3;
+  string error_message = 4;
+  string logs = 5;
+}
+
+service Tortuga {
+  rpc CreateTask(CreateReq) returns (CreateResp);
+  rpc RequestTask(TaskReq) returns (TaskResp);
+  rpc Heartbeat(Worker) returns (google.protobuf.Empty);
+  rpc CompleteTask(CompleteTaskReq) returns (google.protobuf.Empty);
+
+  // admin commands (for now these are for tests)
+  rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);
+  rpc QuitQuitQuit(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+}
