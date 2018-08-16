@@ -1,0 +1,19 @@
+// This file defines tortuga test stuff.
+syntax = "proto3";
+
+package tortuga.test;
+
+option java_package = "io.tortuga.test";
+option java_outer_classname = "TortugaProto";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+message TestMessage {
+  string id = 1;
+}
+
+service TestService {
+  rpc HandleTask(google.protobuf.StringValue) returns (google.protobuf.Empty);
+  rpc HandleCustomMessage(TestMessage) returns (google.protobuf.Empty);
+}
