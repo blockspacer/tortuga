@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h> 
 #include <set>
 #include <sstream>
@@ -89,6 +90,13 @@ std::string FileJavaPackage(const FileDescriptor* file) {
   return result;
 }
 
+std::string JavaMethodName(const MethodDescriptor* desc) {
+  std::string method_name = desc->name();
+  CHECK(!method_name.empty());
+  method_name[0] = std::tolower(method_name[0]);
+  return method_name;
+}
+
 void GenerateService(const ServiceDescriptor* service,
                      CodeGeneratorResponse* resp) {
   LOG(INFO) << "generating service: " << service->full_name();
@@ -119,7 +127,7 @@ void GenerateService(const ServiceDescriptor* service,
   
   for (int i = 0; i < service->method_count(); ++i) {
     const MethodDescriptor* method = service->method(i);
-    out << "    public ListenableFuture<Status> " << method->name() << "(" << FullyQualifiedJava(method->input_type()) << " t, TortugaContext ctx) {\n";
+    out << "    public ListenableFuture<Status> " << JavaMethodName(method) << "(" << FullyQualifiedJava(method->input_type()) << " t, TortugaContext ctx) {\n";
     out << "      return Futures.immediateFuture(Status.UNIMPLEMENTED);\n";
     out << "    }\n";
     out << "\n";
@@ -128,10 +136,10 @@ void GenerateService(const ServiceDescriptor* service,
   for (int i = 0; i < service->method_count(); ++i) {
     const MethodDescriptor* method = service->method(i);
     std::string t_type = FullyQualifiedJava(method->input_type());
-    out << "    private ListenableFuture<Status> " << method->name() << "Impl(com.google.protobuf.Any data, TortugaContext ctx) {\n";
+    out << "    private ListenableFuture<Status> do_" << JavaMethodName(method) << "Impl(com.google.protobuf.Any data, TortugaContext ctx) {\n";
     out << "      try {\n";
     out << "        " << t_type << " t = data.unpack(" << t_type << ".class);\n";
-    out << "        return " << method->name() << "(t, ctx);\n";
+    out << "        return " << JavaMethodName(method) << "(t, ctx);\n";
     out << "      } catch (com.google.protobuf.InvalidProtocolBufferException ex) {\n";
     out << "        Status status = Status.fromThrowable(ex);\n";
     out << "        return Futures.immediateFuture(status);\n";
@@ -146,7 +154,7 @@ void GenerateService(const ServiceDescriptor* service,
   for (int i = 0; i < service->method_count(); ++i) {
     const MethodDescriptor* method = service->method(i);
     std::string t_type = FullyQualifiedJava(method->input_type());
-    out << "      registry.registerHandler(\"" << method->full_name() << "\", this::" << method->name() << "Impl);\n";
+    out << "      registry.registerHandler(\"" << method->full_name() << "\", this::do_" << JavaMethodName(method) << "Impl);\n";
   }  
   out << "    }\n";
   out << "  }\n";

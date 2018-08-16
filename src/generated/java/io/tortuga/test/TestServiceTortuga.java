@@ -15,28 +15,28 @@ import io.tortuga.TortugaContext;
 
 public class TestServiceTortuga {
   public static class ImplBase extends Service {
-    public ListenableFuture<Status> HandleTask(com.google.protobuf.StringValue t, TortugaContext ctx) {
+    public ListenableFuture<Status> handleTask(com.google.protobuf.StringValue t, TortugaContext ctx) {
       return Futures.immediateFuture(Status.UNIMPLEMENTED);
     }
 
-    public ListenableFuture<Status> HandleCustomMessage(io.tortuga.test.TortugaProto.TestMessage t, TortugaContext ctx) {
+    public ListenableFuture<Status> handleCustomMessage(io.tortuga.test.TortugaProto.TestMessage t, TortugaContext ctx) {
       return Futures.immediateFuture(Status.UNIMPLEMENTED);
     }
 
-    private ListenableFuture<Status> HandleTaskImpl(com.google.protobuf.Any data, TortugaContext ctx) {
+    private ListenableFuture<Status> do_handleTaskImpl(com.google.protobuf.Any data, TortugaContext ctx) {
       try {
         com.google.protobuf.StringValue t = data.unpack(com.google.protobuf.StringValue.class);
-        return HandleTask(t, ctx);
+        return handleTask(t, ctx);
       } catch (com.google.protobuf.InvalidProtocolBufferException ex) {
         Status status = Status.fromThrowable(ex);
         return Futures.immediateFuture(status);
       }
     }
 
-    private ListenableFuture<Status> HandleCustomMessageImpl(com.google.protobuf.Any data, TortugaContext ctx) {
+    private ListenableFuture<Status> do_handleCustomMessageImpl(com.google.protobuf.Any data, TortugaContext ctx) {
       try {
         io.tortuga.test.TortugaProto.TestMessage t = data.unpack(io.tortuga.test.TortugaProto.TestMessage.class);
-        return HandleCustomMessage(t, ctx);
+        return handleCustomMessage(t, ctx);
       } catch (com.google.protobuf.InvalidProtocolBufferException ex) {
         Status status = Status.fromThrowable(ex);
         return Futures.immediateFuture(status);
@@ -46,8 +46,8 @@ public class TestServiceTortuga {
 
     @Override
     public final void register(TaskHandlerRegistry registry) {
-      registry.registerHandler("tortuga.test.TestService.HandleTask", this::HandleTaskImpl);
-      registry.registerHandler("tortuga.test.TestService.HandleCustomMessage", this::HandleCustomMessageImpl);
+      registry.registerHandler("tortuga.test.TestService.HandleTask", this::do_handleTaskImpl);
+      registry.registerHandler("tortuga.test.TestService.HandleCustomMessage", this::do_handleCustomMessageImpl);
     }
   }
   
