@@ -19,6 +19,7 @@ java_library(
         ":io_grpc_grpc_stub",
         ":org_slf4j_slf4j_api",
     ],
+    visibility = ["//visibility:public"],
 )
 
 java_test(
