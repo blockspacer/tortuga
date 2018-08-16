@@ -48,6 +48,10 @@ public class TortugaConnection {
       task.getMaxRetriesBuilder().setValue(spec.maxRetries.getAsInt());
     }
 
+    if (spec.priority.isPresent()) {
+      task.getPriorityBuilder().setValue(spec.priority.getAsInt());
+    }
+
     req.setTask(task);
 
     CreateResp resp = TortugaGrpc.newBlockingStub(chan)
@@ -70,6 +74,10 @@ public class TortugaConnection {
       task.getMaxRetriesBuilder().setValue(spec.maxRetries.getAsInt());
     }
 
+    if (spec.priority.isPresent()) {
+      task.getPriorityBuilder().setValue(spec.priority.getAsInt());
+    }
+    
     req.setTask(task);
 
     ListenableFuture<CreateResp> respF = TortugaGrpc.newFutureStub(chan)
