@@ -11,27 +11,28 @@
 #include "tortuga/baton_handler.h"
 #include "tortuga/sqlite_statement.h"
 #include "tortuga/time_logger.h"
+#include "tortuga/time_utils.h"
 
 namespace tortuga {
 namespace {
 static const char* const kSelectExistingTaskStmt = "select rowid from tasks where id = ? and done != 1 LIMIT 1";
 
 static const char* const kInsertTaskStmt = R"(
-    insert into tasks (id, task_type, data, max_retries, priority) values (?, ?, ?, ?, ?);
+    insert into tasks (id, task_type, data, max_retries, priority, created) values (?, ?, ?, ?, ?, ?);
 )";
 
 static const char* const kSelectWorkerUuidStmt = "select uuid from workers where worker_id = ? LIMIT 1";
 
 static const char* const kUpdateWorkerBeatStmt = R"(
-  update workers set last_beat=CURRENT_TIMESTAMP where worker_id=? ;
+  update workers set last_beat=? where worker_id=? ;
 )";
       
 static const char* const kUpdateWorkerStmt = R"(
-  update workers set uuid=?, capabilities=?, last_beat=CURRENT_TIMESTAMP where worker_id=? ;
+  update workers set uuid=?, capabilities=?, last_beat=? where worker_id=? ;
 )";
 
 static const char* const kInsertWorkerStmt = R"(
-  insert into workers (uuid, worker_id, capabilities) values (?, ?, ?);
+  insert into workers (uuid, worker_id, capabilities, last_beat) values (?, ?, ?, ?);
 )";
 
 static const char* kSelectTaskStmt = R"(
@@ -39,7 +40,7 @@ static const char* kSelectTaskStmt = R"(
 )";
 
 static const char* const kAssignTaskStmt = R"(
-    update tasks set retries=?, worked_on=1, worker_uuid=?, started_time=CURRENT_TIMESTAMP where rowid=? ;
+    update tasks set retries=?, worked_on=1, worker_uuid=?, started_time=? where rowid=? ;
 )";
 
 static const char* const kSelectTaskToCompleteStmt = R"(
@@ -53,13 +54,13 @@ static const char* const kCompleteTaskStmt = R"(
     status_code=?,
     status_message=?,
     done=?,
-    done_time=CURRENT_TIMESTAMP,
+    done_time=?,
     logs=? 
     where rowid=? ;
 )";
 
 static const char* const kSelectExpiredWorkersStmt = R"(
-    select uuid, last_invalidated_uuid from workers where last_beat < datetime(?, 'unixepoch');
+    select uuid, last_invalidated_uuid from workers where last_beat < ?;
 )";
 
 static const char* const kUnassignTasksStmt = R"(
@@ -73,13 +74,14 @@ static const char* const kUpdateWorkerInvalidatedUuidStmt = R"(
     update workers set last_invalidated_uuid=? where uuid=?;
 )";
 
-static const char* const kTaskIsDoneStmt = R"(
-    select done from tasks where rowid=?;
+static const char* const kInsertHistoricWorkerStmt = R"(
+    insert into historic_workers(uuid, worker_id, created) values (?, ?, ?);
 )";
 }  // anonymous namespace
 
-TortugaHandler::TortugaHandler(sqlite3* db)
-    : db_(db), 
+TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts)
+    : db_(db),
+      rpc_opts_(rpc_opts),
       select_existing_task_stmt_(db, kSelectExistingTaskStmt),
       insert_task_stmt_(db_, kInsertTaskStmt),
       select_worker_uuid_stmt_(db, kSelectWorkerUuidStmt),
@@ -93,10 +95,11 @@ TortugaHandler::TortugaHandler(sqlite3* db)
       select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
       unassign_tasks_stmt_(db, kUnassignTasksStmt),
       update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
-      task_id_done_stmt_(db, kTaskIsDoneStmt) {
+      insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt) {
+  progress_mgr_.reset(new ProgressManager(db, &exec_, rpc_opts));
 }
 
-void TortugaHandler::HandleCreateTask(RpcOpts opts) {
+void TortugaHandler::HandleCreateTask() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
@@ -104,12 +107,12 @@ void TortugaHandler::HandleCreateTask(RpcOpts opts) {
   grpc::ServerAsyncResponseWriter<CreateResp> resp(&ctx);
 
   // start a new RPC and wait.
-  opts.tortuga_grpc->RequestCreateTask(&ctx, &req, &resp, opts.cq, opts.cq, &handler);
+  rpc_opts_.tortuga_grpc->RequestCreateTask(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
   CHECK(handler.Wait());
 
   // adds a new RPC processor.
-  opts.fibers->addTask([this, opts]() {
-    HandleCreateTask(opts);
+  rpc_opts_.fibers->addTask([this]() {
+    HandleCreateTask();
   });
 
   VLOG(3) << "received CreateTask RPC: " << req.ShortDebugString();
@@ -124,7 +127,7 @@ void TortugaHandler::HandleCreateTask(RpcOpts opts) {
   handler.Wait();
 }
 
-void TortugaHandler::HandleRequestTask(RpcOpts opts) {
+void TortugaHandler::HandleRequestTask() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
@@ -132,12 +135,12 @@ void TortugaHandler::HandleRequestTask(RpcOpts opts) {
   grpc::ServerAsyncResponseWriter<TaskResp> resp(&ctx);
 
   // start a new RPC and wait.
-  opts.tortuga_grpc->RequestRequestTask(&ctx, &req, &resp, opts.cq, opts.cq, &handler);
+  rpc_opts_.tortuga_grpc->RequestRequestTask(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
   CHECK(handler.Wait());
 
   // adds a new RPC processor.
-  opts.fibers->addTask([this, opts]() {
-    HandleRequestTask(opts);
+  rpc_opts_.fibers->addTask([this]() {
+    HandleRequestTask();
   });
 
   VLOG(3) << "received RequestTask RPC: " << req.ShortDebugString();
@@ -206,6 +209,7 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
   }
 
   insert_task_stmt_.BindInt(5, priority);
+  insert_task_stmt_.BindLong(6, CurrentTimeMillis());
 
   insert_task_stmt_.ExecuteOrDie();
   sqlite3_int64 rowid = sqlite3_last_insert_rowid(db_);
@@ -246,7 +250,8 @@ void TortugaHandler::MaybeUpdateWorkerInExec(const Worker& worker) {
       VLOG(3) << "worker: " << uuid << " is up to date.";
 
       SqliteReset x2(&update_worker_beat_stmt_);
-      update_worker_beat_stmt_.BindText(1, worker.worker_id());
+      update_worker_beat_stmt_.BindLong(1, CurrentTimeMillis());
+      update_worker_beat_stmt_.BindText(2, worker.worker_id());
       update_worker_beat_stmt_.ExecuteOrDie();
       return;
     } else {
@@ -257,9 +262,12 @@ void TortugaHandler::MaybeUpdateWorkerInExec(const Worker& worker) {
       SqliteReset x2(&update_worker_stmt_);
       update_worker_stmt_.BindText(1, worker.uuid());
       update_worker_stmt_.BindText(2, JoinCapabilities(worker));
-      update_worker_stmt_.BindText(3, worker.worker_id());
+      update_worker_stmt_.BindLong(3, CurrentTimeMillis());
+      update_worker_stmt_.BindText(4, worker.worker_id());
 
       update_worker_stmt_.ExecuteOrDie();
+      
+      InsertHistoricWorkerInExec(worker.uuid(), worker.worker_id());
     }  
   } else {
     LOG(INFO) << "We are welcoming Tortuga worker to this cluster for the first time! " << worker.ShortDebugString();
@@ -267,8 +275,21 @@ void TortugaHandler::MaybeUpdateWorkerInExec(const Worker& worker) {
     insert_worker_stmt_.BindText(1, worker.uuid());
     insert_worker_stmt_.BindText(2, worker.worker_id());
     insert_worker_stmt_.BindText(3, JoinCapabilities(worker));
+    insert_worker_stmt_.BindLong(4, CurrentTimeMillis());
     insert_worker_stmt_.ExecuteOrDie();
+
+    InsertHistoricWorkerInExec(worker.uuid(), worker.worker_id());
   }
+}
+
+void TortugaHandler::InsertHistoricWorkerInExec(const std::string& uuid,
+                                                const std::string& worker_id) {
+  SqliteReset x(&insert_historic_worker_stmt_);
+  insert_historic_worker_stmt_.BindText(1, uuid);
+  insert_historic_worker_stmt_.BindText(2, worker_id);
+  insert_historic_worker_stmt_.BindLong(3, CurrentTimeMillis());
+
+  insert_historic_worker_stmt_.ExecuteOrDie();
 }
 
 TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& worker) {
@@ -301,7 +322,8 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   SqliteReset x2(&assign_task_stmt_);
   assign_task_stmt_.BindInt(1, retries + 1);
   assign_task_stmt_.BindText(2, worker.uuid());
-  assign_task_stmt_.BindLong(3, rowid);
+  assign_task_stmt_.BindLong(3, CurrentTimeMillis());
+  assign_task_stmt_.BindLong(4, rowid);
   assign_task_stmt_.ExecuteOrDie();
 
   RequestTaskResult res;
@@ -313,7 +335,7 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   return res;
 }
 
-void TortugaHandler::HandleHeartbeat(RpcOpts opts) {
+void TortugaHandler::HandleHeartbeat() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
@@ -321,12 +343,12 @@ void TortugaHandler::HandleHeartbeat(RpcOpts opts) {
   grpc::ServerAsyncResponseWriter<google::protobuf::Empty> resp(&ctx);
 
   // start a new RPC and wait.
-  opts.tortuga_grpc->RequestHeartbeat(&ctx, &req, &resp, opts.cq, opts.cq, &handler);
+  rpc_opts_.tortuga_grpc->RequestHeartbeat(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
   CHECK(handler.Wait());
 
   // adds a new RPC processor.
-  opts.fibers->addTask([this, opts]() {
-    HandleHeartbeat(opts);
+  rpc_opts_.fibers->addTask([this]() {
+    HandleHeartbeat();
   });
 
   VLOG(3) << "received Heartbeat RPC: " << req.ShortDebugString();
@@ -338,7 +360,7 @@ void TortugaHandler::HandleHeartbeat(RpcOpts opts) {
   handler.Wait();
 }
 
-void TortugaHandler::HandleCompleteTask(RpcOpts opts) {
+void TortugaHandler::HandleCompleteTask() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
@@ -346,16 +368,19 @@ void TortugaHandler::HandleCompleteTask(RpcOpts opts) {
   grpc::ServerAsyncResponseWriter<google::protobuf::Empty> resp(&ctx);
 
   // start a new RPC and wait.
-  opts.tortuga_grpc->RequestCompleteTask(&ctx, &req, &resp, opts.cq, opts.cq, &handler);
+  rpc_opts_.tortuga_grpc->RequestCompleteTask(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
   CHECK(handler.Wait());
 
   // adds a new RPC processor.
-  opts.fibers->addTask([this, opts]() {
-    HandleCompleteTask(opts);
+  rpc_opts_.fibers->addTask([this]() {
+    HandleCompleteTask();
   });
 
   VLOG(3) << "received CompleteTask RPC: " << req.ShortDebugString();
-  CompleteTask(req);
+  std::unique_ptr<TaskProgress> progress(CompleteTask(req));
+  if (progress != nullptr) {
+    progress_mgr_->NotifyProgress(*progress);
+  }
 
   google::protobuf::Empty reply;
   handler.Reset();
@@ -363,16 +388,15 @@ void TortugaHandler::HandleCompleteTask(RpcOpts opts) {
   handler.Wait();
 }
 
-void TortugaHandler::CompleteTask(const CompleteTaskReq& req) {
-  folly::fibers::await([&](folly::fibers::Promise<folly::Unit> p) {
+TaskProgress* TortugaHandler::CompleteTask(const CompleteTaskReq& req) {
+  return folly::fibers::await([&](folly::fibers::Promise<TaskProgress*> p) {
     exec_.add([this, &req, promise = std::move(p)]() mutable {
-      CompleteTaskInExec(req);
-      promise.setValue(folly::Unit());
+      promise.setValue(CompleteTaskInExec(req));
     });
   });
 }
 
-void TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
+TaskProgress* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
   int64_t rowid = folly::to<int64_t>(req.handle());
   VLOG(3) << "completing task of handle: " << rowid;
   SqliteReset x1(&select_task_to_complete_stmt_);
@@ -382,7 +406,7 @@ void TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
 
   if (rc == SQLITE_DONE) {
     LOG(WARNING) << "completed task doesn't exist! " << req.ShortDebugString();
-    return;
+    return nullptr;
   }
 
   std::string uuid = select_task_to_complete_stmt_.ColumnTextOrEmpty(0);
@@ -390,7 +414,7 @@ void TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
   const std::string& worker_uuid = req.worker().uuid();
   if (uuid != worker_uuid) {
     VLOG(1) << "Task doesn't belong to the worker anymore (uuid is: " << uuid << " while worker is: " << worker_uuid << ")";
-    return; 
+    return nullptr;
   }
 
   int max_retries = select_task_to_complete_stmt_.ColumnInt(1);
@@ -403,11 +427,13 @@ void TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
   bool ok = req.code() == grpc::StatusCode::OK;
   bool done = ok ? true : (retries >= max_retries);
   complete_task_stmt_.BindBool(3, done);
-
-  complete_task_stmt_.BindText(4, req.logs());
-  complete_task_stmt_.BindLong(5, rowid);
+  complete_task_stmt_.BindLong(4, CurrentTimeMillis());  // done_time
+  complete_task_stmt_.BindText(5, req.logs());
+  complete_task_stmt_.BindLong(6, rowid);
 
   complete_task_stmt_.ExecuteOrDie();
+  
+  return progress_mgr_->FindTaskByHandleInExec(req.handle());
 }
 
 void TortugaHandler::CheckHeartbeatsLoop() {
@@ -436,10 +462,9 @@ void TortugaHandler::CheckHeartbeats() {
 
 std::vector<std::string> TortugaHandler::ExpiredWorkersInExec() {
   SqliteReset x1(&select_expired_workers_stmt_);
-  auto now_seconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch());
   // a worker shall not miss a heartbeat in 30 seconds.
-  auto expired_seconds = now_seconds - std::chrono::seconds(30);
-  select_expired_workers_stmt_.BindLong(1, expired_seconds.count());
+  int64_t expired_millis = CurrentTimeMillis() - 30000L;
+  select_expired_workers_stmt_.BindLong(1, expired_millis);
 
   std::vector<std::string> res;
 
@@ -476,7 +501,7 @@ void TortugaHandler::UnassignTaskInExec(const std::string& uuid) {
   update_worker_invalidated_uuid_stmt_.ExecuteOrDie();
 }
 
-void TortugaHandler::HandlePing(RpcOpts opts) {
+void TortugaHandler::HandlePing() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
@@ -484,12 +509,12 @@ void TortugaHandler::HandlePing(RpcOpts opts) {
   grpc::ServerAsyncResponseWriter<google::protobuf::Empty> resp(&ctx);
 
   // start a new RPC and wait.
-  opts.tortuga_grpc->RequestPing(&ctx, &req, &resp, opts.cq, opts.cq, &handler);
+  rpc_opts_.tortuga_grpc->RequestPing(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
   CHECK(handler.Wait());
 
   // adds a new RPC processor.
-  opts.fibers->addTask([this, opts]() {
-    HandlePing(opts);
+  rpc_opts_.fibers->addTask([this]() {
+    HandlePing();
   });
 
   VLOG(5) << "received Ping RPC: " << req.ShortDebugString();
@@ -500,7 +525,7 @@ void TortugaHandler::HandlePing(RpcOpts opts) {
   handler.Wait();
 }
 
-void TortugaHandler::HandleQuit(RpcOpts opts) {
+void TortugaHandler::HandleQuit() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
@@ -508,7 +533,7 @@ void TortugaHandler::HandleQuit(RpcOpts opts) {
   grpc::ServerAsyncResponseWriter<google::protobuf::Empty> resp(&ctx);
 
   // start a new RPC and wait.
-  opts.tortuga_grpc->RequestQuitQuitQuit(&ctx, &req, &resp, opts.cq, opts.cq, &handler);
+  rpc_opts_.tortuga_grpc->RequestQuitQuitQuit(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
   CHECK(handler.Wait());
 
   google::protobuf::Empty reply;
@@ -516,50 +541,5 @@ void TortugaHandler::HandleQuit(RpcOpts opts) {
   resp.Finish(reply, grpc::Status::OK, &handler);
   handler.Wait();
   LOG(FATAL) << "received QuitQuitQuit command, there is no coming back";
-}
-
-void TortugaHandler::HandleIsDone(RpcOpts opts) {
-  BatonHandler handler;
-
-  grpc::ServerContext ctx;
-  google::protobuf::StringValue req;
-  grpc::ServerAsyncResponseWriter<google::protobuf::BoolValue> resp(&ctx);
-
-  // start a new RPC and wait.
-  opts.tortuga_grpc->RequestIsDone(&ctx, &req, &resp, opts.cq, opts.cq, &handler);
-  CHECK(handler.Wait());
-
-  // adds a new RPC processor.
-  opts.fibers->addTask([this, opts]() {
-    HandleIsDone(opts);
-  });
-
-  VLOG(5) << "received IsDone RPC: " << req.ShortDebugString();
-
-  google::protobuf::BoolValue reply;
-  reply.set_value(IsDone(req.value()));
-  handler.Reset();
-  resp.Finish(reply, grpc::Status::OK, &handler);
-  handler.Wait();
-}
-
-bool TortugaHandler::IsDone(const std::string& task_id) {
-  folly::fibers::await([&](folly::fibers::Promise<bool> p) {
-    exec_.add([this, &task_id, promise = std::move(p)]() mutable {
-      promise.setValue(IsDoneInExec(task_id));
-    });
-  });
-}
-
-bool TortugaHandler::IsDoneInExec(const std::string& task_id) {
-  SqliteReset x(&task_id_done_stmt_);
-  task_id_done_stmt_.BindLong(1, folly::to<int64_t>(task_id));
-  
-  int rc = task_id_done_stmt_.Step();
-  if (rc == SQLITE_DONE) {
-    return false;
-  }
-
-  return task_id_done_stmt_.ColumnBool(0);
 }
 }  // namespace tortuga

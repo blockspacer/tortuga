@@ -1,26 +1,22 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
-#include <boost/utility.hpp>
+#include "boost/utility.hpp"
 #include "folly/executors/CPUThreadPoolExecutor.h" 
-#include "folly/fibers/FiberManager.h"
 #include "grpc++/grpc++.h"
 #include "sqlite3.h"
 
+#include "tortuga/progress_manager.h"
+#include "tortuga/rpc_opts.h"
 #include "tortuga/sqlite_statement.h"
 #include "tortuga/tortuga.grpc.pb.h"
 #include "tortuga/tortuga.pb.h"
 
 namespace tortuga {
-struct RpcOpts {
-  Tortuga::AsyncService* tortuga_grpc{ nullptr };
-  grpc::ServerCompletionQueue* cq{ nullptr };
-  folly::fibers::FiberManager* fibers{ nullptr };
-};
-
 struct RegisteredWorker {
   int client_id{ 0 };
 
@@ -32,20 +28,32 @@ struct RegisteredWorker {
 
 class TortugaHandler : boost::noncopyable {
  public:
-  explicit TortugaHandler(sqlite3* db);
-  void HandleCreateTask(RpcOpts opts);
-  void HandleRequestTask(RpcOpts opts);
-  void HandleHeartbeat(RpcOpts opts);
-  void HandleCompleteTask(RpcOpts opts);
+  TortugaHandler(sqlite3* db, RpcOpts rpc_opts);
+  ~TortugaHandler() {
+  }
+
+  void HandleCreateTask();
+  void HandleRequestTask();
+  void HandleHeartbeat();
+  void HandleCompleteTask();
 
 
   // admin commands.
-  void HandlePing(RpcOpts opts);
-  void HandleQuit(RpcOpts opts);
-
-  void HandleIsDone(RpcOpts opts);
+  void HandlePing();
+  void HandleQuit();
 
   void CheckHeartbeatsLoop();
+  void HandleProgressSubscribe() {
+    progress_mgr_->HandleProgressSubscribe();
+  }
+
+  void HandleFindTask() {
+    progress_mgr_->HandleFindTask();
+  }
+
+  void HandleFindTaskByHandle() {
+    progress_mgr_->HandleFindTaskByHandle();
+  }
 
  private:
   void CheckHeartbeats();
@@ -72,20 +80,24 @@ class TortugaHandler : boost::noncopyable {
   RequestTaskResult RequestTask(const Worker& worker);
   RequestTaskResult RequestTaskInExec(const Worker& worker);
 
-  void CompleteTask(const CompleteTaskReq& req);
-  void CompleteTaskInExec(const CompleteTaskReq& req);
+  TaskProgress* CompleteTask(const CompleteTaskReq& req);
+  TaskProgress* CompleteTaskInExec(const CompleteTaskReq& req);
 
   std::vector<std::string> ExpiredWorkersInExec();
   void UnassignTasksInExec(const std::vector<std::string>& uuids);
   void UnassignTaskInExec(const std::string& uuid);
 
-  bool IsDone(const std::string& task_id);
-  bool IsDoneInExec(const std::string& task_id);
+  void InsertHistoricWorkerInExec(const std::string& uuid,
+                                  const std::string& worker_id);
 
   sqlite3* db_{ nullptr };
+  RpcOpts rpc_opts_;
 
   // executor in which we perform sqlite tasks.
   folly::CPUThreadPoolExecutor exec_{ 1, 1, 1024 };
+
+  // progress manager
+  std::unique_ptr<ProgressManager> progress_mgr_;
 
   // All our sqlite statements nice and prepared :).
 
@@ -106,6 +118,6 @@ class TortugaHandler : boost::noncopyable {
   SqliteStatement unassign_tasks_stmt_;
   SqliteStatement update_worker_invalidated_uuid_stmt_;
 
-  SqliteStatement task_id_done_stmt_;
+  SqliteStatement insert_historic_worker_stmt_;
 };
 }  // namespace tortuga

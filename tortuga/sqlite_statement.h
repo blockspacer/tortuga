@@ -1,8 +1,10 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include "boost/utility.hpp"
+#include "google/protobuf/timestamp.pb.h"
 #include "sqlite3.h"
 
 namespace tortuga {
@@ -25,10 +27,13 @@ class SqliteStatement : boost::noncopyable {
   int ColumnInt(int pos);
   bool ColumnBool(int pos);
   int64_t ColumnLong(int pos);
+  bool ColumnFloat(int pos);
   std::string ColumnText(int pos);
   // If the column is NULL this returns empty.
   std::string ColumnTextOrEmpty(int pos);
   std::string ColumnBlob(int pos);
+  // If null, returns empty, else the timestamp, parsed as proto.
+  std::unique_ptr<google::protobuf::Timestamp> ColumnTimestamp(int pos);
 
   void ResetOrDie();
 

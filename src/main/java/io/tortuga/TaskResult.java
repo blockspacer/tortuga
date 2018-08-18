@@ -1,5 +1,8 @@
 package io.tortuga;
 
+import com.google.common.util.concurrent.ListenableFuture;
+import io.grpc.Status;
+
 public class TaskResult {
 
   private final String handle;
@@ -25,5 +28,9 @@ public class TaskResult {
    */
   public boolean isDone() {
     return conn.isDone(handle);
+  }
+
+  public ListenableFuture<Status> completionFuture() {
+    return conn.completionFuture(handle);
   }
 }

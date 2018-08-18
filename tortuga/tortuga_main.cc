@@ -13,6 +13,7 @@
 #include "sqlite3.h"
 
 #include "tortuga/baton_handler.h"
+#include "tortuga/rpc_opts.h"
 #include "tortuga/tortuga.h"
 #include "tortuga/tortuga.grpc.pb.h"
 #include "tortuga/tortuga.pb.h"
@@ -21,12 +22,13 @@ DEFINE_string(db_file, "tortuga.db", "path to db file.");
 DEFINE_string(addr, "127.0.0.1", "address to listen on.");
 DEFINE_int32(port, 4000, "port to listen on");
 
+// all our times are in millis since epoch.
 const char* const kCreateTortuga = R"(
   CREATE TABLE IF NOT EXISTS tasks(
     id TEXT NOT NULL,
     task_type TEXT NOT NULL,
     data BLOB NOT NULL,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created INTEGER NOT NULL,
     max_retries INTEGER NOT NULL,
     retries INTEGER NOT NULL DEFAULT 0,
     priority INTEGER NOT NULL,
@@ -37,8 +39,8 @@ const char* const kCreateTortuga = R"(
     status_code INTEGER NULL DEFAULT NULL,
     status_message TEXT NULL DEFAULT NULL,
     done BOOLEAN NOT NULL DEFAULT false,
-    started_time TIMESTAMP NULL DEFAULT NULL,
-    done_time TIMESTAMP NULL DEFAULT NULL,
+    started_time INTEGER NULL DEFAULT NULL,
+    done_time INTEGER NULL DEFAULT NULL,
     logs TEXT NULL
   );
 
@@ -48,11 +50,19 @@ const char* const kCreateTortuga = R"(
     worker_id TEXT NOT NULL,
     uuid TEXT NOT NULL,
     capabilities TEXT NOT NULL DEFAULT '',
-    last_beat TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_beat INTEGER NOT NULL,
     last_invalidated_uuid TEXT NULL DEFAULT NULL
   );
 
   CREATE INDEX IF NOT EXISTS workers_worker_id_idx ON workers (worker_id);
+
+  CREATE TABLE IF NOT EXISTS historic_workers(
+    uuid TEXT NOT NULL,
+    worker_id TEXT NOT NULL,
+    created INTEGER NOT NULL
+  );
+
+  CREATE INDEX IF NOT EXISTS historic_workers_uuid_idx ON historic_workers (uuid);
 )";
 
 void LoopGrpc(grpc::ServerCompletionQueue* cq) {
@@ -108,38 +118,46 @@ int main(int argc, char** argv) {
   rpc_opts.cq = cq.get();
   rpc_opts.fibers = &fibers;
   
-  tortuga::TortugaHandler tortuga(db);
+  tortuga::TortugaHandler tortuga(db, rpc_opts);
 
-  fibers.addTask([rpc_opts, &tortuga]() {
-    tortuga.HandleCreateTask(rpc_opts);
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleCreateTask();
   });
 
-  fibers.addTask([rpc_opts, &tortuga]() {
-    tortuga.HandleRequestTask(rpc_opts);
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleRequestTask();
   });
 
-  fibers.addTask([rpc_opts, &tortuga]() {
-    tortuga.HandleHeartbeat(rpc_opts);
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleHeartbeat();
   });
 
-  fibers.addTask([rpc_opts, &tortuga]() {
-    tortuga.HandleCompleteTask(rpc_opts);
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleCompleteTask();
   });
 
-  fibers.addTask([rpc_opts, &tortuga]() {
-    tortuga.HandlePing(rpc_opts);
+  fibers.addTask([&tortuga]() {
+    tortuga.HandlePing();
   });
 
-  fibers.addTask([rpc_opts, &tortuga]() {
-    tortuga.HandleQuit(rpc_opts);
-  });
-
-  fibers.addTask([rpc_opts, &tortuga]() {
-    tortuga.HandleIsDone(rpc_opts);
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleQuit();
   });
 
   fibers.addTask([&tortuga]() {
     tortuga.CheckHeartbeatsLoop();
+  });
+
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleProgressSubscribe();
+  });
+
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleFindTask();
+  });
+
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleFindTaskByHandle();
   });
 
   LOG(INFO) << "Tortuga is taking the stage on: " << addr;

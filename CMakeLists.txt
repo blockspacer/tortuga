@@ -14,10 +14,15 @@ enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_library (tortuga_lib
+  grpc/status/status.pb.cc
+  grpc/status/status.grpc.pb.cc  
   sqlite3.c
   tortuga/baton_handler.cc
+  tortuga/progress_manager.cc
+  tortuga/rpc_opts.cc  
   tortuga/sqlite_statement.cc
   tortuga/time_logger.cc
+  tortuga/time_utils.cc
   tortuga/tortuga.cc
   tortuga/tortuga.pb.cc
   tortuga/tortuga.grpc.pb.cc

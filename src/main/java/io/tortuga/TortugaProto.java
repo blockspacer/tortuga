@@ -4403,6 +4403,2375 @@ public final class TortugaProto {
 
   }
 
+  public interface TaskProgressOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.TaskProgress)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string handle = 1;</code>
+     */
+    java.lang.String getHandle();
+    /**
+     * <code>string handle = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getHandleBytes();
+
+    /**
+     * <code>string id = 2;</code>
+     */
+    java.lang.String getId();
+    /**
+     * <code>string id = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <code>string type = 3;</code>
+     */
+    java.lang.String getType();
+    /**
+     * <code>string type = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getTypeBytes();
+
+    /**
+     * <code>int32 max_retries = 4;</code>
+     */
+    int getMaxRetries();
+
+    /**
+     * <code>int32 retries = 5;</code>
+     */
+    int getRetries();
+
+    /**
+     * <code>int32 priority = 6;</code>
+     */
+    int getPriority();
+
+    /**
+     * <code>bool worked_on = 7;</code>
+     */
+    boolean getWorkedOn();
+
+    /**
+     * <code>bool done = 8;</code>
+     */
+    boolean getDone();
+
+    /**
+     * <code>.google.protobuf.Timestamp created = 9;</code>
+     */
+    boolean hasCreated();
+    /**
+     * <code>.google.protobuf.Timestamp created = 9;</code>
+     */
+    com.google.protobuf.Timestamp getCreated();
+    /**
+     * <code>.google.protobuf.Timestamp created = 9;</code>
+     */
+    com.google.protobuf.TimestampOrBuilder getCreatedOrBuilder();
+
+    /**
+     * <code>.google.protobuf.Timestamp started_time = 10;</code>
+     */
+    boolean hasStartedTime();
+    /**
+     * <code>.google.protobuf.Timestamp started_time = 10;</code>
+     */
+    com.google.protobuf.Timestamp getStartedTime();
+    /**
+     * <code>.google.protobuf.Timestamp started_time = 10;</code>
+     */
+    com.google.protobuf.TimestampOrBuilder getStartedTimeOrBuilder();
+
+    /**
+     * <code>.google.protobuf.Timestamp done_time = 11;</code>
+     */
+    boolean hasDoneTime();
+    /**
+     * <code>.google.protobuf.Timestamp done_time = 11;</code>
+     */
+    com.google.protobuf.Timestamp getDoneTime();
+    /**
+     * <code>.google.protobuf.Timestamp done_time = 11;</code>
+     */
+    com.google.protobuf.TimestampOrBuilder getDoneTimeOrBuilder();
+
+    /**
+     * <code>.google.rpc.Status status = 12;</code>
+     */
+    boolean hasStatus();
+    /**
+     * <code>.google.rpc.Status status = 12;</code>
+     */
+    com.google.rpc.Status getStatus();
+    /**
+     * <code>.google.rpc.Status status = 12;</code>
+     */
+    com.google.rpc.StatusOrBuilder getStatusOrBuilder();
+
+    /**
+     * <code>float progress = 13;</code>
+     */
+    float getProgress();
+
+    /**
+     * <code>string progress_message = 14;</code>
+     */
+    java.lang.String getProgressMessage();
+    /**
+     * <code>string progress_message = 14;</code>
+     */
+    com.google.protobuf.ByteString
+        getProgressMessageBytes();
+
+    /**
+     * <code>string logs = 15;</code>
+     */
+    java.lang.String getLogs();
+    /**
+     * <code>string logs = 15;</code>
+     */
+    com.google.protobuf.ByteString
+        getLogsBytes();
+
+    /**
+     * <code>string worker_id = 16;</code>
+     */
+    java.lang.String getWorkerId();
+    /**
+     * <code>string worker_id = 16;</code>
+     */
+    com.google.protobuf.ByteString
+        getWorkerIdBytes();
+  }
+  /**
+   * Protobuf type {@code tortuga.TaskProgress}
+   */
+  public  static final class TaskProgress extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:tortuga.TaskProgress)
+      TaskProgressOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TaskProgress.newBuilder() to construct.
+    private TaskProgress(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TaskProgress() {
+      handle_ = "";
+      id_ = "";
+      type_ = "";
+      maxRetries_ = 0;
+      retries_ = 0;
+      priority_ = 0;
+      workedOn_ = false;
+      done_ = false;
+      progress_ = 0F;
+      progressMessage_ = "";
+      logs_ = "";
+      workerId_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TaskProgress(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              handle_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              id_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              type_ = s;
+              break;
+            }
+            case 32: {
+
+              maxRetries_ = input.readInt32();
+              break;
+            }
+            case 40: {
+
+              retries_ = input.readInt32();
+              break;
+            }
+            case 48: {
+
+              priority_ = input.readInt32();
+              break;
+            }
+            case 56: {
+
+              workedOn_ = input.readBool();
+              break;
+            }
+            case 64: {
+
+              done_ = input.readBool();
+              break;
+            }
+            case 74: {
+              com.google.protobuf.Timestamp.Builder subBuilder = null;
+              if (created_ != null) {
+                subBuilder = created_.toBuilder();
+              }
+              created_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(created_);
+                created_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 82: {
+              com.google.protobuf.Timestamp.Builder subBuilder = null;
+              if (startedTime_ != null) {
+                subBuilder = startedTime_.toBuilder();
+              }
+              startedTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(startedTime_);
+                startedTime_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 90: {
+              com.google.protobuf.Timestamp.Builder subBuilder = null;
+              if (doneTime_ != null) {
+                subBuilder = doneTime_.toBuilder();
+              }
+              doneTime_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(doneTime_);
+                doneTime_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 98: {
+              com.google.rpc.Status.Builder subBuilder = null;
+              if (status_ != null) {
+                subBuilder = status_.toBuilder();
+              }
+              status_ = input.readMessage(com.google.rpc.Status.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(status_);
+                status_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 109: {
+
+              progress_ = input.readFloat();
+              break;
+            }
+            case 114: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              progressMessage_ = s;
+              break;
+            }
+            case 122: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              logs_ = s;
+              break;
+            }
+            case 130: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              workerId_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_TaskProgress_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_TaskProgress_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              io.tortuga.TortugaProto.TaskProgress.class, io.tortuga.TortugaProto.TaskProgress.Builder.class);
+    }
+
+    public static final int HANDLE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object handle_;
+    /**
+     * <code>string handle = 1;</code>
+     */
+    public java.lang.String getHandle() {
+      java.lang.Object ref = handle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        handle_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string handle = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHandleBytes() {
+      java.lang.Object ref = handle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object id_;
+    /**
+     * <code>string id = 2;</code>
+     */
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string id = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 3;
+    private volatile java.lang.Object type_;
+    /**
+     * <code>string type = 3;</code>
+     */
+    public java.lang.String getType() {
+      java.lang.Object ref = type_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        type_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string type = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTypeBytes() {
+      java.lang.Object ref = type_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        type_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MAX_RETRIES_FIELD_NUMBER = 4;
+    private int maxRetries_;
+    /**
+     * <code>int32 max_retries = 4;</code>
+     */
+    public int getMaxRetries() {
+      return maxRetries_;
+    }
+
+    public static final int RETRIES_FIELD_NUMBER = 5;
+    private int retries_;
+    /**
+     * <code>int32 retries = 5;</code>
+     */
+    public int getRetries() {
+      return retries_;
+    }
+
+    public static final int PRIORITY_FIELD_NUMBER = 6;
+    private int priority_;
+    /**
+     * <code>int32 priority = 6;</code>
+     */
+    public int getPriority() {
+      return priority_;
+    }
+
+    public static final int WORKED_ON_FIELD_NUMBER = 7;
+    private boolean workedOn_;
+    /**
+     * <code>bool worked_on = 7;</code>
+     */
+    public boolean getWorkedOn() {
+      return workedOn_;
+    }
+
+    public static final int DONE_FIELD_NUMBER = 8;
+    private boolean done_;
+    /**
+     * <code>bool done = 8;</code>
+     */
+    public boolean getDone() {
+      return done_;
+    }
+
+    public static final int CREATED_FIELD_NUMBER = 9;
+    private com.google.protobuf.Timestamp created_;
+    /**
+     * <code>.google.protobuf.Timestamp created = 9;</code>
+     */
+    public boolean hasCreated() {
+      return created_ != null;
+    }
+    /**
+     * <code>.google.protobuf.Timestamp created = 9;</code>
+     */
+    public com.google.protobuf.Timestamp getCreated() {
+      return created_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : created_;
+    }
+    /**
+     * <code>.google.protobuf.Timestamp created = 9;</code>
+     */
+    public com.google.protobuf.TimestampOrBuilder getCreatedOrBuilder() {
+      return getCreated();
+    }
+
+    public static final int STARTED_TIME_FIELD_NUMBER = 10;
+    private com.google.protobuf.Timestamp startedTime_;
+    /**
+     * <code>.google.protobuf.Timestamp started_time = 10;</code>
+     */
+    public boolean hasStartedTime() {
+      return startedTime_ != null;
+    }
+    /**
+     * <code>.google.protobuf.Timestamp started_time = 10;</code>
+     */
+    public com.google.protobuf.Timestamp getStartedTime() {
+      return startedTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : startedTime_;
+    }
+    /**
+     * <code>.google.protobuf.Timestamp started_time = 10;</code>
+     */
+    public com.google.protobuf.TimestampOrBuilder getStartedTimeOrBuilder() {
+      return getStartedTime();
+    }
+
+    public static final int DONE_TIME_FIELD_NUMBER = 11;
+    private com.google.protobuf.Timestamp doneTime_;
+    /**
+     * <code>.google.protobuf.Timestamp done_time = 11;</code>
+     */
+    public boolean hasDoneTime() {
+      return doneTime_ != null;
+    }
+    /**
+     * <code>.google.protobuf.Timestamp done_time = 11;</code>
+     */
+    public com.google.protobuf.Timestamp getDoneTime() {
+      return doneTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : doneTime_;
+    }
+    /**
+     * <code>.google.protobuf.Timestamp done_time = 11;</code>
+     */
+    public com.google.protobuf.TimestampOrBuilder getDoneTimeOrBuilder() {
+      return getDoneTime();
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 12;
+    private com.google.rpc.Status status_;
+    /**
+     * <code>.google.rpc.Status status = 12;</code>
+     */
+    public boolean hasStatus() {
+      return status_ != null;
+    }
+    /**
+     * <code>.google.rpc.Status status = 12;</code>
+     */
+    public com.google.rpc.Status getStatus() {
+      return status_ == null ? com.google.rpc.Status.getDefaultInstance() : status_;
+    }
+    /**
+     * <code>.google.rpc.Status status = 12;</code>
+     */
+    public com.google.rpc.StatusOrBuilder getStatusOrBuilder() {
+      return getStatus();
+    }
+
+    public static final int PROGRESS_FIELD_NUMBER = 13;
+    private float progress_;
+    /**
+     * <code>float progress = 13;</code>
+     */
+    public float getProgress() {
+      return progress_;
+    }
+
+    public static final int PROGRESS_MESSAGE_FIELD_NUMBER = 14;
+    private volatile java.lang.Object progressMessage_;
+    /**
+     * <code>string progress_message = 14;</code>
+     */
+    public java.lang.String getProgressMessage() {
+      java.lang.Object ref = progressMessage_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        progressMessage_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string progress_message = 14;</code>
+     */
+    public com.google.protobuf.ByteString
+        getProgressMessageBytes() {
+      java.lang.Object ref = progressMessage_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        progressMessage_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int LOGS_FIELD_NUMBER = 15;
+    private volatile java.lang.Object logs_;
+    /**
+     * <code>string logs = 15;</code>
+     */
+    public java.lang.String getLogs() {
+      java.lang.Object ref = logs_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        logs_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string logs = 15;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLogsBytes() {
+      java.lang.Object ref = logs_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        logs_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int WORKER_ID_FIELD_NUMBER = 16;
+    private volatile java.lang.Object workerId_;
+    /**
+     * <code>string worker_id = 16;</code>
+     */
+    public java.lang.String getWorkerId() {
+      java.lang.Object ref = workerId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        workerId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string worker_id = 16;</code>
+     */
+    public com.google.protobuf.ByteString
+        getWorkerIdBytes() {
+      java.lang.Object ref = workerId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        workerId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getHandleBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, handle_);
+      }
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
+      }
+      if (!getTypeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, type_);
+      }
+      if (maxRetries_ != 0) {
+        output.writeInt32(4, maxRetries_);
+      }
+      if (retries_ != 0) {
+        output.writeInt32(5, retries_);
+      }
+      if (priority_ != 0) {
+        output.writeInt32(6, priority_);
+      }
+      if (workedOn_ != false) {
+        output.writeBool(7, workedOn_);
+      }
+      if (done_ != false) {
+        output.writeBool(8, done_);
+      }
+      if (created_ != null) {
+        output.writeMessage(9, getCreated());
+      }
+      if (startedTime_ != null) {
+        output.writeMessage(10, getStartedTime());
+      }
+      if (doneTime_ != null) {
+        output.writeMessage(11, getDoneTime());
+      }
+      if (status_ != null) {
+        output.writeMessage(12, getStatus());
+      }
+      if (progress_ != 0F) {
+        output.writeFloat(13, progress_);
+      }
+      if (!getProgressMessageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 14, progressMessage_);
+      }
+      if (!getLogsBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 15, logs_);
+      }
+      if (!getWorkerIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 16, workerId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getHandleBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, handle_);
+      }
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, id_);
+      }
+      if (!getTypeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, type_);
+      }
+      if (maxRetries_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, maxRetries_);
+      }
+      if (retries_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, retries_);
+      }
+      if (priority_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, priority_);
+      }
+      if (workedOn_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, workedOn_);
+      }
+      if (done_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(8, done_);
+      }
+      if (created_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, getCreated());
+      }
+      if (startedTime_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, getStartedTime());
+      }
+      if (doneTime_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, getDoneTime());
+      }
+      if (status_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(12, getStatus());
+      }
+      if (progress_ != 0F) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(13, progress_);
+      }
+      if (!getProgressMessageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, progressMessage_);
+      }
+      if (!getLogsBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, logs_);
+      }
+      if (!getWorkerIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, workerId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof io.tortuga.TortugaProto.TaskProgress)) {
+        return super.equals(obj);
+      }
+      io.tortuga.TortugaProto.TaskProgress other = (io.tortuga.TortugaProto.TaskProgress) obj;
+
+      boolean result = true;
+      result = result && getHandle()
+          .equals(other.getHandle());
+      result = result && getId()
+          .equals(other.getId());
+      result = result && getType()
+          .equals(other.getType());
+      result = result && (getMaxRetries()
+          == other.getMaxRetries());
+      result = result && (getRetries()
+          == other.getRetries());
+      result = result && (getPriority()
+          == other.getPriority());
+      result = result && (getWorkedOn()
+          == other.getWorkedOn());
+      result = result && (getDone()
+          == other.getDone());
+      result = result && (hasCreated() == other.hasCreated());
+      if (hasCreated()) {
+        result = result && getCreated()
+            .equals(other.getCreated());
+      }
+      result = result && (hasStartedTime() == other.hasStartedTime());
+      if (hasStartedTime()) {
+        result = result && getStartedTime()
+            .equals(other.getStartedTime());
+      }
+      result = result && (hasDoneTime() == other.hasDoneTime());
+      if (hasDoneTime()) {
+        result = result && getDoneTime()
+            .equals(other.getDoneTime());
+      }
+      result = result && (hasStatus() == other.hasStatus());
+      if (hasStatus()) {
+        result = result && getStatus()
+            .equals(other.getStatus());
+      }
+      result = result && (
+          java.lang.Float.floatToIntBits(getProgress())
+          == java.lang.Float.floatToIntBits(
+              other.getProgress()));
+      result = result && getProgressMessage()
+          .equals(other.getProgressMessage());
+      result = result && getLogs()
+          .equals(other.getLogs());
+      result = result && getWorkerId()
+          .equals(other.getWorkerId());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + HANDLE_FIELD_NUMBER;
+      hash = (53 * hash) + getHandle().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + getType().hashCode();
+      hash = (37 * hash) + MAX_RETRIES_FIELD_NUMBER;
+      hash = (53 * hash) + getMaxRetries();
+      hash = (37 * hash) + RETRIES_FIELD_NUMBER;
+      hash = (53 * hash) + getRetries();
+      hash = (37 * hash) + PRIORITY_FIELD_NUMBER;
+      hash = (53 * hash) + getPriority();
+      hash = (37 * hash) + WORKED_ON_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getWorkedOn());
+      hash = (37 * hash) + DONE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getDone());
+      if (hasCreated()) {
+        hash = (37 * hash) + CREATED_FIELD_NUMBER;
+        hash = (53 * hash) + getCreated().hashCode();
+      }
+      if (hasStartedTime()) {
+        hash = (37 * hash) + STARTED_TIME_FIELD_NUMBER;
+        hash = (53 * hash) + getStartedTime().hashCode();
+      }
+      if (hasDoneTime()) {
+        hash = (37 * hash) + DONE_TIME_FIELD_NUMBER;
+        hash = (53 * hash) + getDoneTime().hashCode();
+      }
+      if (hasStatus()) {
+        hash = (37 * hash) + STATUS_FIELD_NUMBER;
+        hash = (53 * hash) + getStatus().hashCode();
+      }
+      hash = (37 * hash) + PROGRESS_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getProgress());
+      hash = (37 * hash) + PROGRESS_MESSAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getProgressMessage().hashCode();
+      hash = (37 * hash) + LOGS_FIELD_NUMBER;
+      hash = (53 * hash) + getLogs().hashCode();
+      hash = (37 * hash) + WORKER_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getWorkerId().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.TaskProgress parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(io.tortuga.TortugaProto.TaskProgress prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code tortuga.TaskProgress}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:tortuga.TaskProgress)
+        io.tortuga.TortugaProto.TaskProgressOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_TaskProgress_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_TaskProgress_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.TaskProgress.class, io.tortuga.TortugaProto.TaskProgress.Builder.class);
+      }
+
+      // Construct using io.tortuga.TortugaProto.TaskProgress.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        handle_ = "";
+
+        id_ = "";
+
+        type_ = "";
+
+        maxRetries_ = 0;
+
+        retries_ = 0;
+
+        priority_ = 0;
+
+        workedOn_ = false;
+
+        done_ = false;
+
+        if (createdBuilder_ == null) {
+          created_ = null;
+        } else {
+          created_ = null;
+          createdBuilder_ = null;
+        }
+        if (startedTimeBuilder_ == null) {
+          startedTime_ = null;
+        } else {
+          startedTime_ = null;
+          startedTimeBuilder_ = null;
+        }
+        if (doneTimeBuilder_ == null) {
+          doneTime_ = null;
+        } else {
+          doneTime_ = null;
+          doneTimeBuilder_ = null;
+        }
+        if (statusBuilder_ == null) {
+          status_ = null;
+        } else {
+          status_ = null;
+          statusBuilder_ = null;
+        }
+        progress_ = 0F;
+
+        progressMessage_ = "";
+
+        logs_ = "";
+
+        workerId_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_TaskProgress_descriptor;
+      }
+
+      public io.tortuga.TortugaProto.TaskProgress getDefaultInstanceForType() {
+        return io.tortuga.TortugaProto.TaskProgress.getDefaultInstance();
+      }
+
+      public io.tortuga.TortugaProto.TaskProgress build() {
+        io.tortuga.TortugaProto.TaskProgress result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public io.tortuga.TortugaProto.TaskProgress buildPartial() {
+        io.tortuga.TortugaProto.TaskProgress result = new io.tortuga.TortugaProto.TaskProgress(this);
+        result.handle_ = handle_;
+        result.id_ = id_;
+        result.type_ = type_;
+        result.maxRetries_ = maxRetries_;
+        result.retries_ = retries_;
+        result.priority_ = priority_;
+        result.workedOn_ = workedOn_;
+        result.done_ = done_;
+        if (createdBuilder_ == null) {
+          result.created_ = created_;
+        } else {
+          result.created_ = createdBuilder_.build();
+        }
+        if (startedTimeBuilder_ == null) {
+          result.startedTime_ = startedTime_;
+        } else {
+          result.startedTime_ = startedTimeBuilder_.build();
+        }
+        if (doneTimeBuilder_ == null) {
+          result.doneTime_ = doneTime_;
+        } else {
+          result.doneTime_ = doneTimeBuilder_.build();
+        }
+        if (statusBuilder_ == null) {
+          result.status_ = status_;
+        } else {
+          result.status_ = statusBuilder_.build();
+        }
+        result.progress_ = progress_;
+        result.progressMessage_ = progressMessage_;
+        result.logs_ = logs_;
+        result.workerId_ = workerId_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof io.tortuga.TortugaProto.TaskProgress) {
+          return mergeFrom((io.tortuga.TortugaProto.TaskProgress)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(io.tortuga.TortugaProto.TaskProgress other) {
+        if (other == io.tortuga.TortugaProto.TaskProgress.getDefaultInstance()) return this;
+        if (!other.getHandle().isEmpty()) {
+          handle_ = other.handle_;
+          onChanged();
+        }
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          onChanged();
+        }
+        if (!other.getType().isEmpty()) {
+          type_ = other.type_;
+          onChanged();
+        }
+        if (other.getMaxRetries() != 0) {
+          setMaxRetries(other.getMaxRetries());
+        }
+        if (other.getRetries() != 0) {
+          setRetries(other.getRetries());
+        }
+        if (other.getPriority() != 0) {
+          setPriority(other.getPriority());
+        }
+        if (other.getWorkedOn() != false) {
+          setWorkedOn(other.getWorkedOn());
+        }
+        if (other.getDone() != false) {
+          setDone(other.getDone());
+        }
+        if (other.hasCreated()) {
+          mergeCreated(other.getCreated());
+        }
+        if (other.hasStartedTime()) {
+          mergeStartedTime(other.getStartedTime());
+        }
+        if (other.hasDoneTime()) {
+          mergeDoneTime(other.getDoneTime());
+        }
+        if (other.hasStatus()) {
+          mergeStatus(other.getStatus());
+        }
+        if (other.getProgress() != 0F) {
+          setProgress(other.getProgress());
+        }
+        if (!other.getProgressMessage().isEmpty()) {
+          progressMessage_ = other.progressMessage_;
+          onChanged();
+        }
+        if (!other.getLogs().isEmpty()) {
+          logs_ = other.logs_;
+          onChanged();
+        }
+        if (!other.getWorkerId().isEmpty()) {
+          workerId_ = other.workerId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        io.tortuga.TortugaProto.TaskProgress parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (io.tortuga.TortugaProto.TaskProgress) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object handle_ = "";
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public java.lang.String getHandle() {
+        java.lang.Object ref = handle_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          handle_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHandleBytes() {
+        java.lang.Object ref = handle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public Builder setHandle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public Builder clearHandle() {
+        
+        handle_ = getDefaultInstance().getHandle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public Builder setHandleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object id_ = "";
+      /**
+       * <code>string id = 2;</code>
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string id = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string id = 2;</code>
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 2;</code>
+       */
+      public Builder clearId() {
+        
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 2;</code>
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object type_ = "";
+      /**
+       * <code>string type = 3;</code>
+       */
+      public java.lang.String getType() {
+        java.lang.Object ref = type_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          type_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string type = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTypeBytes() {
+        java.lang.Object ref = type_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          type_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string type = 3;</code>
+       */
+      public Builder setType(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string type = 3;</code>
+       */
+      public Builder clearType() {
+        
+        type_ = getDefaultInstance().getType();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string type = 3;</code>
+       */
+      public Builder setTypeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        type_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int maxRetries_ ;
+      /**
+       * <code>int32 max_retries = 4;</code>
+       */
+      public int getMaxRetries() {
+        return maxRetries_;
+      }
+      /**
+       * <code>int32 max_retries = 4;</code>
+       */
+      public Builder setMaxRetries(int value) {
+        
+        maxRetries_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 max_retries = 4;</code>
+       */
+      public Builder clearMaxRetries() {
+        
+        maxRetries_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int retries_ ;
+      /**
+       * <code>int32 retries = 5;</code>
+       */
+      public int getRetries() {
+        return retries_;
+      }
+      /**
+       * <code>int32 retries = 5;</code>
+       */
+      public Builder setRetries(int value) {
+        
+        retries_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 retries = 5;</code>
+       */
+      public Builder clearRetries() {
+        
+        retries_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int priority_ ;
+      /**
+       * <code>int32 priority = 6;</code>
+       */
+      public int getPriority() {
+        return priority_;
+      }
+      /**
+       * <code>int32 priority = 6;</code>
+       */
+      public Builder setPriority(int value) {
+        
+        priority_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 priority = 6;</code>
+       */
+      public Builder clearPriority() {
+        
+        priority_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean workedOn_ ;
+      /**
+       * <code>bool worked_on = 7;</code>
+       */
+      public boolean getWorkedOn() {
+        return workedOn_;
+      }
+      /**
+       * <code>bool worked_on = 7;</code>
+       */
+      public Builder setWorkedOn(boolean value) {
+        
+        workedOn_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool worked_on = 7;</code>
+       */
+      public Builder clearWorkedOn() {
+        
+        workedOn_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean done_ ;
+      /**
+       * <code>bool done = 8;</code>
+       */
+      public boolean getDone() {
+        return done_;
+      }
+      /**
+       * <code>bool done = 8;</code>
+       */
+      public Builder setDone(boolean value) {
+        
+        done_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool done = 8;</code>
+       */
+      public Builder clearDone() {
+        
+        done_ = false;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.Timestamp created_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> createdBuilder_;
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      public boolean hasCreated() {
+        return createdBuilder_ != null || created_ != null;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      public com.google.protobuf.Timestamp getCreated() {
+        if (createdBuilder_ == null) {
+          return created_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : created_;
+        } else {
+          return createdBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      public Builder setCreated(com.google.protobuf.Timestamp value) {
+        if (createdBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          created_ = value;
+          onChanged();
+        } else {
+          createdBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      public Builder setCreated(
+          com.google.protobuf.Timestamp.Builder builderForValue) {
+        if (createdBuilder_ == null) {
+          created_ = builderForValue.build();
+          onChanged();
+        } else {
+          createdBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      public Builder mergeCreated(com.google.protobuf.Timestamp value) {
+        if (createdBuilder_ == null) {
+          if (created_ != null) {
+            created_ =
+              com.google.protobuf.Timestamp.newBuilder(created_).mergeFrom(value).buildPartial();
+          } else {
+            created_ = value;
+          }
+          onChanged();
+        } else {
+          createdBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      public Builder clearCreated() {
+        if (createdBuilder_ == null) {
+          created_ = null;
+          onChanged();
+        } else {
+          created_ = null;
+          createdBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      public com.google.protobuf.Timestamp.Builder getCreatedBuilder() {
+        
+        onChanged();
+        return getCreatedFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      public com.google.protobuf.TimestampOrBuilder getCreatedOrBuilder() {
+        if (createdBuilder_ != null) {
+          return createdBuilder_.getMessageOrBuilder();
+        } else {
+          return created_ == null ?
+              com.google.protobuf.Timestamp.getDefaultInstance() : created_;
+        }
+      }
+      /**
+       * <code>.google.protobuf.Timestamp created = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
+          getCreatedFieldBuilder() {
+        if (createdBuilder_ == null) {
+          createdBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
+                  getCreated(),
+                  getParentForChildren(),
+                  isClean());
+          created_ = null;
+        }
+        return createdBuilder_;
+      }
+
+      private com.google.protobuf.Timestamp startedTime_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> startedTimeBuilder_;
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      public boolean hasStartedTime() {
+        return startedTimeBuilder_ != null || startedTime_ != null;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      public com.google.protobuf.Timestamp getStartedTime() {
+        if (startedTimeBuilder_ == null) {
+          return startedTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : startedTime_;
+        } else {
+          return startedTimeBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      public Builder setStartedTime(com.google.protobuf.Timestamp value) {
+        if (startedTimeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          startedTime_ = value;
+          onChanged();
+        } else {
+          startedTimeBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      public Builder setStartedTime(
+          com.google.protobuf.Timestamp.Builder builderForValue) {
+        if (startedTimeBuilder_ == null) {
+          startedTime_ = builderForValue.build();
+          onChanged();
+        } else {
+          startedTimeBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      public Builder mergeStartedTime(com.google.protobuf.Timestamp value) {
+        if (startedTimeBuilder_ == null) {
+          if (startedTime_ != null) {
+            startedTime_ =
+              com.google.protobuf.Timestamp.newBuilder(startedTime_).mergeFrom(value).buildPartial();
+          } else {
+            startedTime_ = value;
+          }
+          onChanged();
+        } else {
+          startedTimeBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      public Builder clearStartedTime() {
+        if (startedTimeBuilder_ == null) {
+          startedTime_ = null;
+          onChanged();
+        } else {
+          startedTime_ = null;
+          startedTimeBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      public com.google.protobuf.Timestamp.Builder getStartedTimeBuilder() {
+        
+        onChanged();
+        return getStartedTimeFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      public com.google.protobuf.TimestampOrBuilder getStartedTimeOrBuilder() {
+        if (startedTimeBuilder_ != null) {
+          return startedTimeBuilder_.getMessageOrBuilder();
+        } else {
+          return startedTime_ == null ?
+              com.google.protobuf.Timestamp.getDefaultInstance() : startedTime_;
+        }
+      }
+      /**
+       * <code>.google.protobuf.Timestamp started_time = 10;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
+          getStartedTimeFieldBuilder() {
+        if (startedTimeBuilder_ == null) {
+          startedTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
+                  getStartedTime(),
+                  getParentForChildren(),
+                  isClean());
+          startedTime_ = null;
+        }
+        return startedTimeBuilder_;
+      }
+
+      private com.google.protobuf.Timestamp doneTime_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> doneTimeBuilder_;
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      public boolean hasDoneTime() {
+        return doneTimeBuilder_ != null || doneTime_ != null;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      public com.google.protobuf.Timestamp getDoneTime() {
+        if (doneTimeBuilder_ == null) {
+          return doneTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : doneTime_;
+        } else {
+          return doneTimeBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      public Builder setDoneTime(com.google.protobuf.Timestamp value) {
+        if (doneTimeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          doneTime_ = value;
+          onChanged();
+        } else {
+          doneTimeBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      public Builder setDoneTime(
+          com.google.protobuf.Timestamp.Builder builderForValue) {
+        if (doneTimeBuilder_ == null) {
+          doneTime_ = builderForValue.build();
+          onChanged();
+        } else {
+          doneTimeBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      public Builder mergeDoneTime(com.google.protobuf.Timestamp value) {
+        if (doneTimeBuilder_ == null) {
+          if (doneTime_ != null) {
+            doneTime_ =
+              com.google.protobuf.Timestamp.newBuilder(doneTime_).mergeFrom(value).buildPartial();
+          } else {
+            doneTime_ = value;
+          }
+          onChanged();
+        } else {
+          doneTimeBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      public Builder clearDoneTime() {
+        if (doneTimeBuilder_ == null) {
+          doneTime_ = null;
+          onChanged();
+        } else {
+          doneTime_ = null;
+          doneTimeBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      public com.google.protobuf.Timestamp.Builder getDoneTimeBuilder() {
+        
+        onChanged();
+        return getDoneTimeFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      public com.google.protobuf.TimestampOrBuilder getDoneTimeOrBuilder() {
+        if (doneTimeBuilder_ != null) {
+          return doneTimeBuilder_.getMessageOrBuilder();
+        } else {
+          return doneTime_ == null ?
+              com.google.protobuf.Timestamp.getDefaultInstance() : doneTime_;
+        }
+      }
+      /**
+       * <code>.google.protobuf.Timestamp done_time = 11;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
+          getDoneTimeFieldBuilder() {
+        if (doneTimeBuilder_ == null) {
+          doneTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
+                  getDoneTime(),
+                  getParentForChildren(),
+                  isClean());
+          doneTime_ = null;
+        }
+        return doneTimeBuilder_;
+      }
+
+      private com.google.rpc.Status status_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.rpc.Status, com.google.rpc.Status.Builder, com.google.rpc.StatusOrBuilder> statusBuilder_;
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      public boolean hasStatus() {
+        return statusBuilder_ != null || status_ != null;
+      }
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      public com.google.rpc.Status getStatus() {
+        if (statusBuilder_ == null) {
+          return status_ == null ? com.google.rpc.Status.getDefaultInstance() : status_;
+        } else {
+          return statusBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      public Builder setStatus(com.google.rpc.Status value) {
+        if (statusBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          status_ = value;
+          onChanged();
+        } else {
+          statusBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      public Builder setStatus(
+          com.google.rpc.Status.Builder builderForValue) {
+        if (statusBuilder_ == null) {
+          status_ = builderForValue.build();
+          onChanged();
+        } else {
+          statusBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      public Builder mergeStatus(com.google.rpc.Status value) {
+        if (statusBuilder_ == null) {
+          if (status_ != null) {
+            status_ =
+              com.google.rpc.Status.newBuilder(status_).mergeFrom(value).buildPartial();
+          } else {
+            status_ = value;
+          }
+          onChanged();
+        } else {
+          statusBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      public Builder clearStatus() {
+        if (statusBuilder_ == null) {
+          status_ = null;
+          onChanged();
+        } else {
+          status_ = null;
+          statusBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      public com.google.rpc.Status.Builder getStatusBuilder() {
+        
+        onChanged();
+        return getStatusFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      public com.google.rpc.StatusOrBuilder getStatusOrBuilder() {
+        if (statusBuilder_ != null) {
+          return statusBuilder_.getMessageOrBuilder();
+        } else {
+          return status_ == null ?
+              com.google.rpc.Status.getDefaultInstance() : status_;
+        }
+      }
+      /**
+       * <code>.google.rpc.Status status = 12;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.rpc.Status, com.google.rpc.Status.Builder, com.google.rpc.StatusOrBuilder> 
+          getStatusFieldBuilder() {
+        if (statusBuilder_ == null) {
+          statusBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.rpc.Status, com.google.rpc.Status.Builder, com.google.rpc.StatusOrBuilder>(
+                  getStatus(),
+                  getParentForChildren(),
+                  isClean());
+          status_ = null;
+        }
+        return statusBuilder_;
+      }
+
+      private float progress_ ;
+      /**
+       * <code>float progress = 13;</code>
+       */
+      public float getProgress() {
+        return progress_;
+      }
+      /**
+       * <code>float progress = 13;</code>
+       */
+      public Builder setProgress(float value) {
+        
+        progress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float progress = 13;</code>
+       */
+      public Builder clearProgress() {
+        
+        progress_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object progressMessage_ = "";
+      /**
+       * <code>string progress_message = 14;</code>
+       */
+      public java.lang.String getProgressMessage() {
+        java.lang.Object ref = progressMessage_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          progressMessage_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string progress_message = 14;</code>
+       */
+      public com.google.protobuf.ByteString
+          getProgressMessageBytes() {
+        java.lang.Object ref = progressMessage_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          progressMessage_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string progress_message = 14;</code>
+       */
+      public Builder setProgressMessage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        progressMessage_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string progress_message = 14;</code>
+       */
+      public Builder clearProgressMessage() {
+        
+        progressMessage_ = getDefaultInstance().getProgressMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string progress_message = 14;</code>
+       */
+      public Builder setProgressMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        progressMessage_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object logs_ = "";
+      /**
+       * <code>string logs = 15;</code>
+       */
+      public java.lang.String getLogs() {
+        java.lang.Object ref = logs_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          logs_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string logs = 15;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLogsBytes() {
+        java.lang.Object ref = logs_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          logs_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string logs = 15;</code>
+       */
+      public Builder setLogs(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        logs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string logs = 15;</code>
+       */
+      public Builder clearLogs() {
+        
+        logs_ = getDefaultInstance().getLogs();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string logs = 15;</code>
+       */
+      public Builder setLogsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        logs_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object workerId_ = "";
+      /**
+       * <code>string worker_id = 16;</code>
+       */
+      public java.lang.String getWorkerId() {
+        java.lang.Object ref = workerId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          workerId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string worker_id = 16;</code>
+       */
+      public com.google.protobuf.ByteString
+          getWorkerIdBytes() {
+        java.lang.Object ref = workerId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          workerId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string worker_id = 16;</code>
+       */
+      public Builder setWorkerId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        workerId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string worker_id = 16;</code>
+       */
+      public Builder clearWorkerId() {
+        
+        workerId_ = getDefaultInstance().getWorkerId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string worker_id = 16;</code>
+       */
+      public Builder setWorkerIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        workerId_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:tortuga.TaskProgress)
+    }
+
+    // @@protoc_insertion_point(class_scope:tortuga.TaskProgress)
+    private static final io.tortuga.TortugaProto.TaskProgress DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.TaskProgress();
+    }
+
+    public static io.tortuga.TortugaProto.TaskProgress getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TaskProgress>
+        PARSER = new com.google.protobuf.AbstractParser<TaskProgress>() {
+      public TaskProgress parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TaskProgress(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TaskProgress> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TaskProgress> getParserForType() {
+      return PARSER;
+    }
+
+    public io.tortuga.TortugaProto.TaskProgress getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface CreateReqOrBuilder extends
       // @@protoc_insertion_point(interface_extends:tortuga.CreateReq)
       com.google.protobuf.MessageOrBuilder {
@@ -6630,6 +8999,3342 @@ public final class TortugaProto {
 
   }
 
+  public interface ProgressReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.ProgressReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Handle of the task of which to subscribe for.
+     * </pre>
+     *
+     * <code>string handle = 1;</code>
+     */
+    java.lang.String getHandle();
+    /**
+     * <pre>
+     * Handle of the task of which to subscribe for.
+     * </pre>
+     *
+     * <code>string handle = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getHandleBytes();
+  }
+  /**
+   * Protobuf type {@code tortuga.ProgressReq}
+   */
+  public  static final class ProgressReq extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:tortuga.ProgressReq)
+      ProgressReqOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ProgressReq.newBuilder() to construct.
+    private ProgressReq(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ProgressReq() {
+      handle_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ProgressReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              handle_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_ProgressReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_ProgressReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              io.tortuga.TortugaProto.ProgressReq.class, io.tortuga.TortugaProto.ProgressReq.Builder.class);
+    }
+
+    public static final int HANDLE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object handle_;
+    /**
+     * <pre>
+     * Handle of the task of which to subscribe for.
+     * </pre>
+     *
+     * <code>string handle = 1;</code>
+     */
+    public java.lang.String getHandle() {
+      java.lang.Object ref = handle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        handle_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Handle of the task of which to subscribe for.
+     * </pre>
+     *
+     * <code>string handle = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHandleBytes() {
+      java.lang.Object ref = handle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getHandleBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, handle_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getHandleBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, handle_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof io.tortuga.TortugaProto.ProgressReq)) {
+        return super.equals(obj);
+      }
+      io.tortuga.TortugaProto.ProgressReq other = (io.tortuga.TortugaProto.ProgressReq) obj;
+
+      boolean result = true;
+      result = result && getHandle()
+          .equals(other.getHandle());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + HANDLE_FIELD_NUMBER;
+      hash = (53 * hash) + getHandle().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.ProgressReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(io.tortuga.TortugaProto.ProgressReq prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code tortuga.ProgressReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:tortuga.ProgressReq)
+        io.tortuga.TortugaProto.ProgressReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_ProgressReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_ProgressReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.ProgressReq.class, io.tortuga.TortugaProto.ProgressReq.Builder.class);
+      }
+
+      // Construct using io.tortuga.TortugaProto.ProgressReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        handle_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_ProgressReq_descriptor;
+      }
+
+      public io.tortuga.TortugaProto.ProgressReq getDefaultInstanceForType() {
+        return io.tortuga.TortugaProto.ProgressReq.getDefaultInstance();
+      }
+
+      public io.tortuga.TortugaProto.ProgressReq build() {
+        io.tortuga.TortugaProto.ProgressReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public io.tortuga.TortugaProto.ProgressReq buildPartial() {
+        io.tortuga.TortugaProto.ProgressReq result = new io.tortuga.TortugaProto.ProgressReq(this);
+        result.handle_ = handle_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof io.tortuga.TortugaProto.ProgressReq) {
+          return mergeFrom((io.tortuga.TortugaProto.ProgressReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(io.tortuga.TortugaProto.ProgressReq other) {
+        if (other == io.tortuga.TortugaProto.ProgressReq.getDefaultInstance()) return this;
+        if (!other.getHandle().isEmpty()) {
+          handle_ = other.handle_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        io.tortuga.TortugaProto.ProgressReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (io.tortuga.TortugaProto.ProgressReq) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object handle_ = "";
+      /**
+       * <pre>
+       * Handle of the task of which to subscribe for.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public java.lang.String getHandle() {
+        java.lang.Object ref = handle_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          handle_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Handle of the task of which to subscribe for.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHandleBytes() {
+        java.lang.Object ref = handle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Handle of the task of which to subscribe for.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public Builder setHandle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Handle of the task of which to subscribe for.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public Builder clearHandle() {
+        
+        handle_ = getDefaultInstance().getHandle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Handle of the task of which to subscribe for.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public Builder setHandleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:tortuga.ProgressReq)
+    }
+
+    // @@protoc_insertion_point(class_scope:tortuga.ProgressReq)
+    private static final io.tortuga.TortugaProto.ProgressReq DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.ProgressReq();
+    }
+
+    public static io.tortuga.TortugaProto.ProgressReq getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ProgressReq>
+        PARSER = new com.google.protobuf.AbstractParser<ProgressReq>() {
+      public ProgressReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ProgressReq(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ProgressReq> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ProgressReq> getParserForType() {
+      return PARSER;
+    }
+
+    public io.tortuga.TortugaProto.ProgressReq getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ProgressRespOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.ProgressResp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * handle of the task that is done.
+     * </pre>
+     *
+     * <code>string handle = 1;</code>
+     */
+    java.lang.String getHandle();
+    /**
+     * <pre>
+     * handle of the task that is done.
+     * </pre>
+     *
+     * <code>string handle = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getHandleBytes();
+
+    /**
+     * <pre>
+     * How it ended...
+     * </pre>
+     *
+     * <code>.google.rpc.Status status = 2;</code>
+     */
+    boolean hasStatus();
+    /**
+     * <pre>
+     * How it ended...
+     * </pre>
+     *
+     * <code>.google.rpc.Status status = 2;</code>
+     */
+    com.google.rpc.Status getStatus();
+    /**
+     * <pre>
+     * How it ended...
+     * </pre>
+     *
+     * <code>.google.rpc.Status status = 2;</code>
+     */
+    com.google.rpc.StatusOrBuilder getStatusOrBuilder();
+  }
+  /**
+   * Protobuf type {@code tortuga.ProgressResp}
+   */
+  public  static final class ProgressResp extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:tortuga.ProgressResp)
+      ProgressRespOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ProgressResp.newBuilder() to construct.
+    private ProgressResp(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ProgressResp() {
+      handle_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ProgressResp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              handle_ = s;
+              break;
+            }
+            case 18: {
+              com.google.rpc.Status.Builder subBuilder = null;
+              if (status_ != null) {
+                subBuilder = status_.toBuilder();
+              }
+              status_ = input.readMessage(com.google.rpc.Status.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(status_);
+                status_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_ProgressResp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_ProgressResp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              io.tortuga.TortugaProto.ProgressResp.class, io.tortuga.TortugaProto.ProgressResp.Builder.class);
+    }
+
+    public static final int HANDLE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object handle_;
+    /**
+     * <pre>
+     * handle of the task that is done.
+     * </pre>
+     *
+     * <code>string handle = 1;</code>
+     */
+    public java.lang.String getHandle() {
+      java.lang.Object ref = handle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        handle_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * handle of the task that is done.
+     * </pre>
+     *
+     * <code>string handle = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHandleBytes() {
+      java.lang.Object ref = handle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 2;
+    private com.google.rpc.Status status_;
+    /**
+     * <pre>
+     * How it ended...
+     * </pre>
+     *
+     * <code>.google.rpc.Status status = 2;</code>
+     */
+    public boolean hasStatus() {
+      return status_ != null;
+    }
+    /**
+     * <pre>
+     * How it ended...
+     * </pre>
+     *
+     * <code>.google.rpc.Status status = 2;</code>
+     */
+    public com.google.rpc.Status getStatus() {
+      return status_ == null ? com.google.rpc.Status.getDefaultInstance() : status_;
+    }
+    /**
+     * <pre>
+     * How it ended...
+     * </pre>
+     *
+     * <code>.google.rpc.Status status = 2;</code>
+     */
+    public com.google.rpc.StatusOrBuilder getStatusOrBuilder() {
+      return getStatus();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getHandleBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, handle_);
+      }
+      if (status_ != null) {
+        output.writeMessage(2, getStatus());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getHandleBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, handle_);
+      }
+      if (status_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getStatus());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof io.tortuga.TortugaProto.ProgressResp)) {
+        return super.equals(obj);
+      }
+      io.tortuga.TortugaProto.ProgressResp other = (io.tortuga.TortugaProto.ProgressResp) obj;
+
+      boolean result = true;
+      result = result && getHandle()
+          .equals(other.getHandle());
+      result = result && (hasStatus() == other.hasStatus());
+      if (hasStatus()) {
+        result = result && getStatus()
+            .equals(other.getStatus());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + HANDLE_FIELD_NUMBER;
+      hash = (53 * hash) + getHandle().hashCode();
+      if (hasStatus()) {
+        hash = (37 * hash) + STATUS_FIELD_NUMBER;
+        hash = (53 * hash) + getStatus().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.ProgressResp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(io.tortuga.TortugaProto.ProgressResp prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code tortuga.ProgressResp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:tortuga.ProgressResp)
+        io.tortuga.TortugaProto.ProgressRespOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_ProgressResp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_ProgressResp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.ProgressResp.class, io.tortuga.TortugaProto.ProgressResp.Builder.class);
+      }
+
+      // Construct using io.tortuga.TortugaProto.ProgressResp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        handle_ = "";
+
+        if (statusBuilder_ == null) {
+          status_ = null;
+        } else {
+          status_ = null;
+          statusBuilder_ = null;
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_ProgressResp_descriptor;
+      }
+
+      public io.tortuga.TortugaProto.ProgressResp getDefaultInstanceForType() {
+        return io.tortuga.TortugaProto.ProgressResp.getDefaultInstance();
+      }
+
+      public io.tortuga.TortugaProto.ProgressResp build() {
+        io.tortuga.TortugaProto.ProgressResp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public io.tortuga.TortugaProto.ProgressResp buildPartial() {
+        io.tortuga.TortugaProto.ProgressResp result = new io.tortuga.TortugaProto.ProgressResp(this);
+        result.handle_ = handle_;
+        if (statusBuilder_ == null) {
+          result.status_ = status_;
+        } else {
+          result.status_ = statusBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof io.tortuga.TortugaProto.ProgressResp) {
+          return mergeFrom((io.tortuga.TortugaProto.ProgressResp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(io.tortuga.TortugaProto.ProgressResp other) {
+        if (other == io.tortuga.TortugaProto.ProgressResp.getDefaultInstance()) return this;
+        if (!other.getHandle().isEmpty()) {
+          handle_ = other.handle_;
+          onChanged();
+        }
+        if (other.hasStatus()) {
+          mergeStatus(other.getStatus());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        io.tortuga.TortugaProto.ProgressResp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (io.tortuga.TortugaProto.ProgressResp) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object handle_ = "";
+      /**
+       * <pre>
+       * handle of the task that is done.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public java.lang.String getHandle() {
+        java.lang.Object ref = handle_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          handle_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * handle of the task that is done.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHandleBytes() {
+        java.lang.Object ref = handle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * handle of the task that is done.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public Builder setHandle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * handle of the task that is done.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public Builder clearHandle() {
+        
+        handle_ = getDefaultInstance().getHandle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * handle of the task that is done.
+       * </pre>
+       *
+       * <code>string handle = 1;</code>
+       */
+      public Builder setHandleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.rpc.Status status_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.rpc.Status, com.google.rpc.Status.Builder, com.google.rpc.StatusOrBuilder> statusBuilder_;
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      public boolean hasStatus() {
+        return statusBuilder_ != null || status_ != null;
+      }
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      public com.google.rpc.Status getStatus() {
+        if (statusBuilder_ == null) {
+          return status_ == null ? com.google.rpc.Status.getDefaultInstance() : status_;
+        } else {
+          return statusBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      public Builder setStatus(com.google.rpc.Status value) {
+        if (statusBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          status_ = value;
+          onChanged();
+        } else {
+          statusBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      public Builder setStatus(
+          com.google.rpc.Status.Builder builderForValue) {
+        if (statusBuilder_ == null) {
+          status_ = builderForValue.build();
+          onChanged();
+        } else {
+          statusBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      public Builder mergeStatus(com.google.rpc.Status value) {
+        if (statusBuilder_ == null) {
+          if (status_ != null) {
+            status_ =
+              com.google.rpc.Status.newBuilder(status_).mergeFrom(value).buildPartial();
+          } else {
+            status_ = value;
+          }
+          onChanged();
+        } else {
+          statusBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      public Builder clearStatus() {
+        if (statusBuilder_ == null) {
+          status_ = null;
+          onChanged();
+        } else {
+          status_ = null;
+          statusBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      public com.google.rpc.Status.Builder getStatusBuilder() {
+        
+        onChanged();
+        return getStatusFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      public com.google.rpc.StatusOrBuilder getStatusOrBuilder() {
+        if (statusBuilder_ != null) {
+          return statusBuilder_.getMessageOrBuilder();
+        } else {
+          return status_ == null ?
+              com.google.rpc.Status.getDefaultInstance() : status_;
+        }
+      }
+      /**
+       * <pre>
+       * How it ended...
+       * </pre>
+       *
+       * <code>.google.rpc.Status status = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.rpc.Status, com.google.rpc.Status.Builder, com.google.rpc.StatusOrBuilder> 
+          getStatusFieldBuilder() {
+        if (statusBuilder_ == null) {
+          statusBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.rpc.Status, com.google.rpc.Status.Builder, com.google.rpc.StatusOrBuilder>(
+                  getStatus(),
+                  getParentForChildren(),
+                  isClean());
+          status_ = null;
+        }
+        return statusBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:tortuga.ProgressResp)
+    }
+
+    // @@protoc_insertion_point(class_scope:tortuga.ProgressResp)
+    private static final io.tortuga.TortugaProto.ProgressResp DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.ProgressResp();
+    }
+
+    public static io.tortuga.TortugaProto.ProgressResp getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ProgressResp>
+        PARSER = new com.google.protobuf.AbstractParser<ProgressResp>() {
+      public ProgressResp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ProgressResp(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ProgressResp> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ProgressResp> getParserForType() {
+      return PARSER;
+    }
+
+    public io.tortuga.TortugaProto.ProgressResp getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface TaskIdentifierOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.TaskIdentifier)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string id = 1;</code>
+     */
+    java.lang.String getId();
+    /**
+     * <code>string id = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <code>string type = 2;</code>
+     */
+    java.lang.String getType();
+    /**
+     * <code>string type = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getTypeBytes();
+  }
+  /**
+   * Protobuf type {@code tortuga.TaskIdentifier}
+   */
+  public  static final class TaskIdentifier extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:tortuga.TaskIdentifier)
+      TaskIdentifierOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TaskIdentifier.newBuilder() to construct.
+    private TaskIdentifier(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TaskIdentifier() {
+      id_ = "";
+      type_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TaskIdentifier(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              id_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              type_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_TaskIdentifier_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_TaskIdentifier_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              io.tortuga.TortugaProto.TaskIdentifier.class, io.tortuga.TortugaProto.TaskIdentifier.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object id_;
+    /**
+     * <code>string id = 1;</code>
+     */
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string id = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object type_;
+    /**
+     * <code>string type = 2;</code>
+     */
+    public java.lang.String getType() {
+      java.lang.Object ref = type_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        type_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string type = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTypeBytes() {
+      java.lang.Object ref = type_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        type_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
+      }
+      if (!getTypeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, type_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
+      }
+      if (!getTypeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, type_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof io.tortuga.TortugaProto.TaskIdentifier)) {
+        return super.equals(obj);
+      }
+      io.tortuga.TortugaProto.TaskIdentifier other = (io.tortuga.TortugaProto.TaskIdentifier) obj;
+
+      boolean result = true;
+      result = result && getId()
+          .equals(other.getId());
+      result = result && getType()
+          .equals(other.getType());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + getType().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.TaskIdentifier parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(io.tortuga.TortugaProto.TaskIdentifier prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code tortuga.TaskIdentifier}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:tortuga.TaskIdentifier)
+        io.tortuga.TortugaProto.TaskIdentifierOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_TaskIdentifier_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_TaskIdentifier_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.TaskIdentifier.class, io.tortuga.TortugaProto.TaskIdentifier.Builder.class);
+      }
+
+      // Construct using io.tortuga.TortugaProto.TaskIdentifier.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        id_ = "";
+
+        type_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_TaskIdentifier_descriptor;
+      }
+
+      public io.tortuga.TortugaProto.TaskIdentifier getDefaultInstanceForType() {
+        return io.tortuga.TortugaProto.TaskIdentifier.getDefaultInstance();
+      }
+
+      public io.tortuga.TortugaProto.TaskIdentifier build() {
+        io.tortuga.TortugaProto.TaskIdentifier result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public io.tortuga.TortugaProto.TaskIdentifier buildPartial() {
+        io.tortuga.TortugaProto.TaskIdentifier result = new io.tortuga.TortugaProto.TaskIdentifier(this);
+        result.id_ = id_;
+        result.type_ = type_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof io.tortuga.TortugaProto.TaskIdentifier) {
+          return mergeFrom((io.tortuga.TortugaProto.TaskIdentifier)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(io.tortuga.TortugaProto.TaskIdentifier other) {
+        if (other == io.tortuga.TortugaProto.TaskIdentifier.getDefaultInstance()) return this;
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          onChanged();
+        }
+        if (!other.getType().isEmpty()) {
+          type_ = other.type_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        io.tortuga.TortugaProto.TaskIdentifier parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (io.tortuga.TortugaProto.TaskIdentifier) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object id_ = "";
+      /**
+       * <code>string id = 1;</code>
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string id = 1;</code>
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 1;</code>
+       */
+      public Builder clearId() {
+        
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 1;</code>
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object type_ = "";
+      /**
+       * <code>string type = 2;</code>
+       */
+      public java.lang.String getType() {
+        java.lang.Object ref = type_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          type_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string type = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTypeBytes() {
+        java.lang.Object ref = type_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          type_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string type = 2;</code>
+       */
+      public Builder setType(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string type = 2;</code>
+       */
+      public Builder clearType() {
+        
+        type_ = getDefaultInstance().getType();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string type = 2;</code>
+       */
+      public Builder setTypeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:tortuga.TaskIdentifier)
+    }
+
+    // @@protoc_insertion_point(class_scope:tortuga.TaskIdentifier)
+    private static final io.tortuga.TortugaProto.TaskIdentifier DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.TaskIdentifier();
+    }
+
+    public static io.tortuga.TortugaProto.TaskIdentifier getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TaskIdentifier>
+        PARSER = new com.google.protobuf.AbstractParser<TaskIdentifier>() {
+      public TaskIdentifier parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TaskIdentifier(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TaskIdentifier> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TaskIdentifier> getParserForType() {
+      return PARSER;
+    }
+
+    public io.tortuga.TortugaProto.TaskIdentifier getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface SubReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.SubReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string handle = 1;</code>
+     */
+    java.lang.String getHandle();
+    /**
+     * <code>string handle = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getHandleBytes();
+
+    /**
+     * <code>bool is_beat = 2;</code>
+     */
+    boolean getIsBeat();
+
+    /**
+     * <code>int32 number_of_subs = 3;</code>
+     */
+    int getNumberOfSubs();
+  }
+  /**
+   * Protobuf type {@code tortuga.SubReq}
+   */
+  public  static final class SubReq extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:tortuga.SubReq)
+      SubReqOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use SubReq.newBuilder() to construct.
+    private SubReq(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private SubReq() {
+      handle_ = "";
+      isBeat_ = false;
+      numberOfSubs_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SubReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              handle_ = s;
+              break;
+            }
+            case 16: {
+
+              isBeat_ = input.readBool();
+              break;
+            }
+            case 24: {
+
+              numberOfSubs_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_SubReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_SubReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              io.tortuga.TortugaProto.SubReq.class, io.tortuga.TortugaProto.SubReq.Builder.class);
+    }
+
+    public static final int HANDLE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object handle_;
+    /**
+     * <code>string handle = 1;</code>
+     */
+    public java.lang.String getHandle() {
+      java.lang.Object ref = handle_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        handle_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string handle = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHandleBytes() {
+      java.lang.Object ref = handle_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        handle_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IS_BEAT_FIELD_NUMBER = 2;
+    private boolean isBeat_;
+    /**
+     * <code>bool is_beat = 2;</code>
+     */
+    public boolean getIsBeat() {
+      return isBeat_;
+    }
+
+    public static final int NUMBER_OF_SUBS_FIELD_NUMBER = 3;
+    private int numberOfSubs_;
+    /**
+     * <code>int32 number_of_subs = 3;</code>
+     */
+    public int getNumberOfSubs() {
+      return numberOfSubs_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getHandleBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, handle_);
+      }
+      if (isBeat_ != false) {
+        output.writeBool(2, isBeat_);
+      }
+      if (numberOfSubs_ != 0) {
+        output.writeInt32(3, numberOfSubs_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getHandleBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, handle_);
+      }
+      if (isBeat_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, isBeat_);
+      }
+      if (numberOfSubs_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, numberOfSubs_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof io.tortuga.TortugaProto.SubReq)) {
+        return super.equals(obj);
+      }
+      io.tortuga.TortugaProto.SubReq other = (io.tortuga.TortugaProto.SubReq) obj;
+
+      boolean result = true;
+      result = result && getHandle()
+          .equals(other.getHandle());
+      result = result && (getIsBeat()
+          == other.getIsBeat());
+      result = result && (getNumberOfSubs()
+          == other.getNumberOfSubs());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + HANDLE_FIELD_NUMBER;
+      hash = (53 * hash) + getHandle().hashCode();
+      hash = (37 * hash) + IS_BEAT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsBeat());
+      hash = (37 * hash) + NUMBER_OF_SUBS_FIELD_NUMBER;
+      hash = (53 * hash) + getNumberOfSubs();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static io.tortuga.TortugaProto.SubReq parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.SubReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(io.tortuga.TortugaProto.SubReq prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code tortuga.SubReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:tortuga.SubReq)
+        io.tortuga.TortugaProto.SubReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_SubReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_SubReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.SubReq.class, io.tortuga.TortugaProto.SubReq.Builder.class);
+      }
+
+      // Construct using io.tortuga.TortugaProto.SubReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        handle_ = "";
+
+        isBeat_ = false;
+
+        numberOfSubs_ = 0;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_SubReq_descriptor;
+      }
+
+      public io.tortuga.TortugaProto.SubReq getDefaultInstanceForType() {
+        return io.tortuga.TortugaProto.SubReq.getDefaultInstance();
+      }
+
+      public io.tortuga.TortugaProto.SubReq build() {
+        io.tortuga.TortugaProto.SubReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public io.tortuga.TortugaProto.SubReq buildPartial() {
+        io.tortuga.TortugaProto.SubReq result = new io.tortuga.TortugaProto.SubReq(this);
+        result.handle_ = handle_;
+        result.isBeat_ = isBeat_;
+        result.numberOfSubs_ = numberOfSubs_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof io.tortuga.TortugaProto.SubReq) {
+          return mergeFrom((io.tortuga.TortugaProto.SubReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(io.tortuga.TortugaProto.SubReq other) {
+        if (other == io.tortuga.TortugaProto.SubReq.getDefaultInstance()) return this;
+        if (!other.getHandle().isEmpty()) {
+          handle_ = other.handle_;
+          onChanged();
+        }
+        if (other.getIsBeat() != false) {
+          setIsBeat(other.getIsBeat());
+        }
+        if (other.getNumberOfSubs() != 0) {
+          setNumberOfSubs(other.getNumberOfSubs());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        io.tortuga.TortugaProto.SubReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (io.tortuga.TortugaProto.SubReq) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object handle_ = "";
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public java.lang.String getHandle() {
+        java.lang.Object ref = handle_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          handle_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHandleBytes() {
+        java.lang.Object ref = handle_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          handle_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public Builder setHandle(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public Builder clearHandle() {
+        
+        handle_ = getDefaultInstance().getHandle();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string handle = 1;</code>
+       */
+      public Builder setHandleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean isBeat_ ;
+      /**
+       * <code>bool is_beat = 2;</code>
+       */
+      public boolean getIsBeat() {
+        return isBeat_;
+      }
+      /**
+       * <code>bool is_beat = 2;</code>
+       */
+      public Builder setIsBeat(boolean value) {
+        
+        isBeat_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool is_beat = 2;</code>
+       */
+      public Builder clearIsBeat() {
+        
+        isBeat_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int numberOfSubs_ ;
+      /**
+       * <code>int32 number_of_subs = 3;</code>
+       */
+      public int getNumberOfSubs() {
+        return numberOfSubs_;
+      }
+      /**
+       * <code>int32 number_of_subs = 3;</code>
+       */
+      public Builder setNumberOfSubs(int value) {
+        
+        numberOfSubs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 number_of_subs = 3;</code>
+       */
+      public Builder clearNumberOfSubs() {
+        
+        numberOfSubs_ = 0;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:tortuga.SubReq)
+    }
+
+    // @@protoc_insertion_point(class_scope:tortuga.SubReq)
+    private static final io.tortuga.TortugaProto.SubReq DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.SubReq();
+    }
+
+    public static io.tortuga.TortugaProto.SubReq getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<SubReq>
+        PARSER = new com.google.protobuf.AbstractParser<SubReq>() {
+      public SubReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SubReq(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<SubReq> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SubReq> getParserForType() {
+      return PARSER;
+    }
+
+    public io.tortuga.TortugaProto.SubReq getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface SubRespOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.SubResp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.tortuga.TaskProgress progress = 1;</code>
+     */
+    boolean hasProgress();
+    /**
+     * <code>.tortuga.TaskProgress progress = 1;</code>
+     */
+    io.tortuga.TortugaProto.TaskProgress getProgress();
+    /**
+     * <code>.tortuga.TaskProgress progress = 1;</code>
+     */
+    io.tortuga.TortugaProto.TaskProgressOrBuilder getProgressOrBuilder();
+
+    /**
+     * <code>bool must_reconnect = 2;</code>
+     */
+    boolean getMustReconnect();
+  }
+  /**
+   * Protobuf type {@code tortuga.SubResp}
+   */
+  public  static final class SubResp extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:tortuga.SubResp)
+      SubRespOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use SubResp.newBuilder() to construct.
+    private SubResp(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private SubResp() {
+      mustReconnect_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SubResp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              io.tortuga.TortugaProto.TaskProgress.Builder subBuilder = null;
+              if (progress_ != null) {
+                subBuilder = progress_.toBuilder();
+              }
+              progress_ = input.readMessage(io.tortuga.TortugaProto.TaskProgress.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(progress_);
+                progress_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 16: {
+
+              mustReconnect_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_SubResp_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_SubResp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              io.tortuga.TortugaProto.SubResp.class, io.tortuga.TortugaProto.SubResp.Builder.class);
+    }
+
+    public static final int PROGRESS_FIELD_NUMBER = 1;
+    private io.tortuga.TortugaProto.TaskProgress progress_;
+    /**
+     * <code>.tortuga.TaskProgress progress = 1;</code>
+     */
+    public boolean hasProgress() {
+      return progress_ != null;
+    }
+    /**
+     * <code>.tortuga.TaskProgress progress = 1;</code>
+     */
+    public io.tortuga.TortugaProto.TaskProgress getProgress() {
+      return progress_ == null ? io.tortuga.TortugaProto.TaskProgress.getDefaultInstance() : progress_;
+    }
+    /**
+     * <code>.tortuga.TaskProgress progress = 1;</code>
+     */
+    public io.tortuga.TortugaProto.TaskProgressOrBuilder getProgressOrBuilder() {
+      return getProgress();
+    }
+
+    public static final int MUST_RECONNECT_FIELD_NUMBER = 2;
+    private boolean mustReconnect_;
+    /**
+     * <code>bool must_reconnect = 2;</code>
+     */
+    public boolean getMustReconnect() {
+      return mustReconnect_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (progress_ != null) {
+        output.writeMessage(1, getProgress());
+      }
+      if (mustReconnect_ != false) {
+        output.writeBool(2, mustReconnect_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (progress_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getProgress());
+      }
+      if (mustReconnect_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, mustReconnect_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof io.tortuga.TortugaProto.SubResp)) {
+        return super.equals(obj);
+      }
+      io.tortuga.TortugaProto.SubResp other = (io.tortuga.TortugaProto.SubResp) obj;
+
+      boolean result = true;
+      result = result && (hasProgress() == other.hasProgress());
+      if (hasProgress()) {
+        result = result && getProgress()
+            .equals(other.getProgress());
+      }
+      result = result && (getMustReconnect()
+          == other.getMustReconnect());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasProgress()) {
+        hash = (37 * hash) + PROGRESS_FIELD_NUMBER;
+        hash = (53 * hash) + getProgress().hashCode();
+      }
+      hash = (37 * hash) + MUST_RECONNECT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getMustReconnect());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static io.tortuga.TortugaProto.SubResp parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.SubResp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(io.tortuga.TortugaProto.SubResp prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code tortuga.SubResp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:tortuga.SubResp)
+        io.tortuga.TortugaProto.SubRespOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_SubResp_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_SubResp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.SubResp.class, io.tortuga.TortugaProto.SubResp.Builder.class);
+      }
+
+      // Construct using io.tortuga.TortugaProto.SubResp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (progressBuilder_ == null) {
+          progress_ = null;
+        } else {
+          progress_ = null;
+          progressBuilder_ = null;
+        }
+        mustReconnect_ = false;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_SubResp_descriptor;
+      }
+
+      public io.tortuga.TortugaProto.SubResp getDefaultInstanceForType() {
+        return io.tortuga.TortugaProto.SubResp.getDefaultInstance();
+      }
+
+      public io.tortuga.TortugaProto.SubResp build() {
+        io.tortuga.TortugaProto.SubResp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public io.tortuga.TortugaProto.SubResp buildPartial() {
+        io.tortuga.TortugaProto.SubResp result = new io.tortuga.TortugaProto.SubResp(this);
+        if (progressBuilder_ == null) {
+          result.progress_ = progress_;
+        } else {
+          result.progress_ = progressBuilder_.build();
+        }
+        result.mustReconnect_ = mustReconnect_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof io.tortuga.TortugaProto.SubResp) {
+          return mergeFrom((io.tortuga.TortugaProto.SubResp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(io.tortuga.TortugaProto.SubResp other) {
+        if (other == io.tortuga.TortugaProto.SubResp.getDefaultInstance()) return this;
+        if (other.hasProgress()) {
+          mergeProgress(other.getProgress());
+        }
+        if (other.getMustReconnect() != false) {
+          setMustReconnect(other.getMustReconnect());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        io.tortuga.TortugaProto.SubResp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (io.tortuga.TortugaProto.SubResp) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private io.tortuga.TortugaProto.TaskProgress progress_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          io.tortuga.TortugaProto.TaskProgress, io.tortuga.TortugaProto.TaskProgress.Builder, io.tortuga.TortugaProto.TaskProgressOrBuilder> progressBuilder_;
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      public boolean hasProgress() {
+        return progressBuilder_ != null || progress_ != null;
+      }
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      public io.tortuga.TortugaProto.TaskProgress getProgress() {
+        if (progressBuilder_ == null) {
+          return progress_ == null ? io.tortuga.TortugaProto.TaskProgress.getDefaultInstance() : progress_;
+        } else {
+          return progressBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      public Builder setProgress(io.tortuga.TortugaProto.TaskProgress value) {
+        if (progressBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          progress_ = value;
+          onChanged();
+        } else {
+          progressBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      public Builder setProgress(
+          io.tortuga.TortugaProto.TaskProgress.Builder builderForValue) {
+        if (progressBuilder_ == null) {
+          progress_ = builderForValue.build();
+          onChanged();
+        } else {
+          progressBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      public Builder mergeProgress(io.tortuga.TortugaProto.TaskProgress value) {
+        if (progressBuilder_ == null) {
+          if (progress_ != null) {
+            progress_ =
+              io.tortuga.TortugaProto.TaskProgress.newBuilder(progress_).mergeFrom(value).buildPartial();
+          } else {
+            progress_ = value;
+          }
+          onChanged();
+        } else {
+          progressBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      public Builder clearProgress() {
+        if (progressBuilder_ == null) {
+          progress_ = null;
+          onChanged();
+        } else {
+          progress_ = null;
+          progressBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      public io.tortuga.TortugaProto.TaskProgress.Builder getProgressBuilder() {
+        
+        onChanged();
+        return getProgressFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      public io.tortuga.TortugaProto.TaskProgressOrBuilder getProgressOrBuilder() {
+        if (progressBuilder_ != null) {
+          return progressBuilder_.getMessageOrBuilder();
+        } else {
+          return progress_ == null ?
+              io.tortuga.TortugaProto.TaskProgress.getDefaultInstance() : progress_;
+        }
+      }
+      /**
+       * <code>.tortuga.TaskProgress progress = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          io.tortuga.TortugaProto.TaskProgress, io.tortuga.TortugaProto.TaskProgress.Builder, io.tortuga.TortugaProto.TaskProgressOrBuilder> 
+          getProgressFieldBuilder() {
+        if (progressBuilder_ == null) {
+          progressBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              io.tortuga.TortugaProto.TaskProgress, io.tortuga.TortugaProto.TaskProgress.Builder, io.tortuga.TortugaProto.TaskProgressOrBuilder>(
+                  getProgress(),
+                  getParentForChildren(),
+                  isClean());
+          progress_ = null;
+        }
+        return progressBuilder_;
+      }
+
+      private boolean mustReconnect_ ;
+      /**
+       * <code>bool must_reconnect = 2;</code>
+       */
+      public boolean getMustReconnect() {
+        return mustReconnect_;
+      }
+      /**
+       * <code>bool must_reconnect = 2;</code>
+       */
+      public Builder setMustReconnect(boolean value) {
+        
+        mustReconnect_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool must_reconnect = 2;</code>
+       */
+      public Builder clearMustReconnect() {
+        
+        mustReconnect_ = false;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:tortuga.SubResp)
+    }
+
+    // @@protoc_insertion_point(class_scope:tortuga.SubResp)
+    private static final io.tortuga.TortugaProto.SubResp DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.SubResp();
+    }
+
+    public static io.tortuga.TortugaProto.SubResp getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<SubResp>
+        PARSER = new com.google.protobuf.AbstractParser<SubResp>() {
+      public SubResp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SubResp(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<SubResp> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SubResp> getParserForType() {
+      return PARSER;
+    }
+
+    public io.tortuga.TortugaProto.SubResp getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_tortuga_Worker_descriptor;
   private static final 
@@ -6656,6 +12361,11 @@ public final class TortugaProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_tortuga_Task_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_TaskProgress_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_TaskProgress_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_tortuga_CreateReq_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -6670,6 +12380,31 @@ public final class TortugaProto {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_tortuga_CompleteTaskReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_ProgressReq_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_ProgressReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_ProgressResp_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_ProgressResp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_TaskIdentifier_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_TaskIdentifier_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_SubReq_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_SubReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_SubResp_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_SubResp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6681,35 +12416,57 @@ public final class TortugaProto {
     java.lang.String[] descriptorData = {
       "\n\025tortuga/tortuga.proto\022\007tortuga\032\031google" +
       "/protobuf/any.proto\032\033google/protobuf/emp" +
-      "ty.proto\032\036google/protobuf/wrappers.proto" +
-      "\"?\n\006Worker\022\021\n\tworker_id\030\001 \001(\t\022\014\n\004uuid\030\002 " +
-      "\001(\t\022\024\n\014capabilities\030\003 \003(\t\",\n\tHeartbeat\022\037" +
-      "\n\006worker\030\001 \001(\0132\017.tortuga.Worker\"*\n\007TaskR" +
-      "eq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\"f\n\010T" +
-      "askResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004dat" +
-      "a\030\003 \001(\0132\024.google.protobuf.Any\022\016\n\006handle\030" +
-      "\004 \001(\t\022\014\n\004none\030\005 \001(\010\"\245\001\n\004Task\022\n\n\002id\030\001 \001(\t" +
-      "\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.pr" +
-      "otobuf.Any\022-\n\010priority\030\004 \001(\0132\033.google.pr" +
-      "otobuf.Int32Value\0220\n\013max_retries\030\005 \001(\0132\033" +
-      ".google.protobuf.Int32Value\"(\n\tCreateReq" +
-      "\022\033\n\004task\030\001 \001(\0132\r.tortuga.Task\"-\n\nCreateR" +
-      "esp\022\016\n\006handle\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"u\n\017" +
-      "CompleteTaskReq\022\037\n\006worker\030\001 \001(\0132\017.tortug" +
-      "a.Worker\022\016\n\006handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025" +
-      "\n\rerror_message\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t2\250\003\n\007" +
-      "Tortuga\0225\n\nCreateTask\022\022.tortuga.CreateRe" +
-      "q\032\023.tortuga.CreateResp\0222\n\013RequestTask\022\020." +
-      "tortuga.TaskReq\032\021.tortuga.TaskResp\0224\n\tHe" +
-      "artbeat\022\017.tortuga.Worker\032\026.google.protob" +
-      "uf.Empty\022@\n\014CompleteTask\022\030.tortuga.Compl" +
-      "eteTaskReq\032\026.google.protobuf.Empty\022B\n\006Is" +
-      "Done\022\034.google.protobuf.StringValue\032\032.goo" +
-      "gle.protobuf.BoolValue\0226\n\004Ping\022\026.google." +
-      "protobuf.Empty\032\026.google.protobuf.Empty\022>" +
-      "\n\014QuitQuitQuit\022\026.google.protobuf.Empty\032\026" +
-      ".google.protobuf.EmptyB\032\n\nio.tortugaB\014To" +
-      "rtugaProtob\006proto3"
+      "ty.proto\032\037google/protobuf/timestamp.prot" +
+      "o\032\036google/protobuf/wrappers.proto\032\030grpc/" +
+      "status/status.proto\"?\n\006Worker\022\021\n\tworker_" +
+      "id\030\001 \001(\t\022\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003" +
+      " \003(\t\",\n\tHeartbeat\022\037\n\006worker\030\001 \001(\0132\017.tort" +
+      "uga.Worker\"*\n\007TaskReq\022\037\n\006worker\030\001 \001(\0132\017." +
+      "tortuga.Worker\"f\n\010TaskResp\022\n\n\002id\030\001 \001(\t\022\014" +
+      "\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.prot" +
+      "obuf.Any\022\016\n\006handle\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\"\245" +
+      "\001\n\004Task\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004dat" +
+      "a\030\003 \001(\0132\024.google.protobuf.Any\022-\n\010priorit" +
+      "y\030\004 \001(\0132\033.google.protobuf.Int32Value\0220\n\013" +
+      "max_retries\030\005 \001(\0132\033.google.protobuf.Int3" +
+      "2Value\"\220\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(\t\022" +
+      "\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retries" +
+      "\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 \001(" +
+      "\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007cr" +
+      "eated\030\t \001(\0132\032.google.protobuf.Timestamp\022" +
+      "0\n\014started_time\030\n \001(\0132\032.google.protobuf." +
+      "Timestamp\022-\n\tdone_time\030\013 \001(\0132\032.google.pr" +
+      "otobuf.Timestamp\022\"\n\006status\030\014 \001(\0132\022.googl" +
+      "e.rpc.Status\022\020\n\010progress\030\r \001(\002\022\030\n\020progre" +
+      "ss_message\030\016 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker" +
+      "_id\030\020 \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(\0132\r.t" +
+      "ortuga.Task\"-\n\nCreateResp\022\016\n\006handle\030\001 \001(" +
+      "\t\022\017\n\007created\030\002 \001(\010\"u\n\017CompleteTaskReq\022\037\n" +
+      "\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006handle" +
+      "\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_message\030\004 " +
+      "\001(\t\022\014\n\004logs\030\005 \001(\t\"\035\n\013ProgressReq\022\016\n\006hand" +
+      "le\030\001 \001(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 \001(\t" +
+      "\022\"\n\006status\030\002 \001(\0132\022.google.rpc.Status\"*\n\016" +
+      "TaskIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t" +
+      "\"A\n\006SubReq\022\016\n\006handle\030\001 \001(\t\022\017\n\007is_beat\030\002 " +
+      "\001(\010\022\026\n\016number_of_subs\030\003 \001(\005\"J\n\007SubResp\022\'" +
+      "\n\010progress\030\001 \001(\0132\025.tortuga.TaskProgress\022" +
+      "\026\n\016must_reconnect\030\002 \001(\0102\245\004\n\007Tortuga\0225\n\nC" +
+      "reateTask\022\022.tortuga.CreateReq\032\023.tortuga." +
+      "CreateResp\0222\n\013RequestTask\022\020.tortuga.Task" +
+      "Req\032\021.tortuga.TaskResp\0224\n\tHeartbeat\022\017.to" +
+      "rtuga.Worker\032\026.google.protobuf.Empty\022@\n\014" +
+      "CompleteTask\022\030.tortuga.CompleteTaskReq\032\026" +
+      ".google.protobuf.Empty\022:\n\010FindTask\022\027.tor" +
+      "tuga.TaskIdentifier\032\025.tortuga.TaskProgre" +
+      "ss\022G\n\020FindTaskByHandle\022\034.google.protobuf" +
+      ".StringValue\032\025.tortuga.TaskProgress\022:\n\021P" +
+      "rogressSubscribe\022\017.tortuga.SubReq\032\020.tort" +
+      "uga.SubResp(\0010\001\0226\n\004Ping\022\026.google.protobu" +
+      "f.Empty\032\026.google.protobuf.Empty\022>\n\014QuitQ" +
+      "uitQuit\022\026.google.protobuf.Empty\032\026.google" +
+      ".protobuf.EmptyB\032\n\nio.tortugaB\014TortugaPr" +
+      "otob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6724,7 +12481,9 @@ public final class TortugaProto {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.AnyProto.getDescriptor(),
           com.google.protobuf.EmptyProto.getDescriptor(),
+          com.google.protobuf.TimestampProto.getDescriptor(),
           com.google.protobuf.WrappersProto.getDescriptor(),
+          com.google.rpc.StatusProto.getDescriptor(),
         }, assigner);
     internal_static_tortuga_Worker_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -6756,27 +12515,65 @@ public final class TortugaProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_Task_descriptor,
         new java.lang.String[] { "Id", "Type", "Data", "Priority", "MaxRetries", });
-    internal_static_tortuga_CreateReq_descriptor =
+    internal_static_tortuga_TaskProgress_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_tortuga_TaskProgress_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_TaskProgress_descriptor,
+        new java.lang.String[] { "Handle", "Id", "Type", "MaxRetries", "Retries", "Priority", "WorkedOn", "Done", "Created", "StartedTime", "DoneTime", "Status", "Progress", "ProgressMessage", "Logs", "WorkerId", });
+    internal_static_tortuga_CreateReq_descriptor =
+      getDescriptor().getMessageTypes().get(6);
     internal_static_tortuga_CreateReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_CreateReq_descriptor,
         new java.lang.String[] { "Task", });
     internal_static_tortuga_CreateResp_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_tortuga_CreateResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_CreateResp_descriptor,
         new java.lang.String[] { "Handle", "Created", });
     internal_static_tortuga_CompleteTaskReq_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_tortuga_CompleteTaskReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_CompleteTaskReq_descriptor,
         new java.lang.String[] { "Worker", "Handle", "Code", "ErrorMessage", "Logs", });
+    internal_static_tortuga_ProgressReq_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_tortuga_ProgressReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_ProgressReq_descriptor,
+        new java.lang.String[] { "Handle", });
+    internal_static_tortuga_ProgressResp_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_tortuga_ProgressResp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_ProgressResp_descriptor,
+        new java.lang.String[] { "Handle", "Status", });
+    internal_static_tortuga_TaskIdentifier_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_tortuga_TaskIdentifier_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_TaskIdentifier_descriptor,
+        new java.lang.String[] { "Id", "Type", });
+    internal_static_tortuga_SubReq_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_tortuga_SubReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_SubReq_descriptor,
+        new java.lang.String[] { "Handle", "IsBeat", "NumberOfSubs", });
+    internal_static_tortuga_SubResp_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_tortuga_SubResp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_SubResp_descriptor,
+        new java.lang.String[] { "Progress", "MustReconnect", });
     com.google.protobuf.AnyProto.getDescriptor();
     com.google.protobuf.EmptyProto.getDescriptor();
+    com.google.protobuf.TimestampProto.getDescriptor();
     com.google.protobuf.WrappersProto.getDescriptor();
+    com.google.rpc.StatusProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

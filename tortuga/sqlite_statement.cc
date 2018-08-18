@@ -2,6 +2,8 @@
 
 #include "glog/logging.h"
 
+#include "tortuga/time_utils.h"
+
 namespace tortuga {
 SqliteStatement::SqliteStatement(sqlite3* db, const std::string& stmt) {
   db_ = db;
@@ -62,6 +64,10 @@ int64_t SqliteStatement::ColumnLong(int pos) {
   return sqlite3_column_int64(stmt_, pos);
 }
 
+bool SqliteStatement::ColumnFloat(int pos) {
+  return static_cast<float>(sqlite3_column_double(stmt_, pos));
+}
+
 std::string SqliteStatement::ColumnText(int pos) {
   CHECK(!IsNullColumn(pos));
   const char* text_str = reinterpret_cast<const char*>(sqlite3_column_text(stmt_, pos));
@@ -76,6 +82,15 @@ std::string SqliteStatement::ColumnTextOrEmpty(int pos) {
   return ColumnText(pos);
 }
 
+std::unique_ptr<google::protobuf::Timestamp> SqliteStatement::ColumnTimestamp(int pos) {
+  if (IsNullColumn(pos)) {
+    return nullptr;
+  }
+
+  int64_t millis = ColumnLong(pos);
+  return std::make_unique<google::protobuf::Timestamp>(FromEpochMillis(millis));
+}
+
 std::string SqliteStatement::ColumnBlob(int pos) {
   const void* data = sqlite3_column_blob(stmt_, pos);
   int size = sqlite3_column_bytes(stmt_, pos);
@@ -88,11 +103,11 @@ void SqliteStatement::ResetOrDie() {
 }
 
 SqliteTx::SqliteTx(sqlite3* db) : db_(db) {
-  CHECK_EQ(SQLITE_OK, sqlite3_exec(db, "begin transaction;", nullptr, nullptr, nullptr));
+  CHECK_EQ(SQLITE_OK, sqlite3_exec(db, "begin transaction;", nullptr, nullptr, nullptr)) << sqlite3_errmsg(db_);
 }
 
 SqliteTx::~SqliteTx() {
-  CHECK_EQ(SQLITE_OK, sqlite3_exec(db_, "end transaction;", nullptr, nullptr, nullptr));
+  CHECK_EQ(SQLITE_OK, sqlite3_exec(db_, "end transaction;", nullptr, nullptr, nullptr)) << sqlite3_errmsg(db_);
 }
 
 SqliteReset::SqliteReset(SqliteStatement* stmt) : stmt_(stmt) {

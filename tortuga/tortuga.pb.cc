@@ -45,6 +45,11 @@ class TaskDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<Task>
       _instance;
 } _Task_default_instance_;
+class TaskProgressDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<TaskProgress>
+      _instance;
+} _TaskProgress_default_instance_;
 class CreateReqDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<CreateReq>
@@ -60,6 +65,31 @@ class CompleteTaskReqDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<CompleteTaskReq>
       _instance;
 } _CompleteTaskReq_default_instance_;
+class ProgressReqDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ProgressReq>
+      _instance;
+} _ProgressReq_default_instance_;
+class ProgressRespDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ProgressResp>
+      _instance;
+} _ProgressResp_default_instance_;
+class TaskIdentifierDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<TaskIdentifier>
+      _instance;
+} _TaskIdentifier_default_instance_;
+class SubReqDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<SubReq>
+      _instance;
+} _SubReq_default_instance_;
+class SubRespDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<SubResp>
+      _instance;
+} _SubResp_default_instance_;
 }  // namespace tortuga
 namespace protobuf_tortuga_2ftortuga_2eproto {
 void InitDefaultsWorkerImpl() {
@@ -172,6 +202,29 @@ void InitDefaultsTask() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsTaskImpl);
 }
 
+void InitDefaultsTaskProgressImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_google_2fprotobuf_2ftimestamp_2eproto::InitDefaultsTimestamp();
+  protobuf_grpc_2fstatus_2fstatus_2eproto::InitDefaultsStatus();
+  {
+    void* ptr = &::tortuga::_TaskProgress_default_instance_;
+    new (ptr) ::tortuga::TaskProgress();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::TaskProgress::InitAsDefaultInstance();
+}
+
+void InitDefaultsTaskProgress() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsTaskProgressImpl);
+}
+
 void InitDefaultsCreateReqImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -237,7 +290,114 @@ void InitDefaultsCompleteTaskReq() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsCompleteTaskReqImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[8];
+void InitDefaultsProgressReqImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::tortuga::_ProgressReq_default_instance_;
+    new (ptr) ::tortuga::ProgressReq();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::ProgressReq::InitAsDefaultInstance();
+}
+
+void InitDefaultsProgressReq() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsProgressReqImpl);
+}
+
+void InitDefaultsProgressRespImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_grpc_2fstatus_2fstatus_2eproto::InitDefaultsStatus();
+  {
+    void* ptr = &::tortuga::_ProgressResp_default_instance_;
+    new (ptr) ::tortuga::ProgressResp();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::ProgressResp::InitAsDefaultInstance();
+}
+
+void InitDefaultsProgressResp() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsProgressRespImpl);
+}
+
+void InitDefaultsTaskIdentifierImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::tortuga::_TaskIdentifier_default_instance_;
+    new (ptr) ::tortuga::TaskIdentifier();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::TaskIdentifier::InitAsDefaultInstance();
+}
+
+void InitDefaultsTaskIdentifier() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsTaskIdentifierImpl);
+}
+
+void InitDefaultsSubReqImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::tortuga::_SubReq_default_instance_;
+    new (ptr) ::tortuga::SubReq();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::SubReq::InitAsDefaultInstance();
+}
+
+void InitDefaultsSubReq() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsSubReqImpl);
+}
+
+void InitDefaultsSubRespImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskProgress();
+  {
+    void* ptr = &::tortuga::_SubResp_default_instance_;
+    new (ptr) ::tortuga::SubResp();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::SubResp::InitAsDefaultInstance();
+}
+
+void InitDefaultsSubResp() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsSubRespImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[14];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -281,6 +441,27 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::Task, priority_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::Task, max_retries_),
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, handle_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, max_retries_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, retries_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, priority_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, worked_on_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, done_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, created_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, started_time_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, done_time_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, status_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, progress_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, progress_message_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, logs_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskProgress, worker_id_),
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::CreateReq, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -303,6 +484,41 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::CompleteTaskReq, code_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::CompleteTaskReq, error_message_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::CompleteTaskReq, logs_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::ProgressReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::ProgressReq, handle_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::ProgressResp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::ProgressResp, handle_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::ProgressResp, status_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskIdentifier, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskIdentifier, id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskIdentifier, type_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::SubReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::SubReq, handle_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::SubReq, is_beat_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::SubReq, number_of_subs_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::SubResp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::SubResp, progress_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::SubResp, must_reconnect_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::tortuga::Worker)},
@@ -310,9 +526,15 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 14, -1, sizeof(::tortuga::TaskReq)},
   { 20, -1, sizeof(::tortuga::TaskResp)},
   { 30, -1, sizeof(::tortuga::Task)},
-  { 40, -1, sizeof(::tortuga::CreateReq)},
-  { 46, -1, sizeof(::tortuga::CreateResp)},
-  { 53, -1, sizeof(::tortuga::CompleteTaskReq)},
+  { 40, -1, sizeof(::tortuga::TaskProgress)},
+  { 61, -1, sizeof(::tortuga::CreateReq)},
+  { 67, -1, sizeof(::tortuga::CreateResp)},
+  { 74, -1, sizeof(::tortuga::CompleteTaskReq)},
+  { 84, -1, sizeof(::tortuga::ProgressReq)},
+  { 90, -1, sizeof(::tortuga::ProgressResp)},
+  { 97, -1, sizeof(::tortuga::TaskIdentifier)},
+  { 104, -1, sizeof(::tortuga::SubReq)},
+  { 112, -1, sizeof(::tortuga::SubResp)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -321,9 +543,15 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskResp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_Task_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskProgress_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_CreateReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_CreateResp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_CompleteTaskReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_ProgressReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_ProgressResp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskIdentifier_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_SubReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_SubResp_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -342,7 +570,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 8);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 14);
 }
 
 void AddDescriptorsImpl() {
@@ -350,43 +578,67 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\025tortuga/tortuga.proto\022\007tortuga\032\031google"
       "/protobuf/any.proto\032\033google/protobuf/emp"
-      "ty.proto\032\036google/protobuf/wrappers.proto"
-      "\"\?\n\006Worker\022\021\n\tworker_id\030\001 \001(\t\022\014\n\004uuid\030\002 "
-      "\001(\t\022\024\n\014capabilities\030\003 \003(\t\",\n\tHeartbeat\022\037"
-      "\n\006worker\030\001 \001(\0132\017.tortuga.Worker\"*\n\007TaskR"
-      "eq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\"f\n\010T"
-      "askResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004dat"
-      "a\030\003 \001(\0132\024.google.protobuf.Any\022\016\n\006handle\030"
-      "\004 \001(\t\022\014\n\004none\030\005 \001(\010\"\245\001\n\004Task\022\n\n\002id\030\001 \001(\t"
-      "\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.pr"
-      "otobuf.Any\022-\n\010priority\030\004 \001(\0132\033.google.pr"
-      "otobuf.Int32Value\0220\n\013max_retries\030\005 \001(\0132\033"
-      ".google.protobuf.Int32Value\"(\n\tCreateReq"
-      "\022\033\n\004task\030\001 \001(\0132\r.tortuga.Task\"-\n\nCreateR"
-      "esp\022\016\n\006handle\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"u\n\017"
-      "CompleteTaskReq\022\037\n\006worker\030\001 \001(\0132\017.tortug"
-      "a.Worker\022\016\n\006handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025"
-      "\n\rerror_message\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t2\250\003\n\007"
-      "Tortuga\0225\n\nCreateTask\022\022.tortuga.CreateRe"
-      "q\032\023.tortuga.CreateResp\0222\n\013RequestTask\022\020."
-      "tortuga.TaskReq\032\021.tortuga.TaskResp\0224\n\tHe"
-      "artbeat\022\017.tortuga.Worker\032\026.google.protob"
-      "uf.Empty\022@\n\014CompleteTask\022\030.tortuga.Compl"
-      "eteTaskReq\032\026.google.protobuf.Empty\022B\n\006Is"
-      "Done\022\034.google.protobuf.StringValue\032\032.goo"
-      "gle.protobuf.BoolValue\0226\n\004Ping\022\026.google."
-      "protobuf.Empty\032\026.google.protobuf.Empty\022>"
-      "\n\014QuitQuitQuit\022\026.google.protobuf.Empty\032\026"
-      ".google.protobuf.EmptyB\032\n\nio.tortugaB\014To"
-      "rtugaProtob\006proto3"
+      "ty.proto\032\037google/protobuf/timestamp.prot"
+      "o\032\036google/protobuf/wrappers.proto\032\030grpc/"
+      "status/status.proto\"\?\n\006Worker\022\021\n\tworker_"
+      "id\030\001 \001(\t\022\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003"
+      " \003(\t\",\n\tHeartbeat\022\037\n\006worker\030\001 \001(\0132\017.tort"
+      "uga.Worker\"*\n\007TaskReq\022\037\n\006worker\030\001 \001(\0132\017."
+      "tortuga.Worker\"f\n\010TaskResp\022\n\n\002id\030\001 \001(\t\022\014"
+      "\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.prot"
+      "obuf.Any\022\016\n\006handle\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\"\245"
+      "\001\n\004Task\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004dat"
+      "a\030\003 \001(\0132\024.google.protobuf.Any\022-\n\010priorit"
+      "y\030\004 \001(\0132\033.google.protobuf.Int32Value\0220\n\013"
+      "max_retries\030\005 \001(\0132\033.google.protobuf.Int3"
+      "2Value\"\220\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(\t\022"
+      "\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retries"
+      "\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 \001("
+      "\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007cr"
+      "eated\030\t \001(\0132\032.google.protobuf.Timestamp\022"
+      "0\n\014started_time\030\n \001(\0132\032.google.protobuf."
+      "Timestamp\022-\n\tdone_time\030\013 \001(\0132\032.google.pr"
+      "otobuf.Timestamp\022\"\n\006status\030\014 \001(\0132\022.googl"
+      "e.rpc.Status\022\020\n\010progress\030\r \001(\002\022\030\n\020progre"
+      "ss_message\030\016 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker"
+      "_id\030\020 \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(\0132\r.t"
+      "ortuga.Task\"-\n\nCreateResp\022\016\n\006handle\030\001 \001("
+      "\t\022\017\n\007created\030\002 \001(\010\"u\n\017CompleteTaskReq\022\037\n"
+      "\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006handle"
+      "\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_message\030\004 "
+      "\001(\t\022\014\n\004logs\030\005 \001(\t\"\035\n\013ProgressReq\022\016\n\006hand"
+      "le\030\001 \001(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 \001(\t"
+      "\022\"\n\006status\030\002 \001(\0132\022.google.rpc.Status\"*\n\016"
+      "TaskIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t"
+      "\"A\n\006SubReq\022\016\n\006handle\030\001 \001(\t\022\017\n\007is_beat\030\002 "
+      "\001(\010\022\026\n\016number_of_subs\030\003 \001(\005\"J\n\007SubResp\022\'"
+      "\n\010progress\030\001 \001(\0132\025.tortuga.TaskProgress\022"
+      "\026\n\016must_reconnect\030\002 \001(\0102\245\004\n\007Tortuga\0225\n\nC"
+      "reateTask\022\022.tortuga.CreateReq\032\023.tortuga."
+      "CreateResp\0222\n\013RequestTask\022\020.tortuga.Task"
+      "Req\032\021.tortuga.TaskResp\0224\n\tHeartbeat\022\017.to"
+      "rtuga.Worker\032\026.google.protobuf.Empty\022@\n\014"
+      "CompleteTask\022\030.tortuga.CompleteTaskReq\032\026"
+      ".google.protobuf.Empty\022:\n\010FindTask\022\027.tor"
+      "tuga.TaskIdentifier\032\025.tortuga.TaskProgre"
+      "ss\022G\n\020FindTaskByHandle\022\034.google.protobuf"
+      ".StringValue\032\025.tortuga.TaskProgress\022:\n\021P"
+      "rogressSubscribe\022\017.tortuga.SubReq\032\020.tort"
+      "uga.SubResp(\0010\001\0226\n\004Ping\022\026.google.protobu"
+      "f.Empty\032\026.google.protobuf.Empty\022>\n\014QuitQ"
+      "uitQuit\022\026.google.protobuf.Empty\032\026.google"
+      ".protobuf.EmptyB\032\n\nio.tortugaB\014TortugaPr"
+      "otob\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1218);
+      descriptor, 2091);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tortuga/tortuga.proto", &protobuf_RegisterTypes);
   ::protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptors();
   ::protobuf_google_2fprotobuf_2fempty_2eproto::AddDescriptors();
+  ::protobuf_google_2fprotobuf_2ftimestamp_2eproto::AddDescriptors();
   ::protobuf_google_2fprotobuf_2fwrappers_2eproto::AddDescriptors();
+  ::protobuf_grpc_2fstatus_2fstatus_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
@@ -2210,6 +2462,986 @@ void Task::InternalSwap(Task* other) {
 
 // ===================================================================
 
+void TaskProgress::InitAsDefaultInstance() {
+  ::tortuga::_TaskProgress_default_instance_._instance.get_mutable()->created_ = const_cast< ::google::protobuf::Timestamp*>(
+      ::google::protobuf::Timestamp::internal_default_instance());
+  ::tortuga::_TaskProgress_default_instance_._instance.get_mutable()->started_time_ = const_cast< ::google::protobuf::Timestamp*>(
+      ::google::protobuf::Timestamp::internal_default_instance());
+  ::tortuga::_TaskProgress_default_instance_._instance.get_mutable()->done_time_ = const_cast< ::google::protobuf::Timestamp*>(
+      ::google::protobuf::Timestamp::internal_default_instance());
+  ::tortuga::_TaskProgress_default_instance_._instance.get_mutable()->status_ = const_cast< ::google::rpc::Status*>(
+      ::google::rpc::Status::internal_default_instance());
+}
+void TaskProgress::clear_created() {
+  if (GetArenaNoVirtual() == NULL && created_ != NULL) {
+    delete created_;
+  }
+  created_ = NULL;
+}
+void TaskProgress::clear_started_time() {
+  if (GetArenaNoVirtual() == NULL && started_time_ != NULL) {
+    delete started_time_;
+  }
+  started_time_ = NULL;
+}
+void TaskProgress::clear_done_time() {
+  if (GetArenaNoVirtual() == NULL && done_time_ != NULL) {
+    delete done_time_;
+  }
+  done_time_ = NULL;
+}
+void TaskProgress::clear_status() {
+  if (GetArenaNoVirtual() == NULL && status_ != NULL) {
+    delete status_;
+  }
+  status_ = NULL;
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int TaskProgress::kHandleFieldNumber;
+const int TaskProgress::kIdFieldNumber;
+const int TaskProgress::kTypeFieldNumber;
+const int TaskProgress::kMaxRetriesFieldNumber;
+const int TaskProgress::kRetriesFieldNumber;
+const int TaskProgress::kPriorityFieldNumber;
+const int TaskProgress::kWorkedOnFieldNumber;
+const int TaskProgress::kDoneFieldNumber;
+const int TaskProgress::kCreatedFieldNumber;
+const int TaskProgress::kStartedTimeFieldNumber;
+const int TaskProgress::kDoneTimeFieldNumber;
+const int TaskProgress::kStatusFieldNumber;
+const int TaskProgress::kProgressFieldNumber;
+const int TaskProgress::kProgressMessageFieldNumber;
+const int TaskProgress::kLogsFieldNumber;
+const int TaskProgress::kWorkerIdFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+TaskProgress::TaskProgress()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskProgress();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.TaskProgress)
+}
+TaskProgress::TaskProgress(const TaskProgress& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.handle().size() > 0) {
+    handle_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_);
+  }
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.id().size() > 0) {
+    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
+  }
+  type_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.type().size() > 0) {
+    type_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.type_);
+  }
+  progress_message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.progress_message().size() > 0) {
+    progress_message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.progress_message_);
+  }
+  logs_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.logs().size() > 0) {
+    logs_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.logs_);
+  }
+  worker_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.worker_id().size() > 0) {
+    worker_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.worker_id_);
+  }
+  if (from.has_created()) {
+    created_ = new ::google::protobuf::Timestamp(*from.created_);
+  } else {
+    created_ = NULL;
+  }
+  if (from.has_started_time()) {
+    started_time_ = new ::google::protobuf::Timestamp(*from.started_time_);
+  } else {
+    started_time_ = NULL;
+  }
+  if (from.has_done_time()) {
+    done_time_ = new ::google::protobuf::Timestamp(*from.done_time_);
+  } else {
+    done_time_ = NULL;
+  }
+  if (from.has_status()) {
+    status_ = new ::google::rpc::Status(*from.status_);
+  } else {
+    status_ = NULL;
+  }
+  ::memcpy(&max_retries_, &from.max_retries_,
+    static_cast<size_t>(reinterpret_cast<char*>(&progress_) -
+    reinterpret_cast<char*>(&max_retries_)) + sizeof(progress_));
+  // @@protoc_insertion_point(copy_constructor:tortuga.TaskProgress)
+}
+
+void TaskProgress::SharedCtor() {
+  handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  type_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  progress_message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  logs_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  worker_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&created_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&progress_) -
+      reinterpret_cast<char*>(&created_)) + sizeof(progress_));
+  _cached_size_ = 0;
+}
+
+TaskProgress::~TaskProgress() {
+  // @@protoc_insertion_point(destructor:tortuga.TaskProgress)
+  SharedDtor();
+}
+
+void TaskProgress::SharedDtor() {
+  handle_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  type_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  progress_message_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  logs_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  worker_id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete created_;
+  if (this != internal_default_instance()) delete started_time_;
+  if (this != internal_default_instance()) delete done_time_;
+  if (this != internal_default_instance()) delete status_;
+}
+
+void TaskProgress::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* TaskProgress::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const TaskProgress& TaskProgress::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskProgress();
+  return *internal_default_instance();
+}
+
+TaskProgress* TaskProgress::New(::google::protobuf::Arena* arena) const {
+  TaskProgress* n = new TaskProgress;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void TaskProgress::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.TaskProgress)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  handle_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  type_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  progress_message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  logs_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  worker_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && created_ != NULL) {
+    delete created_;
+  }
+  created_ = NULL;
+  if (GetArenaNoVirtual() == NULL && started_time_ != NULL) {
+    delete started_time_;
+  }
+  started_time_ = NULL;
+  if (GetArenaNoVirtual() == NULL && done_time_ != NULL) {
+    delete done_time_;
+  }
+  done_time_ = NULL;
+  if (GetArenaNoVirtual() == NULL && status_ != NULL) {
+    delete status_;
+  }
+  status_ = NULL;
+  ::memset(&max_retries_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&progress_) -
+      reinterpret_cast<char*>(&max_retries_)) + sizeof(progress_));
+  _internal_metadata_.Clear();
+}
+
+bool TaskProgress::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.TaskProgress)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(16383u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string handle = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_handle()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->handle().data(), static_cast<int>(this->handle().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.TaskProgress.handle"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string id = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_id()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->id().data(), static_cast<int>(this->id().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.TaskProgress.id"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string type = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_type()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->type().data(), static_cast<int>(this->type().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.TaskProgress.type"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 max_retries = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &max_retries_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 retries = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &retries_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 priority = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &priority_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool worked_on = 7;
+      case 7: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &worked_on_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool done = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(64u /* 64 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &done_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .google.protobuf.Timestamp created = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(74u /* 74 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_created()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .google.protobuf.Timestamp started_time = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(82u /* 82 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_started_time()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .google.protobuf.Timestamp done_time = 11;
+      case 11: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(90u /* 90 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_done_time()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .google.rpc.Status status = 12;
+      case 12: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(98u /* 98 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_status()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float progress = 13;
+      case 13: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(109u /* 109 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &progress_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string progress_message = 14;
+      case 14: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(114u /* 114 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_progress_message()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->progress_message().data(), static_cast<int>(this->progress_message().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.TaskProgress.progress_message"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string logs = 15;
+      case 15: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(122u /* 122 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_logs()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->logs().data(), static_cast<int>(this->logs().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.TaskProgress.logs"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string worker_id = 16;
+      case 16: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(130u /* 130 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_worker_id()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->worker_id().data(), static_cast<int>(this->worker_id().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.TaskProgress.worker_id"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.TaskProgress)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.TaskProgress)
+  return false;
+#undef DO_
+}
+
+void TaskProgress::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.TaskProgress)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle().data(), static_cast<int>(this->handle().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.handle");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->handle(), output);
+  }
+
+  // string id = 2;
+  if (this->id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->id().data(), static_cast<int>(this->id().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.id");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->id(), output);
+  }
+
+  // string type = 3;
+  if (this->type().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->type().data(), static_cast<int>(this->type().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.type");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->type(), output);
+  }
+
+  // int32 max_retries = 4;
+  if (this->max_retries() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->max_retries(), output);
+  }
+
+  // int32 retries = 5;
+  if (this->retries() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->retries(), output);
+  }
+
+  // int32 priority = 6;
+  if (this->priority() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->priority(), output);
+  }
+
+  // bool worked_on = 7;
+  if (this->worked_on() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->worked_on(), output);
+  }
+
+  // bool done = 8;
+  if (this->done() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(8, this->done(), output);
+  }
+
+  // .google.protobuf.Timestamp created = 9;
+  if (this->has_created()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      9, *this->created_, output);
+  }
+
+  // .google.protobuf.Timestamp started_time = 10;
+  if (this->has_started_time()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      10, *this->started_time_, output);
+  }
+
+  // .google.protobuf.Timestamp done_time = 11;
+  if (this->has_done_time()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      11, *this->done_time_, output);
+  }
+
+  // .google.rpc.Status status = 12;
+  if (this->has_status()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      12, *this->status_, output);
+  }
+
+  // float progress = 13;
+  if (this->progress() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(13, this->progress(), output);
+  }
+
+  // string progress_message = 14;
+  if (this->progress_message().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->progress_message().data(), static_cast<int>(this->progress_message().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.progress_message");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      14, this->progress_message(), output);
+  }
+
+  // string logs = 15;
+  if (this->logs().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->logs().data(), static_cast<int>(this->logs().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.logs");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      15, this->logs(), output);
+  }
+
+  // string worker_id = 16;
+  if (this->worker_id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->worker_id().data(), static_cast<int>(this->worker_id().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.worker_id");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      16, this->worker_id(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.TaskProgress)
+}
+
+::google::protobuf::uint8* TaskProgress::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.TaskProgress)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle().data(), static_cast<int>(this->handle().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.handle");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->handle(), target);
+  }
+
+  // string id = 2;
+  if (this->id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->id().data(), static_cast<int>(this->id().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.id");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->id(), target);
+  }
+
+  // string type = 3;
+  if (this->type().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->type().data(), static_cast<int>(this->type().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.type");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->type(), target);
+  }
+
+  // int32 max_retries = 4;
+  if (this->max_retries() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->max_retries(), target);
+  }
+
+  // int32 retries = 5;
+  if (this->retries() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->retries(), target);
+  }
+
+  // int32 priority = 6;
+  if (this->priority() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->priority(), target);
+  }
+
+  // bool worked_on = 7;
+  if (this->worked_on() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->worked_on(), target);
+  }
+
+  // bool done = 8;
+  if (this->done() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(8, this->done(), target);
+  }
+
+  // .google.protobuf.Timestamp created = 9;
+  if (this->has_created()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        9, *this->created_, deterministic, target);
+  }
+
+  // .google.protobuf.Timestamp started_time = 10;
+  if (this->has_started_time()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        10, *this->started_time_, deterministic, target);
+  }
+
+  // .google.protobuf.Timestamp done_time = 11;
+  if (this->has_done_time()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        11, *this->done_time_, deterministic, target);
+  }
+
+  // .google.rpc.Status status = 12;
+  if (this->has_status()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        12, *this->status_, deterministic, target);
+  }
+
+  // float progress = 13;
+  if (this->progress() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(13, this->progress(), target);
+  }
+
+  // string progress_message = 14;
+  if (this->progress_message().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->progress_message().data(), static_cast<int>(this->progress_message().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.progress_message");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        14, this->progress_message(), target);
+  }
+
+  // string logs = 15;
+  if (this->logs().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->logs().data(), static_cast<int>(this->logs().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.logs");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        15, this->logs(), target);
+  }
+
+  // string worker_id = 16;
+  if (this->worker_id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->worker_id().data(), static_cast<int>(this->worker_id().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskProgress.worker_id");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        16, this->worker_id(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.TaskProgress)
+  return target;
+}
+
+size_t TaskProgress::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.TaskProgress)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->handle());
+  }
+
+  // string id = 2;
+  if (this->id().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->id());
+  }
+
+  // string type = 3;
+  if (this->type().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->type());
+  }
+
+  // string progress_message = 14;
+  if (this->progress_message().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->progress_message());
+  }
+
+  // string logs = 15;
+  if (this->logs().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->logs());
+  }
+
+  // string worker_id = 16;
+  if (this->worker_id().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->worker_id());
+  }
+
+  // .google.protobuf.Timestamp created = 9;
+  if (this->has_created()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->created_);
+  }
+
+  // .google.protobuf.Timestamp started_time = 10;
+  if (this->has_started_time()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->started_time_);
+  }
+
+  // .google.protobuf.Timestamp done_time = 11;
+  if (this->has_done_time()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->done_time_);
+  }
+
+  // .google.rpc.Status status = 12;
+  if (this->has_status()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->status_);
+  }
+
+  // int32 max_retries = 4;
+  if (this->max_retries() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->max_retries());
+  }
+
+  // int32 retries = 5;
+  if (this->retries() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->retries());
+  }
+
+  // int32 priority = 6;
+  if (this->priority() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->priority());
+  }
+
+  // bool worked_on = 7;
+  if (this->worked_on() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool done = 8;
+  if (this->done() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // float progress = 13;
+  if (this->progress() != 0) {
+    total_size += 1 + 4;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void TaskProgress::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.TaskProgress)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TaskProgress* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const TaskProgress>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.TaskProgress)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.TaskProgress)
+    MergeFrom(*source);
+  }
+}
+
+void TaskProgress::MergeFrom(const TaskProgress& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.TaskProgress)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.handle().size() > 0) {
+
+    handle_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_);
+  }
+  if (from.id().size() > 0) {
+
+    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
+  }
+  if (from.type().size() > 0) {
+
+    type_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.type_);
+  }
+  if (from.progress_message().size() > 0) {
+
+    progress_message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.progress_message_);
+  }
+  if (from.logs().size() > 0) {
+
+    logs_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.logs_);
+  }
+  if (from.worker_id().size() > 0) {
+
+    worker_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.worker_id_);
+  }
+  if (from.has_created()) {
+    mutable_created()->::google::protobuf::Timestamp::MergeFrom(from.created());
+  }
+  if (from.has_started_time()) {
+    mutable_started_time()->::google::protobuf::Timestamp::MergeFrom(from.started_time());
+  }
+  if (from.has_done_time()) {
+    mutable_done_time()->::google::protobuf::Timestamp::MergeFrom(from.done_time());
+  }
+  if (from.has_status()) {
+    mutable_status()->::google::rpc::Status::MergeFrom(from.status());
+  }
+  if (from.max_retries() != 0) {
+    set_max_retries(from.max_retries());
+  }
+  if (from.retries() != 0) {
+    set_retries(from.retries());
+  }
+  if (from.priority() != 0) {
+    set_priority(from.priority());
+  }
+  if (from.worked_on() != 0) {
+    set_worked_on(from.worked_on());
+  }
+  if (from.done() != 0) {
+    set_done(from.done());
+  }
+  if (from.progress() != 0) {
+    set_progress(from.progress());
+  }
+}
+
+void TaskProgress::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.TaskProgress)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void TaskProgress::CopyFrom(const TaskProgress& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.TaskProgress)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TaskProgress::IsInitialized() const {
+  return true;
+}
+
+void TaskProgress::Swap(TaskProgress* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void TaskProgress::InternalSwap(TaskProgress* other) {
+  using std::swap;
+  handle_.Swap(&other->handle_);
+  id_.Swap(&other->id_);
+  type_.Swap(&other->type_);
+  progress_message_.Swap(&other->progress_message_);
+  logs_.Swap(&other->logs_);
+  worker_id_.Swap(&other->worker_id_);
+  swap(created_, other->created_);
+  swap(started_time_, other->started_time_);
+  swap(done_time_, other->done_time_);
+  swap(status_, other->status_);
+  swap(max_retries_, other->max_retries_);
+  swap(retries_, other->retries_);
+  swap(priority_, other->priority_);
+  swap(worked_on_, other->worked_on_);
+  swap(done_, other->done_);
+  swap(progress_, other->progress_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata TaskProgress::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
 void CreateReq::InitAsDefaultInstance() {
   ::tortuga::_CreateReq_default_instance_._instance.get_mutable()->task_ = const_cast< ::tortuga::Task*>(
       ::tortuga::Task::internal_default_instance());
@@ -3205,6 +4437,1509 @@ void CompleteTaskReq::InternalSwap(CompleteTaskReq* other) {
 }
 
 ::google::protobuf::Metadata CompleteTaskReq::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ProgressReq::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ProgressReq::kHandleFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ProgressReq::ProgressReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsProgressReq();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.ProgressReq)
+}
+ProgressReq::ProgressReq(const ProgressReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.handle().size() > 0) {
+    handle_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_);
+  }
+  // @@protoc_insertion_point(copy_constructor:tortuga.ProgressReq)
+}
+
+void ProgressReq::SharedCtor() {
+  handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+ProgressReq::~ProgressReq() {
+  // @@protoc_insertion_point(destructor:tortuga.ProgressReq)
+  SharedDtor();
+}
+
+void ProgressReq::SharedDtor() {
+  handle_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void ProgressReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ProgressReq::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ProgressReq& ProgressReq::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsProgressReq();
+  return *internal_default_instance();
+}
+
+ProgressReq* ProgressReq::New(::google::protobuf::Arena* arena) const {
+  ProgressReq* n = new ProgressReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ProgressReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.ProgressReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  handle_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+bool ProgressReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.ProgressReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string handle = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_handle()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->handle().data(), static_cast<int>(this->handle().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.ProgressReq.handle"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.ProgressReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.ProgressReq)
+  return false;
+#undef DO_
+}
+
+void ProgressReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.ProgressReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle().data(), static_cast<int>(this->handle().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.ProgressReq.handle");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->handle(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.ProgressReq)
+}
+
+::google::protobuf::uint8* ProgressReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.ProgressReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle().data(), static_cast<int>(this->handle().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.ProgressReq.handle");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->handle(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.ProgressReq)
+  return target;
+}
+
+size_t ProgressReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.ProgressReq)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->handle());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ProgressReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.ProgressReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ProgressReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ProgressReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.ProgressReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.ProgressReq)
+    MergeFrom(*source);
+  }
+}
+
+void ProgressReq::MergeFrom(const ProgressReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.ProgressReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.handle().size() > 0) {
+
+    handle_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_);
+  }
+}
+
+void ProgressReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.ProgressReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ProgressReq::CopyFrom(const ProgressReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.ProgressReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ProgressReq::IsInitialized() const {
+  return true;
+}
+
+void ProgressReq::Swap(ProgressReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ProgressReq::InternalSwap(ProgressReq* other) {
+  using std::swap;
+  handle_.Swap(&other->handle_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ProgressReq::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ProgressResp::InitAsDefaultInstance() {
+  ::tortuga::_ProgressResp_default_instance_._instance.get_mutable()->status_ = const_cast< ::google::rpc::Status*>(
+      ::google::rpc::Status::internal_default_instance());
+}
+void ProgressResp::clear_status() {
+  if (GetArenaNoVirtual() == NULL && status_ != NULL) {
+    delete status_;
+  }
+  status_ = NULL;
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ProgressResp::kHandleFieldNumber;
+const int ProgressResp::kStatusFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ProgressResp::ProgressResp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsProgressResp();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.ProgressResp)
+}
+ProgressResp::ProgressResp(const ProgressResp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.handle().size() > 0) {
+    handle_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_);
+  }
+  if (from.has_status()) {
+    status_ = new ::google::rpc::Status(*from.status_);
+  } else {
+    status_ = NULL;
+  }
+  // @@protoc_insertion_point(copy_constructor:tortuga.ProgressResp)
+}
+
+void ProgressResp::SharedCtor() {
+  handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  status_ = NULL;
+  _cached_size_ = 0;
+}
+
+ProgressResp::~ProgressResp() {
+  // @@protoc_insertion_point(destructor:tortuga.ProgressResp)
+  SharedDtor();
+}
+
+void ProgressResp::SharedDtor() {
+  handle_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete status_;
+}
+
+void ProgressResp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ProgressResp::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ProgressResp& ProgressResp::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsProgressResp();
+  return *internal_default_instance();
+}
+
+ProgressResp* ProgressResp::New(::google::protobuf::Arena* arena) const {
+  ProgressResp* n = new ProgressResp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ProgressResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.ProgressResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  handle_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && status_ != NULL) {
+    delete status_;
+  }
+  status_ = NULL;
+  _internal_metadata_.Clear();
+}
+
+bool ProgressResp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.ProgressResp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string handle = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_handle()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->handle().data(), static_cast<int>(this->handle().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.ProgressResp.handle"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .google.rpc.Status status = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_status()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.ProgressResp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.ProgressResp)
+  return false;
+#undef DO_
+}
+
+void ProgressResp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.ProgressResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle().data(), static_cast<int>(this->handle().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.ProgressResp.handle");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->handle(), output);
+  }
+
+  // .google.rpc.Status status = 2;
+  if (this->has_status()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->status_, output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.ProgressResp)
+}
+
+::google::protobuf::uint8* ProgressResp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.ProgressResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle().data(), static_cast<int>(this->handle().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.ProgressResp.handle");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->handle(), target);
+  }
+
+  // .google.rpc.Status status = 2;
+  if (this->has_status()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        2, *this->status_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.ProgressResp)
+  return target;
+}
+
+size_t ProgressResp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.ProgressResp)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->handle());
+  }
+
+  // .google.rpc.Status status = 2;
+  if (this->has_status()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->status_);
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ProgressResp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.ProgressResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ProgressResp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ProgressResp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.ProgressResp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.ProgressResp)
+    MergeFrom(*source);
+  }
+}
+
+void ProgressResp::MergeFrom(const ProgressResp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.ProgressResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.handle().size() > 0) {
+
+    handle_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_);
+  }
+  if (from.has_status()) {
+    mutable_status()->::google::rpc::Status::MergeFrom(from.status());
+  }
+}
+
+void ProgressResp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.ProgressResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ProgressResp::CopyFrom(const ProgressResp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.ProgressResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ProgressResp::IsInitialized() const {
+  return true;
+}
+
+void ProgressResp::Swap(ProgressResp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ProgressResp::InternalSwap(ProgressResp* other) {
+  using std::swap;
+  handle_.Swap(&other->handle_);
+  swap(status_, other->status_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ProgressResp::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void TaskIdentifier::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int TaskIdentifier::kIdFieldNumber;
+const int TaskIdentifier::kTypeFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+TaskIdentifier::TaskIdentifier()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskIdentifier();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.TaskIdentifier)
+}
+TaskIdentifier::TaskIdentifier(const TaskIdentifier& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.id().size() > 0) {
+    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
+  }
+  type_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.type().size() > 0) {
+    type_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.type_);
+  }
+  // @@protoc_insertion_point(copy_constructor:tortuga.TaskIdentifier)
+}
+
+void TaskIdentifier::SharedCtor() {
+  id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  type_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+TaskIdentifier::~TaskIdentifier() {
+  // @@protoc_insertion_point(destructor:tortuga.TaskIdentifier)
+  SharedDtor();
+}
+
+void TaskIdentifier::SharedDtor() {
+  id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  type_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void TaskIdentifier::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* TaskIdentifier::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const TaskIdentifier& TaskIdentifier::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskIdentifier();
+  return *internal_default_instance();
+}
+
+TaskIdentifier* TaskIdentifier::New(::google::protobuf::Arena* arena) const {
+  TaskIdentifier* n = new TaskIdentifier;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void TaskIdentifier::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.TaskIdentifier)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  type_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+bool TaskIdentifier::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.TaskIdentifier)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string id = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_id()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->id().data(), static_cast<int>(this->id().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.TaskIdentifier.id"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string type = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_type()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->type().data(), static_cast<int>(this->type().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.TaskIdentifier.type"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.TaskIdentifier)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.TaskIdentifier)
+  return false;
+#undef DO_
+}
+
+void TaskIdentifier::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.TaskIdentifier)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string id = 1;
+  if (this->id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->id().data(), static_cast<int>(this->id().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskIdentifier.id");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->id(), output);
+  }
+
+  // string type = 2;
+  if (this->type().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->type().data(), static_cast<int>(this->type().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskIdentifier.type");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->type(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.TaskIdentifier)
+}
+
+::google::protobuf::uint8* TaskIdentifier::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.TaskIdentifier)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string id = 1;
+  if (this->id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->id().data(), static_cast<int>(this->id().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskIdentifier.id");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->id(), target);
+  }
+
+  // string type = 2;
+  if (this->type().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->type().data(), static_cast<int>(this->type().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.TaskIdentifier.type");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->type(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.TaskIdentifier)
+  return target;
+}
+
+size_t TaskIdentifier::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.TaskIdentifier)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string id = 1;
+  if (this->id().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->id());
+  }
+
+  // string type = 2;
+  if (this->type().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->type());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void TaskIdentifier::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.TaskIdentifier)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TaskIdentifier* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const TaskIdentifier>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.TaskIdentifier)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.TaskIdentifier)
+    MergeFrom(*source);
+  }
+}
+
+void TaskIdentifier::MergeFrom(const TaskIdentifier& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.TaskIdentifier)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.id().size() > 0) {
+
+    id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.id_);
+  }
+  if (from.type().size() > 0) {
+
+    type_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.type_);
+  }
+}
+
+void TaskIdentifier::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.TaskIdentifier)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void TaskIdentifier::CopyFrom(const TaskIdentifier& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.TaskIdentifier)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TaskIdentifier::IsInitialized() const {
+  return true;
+}
+
+void TaskIdentifier::Swap(TaskIdentifier* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void TaskIdentifier::InternalSwap(TaskIdentifier* other) {
+  using std::swap;
+  id_.Swap(&other->id_);
+  type_.Swap(&other->type_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata TaskIdentifier::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void SubReq::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int SubReq::kHandleFieldNumber;
+const int SubReq::kIsBeatFieldNumber;
+const int SubReq::kNumberOfSubsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+SubReq::SubReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsSubReq();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.SubReq)
+}
+SubReq::SubReq(const SubReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.handle().size() > 0) {
+    handle_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_);
+  }
+  ::memcpy(&is_beat_, &from.is_beat_,
+    static_cast<size_t>(reinterpret_cast<char*>(&number_of_subs_) -
+    reinterpret_cast<char*>(&is_beat_)) + sizeof(number_of_subs_));
+  // @@protoc_insertion_point(copy_constructor:tortuga.SubReq)
+}
+
+void SubReq::SharedCtor() {
+  handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&is_beat_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&number_of_subs_) -
+      reinterpret_cast<char*>(&is_beat_)) + sizeof(number_of_subs_));
+  _cached_size_ = 0;
+}
+
+SubReq::~SubReq() {
+  // @@protoc_insertion_point(destructor:tortuga.SubReq)
+  SharedDtor();
+}
+
+void SubReq::SharedDtor() {
+  handle_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void SubReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* SubReq::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const SubReq& SubReq::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsSubReq();
+  return *internal_default_instance();
+}
+
+SubReq* SubReq::New(::google::protobuf::Arena* arena) const {
+  SubReq* n = new SubReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void SubReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.SubReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  handle_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&is_beat_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&number_of_subs_) -
+      reinterpret_cast<char*>(&is_beat_)) + sizeof(number_of_subs_));
+  _internal_metadata_.Clear();
+}
+
+bool SubReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.SubReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string handle = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_handle()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->handle().data(), static_cast<int>(this->handle().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.SubReq.handle"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool is_beat = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &is_beat_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 number_of_subs = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &number_of_subs_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.SubReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.SubReq)
+  return false;
+#undef DO_
+}
+
+void SubReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.SubReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle().data(), static_cast<int>(this->handle().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.SubReq.handle");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->handle(), output);
+  }
+
+  // bool is_beat = 2;
+  if (this->is_beat() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->is_beat(), output);
+  }
+
+  // int32 number_of_subs = 3;
+  if (this->number_of_subs() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->number_of_subs(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.SubReq)
+}
+
+::google::protobuf::uint8* SubReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.SubReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle().data(), static_cast<int>(this->handle().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.SubReq.handle");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->handle(), target);
+  }
+
+  // bool is_beat = 2;
+  if (this->is_beat() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->is_beat(), target);
+  }
+
+  // int32 number_of_subs = 3;
+  if (this->number_of_subs() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->number_of_subs(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.SubReq)
+  return target;
+}
+
+size_t SubReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.SubReq)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string handle = 1;
+  if (this->handle().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->handle());
+  }
+
+  // bool is_beat = 2;
+  if (this->is_beat() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // int32 number_of_subs = 3;
+  if (this->number_of_subs() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->number_of_subs());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SubReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.SubReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SubReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const SubReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.SubReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.SubReq)
+    MergeFrom(*source);
+  }
+}
+
+void SubReq::MergeFrom(const SubReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.SubReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.handle().size() > 0) {
+
+    handle_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_);
+  }
+  if (from.is_beat() != 0) {
+    set_is_beat(from.is_beat());
+  }
+  if (from.number_of_subs() != 0) {
+    set_number_of_subs(from.number_of_subs());
+  }
+}
+
+void SubReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.SubReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SubReq::CopyFrom(const SubReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.SubReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SubReq::IsInitialized() const {
+  return true;
+}
+
+void SubReq::Swap(SubReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void SubReq::InternalSwap(SubReq* other) {
+  using std::swap;
+  handle_.Swap(&other->handle_);
+  swap(is_beat_, other->is_beat_);
+  swap(number_of_subs_, other->number_of_subs_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata SubReq::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void SubResp::InitAsDefaultInstance() {
+  ::tortuga::_SubResp_default_instance_._instance.get_mutable()->progress_ = const_cast< ::tortuga::TaskProgress*>(
+      ::tortuga::TaskProgress::internal_default_instance());
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int SubResp::kProgressFieldNumber;
+const int SubResp::kMustReconnectFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+SubResp::SubResp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsSubResp();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.SubResp)
+}
+SubResp::SubResp(const SubResp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_progress()) {
+    progress_ = new ::tortuga::TaskProgress(*from.progress_);
+  } else {
+    progress_ = NULL;
+  }
+  must_reconnect_ = from.must_reconnect_;
+  // @@protoc_insertion_point(copy_constructor:tortuga.SubResp)
+}
+
+void SubResp::SharedCtor() {
+  ::memset(&progress_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&must_reconnect_) -
+      reinterpret_cast<char*>(&progress_)) + sizeof(must_reconnect_));
+  _cached_size_ = 0;
+}
+
+SubResp::~SubResp() {
+  // @@protoc_insertion_point(destructor:tortuga.SubResp)
+  SharedDtor();
+}
+
+void SubResp::SharedDtor() {
+  if (this != internal_default_instance()) delete progress_;
+}
+
+void SubResp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* SubResp::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const SubResp& SubResp::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsSubResp();
+  return *internal_default_instance();
+}
+
+SubResp* SubResp::New(::google::protobuf::Arena* arena) const {
+  SubResp* n = new SubResp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void SubResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.SubResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && progress_ != NULL) {
+    delete progress_;
+  }
+  progress_ = NULL;
+  must_reconnect_ = false;
+  _internal_metadata_.Clear();
+}
+
+bool SubResp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.SubResp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .tortuga.TaskProgress progress = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_progress()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool must_reconnect = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &must_reconnect_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.SubResp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.SubResp)
+  return false;
+#undef DO_
+}
+
+void SubResp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.SubResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .tortuga.TaskProgress progress = 1;
+  if (this->has_progress()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->progress_, output);
+  }
+
+  // bool must_reconnect = 2;
+  if (this->must_reconnect() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->must_reconnect(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.SubResp)
+}
+
+::google::protobuf::uint8* SubResp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.SubResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .tortuga.TaskProgress progress = 1;
+  if (this->has_progress()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, *this->progress_, deterministic, target);
+  }
+
+  // bool must_reconnect = 2;
+  if (this->must_reconnect() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->must_reconnect(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.SubResp)
+  return target;
+}
+
+size_t SubResp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.SubResp)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .tortuga.TaskProgress progress = 1;
+  if (this->has_progress()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->progress_);
+  }
+
+  // bool must_reconnect = 2;
+  if (this->must_reconnect() != 0) {
+    total_size += 1 + 1;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SubResp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.SubResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SubResp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const SubResp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.SubResp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.SubResp)
+    MergeFrom(*source);
+  }
+}
+
+void SubResp::MergeFrom(const SubResp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.SubResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_progress()) {
+    mutable_progress()->::tortuga::TaskProgress::MergeFrom(from.progress());
+  }
+  if (from.must_reconnect() != 0) {
+    set_must_reconnect(from.must_reconnect());
+  }
+}
+
+void SubResp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.SubResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SubResp::CopyFrom(const SubResp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.SubResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SubResp::IsInitialized() const {
+  return true;
+}
+
+void SubResp::Swap(SubResp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void SubResp::InternalSwap(SubResp* other) {
+  using std::swap;
+  swap(progress_, other->progress_);
+  swap(must_reconnect_, other->must_reconnect_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata SubResp::GetMetadata() const {
   protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
 }

@@ -35,7 +35,7 @@ public class Tortuga {
   private boolean started;
   private final Channel chan;
   // Single thread that handles the heartbeat and the GRPC communication to server.
-  private ListeningScheduledExecutorService maintenanceService;
+  private final ListeningScheduledExecutorService maintenanceService;
   // Executor where performing tasks.
   private ListeningExecutorService workersPool;
 
@@ -50,8 +50,9 @@ public class Tortuga {
 
   private final TaskHandlerRegistry registry = new TaskHandlerRegistry();
 
-  Tortuga(String workerId, Channel chan) {
+  Tortuga(String workerId, Channel chan, ListeningScheduledExecutorService maintenanceService) {
     this.chan = chan;
+    this.maintenanceService = maintenanceService;
 
     worker = Worker.newBuilder()
         .setWorkerId(workerId)
@@ -75,15 +76,10 @@ public class Tortuga {
 
     started = true;
 
-    ThreadFactory tf = new ThreadFactoryBuilder()
-        .setNameFormat("tortuga-internal-%d")
-        .build();
-    maintenanceService = MoreExecutors.listeningDecorator(Executors.newSingleThreadScheduledExecutor(tf));
-
     if (workersPool == null) {
       // If the caller didn't specify a executor service for workers we default to a cached thread pool.
       ThreadFactory workersTf = new ThreadFactoryBuilder()
-          .setNameFormat("tortuga-internal-%d")
+          .setNameFormat("tortuga-worker-%d")
           .build();
       workersPool = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(workersTf));
     }

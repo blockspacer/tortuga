@@ -8,7 +8,9 @@ option java_outer_classname = "TortugaProto";
 
 import "google/protobuf/any.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
+import "grpc/status/status.proto";
 
 message Worker {
   string worker_id = 1;
@@ -42,6 +44,31 @@ message Task {
   google.protobuf.Int32Value max_retries = 5;  
 }
 
+message TaskProgress {
+  string handle = 1;
+  string id = 2;
+  string type = 3;
+
+  int32 max_retries = 4;
+  int32 retries = 5;
+  int32 priority = 6;
+
+  bool worked_on = 7;
+  bool done = 8;
+
+  google.protobuf.Timestamp created = 9;
+  google.protobuf.Timestamp started_time = 10;
+  google.protobuf.Timestamp done_time = 11;
+
+  google.rpc.Status status = 12;
+
+  float progress = 13;
+  string progress_message = 14;
+  string logs = 15;
+
+  string worker_id = 16;
+}
+
 message CreateReq {
   Task task = 1;
 }
@@ -59,15 +86,50 @@ message CompleteTaskReq {
   string logs = 5;
 }
 
+message ProgressReq {
+  // Handle of the task of which to subscribe for.
+  string handle = 1;
+}
+
+message ProgressResp {
+  // handle of the task that is done.
+  string handle = 1;
+  // How it ended...
+  google.rpc.Status status = 2;
+}
+
+message TaskIdentifier {
+  string id = 1;
+  string type = 2;
+}
+
+message SubReq {
+  string handle = 1;
+  bool is_beat = 2;
+  int32 number_of_subs = 3;
+}
+
+message SubResp {
+  TaskProgress progress = 1;
+  bool must_reconnect = 2;
+}
+
 service Tortuga {
   rpc CreateTask(CreateReq) returns (CreateResp);
   rpc RequestTask(TaskReq) returns (TaskResp);
   rpc Heartbeat(Worker) returns (google.protobuf.Empty);
   rpc CompleteTask(CompleteTaskReq) returns (google.protobuf.Empty);
 
-  // The argument is the task handle.
-  // This is a temporary API pending proper listening.
-  rpc IsDone(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
+  // Finds a task by id and type.
+  rpc FindTask(TaskIdentifier) returns (TaskProgress);
+  // Finds a task by specific handle.
+  rpc FindTaskByHandle(google.protobuf.StringValue) returns (TaskProgress);
+
+  // The client streams handles that they want to track.
+  // The server streams back task progresses for each task that is tracked by client.
+  // Once a progress has been received with value 'done is true' you can expect no more stream items
+  // for that task.
+  rpc ProgressSubscribe(stream SubReq) returns (stream SubResp);
 
   // admin commands (for now these are for tests)
   rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);

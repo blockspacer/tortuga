@@ -1,5 +1,7 @@
 package io.tortuga;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
@@ -21,6 +23,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -39,6 +43,10 @@ public class TortugaIntegrationTest {
 
   @Before
   public void startTortuga() throws IOException {
+    startTortuga(false);
+  }
+
+  void startTortuga(boolean keepDb) throws IOException {
     System.out.println("starting tortuga...");
     System.out.println("we are in dir: " + Paths.get("").toAbsolutePath());
 
@@ -50,7 +58,7 @@ public class TortugaIntegrationTest {
     Path tortugaDB = testDir.resolve("tortuga.db");
     Path tortugaLogs = testDir.resolve("tortuga.logs");
 
-    if (Files.exists(tortugaDB)) {
+    if (Files.exists(tortugaDB) && !keepDb) {
       Files.delete(tortugaDB);
     }
 
@@ -62,7 +70,7 @@ public class TortugaIntegrationTest {
     tortugaCmd.add("./tortuga_main");
     tortugaCmd.add("--logtostderr");
     tortugaCmd.add("--v");
-    tortugaCmd.add("2");
+    tortugaCmd.add("5");
     tortugaCmd.add("--addr");
     tortugaCmd.add("127.0.0.1");
     tortugaCmd.add("--db_file");
@@ -94,7 +102,7 @@ public class TortugaIntegrationTest {
   }
 
   @After
-  public void stopTortuga() throws InterruptedException {
+  public void stopTortuga() {
     ManagedChannel chan = ManagedChannelBuilder.forAddress("127.0.0.1", 4000)
         .usePlaintext()
         .build();
@@ -133,7 +141,13 @@ public class TortugaIntegrationTest {
           .setId("field_" + i)
           .build();
       expected.add("field_" + i);
-      task = publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask" + i), testMessage);
+
+      // we grab number 50 task because it is certain that it shall be done once latch is waited on.
+      if (i == 50) {
+        task = publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask" + i), testMessage);
+      } else {
+        publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask" + i), testMessage);
+      }
     }
 
     Uninterruptibles.awaitUninterruptibly(latch);
@@ -145,6 +159,58 @@ public class TortugaIntegrationTest {
 
     Assert.assertEquals(expectedList, foundList);
     Assert.assertTrue(task.isDone());
+
+    tortuga.shutdown();
+    conn.shutdown();
+  }
+
+  // Publish messages to the same id, ensures only one is executed.
+  @Test
+  public void testDedup() {
+    CountDownLatch latch = new CountDownLatch(2);
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    Set<String> found = Collections.synchronizedSet(new HashSet<>());
+
+    TestServiceTortuga.ImplBase handler = new TestServiceTortuga.ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        LOG.info("received task to handle: {}", t);
+        found.add(t.getId());
+        latch.countDown();
+        return Futures.immediateFuture(Status.OK);
+      }
+    };
+
+    tortuga.addService(handler);
+
+    TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+    for (int i = 1; i <= 10; ++i) {
+      TestMessage testMessage = TestMessage.newBuilder()
+          .setId("field_" + 1)
+          .build();
+      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask_one"), testMessage);
+    }
+
+    tortuga.start();
+
+    // If messages are deduped, the latch won't come to 2 because they all have the same id.
+    // If messages are not correctly deduped it would have.
+    Assert.assertFalse(Uninterruptibles.awaitUninterruptibly(latch, 3L, TimeUnit.SECONDS));
+
+    TestMessage testMessage = TestMessage.newBuilder()
+        .setId("field_" + 2)
+        .build();
+    publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask_two"), testMessage);
+    Uninterruptibles.awaitUninterruptibly(latch);
+
+    List<String> expectedList = ImmutableList.of("field_1", "field_2");
+
+    List<String> foundList = new ArrayList<>(found);
+    Collections.sort(foundList);
+
+    Assert.assertEquals(expectedList, foundList);
 
     tortuga.shutdown();
     conn.shutdown();
@@ -268,6 +334,91 @@ public class TortugaIntegrationTest {
 
     Assert.assertEquals(7, sawFirst.get());
     Assert.assertEquals(3, sawSecond.get());
+    tortuga.shutdown();
+    conn.shutdown();
+  }
+
+  @Test
+  public void testCompletionListening() {
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+
+    TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+    CountDownLatch latch = new CountDownLatch(100);
+
+    for (int i = 0; i < 100; ++i) {
+      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeTask" + i), TestMessage.getDefaultInstance());
+      TaskResult handle = publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeId"), TestMessage.getDefaultInstance());
+      ListenableFuture<Status> completionF = handle.completionFuture();
+      
+      Futures.addCallback(completionF, new FutureCallback<Status>() {
+        @Override
+        public void onSuccess(@Nullable Status result) {
+          latch.countDown();
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+        }
+      });
+    }
+
+    Assert.assertFalse(Uninterruptibles.awaitUninterruptibly(latch, 5L, TimeUnit.SECONDS));
+
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    tortuga.addService(new ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        return Futures.immediateFuture(Status.OK);
+      }
+    });
+    tortuga.start();
+
+    Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 60L, TimeUnit.SECONDS));
+    tortuga.shutdown();
+    conn.shutdown();
+  }
+
+  @Test
+  public void testCompletionWithServerDeath() throws Exception {
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+
+    TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+    CountDownLatch latch = new CountDownLatch(100);
+
+    for (int i = 0; i < 100; ++i) {
+      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeTask" + i), TestMessage.getDefaultInstance());
+      TaskResult handle = publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeId"), TestMessage.getDefaultInstance());
+      ListenableFuture<Status> completionF = handle.completionFuture();
+
+      Futures.addCallback(completionF, new FutureCallback<Status>() {
+        @Override
+        public void onSuccess(@Nullable Status result) {
+          latch.countDown();
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+        }
+      });
+    }
+
+    Assert.assertFalse(Uninterruptibles.awaitUninterruptibly(latch, 5L, TimeUnit.SECONDS));
+    stopTortuga();
+    Uninterruptibles.sleepUninterruptibly(1L, TimeUnit.SECONDS);
+    startTortuga(true);
+
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    tortuga.addService(new ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        return Futures.immediateFuture(Status.OK);
+      }
+    });
+    tortuga.start();
+
+    Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 60L, TimeUnit.SECONDS));
     tortuga.shutdown();
     conn.shutdown();
   }
