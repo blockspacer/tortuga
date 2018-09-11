@@ -17,3 +17,8 @@ service TestService {
   rpc HandleTask(google.protobuf.StringValue) returns (google.protobuf.Empty);
   rpc HandleCustomMessage(TestMessage) returns (google.protobuf.Empty);
 }
+
+service TestService2 {
+  rpc HandleTask2(google.protobuf.StringValue) returns (google.protobuf.Empty);
+  rpc HandleCustomMessage2(TestMessage) returns (google.protobuf.Empty);
+}

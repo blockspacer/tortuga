@@ -87,6 +87,10 @@ class TortugaHandler : boost::noncopyable {
   void InsertHistoricWorkerInExec(const std::string& uuid,
                                   const std::string& worker_id);
 
+  // Caller doesn't take ownership.
+  // This may return nullptr if the caller has no capabilities. 
+  SqliteStatement* GetOrCreateSelectStmtInExec(const Worker& worker);
+
   sqlite3* db_{ nullptr };
   RpcOpts rpc_opts_;
 
@@ -104,7 +108,6 @@ class TortugaHandler : boost::noncopyable {
   SqliteStatement update_worker_beat_stmt_;
   SqliteStatement update_worker_stmt_;
   SqliteStatement insert_worker_stmt_;
-  SqliteStatement select_task_stmt_;
   SqliteStatement assign_task_stmt_;
 
   SqliteStatement select_task_to_complete_stmt_;
@@ -116,5 +119,8 @@ class TortugaHandler : boost::noncopyable {
   SqliteStatement update_worker_invalidated_uuid_stmt_;
 
   SqliteStatement insert_historic_worker_stmt_;
+
+  // map from worker UUID to its select statement.
+  std::map<std::string, std::unique_ptr<SqliteStatement>> select_task_stmts_;
 };
 }  // namespace tortuga

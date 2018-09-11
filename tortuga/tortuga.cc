@@ -4,6 +4,8 @@
 #include <string>
 
 #include "folly/Conv.h"
+#include "folly/MapUtil.h"
+#include "folly/String.h"
 #include "folly/Unit.h"
 #include "glog/logging.h"
 #include "grpc++/grpc++.h"
@@ -33,10 +35,6 @@ static const char* const kUpdateWorkerStmt = R"(
 
 static const char* const kInsertWorkerStmt = R"(
   insert into workers (uuid, worker_id, capabilities, last_beat) values (?, ?, ?, ?);
-)";
-
-static const char* kSelectTaskStmt = R"(
-    select rowid, id, task_type, data, retries from tasks where worked_on != 1 and done != 1 order by priority desc limit 1;
 )";
 
 static const char* const kAssignTaskStmt = R"(
@@ -88,7 +86,6 @@ TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts)
       update_worker_beat_stmt_(db, kUpdateWorkerBeatStmt),
       update_worker_stmt_(db, kUpdateWorkerStmt),
       insert_worker_stmt_(db, kInsertWorkerStmt),
-      select_task_stmt_(db, kSelectTaskStmt),
       assign_task_stmt_(db, kAssignTaskStmt),
       select_task_to_complete_stmt_(db, kSelectTaskToCompleteStmt),
       complete_task_stmt_(db, kCompleteTaskStmt),
@@ -303,9 +300,16 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& work
 TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker& worker) {
   TimeLogger get_task_timer("get_task");
   SqliteTx tx(db_);
-  SqliteReset x1(&select_task_stmt_);
-  
-  int rc = select_task_stmt_.Step();
+  SqliteStatement* select_task_stmt = GetOrCreateSelectStmtInExec(worker);
+
+  if (select_task_stmt == nullptr) {
+    VLOG(3) << "This worker: " << worker.uuid() << " has no capabilities!";
+    RequestTaskResult res;
+    res.none = true;
+    return res;
+  }
+
+  int rc = select_task_stmt->Step();
   if (rc == SQLITE_DONE) {
     VLOG(3) << "Tortuga has no task at the moment";
     RequestTaskResult res;
@@ -313,11 +317,11 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
     return res;
   }
   
-  int64_t rowid = select_task_stmt_.ColumnLong(0);
-  std::string id = select_task_stmt_.ColumnText(1);
-  std::string task_type = select_task_stmt_.ColumnText(2);
-  std::string data = select_task_stmt_.ColumnBlob(3);
-  int retries = select_task_stmt_.ColumnInt(4);
+  int64_t rowid = select_task_stmt->ColumnLong(0);
+  std::string id = select_task_stmt->ColumnText(1);
+  std::string task_type = select_task_stmt->ColumnText(2);
+  std::string data = select_task_stmt->ColumnBlob(3);
+  int retries = select_task_stmt->ColumnInt(4);
 
   SqliteReset x2(&assign_task_stmt_);
   assign_task_stmt_.BindInt(1, retries + 1);
@@ -333,6 +337,40 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   res.type = task_type;
   res.data = data;
   return res;
+}
+
+SqliteStatement* TortugaHandler::GetOrCreateSelectStmtInExec(const Worker& worker) {
+  std::unique_ptr<SqliteStatement>* found = folly::get_ptr(select_task_stmts_, worker.uuid());
+  if (found != nullptr) {
+    return found->get();
+  }
+
+  if (worker.capabilities_size() == 0) {
+    return nullptr;
+  }
+
+  std::string tpl = R"(
+    select rowid, id, task_type, data, retries from tasks where
+        worked_on != 1
+        and done != 1
+        and task_type IN (%s)
+        order by priority desc limit 1;
+  )";
+  LOG(INFO) << "THE TEMPLATE: " << tpl;
+  std::vector<std::string> quoted_capabilities;
+  for (const auto& capa : worker.capabilities()) {
+    quoted_capabilities.push_back("'" + capa + "'");
+  }
+  
+  std::string capabilities = folly::join(", ", quoted_capabilities);
+  LOG(INFO) << "THE capabilities: " << capabilities;
+
+  std::string stmt_str = folly::stringPrintf(tpl.c_str(), capabilities.c_str());
+    LOG(INFO) << "THE stmt_str: " << stmt_str;
+
+  SqliteStatement* stmt = new SqliteStatement(db_, stmt_str);
+  select_task_stmts_[worker.uuid()] = std::unique_ptr<SqliteStatement>(stmt);
+  return stmt;
 }
 
 void TortugaHandler::HandleHeartbeat() {
@@ -496,6 +534,9 @@ void TortugaHandler::UnassignTaskInExec(const std::string& uuid) {
   update_worker_invalidated_uuid_stmt_.BindText(1, uuid);
   update_worker_invalidated_uuid_stmt_.BindText(2, uuid);
   update_worker_invalidated_uuid_stmt_.ExecuteOrDie();
+
+  // cleanup the prepared statement that would otherwise take up memory.
+  select_task_stmts_.erase(uuid);
 }
 
 void TortugaHandler::HandlePing() {

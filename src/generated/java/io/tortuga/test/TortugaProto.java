@@ -560,8 +560,12 @@ public final class TortugaProto {
       "e.protobuf.StringValue\032\026.google.protobuf" +
       ".Empty\022H\n\023HandleCustomMessage\022\031.tortuga." +
       "test.TestMessage\032\026.google.protobuf.Empty" +
-      "B\037\n\017io.tortuga.testB\014TortugaProtob\006proto" +
-      "3"
+      "2\236\001\n\014TestService2\022C\n\013HandleTask2\022\034.googl" +
+      "e.protobuf.StringValue\032\026.google.protobuf" +
+      ".Empty\022I\n\024HandleCustomMessage2\022\031.tortuga" +
+      ".test.TestMessage\032\026.google.protobuf.Empt" +
+      "yB\037\n\017io.tortuga.testB\014TortugaProtob\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

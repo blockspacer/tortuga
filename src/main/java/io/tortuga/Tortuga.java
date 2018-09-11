@@ -39,7 +39,7 @@ public class Tortuga {
   // Executor where performing tasks.
   private ListeningExecutorService workersPool;
 
-  private final Worker worker;
+  private Worker worker;
 
   private int concurrency = 4;
   private Semaphore semaphore;
@@ -75,6 +75,10 @@ public class Tortuga {
     }
 
     started = true;
+
+    worker = worker.toBuilder()
+        .addAllCapabilities(registry.capabilities())
+        .build();
 
     if (workersPool == null) {
       // If the caller didn't specify a executor service for workers we default to a cached thread pool.
@@ -214,7 +218,6 @@ public class Tortuga {
 
     try {
       semaphore.acquire(concurrency);
-      maintenanceService.shutdown();
       workersPool.shutdown();
     } catch (InterruptedException ex) {
       Thread.currentThread().interrupt();

@@ -12,6 +12,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+import io.tortuga.test.TestService2Tortuga;
 import io.tortuga.test.TestServiceTortuga;
 import io.tortuga.test.TestServiceTortuga.ImplBase;
 import io.tortuga.test.TortugaProto.TestMessage;
@@ -420,6 +421,49 @@ public class TortugaIntegrationTest {
 
     Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 60L, TimeUnit.SECONDS));
     tortuga.shutdown();
+    conn.shutdown();
+  }
+
+  /**
+   * Tests that we only get the tasks that we asked for.
+   */
+  @Test
+  public void testRequestedType() {
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+
+    TestService2Tortuga.Publisher publisher = TestService2Tortuga.newPublisher(conn);
+    CountDownLatch latch = new CountDownLatch(10);
+
+    for (int i = 0; i < 10; ++i) {
+      publisher.publishHandleCustomMessage2Task(TaskSpec.ofId("SomeTask" + i), TestMessage.getDefaultInstance());
+    }
+
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    tortuga.addService(new ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        latch.countDown();
+        return Futures.immediateFuture(Status.OK);
+      }
+    });
+    tortuga.start();
+
+    Assert.assertFalse(Uninterruptibles.awaitUninterruptibly(latch, 5L, TimeUnit.SECONDS));
+
+    Tortuga tortuga2 = conn.newWorker("test_worker2");
+    tortuga2.addService(new TestService2Tortuga.ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage2(TestMessage t, TortugaContext ctx) {
+        latch.countDown();
+        return Futures.immediateFuture(Status.OK);
+      }
+    });
+    tortuga2.start();
+
+    Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 50L, TimeUnit.SECONDS));
+    tortuga.shutdown();
+    tortuga2.shutdown();
     conn.shutdown();
   }
 }

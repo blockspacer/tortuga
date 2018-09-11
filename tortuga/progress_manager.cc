@@ -5,7 +5,6 @@
 #include <utility>
 
 #include "folly/Conv.h"
-#include "folly/MapUtil.h"
 #include "grpc++/grpc++.h"
 
 #include "tortuga/baton_handler.h"

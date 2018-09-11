@@ -13,4 +13,8 @@ public class TaskHandlerRegistry {
   TaskHandler get(String type) {
     return handlers.get(type);
   }
+
+  Iterable<String> capabilities() {
+    return handlers.keySet();
+  }
 }

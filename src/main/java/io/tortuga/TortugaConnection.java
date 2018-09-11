@@ -68,6 +68,8 @@ public class TortugaConnection {
       Thread.currentThread().interrupt();
       throw new IllegalStateException("interrupted while shuting down", ex);
     }
+
+    maintenanceService.shutdown();
   }
 
   public TaskResult publishTask(String type,
