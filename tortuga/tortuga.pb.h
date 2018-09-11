@@ -30,6 +30,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
 #include <google/protobuf/any.pb.h>
+#include <google/protobuf/duration.pb.h>
 #include <google/protobuf/empty.pb.h>
 #include <google/protobuf/timestamp.pb.h>
 #include <google/protobuf/wrappers.pb.h>
@@ -768,6 +769,15 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::Int32Value* mutable_max_retries();
   void set_allocated_max_retries(::google::protobuf::Int32Value* max_retries);
 
+  // .google.protobuf.Duration delay = 6;
+  bool has_delay() const;
+  void clear_delay();
+  static const int kDelayFieldNumber = 6;
+  const ::google::protobuf::Duration& delay() const;
+  ::google::protobuf::Duration* release_delay();
+  ::google::protobuf::Duration* mutable_delay();
+  void set_allocated_delay(::google::protobuf::Duration* delay);
+
   // @@protoc_insertion_point(class_scope:tortuga.Task)
  private:
 
@@ -777,6 +787,7 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::Any* data_;
   ::google::protobuf::Int32Value* priority_;
   ::google::protobuf::Int32Value* max_retries_;
+  ::google::protobuf::Duration* delay_;
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskImpl();
@@ -2518,6 +2529,51 @@ inline void Task::set_allocated_max_retries(::google::protobuf::Int32Value* max_
   }
   max_retries_ = max_retries;
   // @@protoc_insertion_point(field_set_allocated:tortuga.Task.max_retries)
+}
+
+// .google.protobuf.Duration delay = 6;
+inline bool Task::has_delay() const {
+  return this != internal_default_instance() && delay_ != NULL;
+}
+inline const ::google::protobuf::Duration& Task::delay() const {
+  const ::google::protobuf::Duration* p = delay_;
+  // @@protoc_insertion_point(field_get:tortuga.Task.delay)
+  return p != NULL ? *p : *reinterpret_cast<const ::google::protobuf::Duration*>(
+      &::google::protobuf::_Duration_default_instance_);
+}
+inline ::google::protobuf::Duration* Task::release_delay() {
+  // @@protoc_insertion_point(field_release:tortuga.Task.delay)
+  
+  ::google::protobuf::Duration* temp = delay_;
+  delay_ = NULL;
+  return temp;
+}
+inline ::google::protobuf::Duration* Task::mutable_delay() {
+  
+  if (delay_ == NULL) {
+    delay_ = new ::google::protobuf::Duration;
+  }
+  // @@protoc_insertion_point(field_mutable:tortuga.Task.delay)
+  return delay_;
+}
+inline void Task::set_allocated_delay(::google::protobuf::Duration* delay) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(delay_);
+  }
+  if (delay) {
+    ::google::protobuf::Arena* submessage_arena =
+      reinterpret_cast< ::google::protobuf::MessageLite*>(delay)->GetArena();
+    if (message_arena != submessage_arena) {
+      delay = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, delay, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  delay_ = delay;
+  // @@protoc_insertion_point(field_set_allocated:tortuga.Task.delay)
 }
 
 // -------------------------------------------------------------------
