@@ -14,7 +14,6 @@ import com.google.protobuf.StringValue;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import io.tortuga.TortugaProto.CreateReq;
 import io.tortuga.TortugaProto.CreateResp;
@@ -25,8 +24,6 @@ import io.tortuga.TortugaProto.TaskProgress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -42,6 +39,8 @@ public class TortugaConnection {
   private final ManagedChannel chan;
 
   private final Map<String, SettableFuture<Status>> completionListeners = new ConcurrentHashMap<>();
+  private StreamObserver<SubReq> subscribeStub;
+  private AtomicBoolean lastInvalidator;
 
   private ListenableScheduledFuture<?> heartbeatF;
 
@@ -62,7 +61,9 @@ public class TortugaConnection {
   }
 
   public void shutdown() {
-    heartbeatF.cancel(false);
+    if (subscribeStub != null) {
+      subscribeStub.onCompleted();
+    }
     try {
       chan.shutdown();
       chan.awaitTermination(60L, TimeUnit.SECONDS);
@@ -147,40 +148,100 @@ public class TortugaConnection {
       return statusF;
     }
 
-    statusF = SettableFuture.create();
-    completionListeners.put(handle, statusF);
-
-    if (heartbeatF == null) {
-      heartbeatF = maintenanceService.scheduleAtFixedRate(() -> {
-        beatForCompletions();
-      }, 100L, 100L, TimeUnit.MILLISECONDS);
+    if (subscribeStub == null) {
+      buildStub();
     }
 
+    statusF = SettableFuture.create();
+    completionListeners.put(handle, statusF);
+    subscribeStub.onNext(SubReq.newBuilder().build().newBuilder().setHandle(handle).build());
     return statusF;
   }
 
-  private synchronized void beatForCompletions() {
-    List<String> toRemove = new ArrayList<>();
-
-    for (Map.Entry<String, SettableFuture<Status>> e : completionListeners.entrySet()) {
-      System.out.println("Beating for completion of: " + e.getKey());
-       try {
-         TaskProgress progress = TortugaGrpc.newBlockingStub(chan)
-             .withDeadlineAfter(5L, TimeUnit.SECONDS)
-             .findTaskByHandle(StringValue.newBuilder().setValue(e.getKey()).build());
-
-         if (progress.getDone()) {
-           Status status = Status.fromCodeValue(progress.getStatus().getCode());
-           e.getValue().set(status);
-           toRemove.add(e.getKey());
-         }
-       } catch (StatusRuntimeException ex) {
-         ex.printStackTrace();
-       }
+  private synchronized void buildStub() {
+    if (lastInvalidator != null) {
+      subscribeStub.onCompleted();
+      lastInvalidator.set(true);
     }
 
-    for (String key : toRemove) {
-      completionListeners.remove(key);
+    AtomicBoolean invalidator = new AtomicBoolean();
+    subscribeStub = TortugaGrpc.newStub(chan).progressSubscribe(new SubStreamObserver(invalidator));
+    this.lastInvalidator = invalidator;
+
+    if (heartbeatF == null) {
+      heartbeatF = maintenanceService.scheduleAtFixedRate(() -> {
+        this.subscribeStub.onNext(SubReq.newBuilder()
+            .setIsBeat(true)
+            .setNumberOfSubs(completionListeners.size())
+            .build());
+      }, 100L, 100L, TimeUnit.MILLISECONDS);
+    }
+  }
+
+  private class SubStreamObserver implements StreamObserver<SubResp> {
+    private final AtomicBoolean invalidated;
+    SubStreamObserver(AtomicBoolean invalidated) {
+      this.invalidated = invalidated;
+    }
+
+    @Override
+    public void onNext(SubResp taskProgress) {
+      if (!invalidated.get()) {
+        onProgress(taskProgress);
+      }
+    }
+
+    @Override
+    public void onError(Throwable t) {
+      onProgressError(t);
+    }
+
+    @Override
+    public void onCompleted() {
+      onProgressCompleted();
+    }
+  }
+
+  private synchronized void onProgress(SubResp resp) {
+    if (resp.getMustReconnect()) {
+      reconnect();
+      return;
+    }
+
+    TaskProgress progress = resp.getProgress();
+    SettableFuture<Status> statusF = completionListeners.get(progress.getHandle());
+    if (statusF == null) {
+      // we are not listening anymore (ps: this is weird...);
+    }
+
+    Status status = Status.fromCodeValue(progress.getStatus().getCode())
+        .withDescription(progress.getStatus().getMessage());
+    completionListeners.remove(progress.getHandle());
+    statusF.set(status);
+  }
+
+  private final RateLimiter logsErrors = RateLimiter.create(0.1);
+
+  private void onProgressError(Throwable t) {
+    if (logsErrors.tryAcquire()) {
+      LOG.error("subscriber listener got an error, we will reconnect...", t);
+      t.printStackTrace();
+    }
+
+    reconnect();
+  }
+
+  private void onProgressCompleted() {
+    // Tortuga server shall never close streams absent of error.
+    new AssertionError("unreachable").printStackTrace();
+    reconnect();
+  }
+
+  private synchronized void reconnect() {
+    buildStub();
+
+    for (String handle : completionListeners.keySet()) {
+      subscribeStub.onNext(SubReq.newBuilder().build().newBuilder().setHandle(handle).build());
     }
   }
 }
