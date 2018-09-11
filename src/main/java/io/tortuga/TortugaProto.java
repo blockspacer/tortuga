@@ -3221,6 +3221,31 @@ public final class TortugaProto {
      * <code>.google.protobuf.Int32Value max_retries = 5;</code>
      */
     com.google.protobuf.Int32ValueOrBuilder getMaxRetriesOrBuilder();
+
+    /**
+     * <pre>
+     * If set the task shall not be served before this delay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Duration delay = 6;</code>
+     */
+    boolean hasDelay();
+    /**
+     * <pre>
+     * If set the task shall not be served before this delay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Duration delay = 6;</code>
+     */
+    com.google.protobuf.Duration getDelay();
+    /**
+     * <pre>
+     * If set the task shall not be served before this delay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Duration delay = 6;</code>
+     */
+    com.google.protobuf.DurationOrBuilder getDelayOrBuilder();
   }
   /**
    * Protobuf type {@code tortuga.Task}
@@ -3317,6 +3342,19 @@ public final class TortugaProto {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(maxRetries_);
                 maxRetries_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 50: {
+              com.google.protobuf.Duration.Builder subBuilder = null;
+              if (delay_ != null) {
+                subBuilder = delay_.toBuilder();
+              }
+              delay_ = input.readMessage(com.google.protobuf.Duration.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(delay_);
+                delay_ = subBuilder.buildPartial();
               }
 
               break;
@@ -3476,6 +3514,39 @@ public final class TortugaProto {
       return getMaxRetries();
     }
 
+    public static final int DELAY_FIELD_NUMBER = 6;
+    private com.google.protobuf.Duration delay_;
+    /**
+     * <pre>
+     * If set the task shall not be served before this delay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Duration delay = 6;</code>
+     */
+    public boolean hasDelay() {
+      return delay_ != null;
+    }
+    /**
+     * <pre>
+     * If set the task shall not be served before this delay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Duration delay = 6;</code>
+     */
+    public com.google.protobuf.Duration getDelay() {
+      return delay_ == null ? com.google.protobuf.Duration.getDefaultInstance() : delay_;
+    }
+    /**
+     * <pre>
+     * If set the task shall not be served before this delay.
+     * </pre>
+     *
+     * <code>.google.protobuf.Duration delay = 6;</code>
+     */
+    public com.google.protobuf.DurationOrBuilder getDelayOrBuilder() {
+      return getDelay();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3503,6 +3574,9 @@ public final class TortugaProto {
       if (maxRetries_ != null) {
         output.writeMessage(5, getMaxRetries());
       }
+      if (delay_ != null) {
+        output.writeMessage(6, getDelay());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3528,6 +3602,10 @@ public final class TortugaProto {
       if (maxRetries_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, getMaxRetries());
+      }
+      if (delay_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, getDelay());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3564,6 +3642,11 @@ public final class TortugaProto {
         result = result && getMaxRetries()
             .equals(other.getMaxRetries());
       }
+      result = result && (hasDelay() == other.hasDelay());
+      if (hasDelay()) {
+        result = result && getDelay()
+            .equals(other.getDelay());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -3590,6 +3673,10 @@ public final class TortugaProto {
       if (hasMaxRetries()) {
         hash = (37 * hash) + MAX_RETRIES_FIELD_NUMBER;
         hash = (53 * hash) + getMaxRetries().hashCode();
+      }
+      if (hasDelay()) {
+        hash = (37 * hash) + DELAY_FIELD_NUMBER;
+        hash = (53 * hash) + getDelay().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -3742,6 +3829,12 @@ public final class TortugaProto {
           maxRetries_ = null;
           maxRetriesBuilder_ = null;
         }
+        if (delayBuilder_ == null) {
+          delay_ = null;
+        } else {
+          delay_ = null;
+          delayBuilder_ = null;
+        }
         return this;
       }
 
@@ -3780,6 +3873,11 @@ public final class TortugaProto {
           result.maxRetries_ = maxRetries_;
         } else {
           result.maxRetries_ = maxRetriesBuilder_.build();
+        }
+        if (delayBuilder_ == null) {
+          result.delay_ = delay_;
+        } else {
+          result.delay_ = delayBuilder_.build();
         }
         onBuilt();
         return result;
@@ -3838,6 +3936,9 @@ public final class TortugaProto {
         }
         if (other.hasMaxRetries()) {
           mergeMaxRetries(other.getMaxRetries());
+        }
+        if (other.hasDelay()) {
+          mergeDelay(other.getDelay());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4353,6 +4454,159 @@ public final class TortugaProto {
           maxRetries_ = null;
         }
         return maxRetriesBuilder_;
+      }
+
+      private com.google.protobuf.Duration delay_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Duration, com.google.protobuf.Duration.Builder, com.google.protobuf.DurationOrBuilder> delayBuilder_;
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      public boolean hasDelay() {
+        return delayBuilder_ != null || delay_ != null;
+      }
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      public com.google.protobuf.Duration getDelay() {
+        if (delayBuilder_ == null) {
+          return delay_ == null ? com.google.protobuf.Duration.getDefaultInstance() : delay_;
+        } else {
+          return delayBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      public Builder setDelay(com.google.protobuf.Duration value) {
+        if (delayBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          delay_ = value;
+          onChanged();
+        } else {
+          delayBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      public Builder setDelay(
+          com.google.protobuf.Duration.Builder builderForValue) {
+        if (delayBuilder_ == null) {
+          delay_ = builderForValue.build();
+          onChanged();
+        } else {
+          delayBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      public Builder mergeDelay(com.google.protobuf.Duration value) {
+        if (delayBuilder_ == null) {
+          if (delay_ != null) {
+            delay_ =
+              com.google.protobuf.Duration.newBuilder(delay_).mergeFrom(value).buildPartial();
+          } else {
+            delay_ = value;
+          }
+          onChanged();
+        } else {
+          delayBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      public Builder clearDelay() {
+        if (delayBuilder_ == null) {
+          delay_ = null;
+          onChanged();
+        } else {
+          delay_ = null;
+          delayBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      public com.google.protobuf.Duration.Builder getDelayBuilder() {
+        
+        onChanged();
+        return getDelayFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      public com.google.protobuf.DurationOrBuilder getDelayOrBuilder() {
+        if (delayBuilder_ != null) {
+          return delayBuilder_.getMessageOrBuilder();
+        } else {
+          return delay_ == null ?
+              com.google.protobuf.Duration.getDefaultInstance() : delay_;
+        }
+      }
+      /**
+       * <pre>
+       * If set the task shall not be served before this delay.
+       * </pre>
+       *
+       * <code>.google.protobuf.Duration delay = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.Duration, com.google.protobuf.Duration.Builder, com.google.protobuf.DurationOrBuilder> 
+          getDelayFieldBuilder() {
+        if (delayBuilder_ == null) {
+          delayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.protobuf.Duration, com.google.protobuf.Duration.Builder, com.google.protobuf.DurationOrBuilder>(
+                  getDelay(),
+                  getParentForChildren(),
+                  isClean());
+          delay_ = null;
+        }
+        return delayBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -11107,53 +11361,55 @@ public final class TortugaProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\025tortuga/tortuga.proto\022\007tortuga\032\031google" +
-      "/protobuf/any.proto\032\033google/protobuf/emp" +
-      "ty.proto\032\037google/protobuf/timestamp.prot" +
-      "o\032\036google/protobuf/wrappers.proto\032\030grpc/" +
-      "status/status.proto\"?\n\006Worker\022\021\n\tworker_" +
-      "id\030\001 \001(\t\022\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003" +
-      " \003(\t\",\n\tHeartbeat\022\037\n\006worker\030\001 \001(\0132\017.tort" +
-      "uga.Worker\"*\n\007TaskReq\022\037\n\006worker\030\001 \001(\0132\017." +
-      "tortuga.Worker\"f\n\010TaskResp\022\n\n\002id\030\001 \001(\t\022\014" +
-      "\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.prot" +
-      "obuf.Any\022\016\n\006handle\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\"\245" +
-      "\001\n\004Task\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004dat" +
-      "a\030\003 \001(\0132\024.google.protobuf.Any\022-\n\010priorit" +
-      "y\030\004 \001(\0132\033.google.protobuf.Int32Value\0220\n\013" +
-      "max_retries\030\005 \001(\0132\033.google.protobuf.Int3" +
-      "2Value\"\220\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(\t\022" +
-      "\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retries" +
-      "\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 \001(" +
-      "\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007cr" +
-      "eated\030\t \001(\0132\032.google.protobuf.Timestamp\022" +
-      "0\n\014started_time\030\n \001(\0132\032.google.protobuf." +
-      "Timestamp\022-\n\tdone_time\030\013 \001(\0132\032.google.pr" +
-      "otobuf.Timestamp\022\"\n\006status\030\014 \001(\0132\022.googl" +
-      "e.rpc.Status\022\020\n\010progress\030\r \001(\002\022\030\n\020progre" +
-      "ss_message\030\016 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker" +
-      "_id\030\020 \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(\0132\r.t" +
-      "ortuga.Task\"-\n\nCreateResp\022\016\n\006handle\030\001 \001(" +
-      "\t\022\017\n\007created\030\002 \001(\010\"u\n\017CompleteTaskReq\022\037\n" +
-      "\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006handle" +
-      "\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_message\030\004 " +
-      "\001(\t\022\014\n\004logs\030\005 \001(\t\"\035\n\013ProgressReq\022\016\n\006hand" +
-      "le\030\001 \001(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 \001(\t" +
-      "\022\"\n\006status\030\002 \001(\0132\022.google.rpc.Status\"*\n\016" +
-      "TaskIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t" +
-      "2\351\003\n\007Tortuga\0225\n\nCreateTask\022\022.tortuga.Cre" +
-      "ateReq\032\023.tortuga.CreateResp\0222\n\013RequestTa" +
-      "sk\022\020.tortuga.TaskReq\032\021.tortuga.TaskResp\022" +
-      "4\n\tHeartbeat\022\017.tortuga.Worker\032\026.google.p" +
-      "rotobuf.Empty\022@\n\014CompleteTask\022\030.tortuga." +
-      "CompleteTaskReq\032\026.google.protobuf.Empty\022" +
-      ":\n\010FindTask\022\027.tortuga.TaskIdentifier\032\025.t" +
-      "ortuga.TaskProgress\022G\n\020FindTaskByHandle\022" +
-      "\034.google.protobuf.StringValue\032\025.tortuga." +
-      "TaskProgress\0226\n\004Ping\022\026.google.protobuf.E" +
-      "mpty\032\026.google.protobuf.Empty\022>\n\014QuitQuit" +
-      "Quit\022\026.google.protobuf.Empty\032\026.google.pr" +
-      "otobuf.EmptyB\032\n\nio.tortugaB\014TortugaProto" +
-      "b\006proto3"
+      "/protobuf/any.proto\032\036google/protobuf/dur" +
+      "ation.proto\032\033google/protobuf/empty.proto" +
+      "\032\037google/protobuf/timestamp.proto\032\036googl" +
+      "e/protobuf/wrappers.proto\032\030grpc/status/s" +
+      "tatus.proto\"?\n\006Worker\022\021\n\tworker_id\030\001 \001(\t" +
+      "\022\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003 \003(\t\",\n\t" +
+      "Heartbeat\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Work" +
+      "er\"*\n\007TaskReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga." +
+      "Worker\"f\n\010TaskResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002" +
+      " \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.Any" +
+      "\022\016\n\006handle\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\"\317\001\n\004Task\022" +
+      "\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132" +
+      "\024.google.protobuf.Any\022-\n\010priority\030\004 \001(\0132" +
+      "\033.google.protobuf.Int32Value\0220\n\013max_retr" +
+      "ies\030\005 \001(\0132\033.google.protobuf.Int32Value\022(" +
+      "\n\005delay\030\006 \001(\0132\031.google.protobuf.Duration" +
+      "\"\220\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(\t\022\n\n\002id\030" +
+      "\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retries\030\004 \001(\005" +
+      "\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 \001(\005\022\021\n\tw" +
+      "orked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007created\030" +
+      "\t \001(\0132\032.google.protobuf.Timestamp\0220\n\014sta" +
+      "rted_time\030\n \001(\0132\032.google.protobuf.Timest" +
+      "amp\022-\n\tdone_time\030\013 \001(\0132\032.google.protobuf" +
+      ".Timestamp\022\"\n\006status\030\014 \001(\0132\022.google.rpc." +
+      "Status\022\020\n\010progress\030\r \001(\002\022\030\n\020progress_mes" +
+      "sage\030\016 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker_id\030\020 " +
+      "\001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(\0132\r.tortuga" +
+      ".Task\"-\n\nCreateResp\022\016\n\006handle\030\001 \001(\t\022\017\n\007c" +
+      "reated\030\002 \001(\010\"u\n\017CompleteTaskReq\022\037\n\006worke" +
+      "r\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006handle\030\002 \001(\t" +
+      "\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_message\030\004 \001(\t\022\014\n" +
+      "\004logs\030\005 \001(\t\"\035\n\013ProgressReq\022\016\n\006handle\030\001 \001" +
+      "(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 \001(\t\022\"\n\006st" +
+      "atus\030\002 \001(\0132\022.google.rpc.Status\"*\n\016TaskId" +
+      "entifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t2\351\003\n\007T" +
+      "ortuga\0225\n\nCreateTask\022\022.tortuga.CreateReq" +
+      "\032\023.tortuga.CreateResp\0222\n\013RequestTask\022\020.t" +
+      "ortuga.TaskReq\032\021.tortuga.TaskResp\0224\n\tHea" +
+      "rtbeat\022\017.tortuga.Worker\032\026.google.protobu" +
+      "f.Empty\022@\n\014CompleteTask\022\030.tortuga.Comple" +
+      "teTaskReq\032\026.google.protobuf.Empty\022:\n\010Fin" +
+      "dTask\022\027.tortuga.TaskIdentifier\032\025.tortuga" +
+      ".TaskProgress\022G\n\020FindTaskByHandle\022\034.goog" +
+      "le.protobuf.StringValue\032\025.tortuga.TaskPr" +
+      "ogress\0226\n\004Ping\022\026.google.protobuf.Empty\032\026" +
+      ".google.protobuf.Empty\022>\n\014QuitQuitQuit\022\026" +
+      ".google.protobuf.Empty\032\026.google.protobuf" +
+      ".EmptyB\032\n\nio.tortugaB\014TortugaProtob\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11167,6 +11423,7 @@ public final class TortugaProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.AnyProto.getDescriptor(),
+          com.google.protobuf.DurationProto.getDescriptor(),
           com.google.protobuf.EmptyProto.getDescriptor(),
           com.google.protobuf.TimestampProto.getDescriptor(),
           com.google.protobuf.WrappersProto.getDescriptor(),
@@ -11201,7 +11458,7 @@ public final class TortugaProto {
     internal_static_tortuga_Task_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_Task_descriptor,
-        new java.lang.String[] { "Id", "Type", "Data", "Priority", "MaxRetries", });
+        new java.lang.String[] { "Id", "Type", "Data", "Priority", "MaxRetries", "Delay", });
     internal_static_tortuga_TaskProgress_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_tortuga_TaskProgress_fieldAccessorTable = new
@@ -11245,6 +11502,7 @@ public final class TortugaProto {
         internal_static_tortuga_TaskIdentifier_descriptor,
         new java.lang.String[] { "Id", "Type", });
     com.google.protobuf.AnyProto.getDescriptor();
+    com.google.protobuf.DurationProto.getDescriptor();
     com.google.protobuf.EmptyProto.getDescriptor();
     com.google.protobuf.TimestampProto.getDescriptor();
     com.google.protobuf.WrappersProto.getDescriptor();

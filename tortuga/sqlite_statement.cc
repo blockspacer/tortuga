@@ -39,6 +39,11 @@ void SqliteStatement::BindLong(int pos, int64_t val) {
   CHECK_EQ(SQLITE_OK, rc);
 }
 
+void SqliteStatement::BindNull(int pos) {
+  int rc = sqlite3_bind_null(stmt_, pos);
+  CHECK_EQ(SQLITE_OK, rc);
+}
+
 int SqliteStatement::Step() {
   return sqlite3_step(stmt_);
 }

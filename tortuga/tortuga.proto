@@ -7,6 +7,7 @@ option java_package = "io.tortuga";
 option java_outer_classname = "TortugaProto";
 
 import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
@@ -41,7 +42,10 @@ message Task {
   string type = 2;
   google.protobuf.Any data = 3;
   google.protobuf.Int32Value priority = 4;
-  google.protobuf.Int32Value max_retries = 5;  
+  google.protobuf.Int32Value max_retries = 5;
+
+  // If set the task shall not be served before this delay.
+  google.protobuf.Duration delay = 6;
 }
 
 message TaskProgress {
@@ -117,5 +121,4 @@ service Tortuga {
   // admin commands (for now these are for tests)
   rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);
   rpc QuitQuitQuit(google.protobuf.Empty) returns (google.protobuf.Empty);
-
 }
