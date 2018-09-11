@@ -22,7 +22,6 @@ static const char* Tortuga_method_names[] = {
   "/tortuga.Tortuga/CompleteTask",
   "/tortuga.Tortuga/FindTask",
   "/tortuga.Tortuga/FindTaskByHandle",
-  "/tortuga.Tortuga/ProgressSubscribe",
   "/tortuga.Tortuga/Ping",
   "/tortuga.Tortuga/QuitQuitQuit",
 };
@@ -40,9 +39,8 @@ Tortuga::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   , rpcmethod_CompleteTask_(Tortuga_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_FindTask_(Tortuga_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_FindTaskByHandle_(Tortuga_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_ProgressSubscribe_(Tortuga_method_names[6], ::grpc::internal::RpcMethod::BIDI_STREAMING, channel)
-  , rpcmethod_Ping_(Tortuga_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_QuitQuitQuit_(Tortuga_method_names[8], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Ping_(Tortuga_method_names[6], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_QuitQuitQuit_(Tortuga_method_names[7], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status Tortuga::Stub::CreateTask(::grpc::ClientContext* context, const ::tortuga::CreateReq& request, ::tortuga::CreateResp* response) {
@@ -117,18 +115,6 @@ Tortuga::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::tortuga::TaskProgress>::Create(channel_.get(), cq, rpcmethod_FindTaskByHandle_, context, request, false);
 }
 
-::grpc::ClientReaderWriter< ::tortuga::SubReq, ::tortuga::SubResp>* Tortuga::Stub::ProgressSubscribeRaw(::grpc::ClientContext* context) {
-  return ::grpc::internal::ClientReaderWriterFactory< ::tortuga::SubReq, ::tortuga::SubResp>::Create(channel_.get(), rpcmethod_ProgressSubscribe_, context);
-}
-
-::grpc::ClientAsyncReaderWriter< ::tortuga::SubReq, ::tortuga::SubResp>* Tortuga::Stub::AsyncProgressSubscribeRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::tortuga::SubReq, ::tortuga::SubResp>::Create(channel_.get(), cq, rpcmethod_ProgressSubscribe_, context, true, tag);
-}
-
-::grpc::ClientAsyncReaderWriter< ::tortuga::SubReq, ::tortuga::SubResp>* Tortuga::Stub::PrepareAsyncProgressSubscribeRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::tortuga::SubReq, ::tortuga::SubResp>::Create(channel_.get(), cq, rpcmethod_ProgressSubscribe_, context, false, nullptr);
-}
-
 ::grpc::Status Tortuga::Stub::Ping(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::google::protobuf::Empty* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Ping_, context, request, response);
 }
@@ -186,16 +172,11 @@ Tortuga::Service::Service() {
           std::mem_fn(&Tortuga::Service::FindTaskByHandle), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Tortuga_method_names[6],
-      ::grpc::internal::RpcMethod::BIDI_STREAMING,
-      new ::grpc::internal::BidiStreamingHandler< Tortuga::Service, ::tortuga::SubReq, ::tortuga::SubResp>(
-          std::mem_fn(&Tortuga::Service::ProgressSubscribe), this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
-      Tortuga_method_names[7],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::google::protobuf::Empty, ::google::protobuf::Empty>(
           std::mem_fn(&Tortuga::Service::Ping), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      Tortuga_method_names[8],
+      Tortuga_method_names[7],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::google::protobuf::Empty, ::google::protobuf::Empty>(
           std::mem_fn(&Tortuga::Service::QuitQuitQuit), this)));
@@ -243,12 +224,6 @@ Tortuga::Service::~Service() {
   (void) context;
   (void) request;
   (void) response;
-  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-}
-
-::grpc::Status Tortuga::Service::ProgressSubscribe(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::tortuga::SubResp, ::tortuga::SubReq>* stream) {
-  (void) context;
-  (void) stream;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

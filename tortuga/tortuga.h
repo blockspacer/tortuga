@@ -43,9 +43,6 @@ class TortugaHandler : boost::noncopyable {
   void HandleQuit();
 
   void CheckHeartbeatsLoop();
-  void HandleProgressSubscribe() {
-    progress_mgr_->HandleProgressSubscribe();
-  }
 
   void HandleFindTask() {
     progress_mgr_->HandleFindTask();

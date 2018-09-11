@@ -149,10 +149,6 @@ int main(int argc, char** argv) {
   });
 
   fibers.addTask([&tortuga]() {
-    tortuga.HandleProgressSubscribe();
-  });
-
-  fibers.addTask([&tortuga]() {
     tortuga.HandleFindTask();
   });
 
