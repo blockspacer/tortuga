@@ -103,17 +103,6 @@ message TaskIdentifier {
   string type = 2;
 }
 
-message SubReq {
-  string handle = 1;
-  bool is_beat = 2;
-  int32 number_of_subs = 3;
-}
-
-message SubResp {
-  TaskProgress progress = 1;
-  bool must_reconnect = 2;
-}
-
 service Tortuga {
   rpc CreateTask(CreateReq) returns (CreateResp);
   rpc RequestTask(TaskReq) returns (TaskResp);
@@ -124,12 +113,6 @@ service Tortuga {
   rpc FindTask(TaskIdentifier) returns (TaskProgress);
   // Finds a task by specific handle.
   rpc FindTaskByHandle(google.protobuf.StringValue) returns (TaskProgress);
-
-  // The client streams handles that they want to track.
-  // The server streams back task progresses for each task that is tracked by client.
-  // Once a progress has been received with value 'done is true' you can expect no more stream items
-  // for that task.
-  rpc ProgressSubscribe(stream SubReq) returns (stream SubResp);
 
   // admin commands (for now these are for tests)
   rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);

@@ -378,9 +378,6 @@ void TortugaHandler::HandleCompleteTask() {
 
   VLOG(3) << "received CompleteTask RPC: " << req.ShortDebugString();
   std::unique_ptr<TaskProgress> progress(CompleteTask(req));
-  if (progress != nullptr) {
-    progress_mgr_->NotifyProgress(*progress);
-  }
 
   google::protobuf::Empty reply;
   handler.Reset();

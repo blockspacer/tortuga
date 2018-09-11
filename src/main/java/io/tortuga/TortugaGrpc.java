@@ -189,33 +189,6 @@ public final class TortugaGrpc {
      return getFindTaskByHandleMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<io.tortuga.TortugaProto.SubReq,
-      io.tortuga.TortugaProto.SubResp> getProgressSubscribeMethod;
-
-  public static io.grpc.MethodDescriptor<io.tortuga.TortugaProto.SubReq,
-      io.tortuga.TortugaProto.SubResp> getProgressSubscribeMethod() {
-    io.grpc.MethodDescriptor<io.tortuga.TortugaProto.SubReq, io.tortuga.TortugaProto.SubResp> getProgressSubscribeMethod;
-    if ((getProgressSubscribeMethod = TortugaGrpc.getProgressSubscribeMethod) == null) {
-      synchronized (TortugaGrpc.class) {
-        if ((getProgressSubscribeMethod = TortugaGrpc.getProgressSubscribeMethod) == null) {
-          TortugaGrpc.getProgressSubscribeMethod = getProgressSubscribeMethod = 
-              io.grpc.MethodDescriptor.<io.tortuga.TortugaProto.SubReq, io.tortuga.TortugaProto.SubResp>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
-              .setFullMethodName(generateFullMethodName(
-                  "tortuga.Tortuga", "ProgressSubscribe"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  io.tortuga.TortugaProto.SubReq.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  io.tortuga.TortugaProto.SubResp.getDefaultInstance()))
-                  .setSchemaDescriptor(new TortugaMethodDescriptorSupplier("ProgressSubscribe"))
-                  .build();
-          }
-        }
-     }
-     return getProgressSubscribeMethod;
-  }
-
   private static volatile io.grpc.MethodDescriptor<com.google.protobuf.Empty,
       com.google.protobuf.Empty> getPingMethod;
 
@@ -347,19 +320,6 @@ public final class TortugaGrpc {
 
     /**
      * <pre>
-     * The client streams handles that they want to track.
-     * The server streams back task progresses for each task that is tracked by client.
-     * Once a progress has been received with value 'done is true' you can expect no more stream items
-     * for that task.
-     * </pre>
-     */
-    public io.grpc.stub.StreamObserver<io.tortuga.TortugaProto.SubReq> progressSubscribe(
-        io.grpc.stub.StreamObserver<io.tortuga.TortugaProto.SubResp> responseObserver) {
-      return asyncUnimplementedStreamingCall(getProgressSubscribeMethod(), responseObserver);
-    }
-
-    /**
-     * <pre>
      * admin commands (for now these are for tests)
      * </pre>
      */
@@ -419,13 +379,6 @@ public final class TortugaGrpc {
                 com.google.protobuf.StringValue,
                 io.tortuga.TortugaProto.TaskProgress>(
                   this, METHODID_FIND_TASK_BY_HANDLE)))
-          .addMethod(
-            getProgressSubscribeMethod(),
-            asyncBidiStreamingCall(
-              new MethodHandlers<
-                io.tortuga.TortugaProto.SubReq,
-                io.tortuga.TortugaProto.SubResp>(
-                  this, METHODID_PROGRESS_SUBSCRIBE)))
           .addMethod(
             getPingMethod(),
             asyncUnaryCall(
@@ -514,20 +467,6 @@ public final class TortugaGrpc {
         io.grpc.stub.StreamObserver<io.tortuga.TortugaProto.TaskProgress> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getFindTaskByHandleMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     * <pre>
-     * The client streams handles that they want to track.
-     * The server streams back task progresses for each task that is tracked by client.
-     * Once a progress has been received with value 'done is true' you can expect no more stream items
-     * for that task.
-     * </pre>
-     */
-    public io.grpc.stub.StreamObserver<io.tortuga.TortugaProto.SubReq> progressSubscribe(
-        io.grpc.stub.StreamObserver<io.tortuga.TortugaProto.SubResp> responseObserver) {
-      return asyncBidiStreamingCall(
-          getChannel().newCall(getProgressSubscribeMethod(), getCallOptions()), responseObserver);
     }
 
     /**
@@ -734,7 +673,6 @@ public final class TortugaGrpc {
   private static final int METHODID_FIND_TASK_BY_HANDLE = 5;
   private static final int METHODID_PING = 6;
   private static final int METHODID_QUIT_QUIT_QUIT = 7;
-  private static final int METHODID_PROGRESS_SUBSCRIBE = 8;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -795,9 +733,6 @@ public final class TortugaGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_PROGRESS_SUBSCRIBE:
-          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.progressSubscribe(
-              (io.grpc.stub.StreamObserver<io.tortuga.TortugaProto.SubResp>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -855,7 +790,6 @@ public final class TortugaGrpc {
               .addMethod(getCompleteTaskMethod())
               .addMethod(getFindTaskMethod())
               .addMethod(getFindTaskByHandleMethod())
-              .addMethod(getProgressSubscribeMethod())
               .addMethod(getPingMethod())
               .addMethod(getQuitQuitQuitMethod())
               .build();

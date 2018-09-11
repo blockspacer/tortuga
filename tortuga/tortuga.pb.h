@@ -41,7 +41,7 @@ namespace protobuf_tortuga_2ftortuga_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[14];
+  static const ::google::protobuf::internal::ParseTable schema[12];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -71,10 +71,6 @@ void InitDefaultsProgressRespImpl();
 void InitDefaultsProgressResp();
 void InitDefaultsTaskIdentifierImpl();
 void InitDefaultsTaskIdentifier();
-void InitDefaultsSubReqImpl();
-void InitDefaultsSubReq();
-void InitDefaultsSubRespImpl();
-void InitDefaultsSubResp();
 inline void InitDefaults() {
   InitDefaultsWorker();
   InitDefaultsHeartbeat();
@@ -88,8 +84,6 @@ inline void InitDefaults() {
   InitDefaultsProgressReq();
   InitDefaultsProgressResp();
   InitDefaultsTaskIdentifier();
-  InitDefaultsSubReq();
-  InitDefaultsSubResp();
 }
 }  // namespace protobuf_tortuga_2ftortuga_2eproto
 namespace tortuga {
@@ -111,12 +105,6 @@ extern ProgressReqDefaultTypeInternal _ProgressReq_default_instance_;
 class ProgressResp;
 class ProgressRespDefaultTypeInternal;
 extern ProgressRespDefaultTypeInternal _ProgressResp_default_instance_;
-class SubReq;
-class SubReqDefaultTypeInternal;
-extern SubReqDefaultTypeInternal _SubReq_default_instance_;
-class SubResp;
-class SubRespDefaultTypeInternal;
-extern SubRespDefaultTypeInternal _SubResp_default_instance_;
 class Task;
 class TaskDefaultTypeInternal;
 extern TaskDefaultTypeInternal _Task_default_instance_;
@@ -1772,236 +1760,6 @@ class TaskIdentifier : public ::google::protobuf::Message /* @@protoc_insertion_
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskIdentifierImpl();
-};
-// -------------------------------------------------------------------
-
-class SubReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.SubReq) */ {
- public:
-  SubReq();
-  virtual ~SubReq();
-
-  SubReq(const SubReq& from);
-
-  inline SubReq& operator=(const SubReq& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  SubReq(SubReq&& from) noexcept
-    : SubReq() {
-    *this = ::std::move(from);
-  }
-
-  inline SubReq& operator=(SubReq&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const SubReq& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SubReq* internal_default_instance() {
-    return reinterpret_cast<const SubReq*>(
-               &_SubReq_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    12;
-
-  void Swap(SubReq* other);
-  friend void swap(SubReq& a, SubReq& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline SubReq* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  SubReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const SubReq& from);
-  void MergeFrom(const SubReq& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(SubReq* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // string handle = 1;
-  void clear_handle();
-  static const int kHandleFieldNumber = 1;
-  const ::std::string& handle() const;
-  void set_handle(const ::std::string& value);
-  #if LANG_CXX11
-  void set_handle(::std::string&& value);
-  #endif
-  void set_handle(const char* value);
-  void set_handle(const char* value, size_t size);
-  ::std::string* mutable_handle();
-  ::std::string* release_handle();
-  void set_allocated_handle(::std::string* handle);
-
-  // bool is_beat = 2;
-  void clear_is_beat();
-  static const int kIsBeatFieldNumber = 2;
-  bool is_beat() const;
-  void set_is_beat(bool value);
-
-  // int32 number_of_subs = 3;
-  void clear_number_of_subs();
-  static const int kNumberOfSubsFieldNumber = 3;
-  ::google::protobuf::int32 number_of_subs() const;
-  void set_number_of_subs(::google::protobuf::int32 value);
-
-  // @@protoc_insertion_point(class_scope:tortuga.SubReq)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr handle_;
-  bool is_beat_;
-  ::google::protobuf::int32 number_of_subs_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
-  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsSubReqImpl();
-};
-// -------------------------------------------------------------------
-
-class SubResp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.SubResp) */ {
- public:
-  SubResp();
-  virtual ~SubResp();
-
-  SubResp(const SubResp& from);
-
-  inline SubResp& operator=(const SubResp& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  SubResp(SubResp&& from) noexcept
-    : SubResp() {
-    *this = ::std::move(from);
-  }
-
-  inline SubResp& operator=(SubResp&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const SubResp& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const SubResp* internal_default_instance() {
-    return reinterpret_cast<const SubResp*>(
-               &_SubResp_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    13;
-
-  void Swap(SubResp* other);
-  friend void swap(SubResp& a, SubResp& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline SubResp* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  SubResp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const SubResp& from);
-  void MergeFrom(const SubResp& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(SubResp* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // .tortuga.TaskProgress progress = 1;
-  bool has_progress() const;
-  void clear_progress();
-  static const int kProgressFieldNumber = 1;
-  const ::tortuga::TaskProgress& progress() const;
-  ::tortuga::TaskProgress* release_progress();
-  ::tortuga::TaskProgress* mutable_progress();
-  void set_allocated_progress(::tortuga::TaskProgress* progress);
-
-  // bool must_reconnect = 2;
-  void clear_must_reconnect();
-  static const int kMustReconnectFieldNumber = 2;
-  bool must_reconnect() const;
-  void set_must_reconnect(bool value);
-
-  // @@protoc_insertion_point(class_scope:tortuga.SubResp)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::tortuga::TaskProgress* progress_;
-  bool must_reconnect_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
-  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsSubRespImpl();
 };
 // ===================================================================
 
@@ -3967,166 +3725,9 @@ inline void TaskIdentifier::set_allocated_type(::std::string* type) {
   // @@protoc_insertion_point(field_set_allocated:tortuga.TaskIdentifier.type)
 }
 
-// -------------------------------------------------------------------
-
-// SubReq
-
-// string handle = 1;
-inline void SubReq::clear_handle() {
-  handle_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SubReq::handle() const {
-  // @@protoc_insertion_point(field_get:tortuga.SubReq.handle)
-  return handle_.GetNoArena();
-}
-inline void SubReq::set_handle(const ::std::string& value) {
-  
-  handle_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:tortuga.SubReq.handle)
-}
-#if LANG_CXX11
-inline void SubReq::set_handle(::std::string&& value) {
-  
-  handle_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:tortuga.SubReq.handle)
-}
-#endif
-inline void SubReq::set_handle(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  handle_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:tortuga.SubReq.handle)
-}
-inline void SubReq::set_handle(const char* value, size_t size) {
-  
-  handle_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:tortuga.SubReq.handle)
-}
-inline ::std::string* SubReq::mutable_handle() {
-  
-  // @@protoc_insertion_point(field_mutable:tortuga.SubReq.handle)
-  return handle_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SubReq::release_handle() {
-  // @@protoc_insertion_point(field_release:tortuga.SubReq.handle)
-  
-  return handle_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SubReq::set_allocated_handle(::std::string* handle) {
-  if (handle != NULL) {
-    
-  } else {
-    
-  }
-  handle_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), handle);
-  // @@protoc_insertion_point(field_set_allocated:tortuga.SubReq.handle)
-}
-
-// bool is_beat = 2;
-inline void SubReq::clear_is_beat() {
-  is_beat_ = false;
-}
-inline bool SubReq::is_beat() const {
-  // @@protoc_insertion_point(field_get:tortuga.SubReq.is_beat)
-  return is_beat_;
-}
-inline void SubReq::set_is_beat(bool value) {
-  
-  is_beat_ = value;
-  // @@protoc_insertion_point(field_set:tortuga.SubReq.is_beat)
-}
-
-// int32 number_of_subs = 3;
-inline void SubReq::clear_number_of_subs() {
-  number_of_subs_ = 0;
-}
-inline ::google::protobuf::int32 SubReq::number_of_subs() const {
-  // @@protoc_insertion_point(field_get:tortuga.SubReq.number_of_subs)
-  return number_of_subs_;
-}
-inline void SubReq::set_number_of_subs(::google::protobuf::int32 value) {
-  
-  number_of_subs_ = value;
-  // @@protoc_insertion_point(field_set:tortuga.SubReq.number_of_subs)
-}
-
-// -------------------------------------------------------------------
-
-// SubResp
-
-// .tortuga.TaskProgress progress = 1;
-inline bool SubResp::has_progress() const {
-  return this != internal_default_instance() && progress_ != NULL;
-}
-inline void SubResp::clear_progress() {
-  if (GetArenaNoVirtual() == NULL && progress_ != NULL) {
-    delete progress_;
-  }
-  progress_ = NULL;
-}
-inline const ::tortuga::TaskProgress& SubResp::progress() const {
-  const ::tortuga::TaskProgress* p = progress_;
-  // @@protoc_insertion_point(field_get:tortuga.SubResp.progress)
-  return p != NULL ? *p : *reinterpret_cast<const ::tortuga::TaskProgress*>(
-      &::tortuga::_TaskProgress_default_instance_);
-}
-inline ::tortuga::TaskProgress* SubResp::release_progress() {
-  // @@protoc_insertion_point(field_release:tortuga.SubResp.progress)
-  
-  ::tortuga::TaskProgress* temp = progress_;
-  progress_ = NULL;
-  return temp;
-}
-inline ::tortuga::TaskProgress* SubResp::mutable_progress() {
-  
-  if (progress_ == NULL) {
-    progress_ = new ::tortuga::TaskProgress;
-  }
-  // @@protoc_insertion_point(field_mutable:tortuga.SubResp.progress)
-  return progress_;
-}
-inline void SubResp::set_allocated_progress(::tortuga::TaskProgress* progress) {
-  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == NULL) {
-    delete progress_;
-  }
-  if (progress) {
-    ::google::protobuf::Arena* submessage_arena = NULL;
-    if (message_arena != submessage_arena) {
-      progress = ::google::protobuf::internal::GetOwnedMessage(
-          message_arena, progress, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  progress_ = progress;
-  // @@protoc_insertion_point(field_set_allocated:tortuga.SubResp.progress)
-}
-
-// bool must_reconnect = 2;
-inline void SubResp::clear_must_reconnect() {
-  must_reconnect_ = false;
-}
-inline bool SubResp::must_reconnect() const {
-  // @@protoc_insertion_point(field_get:tortuga.SubResp.must_reconnect)
-  return must_reconnect_;
-}
-inline void SubResp::set_must_reconnect(bool value) {
-  
-  must_reconnect_ = value;
-  // @@protoc_insertion_point(field_set:tortuga.SubResp.must_reconnect)
-}
-
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
