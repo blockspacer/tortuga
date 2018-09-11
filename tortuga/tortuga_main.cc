@@ -32,6 +32,7 @@ const char* const kCreateTortuga = R"(
     max_retries INTEGER NOT NULL,
     retries INTEGER NOT NULL DEFAULT 0,
     priority INTEGER NOT NULL,
+    delayed_time INTEGER NULL DEFAULT NULL,
     worked_on BOOLEAN NOT NULL DEFAULT false,
     worker_uuid TEXT NULL DEFAULT NULL,
     progress FLOAT NOT NULL DEFAULT 0.0,

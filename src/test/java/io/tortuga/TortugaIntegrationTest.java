@@ -6,6 +6,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.common.util.concurrent.Uninterruptibles;
+import com.google.protobuf.Duration;
 import com.google.protobuf.Empty;
 
 import io.grpc.ManagedChannel;
@@ -464,6 +465,35 @@ public class TortugaIntegrationTest {
     Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 50L, TimeUnit.SECONDS));
     tortuga.shutdown();
     tortuga2.shutdown();
+    conn.shutdown();
+  }
+
+  @Test
+  public void testDelayedTasks() {
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+    CountDownLatch latch = new CountDownLatch(10);
+
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    tortuga.addService(new ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        latch.countDown();
+        return Futures.immediateFuture(Status.OK);
+      }
+    });
+    tortuga.start();
+
+    TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+
+    for (int i = 0; i < 10; ++i) {
+      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeTask" + i).withDelayInSeconds(10), TestMessage.getDefaultInstance());
+    }
+
+    // Because of the delay...
+    Assert.assertFalse(Uninterruptibles.awaitUninterruptibly(latch, 9L, TimeUnit.SECONDS));
+    Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 60L, TimeUnit.SECONDS));
+    tortuga.shutdown();
     conn.shutdown();
   }
 }

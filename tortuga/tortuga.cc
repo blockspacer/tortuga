@@ -9,18 +9,23 @@
 #include "folly/Unit.h"
 #include "glog/logging.h"
 #include "grpc++/grpc++.h"
+#include "google/protobuf/timestamp.pb.h"
+#include "google/protobuf/util/time_util.h"
 
 #include "tortuga/baton_handler.h"
 #include "tortuga/sqlite_statement.h"
 #include "tortuga/time_logger.h"
 #include "tortuga/time_utils.h"
 
+using google::protobuf::Timestamp;
+using google::protobuf::util::TimeUtil;
+
 namespace tortuga {
 namespace {
 static const char* const kSelectExistingTaskStmt = "select rowid from tasks where id = ? and done != 1 LIMIT 1";
 
 static const char* const kInsertTaskStmt = R"(
-    insert into tasks (id, task_type, data, max_retries, priority, created) values (?, ?, ?, ?, ?, ?);
+    insert into tasks (id, task_type, data, max_retries, priority, delayed_time, created) values (?, ?, ?, ?, ?, ?, ?);
 )";
 
 static const char* const kSelectWorkerUuidStmt = "select uuid from workers where worker_id = ? LIMIT 1";
@@ -206,7 +211,16 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
   }
 
   insert_task_stmt_.BindInt(5, priority);
-  insert_task_stmt_.BindLong(6, CurrentTimeMillis());
+  if (task.has_delay()) {
+    Timestamp now = TimeUtil::GetCurrentTime();
+    Timestamp delayed_time = now + task.delay();
+
+    insert_task_stmt_.BindLong(6, TimeUtil::TimestampToMilliseconds(delayed_time));
+  } else {
+    insert_task_stmt_.BindNull(6);
+  }
+
+  insert_task_stmt_.BindLong(7, CurrentTimeMillis());
 
   insert_task_stmt_.ExecuteOrDie();
   sqlite3_int64 rowid = sqlite3_last_insert_rowid(db_);
@@ -309,6 +323,10 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
     return res;
   }
 
+  SqliteReset x(select_task_stmt);
+  Timestamp now = TimeUtil::GetCurrentTime();
+  select_task_stmt->BindLong(1, TimeUtil::TimestampToMilliseconds(now));
+
   int rc = select_task_stmt->Step();
   if (rc == SQLITE_DONE) {
     VLOG(3) << "Tortuga has no task at the moment";
@@ -354,19 +372,17 @@ SqliteStatement* TortugaHandler::GetOrCreateSelectStmtInExec(const Worker& worke
         worked_on != 1
         and done != 1
         and task_type IN (%s)
+        and ((delayed_time IS NULL) OR (delayed_time < ?))
         order by priority desc limit 1;
   )";
-  LOG(INFO) << "THE TEMPLATE: " << tpl;
+
   std::vector<std::string> quoted_capabilities;
   for (const auto& capa : worker.capabilities()) {
     quoted_capabilities.push_back("'" + capa + "'");
   }
   
   std::string capabilities = folly::join(", ", quoted_capabilities);
-  LOG(INFO) << "THE capabilities: " << capabilities;
-
   std::string stmt_str = folly::stringPrintf(tpl.c_str(), capabilities.c_str());
-    LOG(INFO) << "THE stmt_str: " << stmt_str;
 
   SqliteStatement* stmt = new SqliteStatement(db_, stmt_str);
   select_task_stmts_[worker.uuid()] = std::unique_ptr<SqliteStatement>(stmt);

@@ -18,6 +18,7 @@ class SqliteStatement : boost::noncopyable {
   void BindBool(int pos, bool val);
   void BindInt(int pos, int val);
   void BindLong(int pos, int64_t val);
+  void BindNull(int pos);
 
   int Step();
   // Executes a single statement (insert or update) that has no result.
