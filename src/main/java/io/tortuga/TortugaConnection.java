@@ -15,11 +15,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
-import io.grpc.stub.StreamObserver;
 import io.tortuga.TortugaProto.CreateReq;
 import io.tortuga.TortugaProto.CreateResp;
-import io.tortuga.TortugaProto.SubReq;
-import io.tortuga.TortugaProto.SubResp;
 import io.tortuga.TortugaProto.TaskProgress;
 
 import org.slf4j.Logger;
@@ -32,7 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TortugaConnection {
   private static final Logger LOG = LoggerFactory.getLogger(TortugaConnection.class);
@@ -61,8 +57,11 @@ public class TortugaConnection {
     return new TortugaConnection(chan);
   }
 
-  public void shutdown() {
-    heartbeatF.cancel(false);
+  public synchronized void shutdown() {
+    if (heartbeatF != null) {
+      heartbeatF.cancel(false);
+    }
+
     try {
       chan.shutdown();
       chan.awaitTermination(60L, TimeUnit.SECONDS);
@@ -163,7 +162,6 @@ public class TortugaConnection {
     List<String> toRemove = new ArrayList<>();
 
     for (Map.Entry<String, SettableFuture<Status>> e : completionListeners.entrySet()) {
-      System.out.println("Beating for completion of: " + e.getKey());
        try {
          TaskProgress progress = TortugaGrpc.newBlockingStub(chan)
              .withDeadlineAfter(5L, TimeUnit.SECONDS)
