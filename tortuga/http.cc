@@ -290,8 +290,7 @@ HttpResponse HttpClient::Post(const std::string& url,
 HttpResponse HttpClient::Patch(const std::string& url,
                                const std::map<std::string, std::string> headers,
                                const std::string& body) {
-  // TODO(christian) put PATCH
-  return SendWithBody(proxygen::HTTPMethod::POST, url, headers, body);
+  return SendWithBody(proxygen::HTTPMethod::PATCH, url, headers, body);
 }
 
 HttpResponse HttpClient::SendWithBody(proxygen::HTTPMethod method,
