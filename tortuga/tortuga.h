@@ -10,6 +10,7 @@
 #include "grpc++/grpc++.h"
 #include "sqlite3.h"
 
+#include "tortuga/module.h"
 #include "tortuga/progress_manager.h"
 #include "tortuga/rpc_opts.h"
 #include "tortuga/sqlite_statement.h"
@@ -28,7 +29,7 @@ struct RegisteredWorker {
 
 class TortugaHandler : boost::noncopyable {
  public:
-  TortugaHandler(sqlite3* db, RpcOpts rpc_opts);
+  TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules);
   ~TortugaHandler() {
   }
 
@@ -36,7 +37,7 @@ class TortugaHandler : boost::noncopyable {
   void HandleRequestTask();
   void HandleHeartbeat();
   void HandleCompleteTask();
-
+  void HandleUpdateProgress();
 
   // admin commands.
   void HandlePing();
@@ -122,5 +123,8 @@ class TortugaHandler : boost::noncopyable {
 
   // map from worker UUID to its select statement.
   std::map<std::string, std::unique_ptr<SqliteStatement>> select_task_stmts_;
+
+  // all modules
+  const std::map<std::string, std::unique_ptr<Module>> modules_;
 };
 }  // namespace tortuga

@@ -18,6 +18,9 @@ add_library (tortuga_lib
   grpc/status/status.grpc.pb.cc  
   sqlite3.c
   tortuga/baton_handler.cc
+  tortuga/http.cc
+  tortuga/modules/firestore.cc
+  tortuga/module.cc
   tortuga/progress_manager.cc
   tortuga/rpc_opts.cc  
   tortuga/sqlite_statement.cc
@@ -40,12 +43,19 @@ target_link_libraries(tortuga_lib
   gpr
   folly
   protobuf
+  proxygenlib
   pthread
   jemalloc
   snappy
   lz4
   bz2
   z
+  crypto
+  ssl
+  wangle
+  unwind
+  event
+  double-conversion
 )
 
 
@@ -54,7 +64,13 @@ add_executable(tortuga_main tortuga/tortuga_main.cc)
 target_link_libraries (tortuga_main
   tortuga_lib
   folly
-  follyinit
+)
+
+add_executable(http_client_main tortuga/http_client_main.cc)
+
+target_link_libraries (http_client_main
+  tortuga_lib
+  folly
 )
 
 add_library (tortuga_plugin_lib
@@ -86,7 +102,6 @@ add_executable(protoc-gen-tortuga tortuga/plugin/protoc_gen_tortuga.cc)
 target_link_libraries (protoc-gen-tortuga
   tortuga_lib
   folly
-  follyinit
   protoc
   protobuf
 )

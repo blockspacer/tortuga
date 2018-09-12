@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <string>
+#include <utility>
 
 #include "folly/Conv.h"
 #include "folly/MapUtil.h"
@@ -25,7 +26,7 @@ namespace {
 static const char* const kSelectExistingTaskStmt = "select rowid from tasks where id = ? and done != 1 LIMIT 1";
 
 static const char* const kInsertTaskStmt = R"(
-    insert into tasks (id, task_type, data, max_retries, priority, delayed_time, created) values (?, ?, ?, ?, ?, ?, ?);
+    insert into tasks (id, task_type, data, max_retries, priority, delayed_time, modules, created) values (?, ?, ?, ?, ?, ?, ?, ?);
 )";
 
 static const char* const kSelectWorkerUuidStmt = "select uuid from workers where worker_id = ? LIMIT 1";
@@ -82,7 +83,7 @@ static const char* const kInsertHistoricWorkerStmt = R"(
 )";
 }  // anonymous namespace
 
-TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts)
+TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules)
     : db_(db),
       rpc_opts_(rpc_opts),
       select_existing_task_stmt_(db, kSelectExistingTaskStmt),
@@ -97,7 +98,8 @@ TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts)
       select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
       unassign_tasks_stmt_(db, kUnassignTasksStmt),
       update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
-      insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt) {
+      insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt),
+      modules_(std::move(modules)) {
   progress_mgr_.reset(new ProgressManager(db, &exec_, rpc_opts));
 }
 
@@ -220,7 +222,14 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
     insert_task_stmt_.BindNull(6);
   }
 
-  insert_task_stmt_.BindLong(7, CurrentTimeMillis());
+  if (task.modules_size() == 0) {
+    insert_task_stmt_.BindNull(7);
+  } else {
+    std::string modules = folly::join(",", task.modules());
+    insert_task_stmt_.BindText(7, modules);
+  }
+
+  insert_task_stmt_.BindLong(8, CurrentTimeMillis());
 
   insert_task_stmt_.ExecuteOrDie();
   sqlite3_int64 rowid = sqlite3_last_insert_rowid(db_);
@@ -553,6 +562,30 @@ void TortugaHandler::UnassignTaskInExec(const std::string& uuid) {
 
   // cleanup the prepared statement that would otherwise take up memory.
   select_task_stmts_.erase(uuid);
+}
+
+void TortugaHandler::HandleUpdateProgress() {
+  BatonHandler handler;
+
+  grpc::ServerContext ctx;
+  UpdateProgressReq req;
+  grpc::ServerAsyncResponseWriter<google::protobuf::Empty> resp(&ctx);
+
+  // start a new RPC and wait.
+  rpc_opts_.tortuga_grpc->RequestUpdateProgress(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
+  CHECK(handler.Wait());
+
+  // adds a new RPC processor.
+  rpc_opts_.fibers->addTask([this]() {
+    HandleUpdateProgress();
+  });
+
+  VLOG(3) << "received HandleUpdateProgress RPC: " << req.ShortDebugString();
+
+  google::protobuf::Empty reply;
+  handler.Reset();
+  resp.Finish(reply, grpc::Status::OK, &handler);
+  handler.Wait();
 }
 
 void TortugaHandler::HandlePing() {

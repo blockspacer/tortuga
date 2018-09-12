@@ -1,6 +1,8 @@
+#include <map>
 #include <memory>
 #include <string>
 #include <thread>
+#include <utility>
 
 #include "folly/Conv.h"
 #include "folly/fibers/FiberManager.h"
@@ -13,10 +15,12 @@
 #include "sqlite3.h"
 
 #include "tortuga/baton_handler.h"
+#include "tortuga/module.h"
 #include "tortuga/rpc_opts.h"
 #include "tortuga/tortuga.h"
 #include "tortuga/tortuga.grpc.pb.h"
 #include "tortuga/tortuga.pb.h"
+#include "tortuga/modules/firestore.h"
 
 DEFINE_string(db_file, "tortuga.db", "path to db file.");
 DEFINE_string(addr, "127.0.0.1", "address to listen on.");
@@ -33,6 +37,7 @@ const char* const kCreateTortuga = R"(
     retries INTEGER NOT NULL DEFAULT 0,
     priority INTEGER NOT NULL,
     delayed_time INTEGER NULL DEFAULT NULL,
+    modules TEXT NULL DEFAULT NULL,
     worked_on BOOLEAN NOT NULL DEFAULT false,
     worker_uuid TEXT NULL DEFAULT NULL,
     progress FLOAT NOT NULL DEFAULT 0.0,
@@ -119,7 +124,10 @@ int main(int argc, char** argv) {
   rpc_opts.cq = cq.get();
   rpc_opts.fibers = &fibers;
   
-  tortuga::TortugaHandler tortuga(db, rpc_opts);
+  std::map<std::string, std::unique_ptr<tortuga::Module>> modules;
+  modules["firestore"] = std::make_unique<tortuga::FirestoreModule>();
+
+  tortuga::TortugaHandler tortuga(db, rpc_opts, std::move(modules));
 
   fibers.addTask([&tortuga]() {
     tortuga.HandleCreateTask();
@@ -131,6 +139,10 @@ int main(int argc, char** argv) {
 
   fibers.addTask([&tortuga]() {
     tortuga.HandleHeartbeat();
+  });
+
+  fibers.addTask([&tortuga]() {
+    tortuga.HandleUpdateProgress();
   });
 
   fibers.addTask([&tortuga]() {
