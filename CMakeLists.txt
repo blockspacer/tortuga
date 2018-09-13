@@ -13,6 +13,26 @@ add_subdirectory(third_party/googletest)
 enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
+
+add_library(firestore_proto_lib
+  google/firestore/v1beta1/common.grpc.pb.cc
+  google/firestore/v1beta1/common.pb.cc
+  google/firestore/v1beta1/document.grpc.pb.cc
+  google/firestore/v1beta1/document.pb.cc
+  google/firestore/v1beta1/firestore.grpc.pb.cc
+  google/firestore/v1beta1/firestore.pb.cc
+  google/firestore/v1beta1/query.grpc.pb.cc
+  google/firestore/v1beta1/query.pb.cc
+  google/firestore/v1beta1/write.grpc.pb.cc
+  google/firestore/v1beta1/write.pb.cc
+)
+
+target_link_libraries(firestore_proto_lib
+  grpc++
+  gpr
+  protobuf
+)
+
 add_library (tortuga_lib
   grpc/status/status.pb.cc
   grpc/status/status.grpc.pb.cc  
@@ -32,6 +52,7 @@ add_library (tortuga_lib
 )
 
 target_link_libraries(tortuga_lib
+  firestore_proto_lib
   boost_context
   boost_filesystem
   boost_thread
@@ -53,9 +74,6 @@ target_link_libraries(tortuga_lib
   crypto
   ssl
   wangle
-  unwind
-  event
-  double-conversion
 )
 
 
