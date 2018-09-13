@@ -78,8 +78,8 @@ class TortugaHandler : boost::noncopyable {
   RequestTaskResult RequestTask(const Worker& worker);
   RequestTaskResult RequestTaskInExec(const Worker& worker);
 
-  TaskProgress* CompleteTask(const CompleteTaskReq& req);
-  TaskProgress* CompleteTaskInExec(const CompleteTaskReq& req);
+  UpdatedTask* CompleteTask(const CompleteTaskReq& req);
+  UpdatedTask* CompleteTaskInExec(const CompleteTaskReq& req);
 
   std::vector<std::string> ExpiredWorkersInExec();
   void UnassignTasksInExec(const std::vector<std::string>& uuids);

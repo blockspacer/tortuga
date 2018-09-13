@@ -57,14 +57,14 @@ void ProgressManager::HandleFindTask() {
 
   VLOG(3) << "received FindTask RPC: " << req.ShortDebugString();
 
-  std::unique_ptr<TaskProgress> progress(FindTask(req));
+  std::unique_ptr<UpdatedTask> progress(FindTask(req));
   handler.Reset();
   if (progress == nullptr) {
     TaskProgress unfound;
     auto status_not_found = grpc::Status(grpc::StatusCode::NOT_FOUND, "no such task");
     resp.Finish(unfound, status_not_found, &handler);
   } else {
-    resp.Finish(*progress, grpc::Status::OK, &handler);
+    resp.Finish(*progress->progress, grpc::Status::OK, &handler);
   }
 
   handler.Wait();
@@ -88,7 +88,7 @@ void ProgressManager::HandleFindTaskByHandle() {
 
   VLOG(3) << "received FindTaskByHandle RPC: " << req.ShortDebugString();
 
-  std::unique_ptr<TaskProgress> progress(FindTaskByHandle(req.value()));
+  std::unique_ptr<UpdatedTask> progress(FindTaskByHandle(req.value()));
 
   handler.Reset();
   if (progress == nullptr) {
@@ -96,42 +96,42 @@ void ProgressManager::HandleFindTaskByHandle() {
     auto status_not_found = grpc::Status(grpc::StatusCode::NOT_FOUND, "no such task");
     resp.Finish(unfound, status_not_found, &handler);
   } else {
-    resp.Finish(*progress, grpc::Status::OK, &handler);
+    resp.Finish(*progress->progress, grpc::Status::OK, &handler);
   }
 
   handler.Wait();
 }
 
-TaskProgress* ProgressManager::FindTaskByHandle(const std::string& handle) {
-  folly::fibers::await([&](folly::fibers::Promise<TaskProgress*> p) {
+UpdatedTask* ProgressManager::FindTaskByHandle(const std::string& handle) {
+  folly::fibers::await([&](folly::fibers::Promise<UpdatedTask*> p) {
     exec_->add([this, &handle, promise = std::move(p)]() mutable {
       promise.setValue(FindTaskByHandleInExec(handle));
     });
   });
 }
 
-TaskProgress* ProgressManager::FindTaskByHandleInExec(const std::string& handle) {
+UpdatedTask* ProgressManager::FindTaskByHandleInExec(const std::string& handle) {
   select_task_stmt_.BindLong(1, folly::to<int64_t>(handle));
 
   return FindTaskByBoundStmtInExec(&select_task_stmt_);
 }
 
-TaskProgress* ProgressManager::FindTask(const TaskIdentifier& t_id) {
-  folly::fibers::await([&](folly::fibers::Promise<TaskProgress*> p) {
+UpdatedTask* ProgressManager::FindTask(const TaskIdentifier& t_id) {
+  folly::fibers::await([&](folly::fibers::Promise<UpdatedTask*> p) {
     exec_->add([this, &t_id, promise = std::move(p)]() mutable {
       promise.setValue(FindTaskInExec(t_id));
     });
   });
 }
 
-TaskProgress* ProgressManager::FindTaskInExec(const TaskIdentifier& t_id) {
+UpdatedTask* ProgressManager::FindTaskInExec(const TaskIdentifier& t_id) {
   select_task_by_identifier_stmt_.BindText(1, t_id.id());
   select_task_by_identifier_stmt_.BindText(2, t_id.type());
 
   return FindTaskByBoundStmtInExec(&select_task_by_identifier_stmt_);
 }
   
-TaskProgress* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) {
+UpdatedTask* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) {
   SqliteReset x(stmt);
 
   int rc = stmt->Step();
@@ -153,29 +153,31 @@ TaskProgress* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) 
   res.set_max_retries(stmt->ColumnInt(5));
   res.set_retries(stmt->ColumnInt(6));
   res.set_priority(stmt->ColumnInt(7));
-  res.set_worked_on(stmt->ColumnBool(8));
 
-  std::string worker_uuid = stmt->ColumnTextOrEmpty(9);
+  std::string modules = stmt->ColumnTextOrEmpty(9);
+  res.set_worked_on(stmt->ColumnBool(10));
 
-  res.set_progress(stmt->ColumnFloat(10));
-  res.set_progress_message(stmt->ColumnTextOrEmpty(11));
+  std::string worker_uuid = stmt->ColumnTextOrEmpty(11);
 
-  res.mutable_status()->set_code(stmt->ColumnInt(12));
-  res.mutable_status()->set_message(stmt->ColumnTextOrEmpty(13));
+  res.set_progress(stmt->ColumnFloat(12));
+  res.set_progress_message(stmt->ColumnTextOrEmpty(13));
 
-  res.set_done(stmt->ColumnBool(14));
+  res.mutable_status()->set_code(stmt->ColumnInt(14));
+  res.mutable_status()->set_message(stmt->ColumnTextOrEmpty(15));
 
-  auto started_time_opt = stmt->ColumnTimestamp(15);
+  res.set_done(stmt->ColumnBool(16));
+
+  auto started_time_opt = stmt->ColumnTimestamp(17);
   if (started_time_opt != nullptr) {
     *res.mutable_started_time() = *started_time_opt;
   }
 
-  auto done_time_opt = stmt->ColumnTimestamp(16);
+  auto done_time_opt = stmt->ColumnTimestamp(18);
   if (done_time_opt != nullptr) {
     *res.mutable_done_time() = *done_time_opt;
   }
 
-  res.set_logs(stmt->ColumnTextOrEmpty(17));
+  res.set_logs(stmt->ColumnTextOrEmpty(19));
 
   if (!worker_uuid.empty()) {
     SqliteReset x2(&select_worker_id_by_uuid_stmt_);
@@ -187,6 +189,10 @@ TaskProgress* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) 
     }
   }
 
-  return new TaskProgress(res);
+  UpdatedTask* updated_task = new UpdatedTask();
+  updated_task->progress = std::make_unique<TaskProgress>(res);
+  
+  
+  return updated_task;
 }
 }  // namespace tortuga

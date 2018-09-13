@@ -38,7 +38,6 @@ add_library (tortuga_lib
   grpc/status/status.grpc.pb.cc  
   sqlite3.c
   tortuga/baton_handler.cc
-  tortuga/http.cc
   tortuga/modules/firestore.cc
   tortuga/module.cc
   tortuga/progress_manager.cc
@@ -80,13 +79,6 @@ target_link_libraries(tortuga_lib
 add_executable(tortuga_main tortuga/tortuga_main.cc)
 
 target_link_libraries (tortuga_main
-  tortuga_lib
-  folly
-)
-
-add_executable(http_client_main tortuga/http_client_main.cc)
-
-target_link_libraries (http_client_main
   tortuga_lib
   folly
 )

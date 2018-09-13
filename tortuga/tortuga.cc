@@ -440,7 +440,11 @@ void TortugaHandler::HandleCompleteTask() {
   });
 
   VLOG(3) << "received CompleteTask RPC: " << req.ShortDebugString();
-  std::unique_ptr<TaskProgress> progress(CompleteTask(req));
+  std::unique_ptr<UpdatedTask> progress(CompleteTask(req));
+  
+  if (progress != nullptr) {
+    
+  }
 
   google::protobuf::Empty reply;
   handler.Reset();
@@ -448,15 +452,15 @@ void TortugaHandler::HandleCompleteTask() {
   handler.Wait();
 }
 
-TaskProgress* TortugaHandler::CompleteTask(const CompleteTaskReq& req) {
-  return folly::fibers::await([&](folly::fibers::Promise<TaskProgress*> p) {
+UpdatedTask* TortugaHandler::CompleteTask(const CompleteTaskReq& req) {
+  return folly::fibers::await([&](folly::fibers::Promise<UpdatedTask*> p) {
     exec_.add([this, &req, promise = std::move(p)]() mutable {
       promise.setValue(CompleteTaskInExec(req));
     });
   });
 }
 
-TaskProgress* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
+UpdatedTask* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
   int64_t rowid = folly::to<int64_t>(req.handle());
   VLOG(3) << "completing task of handle: " << rowid;
   SqliteReset x1(&select_task_to_complete_stmt_);

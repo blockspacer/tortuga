@@ -15,7 +15,6 @@
 #include "sqlite3.h"
 
 #include "tortuga/baton_handler.h"
-#include "tortuga/http.h"
 #include "tortuga/module.h"
 #include "tortuga/rpc_opts.h"
 #include "tortuga/tortuga.h"
@@ -124,11 +123,9 @@ int main(int argc, char** argv) {
   rpc_opts.tortuga_grpc = &tortuga_grpc;
   rpc_opts.cq = cq.get();
   rpc_opts.fibers = &fibers;
-  
-  tortuga::HttpClient http(&evb);
 
   std::map<std::string, std::unique_ptr<tortuga::Module>> modules;
-  modules["firestore"] = std::make_unique<tortuga::FirestoreModule>(&http);
+  modules["firestore"] = std::make_unique<tortuga::FirestoreModule>(cq.get());
 
   tortuga::TortugaHandler tortuga(db, rpc_opts, std::move(modules));
 
