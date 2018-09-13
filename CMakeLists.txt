@@ -69,16 +69,12 @@ target_link_libraries(tortuga_lib
   gpr
   folly
   protobuf
-  proxygenlib
   pthread
   jemalloc
   snappy
   lz4
   bz2
   z
-  crypto
-  ssl
-  wangle
 )
 
 
