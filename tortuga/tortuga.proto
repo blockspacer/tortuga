@@ -11,7 +11,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
-import "grpc/status/status.proto";
+import "google/rpc/status.proto";
 
 message Worker {
   string worker_id = 1;
@@ -95,9 +95,12 @@ message CompleteTaskReq {
 }
 
 message UpdateProgressReq {
-  string handle = 1;
-  float progress = 2;
-  string progress_message = 3;
+  Worker worker = 1;
+  string handle = 2;
+
+  // If set, it erases the value, else it is ignored (progress value will remain what it was).
+  google.protobuf.FloatValue progress = 3;
+  google.protobuf.StringValue progress_message = 4;
 }
 
 message ProgressReq {

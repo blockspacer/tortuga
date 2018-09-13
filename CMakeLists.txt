@@ -15,6 +15,10 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 
 add_library(firestore_proto_lib
+  google/api/annotations.grpc.pb.cc
+  google/api/annotations.pb.cc
+  google/api/http.grpc.pb.cc
+  google/api/http.pb.cc
   google/firestore/v1beta1/common.grpc.pb.cc
   google/firestore/v1beta1/common.pb.cc
   google/firestore/v1beta1/document.grpc.pb.cc
@@ -25,6 +29,10 @@ add_library(firestore_proto_lib
   google/firestore/v1beta1/query.pb.cc
   google/firestore/v1beta1/write.grpc.pb.cc
   google/firestore/v1beta1/write.pb.cc
+  google/rpc/status.pb.cc
+  google/rpc/status.grpc.pb.cc
+  google/type/latlng.pb.cc
+  google/type/latlng.grpc.pb.cc
 )
 
 target_link_libraries(firestore_proto_lib
@@ -34,8 +42,6 @@ target_link_libraries(firestore_proto_lib
 )
 
 add_library (tortuga_lib
-  grpc/status/status.pb.cc
-  grpc/status/status.grpc.pb.cc  
   sqlite3.c
   tortuga/baton_handler.cc
   tortuga/modules/firestore.cc

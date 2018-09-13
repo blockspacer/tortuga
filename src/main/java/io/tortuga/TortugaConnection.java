@@ -13,9 +13,11 @@ import com.google.protobuf.StringValue;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
+import io.grpc.Status.Code;
 import io.grpc.StatusRuntimeException;
 import io.tortuga.TortugaProto.CreateReq;
 import io.tortuga.TortugaProto.CreateResp;
+import io.tortuga.TortugaProto.TaskIdentifier;
 import io.tortuga.TortugaProto.TaskProgress;
 
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -93,6 +96,8 @@ public class TortugaConnection {
       task.setDelay(spec.duration.get());
     }
 
+    task.addAllModules(spec.modules);
+
     req.setTask(task);
 
     CreateResp resp = TortugaGrpc.newBlockingStub(chan)
@@ -123,6 +128,8 @@ public class TortugaConnection {
       task.setDelay(spec.duration.get());
     }
 
+    task.addAllModules(spec.modules);
+
     req.setTask(task);
 
     ListenableFuture<CreateResp> respF = TortugaGrpc.newFutureStub(chan)
@@ -144,6 +151,35 @@ public class TortugaConnection {
             .setValue(handle)
             .build())
         .getDone();
+  }
+
+  TaskProgress getProgress(String handle) {
+    return TortugaGrpc.newBlockingStub(chan)
+        .withDeadlineAfter(30L, TimeUnit.SECONDS)
+        .findTaskByHandle(StringValue.newBuilder()
+            .setValue(handle)
+            .build());
+  }
+
+  public Optional<TaskWatcher> createWatcher(String id, String type) {
+    TaskIdentifier taskId = TaskIdentifier.newBuilder()
+        .setId(id)
+        .setType(type)
+        .build();
+
+    try {
+      TaskProgress progress = TortugaGrpc.newBlockingStub(chan)
+          .withDeadlineAfter(30L, TimeUnit.SECONDS)
+          .findTask(taskId);
+
+      return Optional.of(new TaskWatcher(progress.getHandle(), this));
+    } catch (StatusRuntimeException ex) {
+      if (ex.getStatus().getCode() == Code.NOT_FOUND) {
+        return Optional.empty();
+      }
+
+      throw ex;
+    }
   }
 
   /**

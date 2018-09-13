@@ -89,11 +89,32 @@ public class TestService2Tortuga {
 
   }
 
+  public static final class TaskManager {
+    private final TortugaConnection conn;
+
+    private TaskManager(TortugaConnection conn) {
+      this.conn = conn;
+    }
+
+    public java.util.Optional<io.tortuga.TaskWatcher> findHandleTask2Task(String id) {
+      return conn.createWatcher(id, "tortuga.test.TestService2.HandleTask2");
+    }
+
+    public java.util.Optional<io.tortuga.TaskWatcher> findHandleCustomMessage2Task(String id) {
+      return conn.createWatcher(id, "tortuga.test.TestService2.HandleCustomMessage2");
+    }
+
+  }
+
   public static Publisher newPublisher(TortugaConnection conn) {
     return new Publisher(conn);
   }
 
   public static AsyncPublisher newAsyncPublisher(TortugaConnection conn) {
     return new AsyncPublisher(conn);
+  }
+
+  public static TaskManager newTaskManager(TortugaConnection conn) {
+    return new TaskManager(conn);
   }
 }

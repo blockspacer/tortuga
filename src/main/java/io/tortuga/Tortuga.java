@@ -153,7 +153,7 @@ public class Tortuga {
         }
 
         ListenableFuture<Void> xf = Futures.immediateFuture(null);
-        TortugaContext ctx = new TortugaContext();
+        TortugaContext ctx = new TortugaContext(resp.getHandle(), chan, worker);
         ListenableFuture<Status> statusF = Futures.transformAsync(xf, x-> handler.execute(resp.getData(), ctx), workersPool);
         statusF = Futures.catching(statusF, Exception.class, ex-> Status.fromThrowable(ex));
 

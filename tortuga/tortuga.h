@@ -81,6 +81,11 @@ class TortugaHandler : boost::noncopyable {
   UpdatedTask* CompleteTask(const CompleteTaskReq& req);
   UpdatedTask* CompleteTaskInExec(const CompleteTaskReq& req);
 
+  UpdatedTask* UpdateProgress(const UpdateProgressReq& req);
+  UpdatedTask* UpdateProgressInExec(const UpdateProgressReq& req);
+
+  void MaybeNotifyModules(const UpdatedTask& task);
+
   std::vector<std::string> ExpiredWorkersInExec();
   void UnassignTasksInExec(const std::vector<std::string>& uuids);
   void UnassignTaskInExec(const std::string& uuid);
@@ -113,6 +118,9 @@ class TortugaHandler : boost::noncopyable {
 
   SqliteStatement select_task_to_complete_stmt_;
   SqliteStatement complete_task_stmt_;
+  SqliteStatement update_task_progress_stmt_;
+  SqliteStatement update_task_progress_only_stmt_;
+  SqliteStatement update_task_progress_msg_only_stmt_;
 
   SqliteStatement select_expired_workers_stmt_;
 

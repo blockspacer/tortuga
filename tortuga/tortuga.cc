@@ -63,6 +63,25 @@ static const char* const kCompleteTaskStmt = R"(
     where rowid=? ;
 )";
 
+static const char* const kUpdateTaskProgressStmt = R"(
+    update tasks set
+    progress=?,
+    progress_message=?
+    where rowid=?;
+)";
+
+static const char* const kUpdateTaskProgressOnlyStmt = R"(
+    update tasks set
+    progress=?
+    where rowid=?;
+)";
+
+static const char* const kUpdateTaskProgressMsgOnlyStmt = R"(
+    update tasks set
+    progress_message=?
+    where rowid=?;
+)";
+
 static const char* const kSelectExpiredWorkersStmt = R"(
     select uuid, last_invalidated_uuid from workers where last_beat < ?;
 )";
@@ -95,6 +114,9 @@ TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::stri
       assign_task_stmt_(db, kAssignTaskStmt),
       select_task_to_complete_stmt_(db, kSelectTaskToCompleteStmt),
       complete_task_stmt_(db, kCompleteTaskStmt),
+      update_task_progress_stmt_(db, kUpdateTaskProgressStmt),
+      update_task_progress_only_stmt_(db, kUpdateTaskProgressOnlyStmt),
+      update_task_progress_msg_only_stmt_(db, kUpdateTaskProgressMsgOnlyStmt),
       select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
       unassign_tasks_stmt_(db, kUnassignTasksStmt),
       update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
@@ -441,9 +463,8 @@ void TortugaHandler::HandleCompleteTask() {
 
   VLOG(3) << "received CompleteTask RPC: " << req.ShortDebugString();
   std::unique_ptr<UpdatedTask> progress(CompleteTask(req));
-  
   if (progress != nullptr) {
-    
+    MaybeNotifyModules(*progress);
   }
 
   google::protobuf::Empty reply;
@@ -585,11 +606,79 @@ void TortugaHandler::HandleUpdateProgress() {
   });
 
   VLOG(3) << "received HandleUpdateProgress RPC: " << req.ShortDebugString();
+  std::unique_ptr<UpdatedTask> progress(UpdateProgress(req));
+  if (progress != nullptr) {
+    MaybeNotifyModules(*progress);
+  }
 
   google::protobuf::Empty reply;
   handler.Reset();
   resp.Finish(reply, grpc::Status::OK, &handler);
   handler.Wait();
+}
+
+UpdatedTask* TortugaHandler::UpdateProgress(const UpdateProgressReq& req) {
+  return folly::fibers::await([&](folly::fibers::Promise<UpdatedTask*> p) {
+    exec_.add([this, &req, promise = std::move(p)]() mutable {
+      promise.setValue(UpdateProgressInExec(req));
+    });
+  });
+}
+
+UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) {
+  int64_t rowid = folly::to<int64_t>(req.handle());
+  VLOG(3) << "updating task of handle: " << rowid;
+  SqliteReset x1(&select_task_to_complete_stmt_);
+
+  select_task_to_complete_stmt_.BindLong(1, rowid);
+  int rc = select_task_to_complete_stmt_.Step();
+
+  if (rc == SQLITE_DONE) {
+    LOG(WARNING) << "updating task doesn't exist! " << req.ShortDebugString();
+    return nullptr;
+  }
+
+  std::string uuid = select_task_to_complete_stmt_.ColumnTextOrEmpty(0);
+
+  const std::string& worker_uuid = req.worker().uuid();
+  if (uuid != worker_uuid) {
+    VLOG(1) << "Task doesn't belong to the worker anymore (uuid is: " << uuid << " while worker is: " << worker_uuid << ")";
+    return nullptr;
+  }
+
+  SqliteStatement* stmt = nullptr;
+
+  if (req.has_progress() && req.has_progress_message()) {
+    stmt = &update_task_progress_stmt_;
+    stmt->BindFloat(1, req.progress().value());
+    stmt->BindText(2, req.progress_message().value());
+    stmt->BindLong(3, rowid);
+  } else if (req.has_progress()) {
+    stmt = &update_task_progress_only_stmt_;
+    stmt->BindFloat(1, req.progress().value());
+    stmt->BindLong(2, rowid);
+  } else if (req.has_progress_message()) {
+    stmt = &update_task_progress_msg_only_stmt_;
+    stmt->BindText(1, req.progress_message().value());
+    stmt->BindLong(2, rowid);
+  }
+
+  if (stmt != nullptr) {
+    SqliteReset x2(stmt);
+    stmt->ExecuteOrDie();
+  }
+  
+  return progress_mgr_->FindTaskByHandleInExec(req.handle());
+}
+
+void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {
+  for (const auto& module_name : task.modules) {
+    const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
+    if (module != nullptr) {
+      VLOG(2) << "notifying module: " << module_name << " of task progres: " << task.progress->id();
+      (*module)->OnProgressUpdate(*task.progress);
+    }
+  }
 }
 
 void TortugaHandler::HandlePing() {

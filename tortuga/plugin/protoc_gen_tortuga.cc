@@ -193,14 +193,38 @@ void GenerateService(const ServiceDescriptor* service,
     out << "    }\n";
     out << "\n";
   }
+
   out << "  }\n";
   out << "\n";
+
+  out << "  public static final class TaskManager {\n";
+  out << "    private final TortugaConnection conn;\n";
+  out << "\n";
+  out << "    private TaskManager(TortugaConnection conn) {\n";
+  out << "      this.conn = conn;\n";
+  out << "    }\n";
+  out << "\n";
+
+  for (int i = 0; i < service->method_count(); ++i) {
+    const MethodDescriptor* method = service->method(i);
+    out << "    public java.util.Optional<io.tortuga.TaskWatcher> find" << method->name() << "Task(String id) {\n";
+    out << "      return conn.createWatcher(id, \"" << method->full_name() << "\");\n";
+    out << "    }\n";
+    out << "\n";
+  }
+  out << "  }\n";
+  out << "\n";
+
   out << "  public static Publisher newPublisher(TortugaConnection conn) {\n";
   out << "    return new Publisher(conn);\n";
   out << "  }\n";
   out << "\n";
   out << "  public static AsyncPublisher newAsyncPublisher(TortugaConnection conn) {\n";
   out << "    return new AsyncPublisher(conn);\n";
+  out << "  }\n";
+  out << "\n";
+  out << "  public static TaskManager newTaskManager(TortugaConnection conn) {\n";
+  out << "    return new TaskManager(conn);\n";
   out << "  }\n";
   out << "}\n";
 

@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "folly/Conv.h"
+#include "folly/String.h"
 #include "grpc++/grpc++.h"
 
 #include "tortuga/baton_handler.h"
@@ -191,8 +192,8 @@ UpdatedTask* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) {
 
   UpdatedTask* updated_task = new UpdatedTask();
   updated_task->progress = std::make_unique<TaskProgress>(res);
-  
-  
+  folly::split(",", modules, updated_task->modules);
+
   return updated_task;
 }
 }  // namespace tortuga
