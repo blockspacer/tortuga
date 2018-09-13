@@ -13,11 +13,39 @@ add_subdirectory(third_party/googletest)
 enable_testing()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
+
+add_library(firestore_proto_lib
+  google/api/annotations.grpc.pb.cc
+  google/api/annotations.pb.cc
+  google/api/http.grpc.pb.cc
+  google/api/http.pb.cc
+  google/firestore/v1beta1/common.grpc.pb.cc
+  google/firestore/v1beta1/common.pb.cc
+  google/firestore/v1beta1/document.grpc.pb.cc
+  google/firestore/v1beta1/document.pb.cc
+  google/firestore/v1beta1/firestore.grpc.pb.cc
+  google/firestore/v1beta1/firestore.pb.cc
+  google/firestore/v1beta1/query.grpc.pb.cc
+  google/firestore/v1beta1/query.pb.cc
+  google/firestore/v1beta1/write.grpc.pb.cc
+  google/firestore/v1beta1/write.pb.cc
+  google/rpc/status.pb.cc
+  google/rpc/status.grpc.pb.cc
+  google/type/latlng.pb.cc
+  google/type/latlng.grpc.pb.cc
+)
+
+target_link_libraries(firestore_proto_lib
+  grpc++
+  gpr
+  protobuf
+)
+
 add_library (tortuga_lib
-  grpc/status/status.pb.cc
-  grpc/status/status.grpc.pb.cc  
   sqlite3.c
   tortuga/baton_handler.cc
+  tortuga/modules/firestore.cc
+  tortuga/module.cc
   tortuga/progress_manager.cc
   tortuga/rpc_opts.cc  
   tortuga/sqlite_statement.cc
@@ -29,6 +57,7 @@ add_library (tortuga_lib
 )
 
 target_link_libraries(tortuga_lib
+  firestore_proto_lib
   boost_context
   boost_filesystem
   boost_thread
@@ -54,7 +83,6 @@ add_executable(tortuga_main tortuga/tortuga_main.cc)
 target_link_libraries (tortuga_main
   tortuga_lib
   folly
-  follyinit
 )
 
 add_library (tortuga_plugin_lib
@@ -86,7 +114,6 @@ add_executable(protoc-gen-tortuga tortuga/plugin/protoc_gen_tortuga.cc)
 target_link_libraries (protoc-gen-tortuga
   tortuga_lib
   folly
-  follyinit
   protoc
   protobuf
 )

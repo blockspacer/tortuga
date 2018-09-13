@@ -15,4 +15,10 @@ google::protobuf::Timestamp FromEpochMillis(int64_t millis) {
 
   return t;
 }
+
+void SetDeadlineMillis(int millis, grpc::ClientContext* ctx) {
+  std::chrono::system_clock::time_point deadline = std::chrono::system_clock::now()
+      + std::chrono::milliseconds(millis);
+  ctx->set_deadline(deadline);
+}
 }  // namespace tortuga

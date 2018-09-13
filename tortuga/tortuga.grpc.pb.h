@@ -63,6 +63,13 @@ class Tortuga final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncCompleteTask(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(PrepareAsyncCompleteTaskRaw(context, request, cq));
     }
+    virtual ::grpc::Status UpdateProgress(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::google::protobuf::Empty* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncUpdateProgress(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(AsyncUpdateProgressRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncUpdateProgress(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(PrepareAsyncUpdateProgressRaw(context, request, cq));
+    }
     // Finds a task by id and type.
     virtual ::grpc::Status FindTask(::grpc::ClientContext* context, const ::tortuga::TaskIdentifier& request, ::tortuga::TaskProgress* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::TaskProgress>> AsyncFindTask(::grpc::ClientContext* context, const ::tortuga::TaskIdentifier& request, ::grpc::CompletionQueue* cq) {
@@ -103,6 +110,8 @@ class Tortuga final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncCompleteTaskRaw(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncCompleteTaskRaw(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncUpdateProgressRaw(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncUpdateProgressRaw(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::TaskProgress>* AsyncFindTaskRaw(::grpc::ClientContext* context, const ::tortuga::TaskIdentifier& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::TaskProgress>* PrepareAsyncFindTaskRaw(::grpc::ClientContext* context, const ::tortuga::TaskIdentifier& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::TaskProgress>* AsyncFindTaskByHandleRaw(::grpc::ClientContext* context, const ::google::protobuf::StringValue& request, ::grpc::CompletionQueue* cq) = 0;
@@ -143,6 +152,13 @@ class Tortuga final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> PrepareAsyncCompleteTask(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(PrepareAsyncCompleteTaskRaw(context, request, cq));
     }
+    ::grpc::Status UpdateProgress(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::google::protobuf::Empty* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> AsyncUpdateProgress(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(AsyncUpdateProgressRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> PrepareAsyncUpdateProgress(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(PrepareAsyncUpdateProgressRaw(context, request, cq));
+    }
     ::grpc::Status FindTask(::grpc::ClientContext* context, const ::tortuga::TaskIdentifier& request, ::tortuga::TaskProgress* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>> AsyncFindTask(::grpc::ClientContext* context, const ::tortuga::TaskIdentifier& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>>(AsyncFindTaskRaw(context, request, cq));
@@ -182,6 +198,8 @@ class Tortuga final {
     ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncCompleteTaskRaw(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncCompleteTaskRaw(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncUpdateProgressRaw(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncUpdateProgressRaw(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>* AsyncFindTaskRaw(::grpc::ClientContext* context, const ::tortuga::TaskIdentifier& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>* PrepareAsyncFindTaskRaw(::grpc::ClientContext* context, const ::tortuga::TaskIdentifier& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>* AsyncFindTaskByHandleRaw(::grpc::ClientContext* context, const ::google::protobuf::StringValue& request, ::grpc::CompletionQueue* cq) override;
@@ -194,6 +212,7 @@ class Tortuga final {
     const ::grpc::internal::RpcMethod rpcmethod_RequestTask_;
     const ::grpc::internal::RpcMethod rpcmethod_Heartbeat_;
     const ::grpc::internal::RpcMethod rpcmethod_CompleteTask_;
+    const ::grpc::internal::RpcMethod rpcmethod_UpdateProgress_;
     const ::grpc::internal::RpcMethod rpcmethod_FindTask_;
     const ::grpc::internal::RpcMethod rpcmethod_FindTaskByHandle_;
     const ::grpc::internal::RpcMethod rpcmethod_Ping_;
@@ -209,6 +228,7 @@ class Tortuga final {
     virtual ::grpc::Status RequestTask(::grpc::ServerContext* context, const ::tortuga::TaskReq* request, ::tortuga::TaskResp* response);
     virtual ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::Worker* request, ::google::protobuf::Empty* response);
     virtual ::grpc::Status CompleteTask(::grpc::ServerContext* context, const ::tortuga::CompleteTaskReq* request, ::google::protobuf::Empty* response);
+    virtual ::grpc::Status UpdateProgress(::grpc::ServerContext* context, const ::tortuga::UpdateProgressReq* request, ::google::protobuf::Empty* response);
     // Finds a task by id and type.
     virtual ::grpc::Status FindTask(::grpc::ServerContext* context, const ::tortuga::TaskIdentifier* request, ::tortuga::TaskProgress* response);
     // Finds a task by specific handle.
@@ -298,12 +318,32 @@ class Tortuga final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_UpdateProgress : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_UpdateProgress() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_UpdateProgress() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateProgress(::grpc::ServerContext* context, const ::tortuga::UpdateProgressReq* request, ::google::protobuf::Empty* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestUpdateProgress(::grpc::ServerContext* context, ::tortuga::UpdateProgressReq* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_FindTask : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_FindTask() {
-      ::grpc::Service::MarkMethodAsync(4);
+      ::grpc::Service::MarkMethodAsync(5);
     }
     ~WithAsyncMethod_FindTask() override {
       BaseClassMustBeDerivedFromService(this);
@@ -314,7 +354,7 @@ class Tortuga final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestFindTask(::grpc::ServerContext* context, ::tortuga::TaskIdentifier* request, ::grpc::ServerAsyncResponseWriter< ::tortuga::TaskProgress>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -323,7 +363,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_FindTaskByHandle() {
-      ::grpc::Service::MarkMethodAsync(5);
+      ::grpc::Service::MarkMethodAsync(6);
     }
     ~WithAsyncMethod_FindTaskByHandle() override {
       BaseClassMustBeDerivedFromService(this);
@@ -334,7 +374,7 @@ class Tortuga final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestFindTaskByHandle(::grpc::ServerContext* context, ::google::protobuf::StringValue* request, ::grpc::ServerAsyncResponseWriter< ::tortuga::TaskProgress>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -343,7 +383,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_Ping() {
-      ::grpc::Service::MarkMethodAsync(6);
+      ::grpc::Service::MarkMethodAsync(7);
     }
     ~WithAsyncMethod_Ping() override {
       BaseClassMustBeDerivedFromService(this);
@@ -354,7 +394,7 @@ class Tortuga final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestPing(::grpc::ServerContext* context, ::google::protobuf::Empty* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -363,7 +403,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_QuitQuitQuit() {
-      ::grpc::Service::MarkMethodAsync(7);
+      ::grpc::Service::MarkMethodAsync(8);
     }
     ~WithAsyncMethod_QuitQuitQuit() override {
       BaseClassMustBeDerivedFromService(this);
@@ -374,10 +414,10 @@ class Tortuga final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestQuitQuitQuit(::grpc::ServerContext* context, ::google::protobuf::Empty* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_CreateTask<WithAsyncMethod_RequestTask<WithAsyncMethod_Heartbeat<WithAsyncMethod_CompleteTask<WithAsyncMethod_FindTask<WithAsyncMethod_FindTaskByHandle<WithAsyncMethod_Ping<WithAsyncMethod_QuitQuitQuit<Service > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_CreateTask<WithAsyncMethod_RequestTask<WithAsyncMethod_Heartbeat<WithAsyncMethod_CompleteTask<WithAsyncMethod_UpdateProgress<WithAsyncMethod_FindTask<WithAsyncMethod_FindTaskByHandle<WithAsyncMethod_Ping<WithAsyncMethod_QuitQuitQuit<Service > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_CreateTask : public BaseClass {
    private:
@@ -447,12 +487,29 @@ class Tortuga final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_UpdateProgress : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_UpdateProgress() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_UpdateProgress() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status UpdateProgress(::grpc::ServerContext* context, const ::tortuga::UpdateProgressReq* request, ::google::protobuf::Empty* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_FindTask : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_FindTask() {
-      ::grpc::Service::MarkMethodGeneric(4);
+      ::grpc::Service::MarkMethodGeneric(5);
     }
     ~WithGenericMethod_FindTask() override {
       BaseClassMustBeDerivedFromService(this);
@@ -469,7 +526,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_FindTaskByHandle() {
-      ::grpc::Service::MarkMethodGeneric(5);
+      ::grpc::Service::MarkMethodGeneric(6);
     }
     ~WithGenericMethod_FindTaskByHandle() override {
       BaseClassMustBeDerivedFromService(this);
@@ -486,7 +543,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_Ping() {
-      ::grpc::Service::MarkMethodGeneric(6);
+      ::grpc::Service::MarkMethodGeneric(7);
     }
     ~WithGenericMethod_Ping() override {
       BaseClassMustBeDerivedFromService(this);
@@ -503,7 +560,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_QuitQuitQuit() {
-      ::grpc::Service::MarkMethodGeneric(7);
+      ::grpc::Service::MarkMethodGeneric(8);
     }
     ~WithGenericMethod_QuitQuitQuit() override {
       BaseClassMustBeDerivedFromService(this);
@@ -595,12 +652,32 @@ class Tortuga final {
     virtual ::grpc::Status StreamedCompleteTask(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tortuga::CompleteTaskReq,::google::protobuf::Empty>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_UpdateProgress : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_UpdateProgress() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::StreamedUnaryHandler< ::tortuga::UpdateProgressReq, ::google::protobuf::Empty>(std::bind(&WithStreamedUnaryMethod_UpdateProgress<BaseClass>::StreamedUpdateProgress, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_UpdateProgress() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status UpdateProgress(::grpc::ServerContext* context, const ::tortuga::UpdateProgressReq* request, ::google::protobuf::Empty* response) final override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedUpdateProgress(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tortuga::UpdateProgressReq,::google::protobuf::Empty>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_FindTask : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_FindTask() {
-      ::grpc::Service::MarkMethodStreamed(4,
+      ::grpc::Service::MarkMethodStreamed(5,
         new ::grpc::internal::StreamedUnaryHandler< ::tortuga::TaskIdentifier, ::tortuga::TaskProgress>(std::bind(&WithStreamedUnaryMethod_FindTask<BaseClass>::StreamedFindTask, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_FindTask() override {
@@ -620,7 +697,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_FindTaskByHandle() {
-      ::grpc::Service::MarkMethodStreamed(5,
+      ::grpc::Service::MarkMethodStreamed(6,
         new ::grpc::internal::StreamedUnaryHandler< ::google::protobuf::StringValue, ::tortuga::TaskProgress>(std::bind(&WithStreamedUnaryMethod_FindTaskByHandle<BaseClass>::StreamedFindTaskByHandle, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_FindTaskByHandle() override {
@@ -640,7 +717,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_Ping() {
-      ::grpc::Service::MarkMethodStreamed(6,
+      ::grpc::Service::MarkMethodStreamed(7,
         new ::grpc::internal::StreamedUnaryHandler< ::google::protobuf::Empty, ::google::protobuf::Empty>(std::bind(&WithStreamedUnaryMethod_Ping<BaseClass>::StreamedPing, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_Ping() override {
@@ -660,7 +737,7 @@ class Tortuga final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_QuitQuitQuit() {
-      ::grpc::Service::MarkMethodStreamed(7,
+      ::grpc::Service::MarkMethodStreamed(8,
         new ::grpc::internal::StreamedUnaryHandler< ::google::protobuf::Empty, ::google::protobuf::Empty>(std::bind(&WithStreamedUnaryMethod_QuitQuitQuit<BaseClass>::StreamedQuitQuitQuit, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_QuitQuitQuit() override {
@@ -674,9 +751,9 @@ class Tortuga final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedQuitQuitQuit(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::google::protobuf::Empty,::google::protobuf::Empty>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_CreateTask<WithStreamedUnaryMethod_RequestTask<WithStreamedUnaryMethod_Heartbeat<WithStreamedUnaryMethod_CompleteTask<WithStreamedUnaryMethod_FindTask<WithStreamedUnaryMethod_FindTaskByHandle<WithStreamedUnaryMethod_Ping<WithStreamedUnaryMethod_QuitQuitQuit<Service > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_CreateTask<WithStreamedUnaryMethod_RequestTask<WithStreamedUnaryMethod_Heartbeat<WithStreamedUnaryMethod_CompleteTask<WithStreamedUnaryMethod_UpdateProgress<WithStreamedUnaryMethod_FindTask<WithStreamedUnaryMethod_FindTaskByHandle<WithStreamedUnaryMethod_Ping<WithStreamedUnaryMethod_QuitQuitQuit<Service > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_CreateTask<WithStreamedUnaryMethod_RequestTask<WithStreamedUnaryMethod_Heartbeat<WithStreamedUnaryMethod_CompleteTask<WithStreamedUnaryMethod_FindTask<WithStreamedUnaryMethod_FindTaskByHandle<WithStreamedUnaryMethod_Ping<WithStreamedUnaryMethod_QuitQuitQuit<Service > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_CreateTask<WithStreamedUnaryMethod_RequestTask<WithStreamedUnaryMethod_Heartbeat<WithStreamedUnaryMethod_CompleteTask<WithStreamedUnaryMethod_UpdateProgress<WithStreamedUnaryMethod_FindTask<WithStreamedUnaryMethod_FindTaskByHandle<WithStreamedUnaryMethod_Ping<WithStreamedUnaryMethod_QuitQuitQuit<Service > > > > > > > > > StreamedService;
 };
 
 }  // namespace tortuga

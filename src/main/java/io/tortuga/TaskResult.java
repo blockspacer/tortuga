@@ -1,6 +1,7 @@
 package io.tortuga;
 
 import com.google.common.util.concurrent.ListenableFuture;
+
 import io.grpc.Status;
 
 public class TaskResult {

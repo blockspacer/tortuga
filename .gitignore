@@ -9,6 +9,7 @@ compile_commands.json
 CTestTestfile.cmake
 
 /protoc-gen-tortuga
+/http_client_main
 /tortuga_main
 *.a
 

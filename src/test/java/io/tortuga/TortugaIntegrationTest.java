@@ -13,6 +13,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+import io.tortuga.TortugaProto.TaskProgress;
 import io.tortuga.test.TestService2Tortuga;
 import io.tortuga.test.TestServiceTortuga;
 import io.tortuga.test.TestServiceTortuga.ImplBase;
@@ -34,11 +35,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TortugaIntegrationTest {
   private static final Logger LOG = LoggerFactory.getLogger(TortugaIntegrationTest.class);
@@ -493,6 +497,60 @@ public class TortugaIntegrationTest {
     // Because of the delay...
     Assert.assertFalse(Uninterruptibles.awaitUninterruptibly(latch, 9L, TimeUnit.SECONDS));
     Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 60L, TimeUnit.SECONDS));
+    tortuga.shutdown();
+    conn.shutdown();
+  }
+
+  @Test
+  public void testUpdateProgress() {
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+    CountDownLatch latch = new CountDownLatch(10);
+    Lock lock = new ReentrantLock();
+    lock.lock();
+
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    tortuga.addService(new ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        ctx.updateProgress(50.0f, "The task is done at 50%");
+
+        lock.lock();
+        latch.countDown();
+        lock.unlock();
+        return Futures.immediateFuture(Status.OK);
+      }
+    });
+
+    tortuga.start();
+
+    TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+
+    for (int i = 0; i < 10; ++i) {
+      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeTask" + i).withModule("firestore"), TestMessage.getDefaultInstance());
+    }
+
+    // Because we are locked.
+    Assert.assertFalse(Uninterruptibles.awaitUninterruptibly(latch, 3L, TimeUnit.SECONDS));
+
+    TestServiceTortuga.TaskManager manager = TestServiceTortuga.newTaskManager(conn);
+    Assert.assertFalse(manager.findHandleTaskTask("SomeTask0").isPresent());
+
+    Optional<TaskWatcher> watcherOpt = manager.findHandleCustomMessageTask("SomeTask0");
+    Assert.assertTrue(watcherOpt.isPresent());
+    TaskWatcher watcher = watcherOpt.get();
+    TaskProgress progress = watcher.getProgress();
+
+    Assert.assertEquals(50.0F, progress.getProgress(), 0.001F);
+    Assert.assertEquals("The task is done at 50%",  progress.getProgressMessage());
+
+    lock.unlock();
+    // They shall all proceed.
+    Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 60L, TimeUnit.SECONDS));
+
+    progress = watcher.getProgress();
+    Assert.assertEquals(100.0F, progress.getProgress(), 0.001F);
+
     tortuga.shutdown();
     conn.shutdown();
   }

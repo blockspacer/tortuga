@@ -13,6 +13,11 @@
 #include "tortuga/tortuga.pb.h"
 
 namespace tortuga {
+struct UpdatedTask {
+  std::unique_ptr<TaskProgress> progress;
+  std::vector<std::string> modules;
+};
+
 class ProgressManager : boost::noncopyable {
  public:
   ProgressManager(sqlite3* db, folly::CPUThreadPoolExecutor* exec, RpcOpts rpc_opts);
@@ -21,14 +26,14 @@ class ProgressManager : boost::noncopyable {
   void HandleFindTask();
   void HandleFindTaskByHandle();
 
-  TaskProgress* FindTaskByHandleInExec(const std::string& handle);
+  UpdatedTask* FindTaskByHandleInExec(const std::string& handle);
 
  private:
-  TaskProgress* FindTask(const TaskIdentifier& t_id);
-  TaskProgress* FindTaskInExec(const TaskIdentifier& t_id);
-  TaskProgress* FindTaskByHandle(const std::string& handle);
+  UpdatedTask* FindTask(const TaskIdentifier& t_id);
+  UpdatedTask* FindTaskInExec(const TaskIdentifier& t_id);
+  UpdatedTask* FindTaskByHandle(const std::string& handle);
 
-  TaskProgress* FindTaskByBoundStmtInExec(SqliteStatement* stmt);
+  UpdatedTask* FindTaskByBoundStmtInExec(SqliteStatement* stmt);
 
   folly::CPUThreadPoolExecutor* exec_{ nullptr };
   sqlite3* db_{ nullptr };

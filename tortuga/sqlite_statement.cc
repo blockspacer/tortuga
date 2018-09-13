@@ -8,7 +8,7 @@ namespace tortuga {
 SqliteStatement::SqliteStatement(sqlite3* db, const std::string& stmt) {
   db_ = db;
   int rc = sqlite3_prepare(db, stmt.c_str(), strlen(stmt.c_str()), &stmt_, nullptr);
-  CHECK_EQ(SQLITE_OK, rc) << sqlite3_errmsg(db);
+  CHECK_EQ(SQLITE_OK, rc) << sqlite3_errmsg(db) << "\nstatement was: " << stmt;
 }
 
 SqliteStatement::~SqliteStatement() {
@@ -36,6 +36,11 @@ void SqliteStatement::BindInt(int pos, int val) {
 
 void SqliteStatement::BindLong(int pos, int64_t val) {
   int rc = sqlite3_bind_int64(stmt_, pos, val);
+  CHECK_EQ(SQLITE_OK, rc);
+}
+
+void SqliteStatement::BindFloat(int pos, float val) {
+  int rc = sqlite3_bind_double(stmt_, pos, static_cast<double>(val));
   CHECK_EQ(SQLITE_OK, rc);
 }
 
@@ -69,7 +74,7 @@ int64_t SqliteStatement::ColumnLong(int pos) {
   return sqlite3_column_int64(stmt_, pos);
 }
 
-bool SqliteStatement::ColumnFloat(int pos) {
+float SqliteStatement::ColumnFloat(int pos) {
   return static_cast<float>(sqlite3_column_double(stmt_, pos));
 }
 

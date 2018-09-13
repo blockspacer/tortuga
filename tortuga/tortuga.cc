@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <string>
+#include <utility>
 
 #include "folly/Conv.h"
 #include "folly/MapUtil.h"
@@ -25,7 +26,7 @@ namespace {
 static const char* const kSelectExistingTaskStmt = "select rowid from tasks where id = ? and done != 1 LIMIT 1";
 
 static const char* const kInsertTaskStmt = R"(
-    insert into tasks (id, task_type, data, max_retries, priority, delayed_time, created) values (?, ?, ?, ?, ?, ?, ?);
+    insert into tasks (id, task_type, data, max_retries, priority, delayed_time, modules, created) values (?, ?, ?, ?, ?, ?, ?, ?);
 )";
 
 static const char* const kSelectWorkerUuidStmt = "select uuid from workers where worker_id = ? LIMIT 1";
@@ -62,6 +63,25 @@ static const char* const kCompleteTaskStmt = R"(
     where rowid=? ;
 )";
 
+static const char* const kUpdateTaskProgressStmt = R"(
+    update tasks set
+    progress=?,
+    progress_message=?
+    where rowid=?;
+)";
+
+static const char* const kUpdateTaskProgressOnlyStmt = R"(
+    update tasks set
+    progress=?
+    where rowid=?;
+)";
+
+static const char* const kUpdateTaskProgressMsgOnlyStmt = R"(
+    update tasks set
+    progress_message=?
+    where rowid=?;
+)";
+
 static const char* const kSelectExpiredWorkersStmt = R"(
     select uuid, last_invalidated_uuid from workers where last_beat < ?;
 )";
@@ -82,7 +102,7 @@ static const char* const kInsertHistoricWorkerStmt = R"(
 )";
 }  // anonymous namespace
 
-TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts)
+TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules)
     : db_(db),
       rpc_opts_(rpc_opts),
       select_existing_task_stmt_(db, kSelectExistingTaskStmt),
@@ -94,10 +114,14 @@ TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts)
       assign_task_stmt_(db, kAssignTaskStmt),
       select_task_to_complete_stmt_(db, kSelectTaskToCompleteStmt),
       complete_task_stmt_(db, kCompleteTaskStmt),
+      update_task_progress_stmt_(db, kUpdateTaskProgressStmt),
+      update_task_progress_only_stmt_(db, kUpdateTaskProgressOnlyStmt),
+      update_task_progress_msg_only_stmt_(db, kUpdateTaskProgressMsgOnlyStmt),
       select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
       unassign_tasks_stmt_(db, kUnassignTasksStmt),
       update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
-      insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt) {
+      insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt),
+      modules_(std::move(modules)) {
   progress_mgr_.reset(new ProgressManager(db, &exec_, rpc_opts));
 }
 
@@ -220,7 +244,14 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
     insert_task_stmt_.BindNull(6);
   }
 
-  insert_task_stmt_.BindLong(7, CurrentTimeMillis());
+  if (task.modules_size() == 0) {
+    insert_task_stmt_.BindNull(7);
+  } else {
+    std::string modules = folly::join(",", task.modules());
+    insert_task_stmt_.BindText(7, modules);
+  }
+
+  insert_task_stmt_.BindLong(8, CurrentTimeMillis());
 
   insert_task_stmt_.ExecuteOrDie();
   sqlite3_int64 rowid = sqlite3_last_insert_rowid(db_);
@@ -431,7 +462,10 @@ void TortugaHandler::HandleCompleteTask() {
   });
 
   VLOG(3) << "received CompleteTask RPC: " << req.ShortDebugString();
-  std::unique_ptr<TaskProgress> progress(CompleteTask(req));
+  std::unique_ptr<UpdatedTask> progress(CompleteTask(req));
+  if (progress != nullptr) {
+    MaybeNotifyModules(*progress);
+  }
 
   google::protobuf::Empty reply;
   handler.Reset();
@@ -439,15 +473,15 @@ void TortugaHandler::HandleCompleteTask() {
   handler.Wait();
 }
 
-TaskProgress* TortugaHandler::CompleteTask(const CompleteTaskReq& req) {
-  return folly::fibers::await([&](folly::fibers::Promise<TaskProgress*> p) {
+UpdatedTask* TortugaHandler::CompleteTask(const CompleteTaskReq& req) {
+  return folly::fibers::await([&](folly::fibers::Promise<UpdatedTask*> p) {
     exec_.add([this, &req, promise = std::move(p)]() mutable {
       promise.setValue(CompleteTaskInExec(req));
     });
   });
 }
 
-TaskProgress* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
+UpdatedTask* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
   int64_t rowid = folly::to<int64_t>(req.handle());
   VLOG(3) << "completing task of handle: " << rowid;
   SqliteReset x1(&select_task_to_complete_stmt_);
@@ -553,6 +587,98 @@ void TortugaHandler::UnassignTaskInExec(const std::string& uuid) {
 
   // cleanup the prepared statement that would otherwise take up memory.
   select_task_stmts_.erase(uuid);
+}
+
+void TortugaHandler::HandleUpdateProgress() {
+  BatonHandler handler;
+
+  grpc::ServerContext ctx;
+  UpdateProgressReq req;
+  grpc::ServerAsyncResponseWriter<google::protobuf::Empty> resp(&ctx);
+
+  // start a new RPC and wait.
+  rpc_opts_.tortuga_grpc->RequestUpdateProgress(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
+  CHECK(handler.Wait());
+
+  // adds a new RPC processor.
+  rpc_opts_.fibers->addTask([this]() {
+    HandleUpdateProgress();
+  });
+
+  VLOG(3) << "received HandleUpdateProgress RPC: " << req.ShortDebugString();
+  std::unique_ptr<UpdatedTask> progress(UpdateProgress(req));
+  if (progress != nullptr) {
+    MaybeNotifyModules(*progress);
+  }
+
+  google::protobuf::Empty reply;
+  handler.Reset();
+  resp.Finish(reply, grpc::Status::OK, &handler);
+  handler.Wait();
+}
+
+UpdatedTask* TortugaHandler::UpdateProgress(const UpdateProgressReq& req) {
+  return folly::fibers::await([&](folly::fibers::Promise<UpdatedTask*> p) {
+    exec_.add([this, &req, promise = std::move(p)]() mutable {
+      promise.setValue(UpdateProgressInExec(req));
+    });
+  });
+}
+
+UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) {
+  int64_t rowid = folly::to<int64_t>(req.handle());
+  VLOG(3) << "updating task of handle: " << rowid;
+  SqliteReset x1(&select_task_to_complete_stmt_);
+
+  select_task_to_complete_stmt_.BindLong(1, rowid);
+  int rc = select_task_to_complete_stmt_.Step();
+
+  if (rc == SQLITE_DONE) {
+    LOG(WARNING) << "updating task doesn't exist! " << req.ShortDebugString();
+    return nullptr;
+  }
+
+  std::string uuid = select_task_to_complete_stmt_.ColumnTextOrEmpty(0);
+
+  const std::string& worker_uuid = req.worker().uuid();
+  if (uuid != worker_uuid) {
+    VLOG(1) << "Task doesn't belong to the worker anymore (uuid is: " << uuid << " while worker is: " << worker_uuid << ")";
+    return nullptr;
+  }
+
+  SqliteStatement* stmt = nullptr;
+
+  if (req.has_progress() && req.has_progress_message()) {
+    stmt = &update_task_progress_stmt_;
+    stmt->BindFloat(1, req.progress().value());
+    stmt->BindText(2, req.progress_message().value());
+    stmt->BindLong(3, rowid);
+  } else if (req.has_progress()) {
+    stmt = &update_task_progress_only_stmt_;
+    stmt->BindFloat(1, req.progress().value());
+    stmt->BindLong(2, rowid);
+  } else if (req.has_progress_message()) {
+    stmt = &update_task_progress_msg_only_stmt_;
+    stmt->BindText(1, req.progress_message().value());
+    stmt->BindLong(2, rowid);
+  }
+
+  if (stmt != nullptr) {
+    SqliteReset x2(stmt);
+    stmt->ExecuteOrDie();
+  }
+  
+  return progress_mgr_->FindTaskByHandleInExec(req.handle());
+}
+
+void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {
+  for (const auto& module_name : task.modules) {
+    const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
+    if (module != nullptr) {
+      VLOG(2) << "notifying module: " << module_name << " of task progres: " << task.progress->id();
+      (*module)->OnProgressUpdate(*task.progress);
+    }
+  }
 }
 
 void TortugaHandler::HandlePing() {

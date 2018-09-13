@@ -11,7 +11,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
-import "grpc/status/status.proto";
+import "google/rpc/status.proto";
 
 message Worker {
   string worker_id = 1;
@@ -46,6 +46,10 @@ message Task {
 
   // If set the task shall not be served before this delay.
   google.protobuf.Duration delay = 6;
+
+  // List of modules that apply to this task.
+  // Names MUST correspond to a module supported in the server.
+  repeated string modules = 7;
 }
 
 message TaskProgress {
@@ -90,6 +94,15 @@ message CompleteTaskReq {
   string logs = 5;
 }
 
+message UpdateProgressReq {
+  Worker worker = 1;
+  string handle = 2;
+
+  // If set, it erases the value, else it is ignored (progress value will remain what it was).
+  google.protobuf.FloatValue progress = 3;
+  google.protobuf.StringValue progress_message = 4;
+}
+
 message ProgressReq {
   // Handle of the task of which to subscribe for.
   string handle = 1;
@@ -112,6 +125,7 @@ service Tortuga {
   rpc RequestTask(TaskReq) returns (TaskResp);
   rpc Heartbeat(Worker) returns (google.protobuf.Empty);
   rpc CompleteTask(CompleteTaskReq) returns (google.protobuf.Empty);
+  rpc UpdateProgress(UpdateProgressReq) returns (google.protobuf.Empty);
 
   // Finds a task by id and type.
   rpc FindTask(TaskIdentifier) returns (TaskProgress);

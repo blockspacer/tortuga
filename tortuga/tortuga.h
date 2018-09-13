@@ -10,6 +10,7 @@
 #include "grpc++/grpc++.h"
 #include "sqlite3.h"
 
+#include "tortuga/module.h"
 #include "tortuga/progress_manager.h"
 #include "tortuga/rpc_opts.h"
 #include "tortuga/sqlite_statement.h"
@@ -28,7 +29,7 @@ struct RegisteredWorker {
 
 class TortugaHandler : boost::noncopyable {
  public:
-  TortugaHandler(sqlite3* db, RpcOpts rpc_opts);
+  TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules);
   ~TortugaHandler() {
   }
 
@@ -36,7 +37,7 @@ class TortugaHandler : boost::noncopyable {
   void HandleRequestTask();
   void HandleHeartbeat();
   void HandleCompleteTask();
-
+  void HandleUpdateProgress();
 
   // admin commands.
   void HandlePing();
@@ -77,8 +78,13 @@ class TortugaHandler : boost::noncopyable {
   RequestTaskResult RequestTask(const Worker& worker);
   RequestTaskResult RequestTaskInExec(const Worker& worker);
 
-  TaskProgress* CompleteTask(const CompleteTaskReq& req);
-  TaskProgress* CompleteTaskInExec(const CompleteTaskReq& req);
+  UpdatedTask* CompleteTask(const CompleteTaskReq& req);
+  UpdatedTask* CompleteTaskInExec(const CompleteTaskReq& req);
+
+  UpdatedTask* UpdateProgress(const UpdateProgressReq& req);
+  UpdatedTask* UpdateProgressInExec(const UpdateProgressReq& req);
+
+  void MaybeNotifyModules(const UpdatedTask& task);
 
   std::vector<std::string> ExpiredWorkersInExec();
   void UnassignTasksInExec(const std::vector<std::string>& uuids);
@@ -112,6 +118,9 @@ class TortugaHandler : boost::noncopyable {
 
   SqliteStatement select_task_to_complete_stmt_;
   SqliteStatement complete_task_stmt_;
+  SqliteStatement update_task_progress_stmt_;
+  SqliteStatement update_task_progress_only_stmt_;
+  SqliteStatement update_task_progress_msg_only_stmt_;
 
   SqliteStatement select_expired_workers_stmt_;
 
@@ -122,5 +131,8 @@ class TortugaHandler : boost::noncopyable {
 
   // map from worker UUID to its select statement.
   std::map<std::string, std::unique_ptr<SqliteStatement>> select_task_stmts_;
+
+  // all modules
+  const std::map<std::string, std::unique_ptr<Module>> modules_;
 };
 }  // namespace tortuga

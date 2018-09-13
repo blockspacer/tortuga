@@ -18,6 +18,7 @@ class SqliteStatement : boost::noncopyable {
   void BindBool(int pos, bool val);
   void BindInt(int pos, int val);
   void BindLong(int pos, int64_t val);
+  void BindFloat(int pos, float val);
   void BindNull(int pos);
 
   int Step();
@@ -28,7 +29,7 @@ class SqliteStatement : boost::noncopyable {
   int ColumnInt(int pos);
   bool ColumnBool(int pos);
   int64_t ColumnLong(int pos);
-  bool ColumnFloat(int pos);
+  float ColumnFloat(int pos);
   std::string ColumnText(int pos);
   // If the column is NULL this returns empty.
   std::string ColumnTextOrEmpty(int pos);
