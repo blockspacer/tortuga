@@ -155,7 +155,16 @@ public class Tortuga {
         ListenableFuture<Void> xf = Futures.immediateFuture(null);
         TortugaContext ctx = new TortugaContext(resp.getHandle(), chan, worker);
         ListenableFuture<Status> statusF = Futures.transformAsync(xf, x-> handler.execute(resp.getData(), ctx), workersPool);
-        statusF = Futures.catching(statusF, Exception.class, ex-> Status.fromThrowable(ex));
+        statusF = Futures.catching(statusF, Exception.class, ex-> {
+          StringBuilder sb = new StringBuilder();
+          sb.append("Uhoh, tortuga handler for type: ").append(resp.getType()).append(" failed.");
+          sb.append('\n');
+          sb.append("Task that failed:\n");
+          sb.append("Handle: ").append(resp.getHandle()).append('\n');
+          sb.append("Id: ").append(resp.getId()).append('\n');
+          LOG.error(sb.toString(), ex);
+          return Status.fromThrowable(ex);
+        });
 
         ListenableFuture<Empty> doneAck = Futures.transformAsync(statusF, st -> {
           CompleteTaskReq.Builder req = CompleteTaskReq.newBuilder();
