@@ -1,5 +1,6 @@
 package io.tortuga;
 
+import com.google.common.base.Strings;
 import com.google.protobuf.FloatValue;
 import com.google.protobuf.StringValue;
 
@@ -16,6 +17,8 @@ public class TortugaContext {
   private final Channel tortugaChan;
   private final Worker worker;
 
+  private String output;
+
   TortugaContext(String handle,
                  Channel chan,
                  Worker worker) {
@@ -30,6 +33,14 @@ public class TortugaContext {
 
   String logs() {
     return sb.toString();
+  }
+
+  public void setOutput(String output) {
+    this.output = output;
+  }
+
+  String output() {
+    return Strings.nullToEmpty(output);
   }
 
   public void updateProgress(float progress) {
