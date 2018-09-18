@@ -75,6 +75,7 @@ message TaskProgress {
   string logs = 15;
 
   string worker_id = 16;
+  string output = 17;
 }
 
 message CreateReq {
@@ -92,6 +93,9 @@ message CompleteTaskReq {
   int32 code = 3;
   string error_message = 4;
   string logs = 5;
+
+  // arbitrary text that may be saved along with the task.
+  string output = 6;
 }
 
 message UpdateProgressReq {

@@ -179,6 +179,7 @@ UpdatedTask* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) {
   }
 
   res.set_logs(stmt->ColumnTextOrEmpty(19));
+  res.set_output(stmt->ColumnTextOrEmpty(20));
 
   if (!worker_uuid.empty()) {
     SqliteReset x2(&select_worker_id_by_uuid_stmt_);

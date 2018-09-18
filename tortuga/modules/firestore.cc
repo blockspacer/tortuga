@@ -59,6 +59,12 @@ void FirestoreModule::OnProgressUpdate(const TaskProgress& task) {
     (*fields)["progress_msg"] = progress_msg_value;
   }
 
+  {
+    Value output_value;
+    output_value.set_string_value(task.output());
+    (*fields)["output"] = output_value;
+  }
+
   if (task.has_status()) {
     {
       Value status_value;
