@@ -6,14 +6,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions("-std=c++14")
 add_definitions(-DGTEST_HAS_TR1_TUPLE=1)
 
-# bringing gtest in your own tree and including it using cmake
-# is the recommended way.
-# see: third_party/gtest-1.7.0/README
-add_subdirectory(third_party/googletest)
-enable_testing()
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-
-
 add_library(firestore_proto_lib
   google/api/annotations.grpc.pb.cc
   google/api/annotations.pb.cc
