@@ -59,7 +59,8 @@ static const char* const kCompleteTaskStmt = R"(
     status_message=?,
     done=?,
     done_time=?,
-    logs=? 
+    logs=?,
+    output=?
     where rowid=? ;
 )";
 
@@ -514,7 +515,8 @@ UpdatedTask* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
   complete_task_stmt_.BindBool(3, done);
   complete_task_stmt_.BindLong(4, CurrentTimeMillis());  // done_time
   complete_task_stmt_.BindText(5, req.logs());
-  complete_task_stmt_.BindLong(6, rowid);
+  complete_task_stmt_.BindText(6, req.output());
+  complete_task_stmt_.BindLong(7, rowid);
 
   complete_task_stmt_.ExecuteOrDie();
   

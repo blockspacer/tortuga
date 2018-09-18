@@ -81,6 +81,8 @@ public class TortugaIntegrationTest {
     tortugaCmd.add("127.0.0.1");
     tortugaCmd.add("--db_file");
     tortugaCmd.add("test_dir/tortuga.db");
+    tortugaCmd.add("--firestore_collection");
+    tortugaCmd.add("tortuga_tests");
 
     new ProcessBuilder()
         .command(tortugaCmd)
@@ -518,6 +520,7 @@ public class TortugaIntegrationTest {
         lock.lock();
         latch.countDown();
         lock.unlock();
+        ctx.setOutput("The output for task: " + t.getId());
         return Futures.immediateFuture(Status.OK);
       }
     });
@@ -527,7 +530,9 @@ public class TortugaIntegrationTest {
     TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
 
     for (int i = 0; i < 10; ++i) {
-      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeTask" + i).withModule("firestore"), TestMessage.getDefaultInstance());
+      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeTask" + i).withModule("firestore"), TestMessage.newBuilder()
+           .setId(Integer.toString(i))
+           .build());
     }
 
     // Because we are locked.

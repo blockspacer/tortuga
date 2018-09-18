@@ -47,7 +47,8 @@ const char* const kCreateTortuga = R"(
     done BOOLEAN NOT NULL DEFAULT false,
     started_time INTEGER NULL DEFAULT NULL,
     done_time INTEGER NULL DEFAULT NULL,
-    logs TEXT NULL
+    logs TEXT NULL,
+    output TEXT NULL DEFAULT NULL
   );
 
   CREATE INDEX IF NOT EXISTS tasks_id_idx ON tasks (id);

@@ -172,6 +172,7 @@ public class Tortuga {
           req.setLogs(ctx.logs());
           req.setWorker(worker);
           req.setCode(st.getCode().value());
+          req.setOutput(ctx.output());
 
           StringWriter output = new StringWriter();
           PrintWriter p = new PrintWriter(output);

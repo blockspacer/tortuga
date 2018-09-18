@@ -5081,6 +5081,16 @@ public final class TortugaProto {
      */
     com.google.protobuf.ByteString
         getWorkerIdBytes();
+
+    /**
+     * <code>string output = 17;</code>
+     */
+    java.lang.String getOutput();
+    /**
+     * <code>string output = 17;</code>
+     */
+    com.google.protobuf.ByteString
+        getOutputBytes();
   }
   /**
    * Protobuf type {@code tortuga.TaskProgress}
@@ -5107,6 +5117,7 @@ public final class TortugaProto {
       progressMessage_ = "";
       logs_ = "";
       workerId_ = "";
+      output_ = "";
     }
 
     @java.lang.Override
@@ -5256,6 +5267,12 @@ public final class TortugaProto {
               java.lang.String s = input.readStringRequireUtf8();
 
               workerId_ = s;
+              break;
+            }
+            case 138: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              output_ = s;
               break;
             }
           }
@@ -5624,6 +5641,40 @@ public final class TortugaProto {
       }
     }
 
+    public static final int OUTPUT_FIELD_NUMBER = 17;
+    private volatile java.lang.Object output_;
+    /**
+     * <code>string output = 17;</code>
+     */
+    public java.lang.String getOutput() {
+      java.lang.Object ref = output_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        output_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string output = 17;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOutputBytes() {
+      java.lang.Object ref = output_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        output_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -5683,6 +5734,9 @@ public final class TortugaProto {
       }
       if (!getWorkerIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 16, workerId_);
+      }
+      if (!getOutputBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 17, output_);
       }
       unknownFields.writeTo(output);
     }
@@ -5750,6 +5804,9 @@ public final class TortugaProto {
       if (!getWorkerIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, workerId_);
       }
+      if (!getOutputBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(17, output_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -5812,6 +5869,8 @@ public final class TortugaProto {
           .equals(other.getLogs());
       result = result && getWorkerId()
           .equals(other.getWorkerId());
+      result = result && getOutput()
+          .equals(other.getOutput());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -5866,6 +5925,8 @@ public final class TortugaProto {
       hash = (53 * hash) + getLogs().hashCode();
       hash = (37 * hash) + WORKER_ID_FIELD_NUMBER;
       hash = (53 * hash) + getWorkerId().hashCode();
+      hash = (37 * hash) + OUTPUT_FIELD_NUMBER;
+      hash = (53 * hash) + getOutput().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -6043,6 +6104,8 @@ public final class TortugaProto {
 
         workerId_ = "";
 
+        output_ = "";
+
         return this;
       }
 
@@ -6097,6 +6160,7 @@ public final class TortugaProto {
         result.progressMessage_ = progressMessage_;
         result.logs_ = logs_;
         result.workerId_ = workerId_;
+        result.output_ = output_;
         onBuilt();
         return result;
       }
@@ -6190,6 +6254,10 @@ public final class TortugaProto {
         }
         if (!other.getWorkerId().isEmpty()) {
           workerId_ = other.workerId_;
+          onChanged();
+        }
+        if (!other.getOutput().isEmpty()) {
+          output_ = other.output_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -7253,6 +7321,75 @@ public final class TortugaProto {
   checkByteStringIsUtf8(value);
         
         workerId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object output_ = "";
+      /**
+       * <code>string output = 17;</code>
+       */
+      public java.lang.String getOutput() {
+        java.lang.Object ref = output_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          output_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string output = 17;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOutputBytes() {
+        java.lang.Object ref = output_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          output_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string output = 17;</code>
+       */
+      public Builder setOutput(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        output_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string output = 17;</code>
+       */
+      public Builder clearOutput() {
+        
+        output_ = getDefaultInstance().getOutput();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string output = 17;</code>
+       */
+      public Builder setOutputBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        output_ = value;
         onChanged();
         return this;
       }
@@ -8527,6 +8664,24 @@ public final class TortugaProto {
      */
     com.google.protobuf.ByteString
         getLogsBytes();
+
+    /**
+     * <pre>
+     * arbitrary text that may be saved along with the task.
+     * </pre>
+     *
+     * <code>string output = 6;</code>
+     */
+    java.lang.String getOutput();
+    /**
+     * <pre>
+     * arbitrary text that may be saved along with the task.
+     * </pre>
+     *
+     * <code>string output = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getOutputBytes();
   }
   /**
    * Protobuf type {@code tortuga.CompleteTaskReq}
@@ -8545,6 +8700,7 @@ public final class TortugaProto {
       code_ = 0;
       errorMessage_ = "";
       logs_ = "";
+      output_ = "";
     }
 
     @java.lang.Override
@@ -8612,6 +8768,12 @@ public final class TortugaProto {
               java.lang.String s = input.readStringRequireUtf8();
 
               logs_ = s;
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              output_ = s;
               break;
             }
           }
@@ -8770,6 +8932,48 @@ public final class TortugaProto {
       }
     }
 
+    public static final int OUTPUT_FIELD_NUMBER = 6;
+    private volatile java.lang.Object output_;
+    /**
+     * <pre>
+     * arbitrary text that may be saved along with the task.
+     * </pre>
+     *
+     * <code>string output = 6;</code>
+     */
+    public java.lang.String getOutput() {
+      java.lang.Object ref = output_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        output_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * arbitrary text that may be saved along with the task.
+     * </pre>
+     *
+     * <code>string output = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOutputBytes() {
+      java.lang.Object ref = output_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        output_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -8797,6 +9001,9 @@ public final class TortugaProto {
       if (!getLogsBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, logs_);
       }
+      if (!getOutputBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, output_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -8821,6 +9028,9 @@ public final class TortugaProto {
       }
       if (!getLogsBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, logs_);
+      }
+      if (!getOutputBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, output_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8851,6 +9061,8 @@ public final class TortugaProto {
           .equals(other.getErrorMessage());
       result = result && getLogs()
           .equals(other.getLogs());
+      result = result && getOutput()
+          .equals(other.getOutput());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -8874,6 +9086,8 @@ public final class TortugaProto {
       hash = (53 * hash) + getErrorMessage().hashCode();
       hash = (37 * hash) + LOGS_FIELD_NUMBER;
       hash = (53 * hash) + getLogs().hashCode();
+      hash = (37 * hash) + OUTPUT_FIELD_NUMBER;
+      hash = (53 * hash) + getOutput().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -9017,6 +9231,8 @@ public final class TortugaProto {
 
         logs_ = "";
 
+        output_ = "";
+
         return this;
       }
 
@@ -9048,6 +9264,7 @@ public final class TortugaProto {
         result.code_ = code_;
         result.errorMessage_ = errorMessage_;
         result.logs_ = logs_;
+        result.output_ = output_;
         onBuilt();
         return result;
       }
@@ -9105,6 +9322,10 @@ public final class TortugaProto {
         }
         if (!other.getLogs().isEmpty()) {
           logs_ = other.logs_;
+          onChanged();
+        }
+        if (!other.getOutput().isEmpty()) {
+          output_ = other.output_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -9480,6 +9701,95 @@ public final class TortugaProto {
   checkByteStringIsUtf8(value);
         
         logs_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object output_ = "";
+      /**
+       * <pre>
+       * arbitrary text that may be saved along with the task.
+       * </pre>
+       *
+       * <code>string output = 6;</code>
+       */
+      public java.lang.String getOutput() {
+        java.lang.Object ref = output_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          output_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * arbitrary text that may be saved along with the task.
+       * </pre>
+       *
+       * <code>string output = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOutputBytes() {
+        java.lang.Object ref = output_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          output_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * arbitrary text that may be saved along with the task.
+       * </pre>
+       *
+       * <code>string output = 6;</code>
+       */
+      public Builder setOutput(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        output_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * arbitrary text that may be saved along with the task.
+       * </pre>
+       *
+       * <code>string output = 6;</code>
+       */
+      public Builder clearOutput() {
+        
+        output_ = getDefaultInstance().getOutput();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * arbitrary text that may be saved along with the task.
+       * </pre>
+       *
+       * <code>string output = 6;</code>
+       */
+      public Builder setOutputBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        output_ = value;
         onChanged();
         return this;
       }
@@ -12828,7 +13138,7 @@ public final class TortugaProto {
       ".google.protobuf.Int32Value\0220\n\013max_retri" +
       "es\030\005 \001(\0132\033.google.protobuf.Int32Value\022(\n" +
       "\005delay\030\006 \001(\0132\031.google.protobuf.Duration\022" +
-      "\017\n\007modules\030\007 \003(\t\"\220\003\n\014TaskProgress\022\016\n\006han" +
+      "\017\n\007modules\030\007 \003(\t\"\240\003\n\014TaskProgress\022\016\n\006han" +
       "dle\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013m" +
       "ax_retries\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010pri" +
       "ority\030\006 \001(\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010" +
@@ -12838,35 +13148,36 @@ public final class TortugaProto {
       ".google.protobuf.Timestamp\022\"\n\006status\030\014 \001" +
       "(\0132\022.google.rpc.Status\022\020\n\010progress\030\r \001(\002" +
       "\022\030\n\020progress_message\030\016 \001(\t\022\014\n\004logs\030\017 \001(\t" +
-      "\022\021\n\tworker_id\030\020 \001(\t\"(\n\tCreateReq\022\033\n\004task" +
-      "\030\001 \001(\0132\r.tortuga.Task\"-\n\nCreateResp\022\016\n\006h" +
-      "andle\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"u\n\017Complete" +
-      "TaskReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker" +
-      "\022\016\n\006handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_" +
-      "message\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t\"\253\001\n\021UpdatePr" +
-      "ogressReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Work" +
-      "er\022\016\n\006handle\030\002 \001(\t\022-\n\010progress\030\003 \001(\0132\033.g" +
-      "oogle.protobuf.FloatValue\0226\n\020progress_me" +
-      "ssage\030\004 \001(\0132\034.google.protobuf.StringValu" +
-      "e\"\035\n\013ProgressReq\022\016\n\006handle\030\001 \001(\t\"B\n\014Prog" +
-      "ressResp\022\016\n\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\013" +
-      "2\022.google.rpc.Status\"*\n\016TaskIdentifier\022\n" +
-      "\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t2\257\004\n\007Tortuga\0225\n\n" +
-      "CreateTask\022\022.tortuga.CreateReq\032\023.tortuga" +
-      ".CreateResp\0222\n\013RequestTask\022\020.tortuga.Tas" +
-      "kReq\032\021.tortuga.TaskResp\0224\n\tHeartbeat\022\017.t" +
-      "ortuga.Worker\032\026.google.protobuf.Empty\022@\n" +
-      "\014CompleteTask\022\030.tortuga.CompleteTaskReq\032" +
-      "\026.google.protobuf.Empty\022D\n\016UpdateProgres" +
-      "s\022\032.tortuga.UpdateProgressReq\032\026.google.p" +
-      "rotobuf.Empty\022:\n\010FindTask\022\027.tortuga.Task" +
-      "Identifier\032\025.tortuga.TaskProgress\022G\n\020Fin" +
-      "dTaskByHandle\022\034.google.protobuf.StringVa" +
-      "lue\032\025.tortuga.TaskProgress\0226\n\004Ping\022\026.goo" +
-      "gle.protobuf.Empty\032\026.google.protobuf.Emp" +
-      "ty\022>\n\014QuitQuitQuit\022\026.google.protobuf.Emp" +
-      "ty\032\026.google.protobuf.EmptyB\032\n\nio.tortuga" +
-      "B\014TortugaProtob\006proto3"
+      "\022\021\n\tworker_id\030\020 \001(\t\022\016\n\006output\030\021 \001(\t\"(\n\tC" +
+      "reateReq\022\033\n\004task\030\001 \001(\0132\r.tortuga.Task\"-\n" +
+      "\nCreateResp\022\016\n\006handle\030\001 \001(\t\022\017\n\007created\030\002" +
+      " \001(\010\"\205\001\n\017CompleteTaskReq\022\037\n\006worker\030\001 \001(\013" +
+      "2\017.tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022\014\n\004cod" +
+      "e\030\003 \001(\005\022\025\n\rerror_message\030\004 \001(\t\022\014\n\004logs\030\005" +
+      " \001(\t\022\016\n\006output\030\006 \001(\t\"\253\001\n\021UpdateProgressR" +
+      "eq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006h" +
+      "andle\030\002 \001(\t\022-\n\010progress\030\003 \001(\0132\033.google.p" +
+      "rotobuf.FloatValue\0226\n\020progress_message\030\004" +
+      " \001(\0132\034.google.protobuf.StringValue\"\035\n\013Pr" +
+      "ogressReq\022\016\n\006handle\030\001 \001(\t\"B\n\014ProgressRes" +
+      "p\022\016\n\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\0132\022.goog" +
+      "le.rpc.Status\"*\n\016TaskIdentifier\022\n\n\002id\030\001 " +
+      "\001(\t\022\014\n\004type\030\002 \001(\t2\257\004\n\007Tortuga\0225\n\nCreateT" +
+      "ask\022\022.tortuga.CreateReq\032\023.tortuga.Create" +
+      "Resp\0222\n\013RequestTask\022\020.tortuga.TaskReq\032\021." +
+      "tortuga.TaskResp\0224\n\tHeartbeat\022\017.tortuga." +
+      "Worker\032\026.google.protobuf.Empty\022@\n\014Comple" +
+      "teTask\022\030.tortuga.CompleteTaskReq\032\026.googl" +
+      "e.protobuf.Empty\022D\n\016UpdateProgress\022\032.tor" +
+      "tuga.UpdateProgressReq\032\026.google.protobuf" +
+      ".Empty\022:\n\010FindTask\022\027.tortuga.TaskIdentif" +
+      "ier\032\025.tortuga.TaskProgress\022G\n\020FindTaskBy" +
+      "Handle\022\034.google.protobuf.StringValue\032\025.t" +
+      "ortuga.TaskProgress\0226\n\004Ping\022\026.google.pro" +
+      "tobuf.Empty\032\026.google.protobuf.Empty\022>\n\014Q" +
+      "uitQuitQuit\022\026.google.protobuf.Empty\032\026.go" +
+      "ogle.protobuf.EmptyB\032\n\nio.tortugaB\014Tortu" +
+      "gaProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12921,7 +13232,7 @@ public final class TortugaProto {
     internal_static_tortuga_TaskProgress_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_TaskProgress_descriptor,
-        new java.lang.String[] { "Handle", "Id", "Type", "MaxRetries", "Retries", "Priority", "WorkedOn", "Done", "Created", "StartedTime", "DoneTime", "Status", "Progress", "ProgressMessage", "Logs", "WorkerId", });
+        new java.lang.String[] { "Handle", "Id", "Type", "MaxRetries", "Retries", "Priority", "WorkedOn", "Done", "Created", "StartedTime", "DoneTime", "Status", "Progress", "ProgressMessage", "Logs", "WorkerId", "Output", });
     internal_static_tortuga_CreateReq_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_tortuga_CreateReq_fieldAccessorTable = new
@@ -12939,7 +13250,7 @@ public final class TortugaProto {
     internal_static_tortuga_CompleteTaskReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_CompleteTaskReq_descriptor,
-        new java.lang.String[] { "Worker", "Handle", "Code", "ErrorMessage", "Logs", });
+        new java.lang.String[] { "Worker", "Handle", "Code", "ErrorMessage", "Logs", "Output", });
     internal_static_tortuga_UpdateProgressReq_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_tortuga_UpdateProgressReq_fieldAccessorTable = new

@@ -989,6 +989,20 @@ class TaskProgress : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_worker_id();
   void set_allocated_worker_id(::std::string* worker_id);
 
+  // string output = 17;
+  void clear_output();
+  static const int kOutputFieldNumber = 17;
+  const ::std::string& output() const;
+  void set_output(const ::std::string& value);
+  #if LANG_CXX11
+  void set_output(::std::string&& value);
+  #endif
+  void set_output(const char* value);
+  void set_output(const char* value, size_t size);
+  ::std::string* mutable_output();
+  ::std::string* release_output();
+  void set_allocated_output(::std::string* output);
+
   // .google.protobuf.Timestamp created = 9;
   bool has_created() const;
   void clear_created();
@@ -1071,6 +1085,7 @@ class TaskProgress : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::ArenaStringPtr progress_message_;
   ::google::protobuf::internal::ArenaStringPtr logs_;
   ::google::protobuf::internal::ArenaStringPtr worker_id_;
+  ::google::protobuf::internal::ArenaStringPtr output_;
   ::google::protobuf::Timestamp* created_;
   ::google::protobuf::Timestamp* started_time_;
   ::google::protobuf::Timestamp* done_time_;
@@ -1427,6 +1442,20 @@ class CompleteTaskReq : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* release_logs();
   void set_allocated_logs(::std::string* logs);
 
+  // string output = 6;
+  void clear_output();
+  static const int kOutputFieldNumber = 6;
+  const ::std::string& output() const;
+  void set_output(const ::std::string& value);
+  #if LANG_CXX11
+  void set_output(::std::string&& value);
+  #endif
+  void set_output(const char* value);
+  void set_output(const char* value, size_t size);
+  ::std::string* mutable_output();
+  ::std::string* release_output();
+  void set_allocated_output(::std::string* output);
+
   // .tortuga.Worker worker = 1;
   bool has_worker() const;
   void clear_worker();
@@ -1449,6 +1478,7 @@ class CompleteTaskReq : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::internal::ArenaStringPtr handle_;
   ::google::protobuf::internal::ArenaStringPtr error_message_;
   ::google::protobuf::internal::ArenaStringPtr logs_;
+  ::google::protobuf::internal::ArenaStringPtr output_;
   ::tortuga::Worker* worker_;
   ::google::protobuf::int32 code_;
   mutable int _cached_size_;
@@ -3396,6 +3426,59 @@ inline void TaskProgress::set_allocated_worker_id(::std::string* worker_id) {
   // @@protoc_insertion_point(field_set_allocated:tortuga.TaskProgress.worker_id)
 }
 
+// string output = 17;
+inline void TaskProgress::clear_output() {
+  output_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& TaskProgress::output() const {
+  // @@protoc_insertion_point(field_get:tortuga.TaskProgress.output)
+  return output_.GetNoArena();
+}
+inline void TaskProgress::set_output(const ::std::string& value) {
+  
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.TaskProgress.output)
+}
+#if LANG_CXX11
+inline void TaskProgress::set_output(::std::string&& value) {
+  
+  output_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.TaskProgress.output)
+}
+#endif
+inline void TaskProgress::set_output(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.TaskProgress.output)
+}
+inline void TaskProgress::set_output(const char* value, size_t size) {
+  
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.TaskProgress.output)
+}
+inline ::std::string* TaskProgress::mutable_output() {
+  
+  // @@protoc_insertion_point(field_mutable:tortuga.TaskProgress.output)
+  return output_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* TaskProgress::release_output() {
+  // @@protoc_insertion_point(field_release:tortuga.TaskProgress.output)
+  
+  return output_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void TaskProgress::set_allocated_output(::std::string* output) {
+  if (output != NULL) {
+    
+  } else {
+    
+  }
+  output_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), output);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.TaskProgress.output)
+}
+
 // -------------------------------------------------------------------
 
 // CreateReq
@@ -3746,6 +3829,59 @@ inline void CompleteTaskReq::set_allocated_logs(::std::string* logs) {
   }
   logs_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), logs);
   // @@protoc_insertion_point(field_set_allocated:tortuga.CompleteTaskReq.logs)
+}
+
+// string output = 6;
+inline void CompleteTaskReq::clear_output() {
+  output_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& CompleteTaskReq::output() const {
+  // @@protoc_insertion_point(field_get:tortuga.CompleteTaskReq.output)
+  return output_.GetNoArena();
+}
+inline void CompleteTaskReq::set_output(const ::std::string& value) {
+  
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.CompleteTaskReq.output)
+}
+#if LANG_CXX11
+inline void CompleteTaskReq::set_output(::std::string&& value) {
+  
+  output_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.CompleteTaskReq.output)
+}
+#endif
+inline void CompleteTaskReq::set_output(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.CompleteTaskReq.output)
+}
+inline void CompleteTaskReq::set_output(const char* value, size_t size) {
+  
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.CompleteTaskReq.output)
+}
+inline ::std::string* CompleteTaskReq::mutable_output() {
+  
+  // @@protoc_insertion_point(field_mutable:tortuga.CompleteTaskReq.output)
+  return output_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* CompleteTaskReq::release_output() {
+  // @@protoc_insertion_point(field_release:tortuga.CompleteTaskReq.output)
+  
+  return output_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void CompleteTaskReq::set_allocated_output(::std::string* output) {
+  if (output != NULL) {
+    
+  } else {
+    
+  }
+  output_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), output);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.CompleteTaskReq.output)
 }
 
 // -------------------------------------------------------------------
