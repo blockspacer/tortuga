@@ -6,7 +6,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.common.util.concurrent.Uninterruptibles;
-import com.google.protobuf.Duration;
 import com.google.protobuf.Empty;
 
 import io.grpc.ManagedChannel;
