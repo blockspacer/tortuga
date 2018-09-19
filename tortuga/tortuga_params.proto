@@ -1,0 +1,18 @@
+// This file defines annotations for tortuga services.
+// It is meant to be included by clients.
+syntax = "proto2";
+
+package tortuga;
+
+option java_package = "io.tortuga";
+option java_outer_classname = "TortugaParamsProto";
+
+import "google/protobuf/descriptor.proto";
+
+message TortugaBridgeOpts {
+  optional int32 timeout_seconds = 1; 
+}
+
+extend google.protobuf.MethodOptions {
+  optional TortugaBridgeOpts bridge = 50007;
+}
