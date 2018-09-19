@@ -13,6 +13,8 @@
 #include "google/protobuf/compiler/plugin.pb.h"
 #include "google/protobuf/compiler/java/java_names.h"
 
+#include "tortuga/tortuga_params.pb.h"
+
 using google::protobuf::Descriptor;
 using google::protobuf::DescriptorPool;
 using google::protobuf::FileDescriptor;
@@ -97,6 +99,42 @@ std::string JavaMethodName(const MethodDescriptor* desc) {
   return method_name;
 }
 
+std::string ServiceJavaPackage(const FileDescriptor* file) {
+  std::string result = google::protobuf::compiler::java::ClassName(file);
+  size_t last_dot_pos = result.find_last_of('.');
+  if (last_dot_pos != std::string::npos) {
+    result.resize(last_dot_pos);
+  } else {
+    result = "";
+  }
+  
+  return result;
+}
+
+std::string ServiceClassName(const ServiceDescriptor* service) {
+  return service->name() + "Grpc";
+}
+
+std::string FullyQualifiedServiceClass(const ServiceDescriptor* service) {
+  std::string pkg = ServiceJavaPackage(service->file());
+  std::string class_name = ServiceClassName(service);
+  if (pkg.empty()) {
+    return class_name;
+  }
+
+  return pkg + "." + class_name;
+}
+
+int TortugaDeadlineSeconds(const MethodDescriptor* method) {
+  if (!method->options().HasExtension(tortuga::bridge)) {
+    // completely arbitrary default.
+    return 30;
+  }
+
+  const auto& bridge_opts = method->options().GetExtension(tortuga::bridge);
+  return bridge_opts.timeout_seconds();
+}
+
 void GenerateService(const ServiceDescriptor* service,
                      CodeGeneratorResponse* resp) {
   LOG(INFO) << "generating service: " << service->full_name();
@@ -115,6 +153,7 @@ void GenerateService(const ServiceDescriptor* service,
   out << "import com.google.common.util.concurrent.ListenableFuture;\n";
   out << "\n";
   out << "import io.grpc.Status;\n";
+  out << "import io.grpc.StatusRuntimeException;\n";
   out << "import io.tortuga.Service;\n";
   out << "import io.tortuga.TaskHandlerRegistry;\n";
   out << "import io.tortuga.TaskResult;\n";
@@ -122,6 +161,9 @@ void GenerateService(const ServiceDescriptor* service,
   out << "import io.tortuga.TortugaConnection;\n";
   out << "import io.tortuga.TortugaContext;\n";
   out << "\n";
+  out << "import java.util.concurrent.TimeUnit;\n";
+  out << "\n";
+  out << "@javax.annotation.Generated(\"tortuga\")\n";
   out << "public class " << klass << " {\n";
   out << "  public static class ImplBase extends Service {\n";
   
@@ -155,9 +197,52 @@ void GenerateService(const ServiceDescriptor* service,
     const MethodDescriptor* method = service->method(i);
     std::string t_type = FullyQualifiedJava(method->input_type());
     out << "      registry.registerHandler(\"" << method->full_name() << "\", this::do_" << JavaMethodName(method) << "Impl);\n";
-  }  
+  }
   out << "    }\n";
   out << "  }\n";
+
+  out << "  public static class GrpcBridgingService extends Service {\n";
+  out << "    private final io.grpc.Channel chan;\n\n";
+  out << "    public GrpcBridgingService(io.grpc.Channel chan) {\n";
+  out << "      this.chan = chan;\n";
+  out << "    }\n";
+  out << "\n";
+
+  for (int i = 0; i < service->method_count(); ++i) {
+    const MethodDescriptor* method = service->method(i);
+    std::string t_type = FullyQualifiedJava(method->input_type());
+    out << "    private ListenableFuture<Status> do_" << JavaMethodName(method) << "Impl(com.google.protobuf.Any data, TortugaContext ctx) {\n";
+    out << "      " << t_type << " t = null;\n";    
+    out << "      try {\n";
+    out << "        t = data.unpack(" << t_type << ".class);\n";
+    out << "      } catch (com.google.protobuf.InvalidProtocolBufferException ex) {\n";
+    out << "        Status status = Status.fromThrowable(ex);\n";
+    out << "        return Futures.immediateFuture(status);\n";
+    out << "      }\n";
+    out << "      " << FullyQualifiedServiceClass(service) << "." << service->name() << "BlockingStub stub = " << FullyQualifiedServiceClass(service) << ".newBlockingStub(this.chan);\n";
+    out << "      stub = stub.withDeadlineAfter(" << TortugaDeadlineSeconds(method) << ", TimeUnit.SECONDS);\n";
+    out << "      try {\n";
+    out << "        stub." << JavaMethodName(method) << "(t);\n";
+    out << "        return Futures.immediateFuture(Status.OK);\n";
+    out << "      } catch (StatusRuntimeException ex) {\n";
+    out << "        return Futures.immediateFuture(ex.getStatus());\n";
+    out << "      }\n";
+    out << "    }\n";
+    out << "\n";
+  }
+
+  out << "\n";
+  out << "    @Override\n";
+  out << "    public final void register(TaskHandlerRegistry registry) {\n";
+  for (int i = 0; i < service->method_count(); ++i) {
+    const MethodDescriptor* method = service->method(i);
+    std::string t_type = FullyQualifiedJava(method->input_type());
+    out << "      registry.registerHandler(\"" << method->full_name() << "\", this::do_" << JavaMethodName(method) << "Impl);\n";
+  }
+  out << "    }\n";
+
+  out << "  }\n";
+
   out << "  \n";
   out << "  public static final class Publisher {\n";
   out << "    private final TortugaConnection conn;\n";

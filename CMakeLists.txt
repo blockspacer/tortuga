@@ -46,6 +46,8 @@ add_library (tortuga_lib
   tortuga/tortuga.cc
   tortuga/tortuga.pb.cc
   tortuga/tortuga.grpc.pb.cc
+  tortuga/tortuga_params.pb.cc
+  tortuga/tortuga_params.grpc.pb.cc
 )
 
 target_link_libraries(tortuga_lib

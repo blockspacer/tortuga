@@ -6,6 +6,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import io.tortuga.Service;
 import io.tortuga.TaskHandlerRegistry;
 import io.tortuga.TaskResult;
@@ -13,6 +14,9 @@ import io.tortuga.TaskSpec;
 import io.tortuga.TortugaConnection;
 import io.tortuga.TortugaContext;
 
+import java.util.concurrent.TimeUnit;
+
+@javax.annotation.Generated("tortuga")
 public class TestServiceTortuga {
   public static class ImplBase extends Service {
     public ListenableFuture<Status> handleTask(com.google.protobuf.StringValue t, TortugaContext ctx) {
@@ -40,6 +44,56 @@ public class TestServiceTortuga {
       } catch (com.google.protobuf.InvalidProtocolBufferException ex) {
         Status status = Status.fromThrowable(ex);
         return Futures.immediateFuture(status);
+      }
+    }
+
+
+    @Override
+    public final void register(TaskHandlerRegistry registry) {
+      registry.registerHandler("tortuga.test.TestService.HandleTask", this::do_handleTaskImpl);
+      registry.registerHandler("tortuga.test.TestService.HandleCustomMessage", this::do_handleCustomMessageImpl);
+    }
+  }
+  public static class GrpcBridgingService extends Service {
+    private final io.grpc.Channel chan;
+
+    public GrpcBridgingService(io.grpc.Channel chan) {
+      this.chan = chan;
+    }
+
+    private ListenableFuture<Status> do_handleTaskImpl(com.google.protobuf.Any data, TortugaContext ctx) {
+      com.google.protobuf.StringValue t = null;
+      try {
+        t = data.unpack(com.google.protobuf.StringValue.class);
+      } catch (com.google.protobuf.InvalidProtocolBufferException ex) {
+        Status status = Status.fromThrowable(ex);
+        return Futures.immediateFuture(status);
+      }
+      io.tortuga.test.TestServiceGrpc.TestServiceBlockingStub stub = io.tortuga.test.TestServiceGrpc.newBlockingStub(this.chan);
+      stub = stub.withDeadlineAfter(30, TimeUnit.SECONDS);
+      try {
+        stub.handleTask(t);
+        return Futures.immediateFuture(Status.OK);
+      } catch (StatusRuntimeException ex) {
+        return Futures.immediateFuture(ex.getStatus());
+      }
+    }
+
+    private ListenableFuture<Status> do_handleCustomMessageImpl(com.google.protobuf.Any data, TortugaContext ctx) {
+      io.tortuga.test.TortugaProto.TestMessage t = null;
+      try {
+        t = data.unpack(io.tortuga.test.TortugaProto.TestMessage.class);
+      } catch (com.google.protobuf.InvalidProtocolBufferException ex) {
+        Status status = Status.fromThrowable(ex);
+        return Futures.immediateFuture(status);
+      }
+      io.tortuga.test.TestServiceGrpc.TestServiceBlockingStub stub = io.tortuga.test.TestServiceGrpc.newBlockingStub(this.chan);
+      stub = stub.withDeadlineAfter(30, TimeUnit.SECONDS);
+      try {
+        stub.handleCustomMessage(t);
+        return Futures.immediateFuture(Status.OK);
+      } catch (StatusRuntimeException ex) {
+        return Futures.immediateFuture(ex.getStatus());
       }
     }
 
