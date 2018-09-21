@@ -297,6 +297,16 @@ void GenerateService(const ServiceDescriptor* service,
     out << "    }\n";
     out << "\n";
   }
+  out << "\n";
+
+  for (int i = 0; i < service->method_count(); ++i) {
+    const MethodDescriptor* method = service->method(i);
+    out << "    public ListenableFuture<java.util.Optional<io.tortuga.TaskWatcher>> findAsync" << method->name() << "Task(String id) {\n";
+    out << "      return conn.createWatcherAsync(id, \"" << method->full_name() << "\");\n";
+    out << "    }\n";
+    out << "\n";
+  }
+
   out << "  }\n";
   out << "\n";
 

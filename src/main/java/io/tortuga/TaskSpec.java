@@ -43,4 +43,8 @@ public class TaskSpec {
     modules.add(module);
     return this;
   }
+
+  public String id() {
+    return id;
+  }
 }

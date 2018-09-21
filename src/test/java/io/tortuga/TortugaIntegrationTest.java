@@ -543,7 +543,7 @@ public class TortugaIntegrationTest {
     Optional<TaskWatcher> watcherOpt = manager.findHandleCustomMessageTask("SomeTask0");
     Assert.assertTrue(watcherOpt.isPresent());
     TaskWatcher watcher = watcherOpt.get();
-    TaskProgress progress = watcher.getProgress();
+    TaskProgress progress = watcher.refreshProgress();
 
     Assert.assertEquals(50.0F, progress.getProgress(), 0.001F);
     Assert.assertEquals("The task is done at 50%",  progress.getProgressMessage());
@@ -552,7 +552,7 @@ public class TortugaIntegrationTest {
     // They shall all proceed.
     Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 60L, TimeUnit.SECONDS));
 
-    progress = watcher.getProgress();
+    progress = watcher.refreshProgress();
     Assert.assertEquals(100.0F, progress.getProgress(), 0.001F);
 
     tortuga.shutdown();

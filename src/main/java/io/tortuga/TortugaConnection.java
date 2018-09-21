@@ -161,6 +161,14 @@ public class TortugaConnection {
             .build());
   }
 
+  ListenableFuture<TaskProgress> getProgressAsync(String handle) {
+    return TortugaGrpc.newFutureStub(chan)
+        .withDeadlineAfter(30L, TimeUnit.SECONDS)
+        .findTaskByHandle(StringValue.newBuilder()
+            .setValue(handle)
+            .build());
+  }
+
   public Optional<TaskWatcher> createWatcher(String id, String type) {
     TaskIdentifier taskId = TaskIdentifier.newBuilder()
         .setId(id)
@@ -172,7 +180,7 @@ public class TortugaConnection {
           .withDeadlineAfter(30L, TimeUnit.SECONDS)
           .findTask(taskId);
 
-      return Optional.of(new TaskWatcher(progress.getHandle(), this));
+      return Optional.of(new TaskWatcher(progress, this));
     } catch (StatusRuntimeException ex) {
       if (ex.getStatus().getCode() == Code.NOT_FOUND) {
         return Optional.empty();
@@ -180,6 +188,31 @@ public class TortugaConnection {
 
       throw ex;
     }
+  }
+
+  public ListenableFuture<Optional<TaskWatcher>> createWatcherAsync(String id, String type) {
+    TaskIdentifier taskId = TaskIdentifier.newBuilder()
+        .setId(id)
+        .setType(type)
+        .build();
+
+    ListenableFuture<TaskProgress> taskF = TortugaGrpc.newFutureStub(chan)
+        .withDeadlineAfter(30L, TimeUnit.SECONDS)
+        .findTask(taskId);
+
+    ListenableFuture<Optional<TaskWatcher>> watcherF = Futures.transform(taskF, progress -> {
+      return Optional.of(new TaskWatcher(progress, this));
+    });
+
+    watcherF = Futures.catching(watcherF, StatusRuntimeException.class, (ex) -> {
+      if (ex.getStatus().getCode() == Code.NOT_FOUND) {
+        return Optional.empty();
+      } else {
+        throw ex;
+      }
+    });
+
+    return watcherF;
   }
 
   /**
@@ -195,7 +228,7 @@ public class TortugaConnection {
     completionListeners.put(handle, statusF);
 
     if (heartbeatF == null) {
-      heartbeatF = maintenanceService.scheduleAtFixedRate(() -> {
+      heartbeatF = maintenanceService.scheduleWithFixedDelay(() -> {
         beatForCompletions();
       }, 100L, 100L, TimeUnit.MILLISECONDS);
     }

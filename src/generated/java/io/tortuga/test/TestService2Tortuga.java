@@ -158,6 +158,15 @@ public class TestService2Tortuga {
       return conn.createWatcher(id, "tortuga.test.TestService2.HandleCustomMessage2");
     }
 
+
+    public ListenableFuture<java.util.Optional<io.tortuga.TaskWatcher>> findAsyncHandleTask2Task(String id) {
+      return conn.createWatcherAsync(id, "tortuga.test.TestService2.HandleTask2");
+    }
+
+    public ListenableFuture<java.util.Optional<io.tortuga.TaskWatcher>> findAsyncHandleCustomMessage2Task(String id) {
+      return conn.createWatcherAsync(id, "tortuga.test.TestService2.HandleCustomMessage2");
+    }
+
   }
 
   public static Publisher newPublisher(TortugaConnection conn) {
