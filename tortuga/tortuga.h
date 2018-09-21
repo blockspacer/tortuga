@@ -73,6 +73,8 @@ class TortugaHandler : boost::noncopyable {
     std::string handle;
     std::string type;
     std::string data;
+    int retries{ 0 };
+    std::string progress_metadata;
   };
 
   RequestTaskResult RequestTask(const Worker& worker);

@@ -60,6 +60,12 @@ void FirestoreModule::OnProgressUpdate(const TaskProgress& task) {
   }
 
   {
+    Value progress_metadata_value;
+    progress_metadata_value.set_string_value(task.progress_metadata());
+    (*fields)["progress_metadata"] = progress_metadata_value;
+  }
+
+  {
     Value output_value;
     output_value.set_string_value(task.output());
     (*fields)["output"] = output_value;
