@@ -100,13 +100,13 @@ public class Tortuga {
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-    }, 100L, 100L, TimeUnit.MILLISECONDS);
+    }, 500L, 500L, TimeUnit.MILLISECONDS);
   }
 
   private void heartbeat() {
     LOG.debug("sending heartbeat");
     ListenableFuture<Empty> done = TortugaGrpc.newFutureStub(chan)
-        .withDeadlineAfter(3L, TimeUnit.SECONDS)
+        .withDeadlineAfter(5L, TimeUnit.SECONDS)
         .heartbeat(worker);
     Futures.addCallback(done, new FutureCallback<Empty>() {
       @Override
@@ -127,6 +127,15 @@ public class Tortuga {
       return;
     }
 
+    try {
+      pollTaskHoldingSem();
+    } catch (RuntimeException ex) {
+      LOG.error("couldn't poll task", ex);
+      semaphore.release();
+    }
+  }
+
+  private void pollTaskHoldingSem() {
     TaskReq req = TaskReq.newBuilder()
         .setWorker(worker)
         .build();
@@ -189,28 +198,21 @@ public class Tortuga {
           return TortugaGrpc.newFutureStub(chan)
               .withDeadlineAfter(30L, TimeUnit.SECONDS)
               .completeTask(req.build());
-        }, maintenanceService);
+        });
 
         Futures.addCallback(doneAck, new FutureCallback<Empty>() {
           @Override
           public void onSuccess(Empty result) {
             semaphore.release();
             LOG.debug("completed task {}.", resp.getHandle());
-
-            if (!shuttingDown.get()) {
-              pollTask();
-            }
           }
 
           @Override
           public void onFailure(Throwable t) {
             semaphore.release();
             LOG.error("couldn't complete task {}.", resp.getHandle(), t);
-            if (!shuttingDown.get()) {
-              pollTask();
-            }
           }
-        }, maintenanceService);
+        });
       }
 
       @Override

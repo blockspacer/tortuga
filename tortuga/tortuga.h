@@ -118,10 +118,6 @@ class TortugaHandler : boost::noncopyable {
 
   SqliteStatement select_task_to_complete_stmt_;
   SqliteStatement complete_task_stmt_;
-  SqliteStatement update_task_progress_stmt_;
-  SqliteStatement update_task_progress_only_stmt_;
-  SqliteStatement update_task_progress_msg_only_stmt_;
-
   SqliteStatement select_expired_workers_stmt_;
 
   SqliteStatement unassign_tasks_stmt_;

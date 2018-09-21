@@ -2153,6 +2153,19 @@ public final class TortugaProto {
      * <code>bool none = 5;</code>
      */
     boolean getNone();
+
+    /**
+     * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+     */
+    boolean hasRetryCtx();
+    /**
+     * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+     */
+    io.tortuga.TortugaProto.TaskResp.RetryContext getRetryCtx();
+    /**
+     * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+     */
+    io.tortuga.TortugaProto.TaskResp.RetryContextOrBuilder getRetryCtxOrBuilder();
   }
   /**
    * Protobuf type {@code tortuga.TaskResp}
@@ -2240,6 +2253,19 @@ public final class TortugaProto {
               none_ = input.readBool();
               break;
             }
+            case 50: {
+              io.tortuga.TortugaProto.TaskResp.RetryContext.Builder subBuilder = null;
+              if (retryCtx_ != null) {
+                subBuilder = retryCtx_.toBuilder();
+              }
+              retryCtx_ = input.readMessage(io.tortuga.TortugaProto.TaskResp.RetryContext.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(retryCtx_);
+                retryCtx_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2262,6 +2288,630 @@ public final class TortugaProto {
       return io.tortuga.TortugaProto.internal_static_tortuga_TaskResp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               io.tortuga.TortugaProto.TaskResp.class, io.tortuga.TortugaProto.TaskResp.Builder.class);
+    }
+
+    public interface RetryContextOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:tortuga.TaskResp.RetryContext)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>int32 retries = 1;</code>
+       */
+      int getRetries();
+
+      /**
+       * <pre>
+       * The last metadata provided, relevant only if retries &gt; 0.
+       * </pre>
+       *
+       * <code>string progress_metadata = 2;</code>
+       */
+      java.lang.String getProgressMetadata();
+      /**
+       * <pre>
+       * The last metadata provided, relevant only if retries &gt; 0.
+       * </pre>
+       *
+       * <code>string progress_metadata = 2;</code>
+       */
+      com.google.protobuf.ByteString
+          getProgressMetadataBytes();
+    }
+    /**
+     * Protobuf type {@code tortuga.TaskResp.RetryContext}
+     */
+    public  static final class RetryContext extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:tortuga.TaskResp.RetryContext)
+        RetryContextOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use RetryContext.newBuilder() to construct.
+      private RetryContext(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private RetryContext() {
+        retries_ = 0;
+        progressMetadata_ = "";
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private RetryContext(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownFieldProto3(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 8: {
+
+                retries_ = input.readInt32();
+                break;
+              }
+              case 18: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                progressMetadata_ = s;
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_TaskResp_RetryContext_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_TaskResp_RetryContext_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.TaskResp.RetryContext.class, io.tortuga.TortugaProto.TaskResp.RetryContext.Builder.class);
+      }
+
+      public static final int RETRIES_FIELD_NUMBER = 1;
+      private int retries_;
+      /**
+       * <code>int32 retries = 1;</code>
+       */
+      public int getRetries() {
+        return retries_;
+      }
+
+      public static final int PROGRESS_METADATA_FIELD_NUMBER = 2;
+      private volatile java.lang.Object progressMetadata_;
+      /**
+       * <pre>
+       * The last metadata provided, relevant only if retries &gt; 0.
+       * </pre>
+       *
+       * <code>string progress_metadata = 2;</code>
+       */
+      public java.lang.String getProgressMetadata() {
+        java.lang.Object ref = progressMetadata_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          progressMetadata_ = s;
+          return s;
+        }
+      }
+      /**
+       * <pre>
+       * The last metadata provided, relevant only if retries &gt; 0.
+       * </pre>
+       *
+       * <code>string progress_metadata = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getProgressMetadataBytes() {
+        java.lang.Object ref = progressMetadata_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          progressMetadata_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (retries_ != 0) {
+          output.writeInt32(1, retries_);
+        }
+        if (!getProgressMetadataBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 2, progressMetadata_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (retries_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(1, retries_);
+        }
+        if (!getProgressMetadataBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, progressMetadata_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof io.tortuga.TortugaProto.TaskResp.RetryContext)) {
+          return super.equals(obj);
+        }
+        io.tortuga.TortugaProto.TaskResp.RetryContext other = (io.tortuga.TortugaProto.TaskResp.RetryContext) obj;
+
+        boolean result = true;
+        result = result && (getRetries()
+            == other.getRetries());
+        result = result && getProgressMetadata()
+            .equals(other.getProgressMetadata());
+        result = result && unknownFields.equals(other.unknownFields);
+        return result;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + RETRIES_FIELD_NUMBER;
+        hash = (53 * hash) + getRetries();
+        hash = (37 * hash) + PROGRESS_METADATA_FIELD_NUMBER;
+        hash = (53 * hash) + getProgressMetadata().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(io.tortuga.TortugaProto.TaskResp.RetryContext prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code tortuga.TaskResp.RetryContext}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:tortuga.TaskResp.RetryContext)
+          io.tortuga.TortugaProto.TaskResp.RetryContextOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return io.tortuga.TortugaProto.internal_static_tortuga_TaskResp_RetryContext_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return io.tortuga.TortugaProto.internal_static_tortuga_TaskResp_RetryContext_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  io.tortuga.TortugaProto.TaskResp.RetryContext.class, io.tortuga.TortugaProto.TaskResp.RetryContext.Builder.class);
+        }
+
+        // Construct using io.tortuga.TortugaProto.TaskResp.RetryContext.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        public Builder clear() {
+          super.clear();
+          retries_ = 0;
+
+          progressMetadata_ = "";
+
+          return this;
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return io.tortuga.TortugaProto.internal_static_tortuga_TaskResp_RetryContext_descriptor;
+        }
+
+        public io.tortuga.TortugaProto.TaskResp.RetryContext getDefaultInstanceForType() {
+          return io.tortuga.TortugaProto.TaskResp.RetryContext.getDefaultInstance();
+        }
+
+        public io.tortuga.TortugaProto.TaskResp.RetryContext build() {
+          io.tortuga.TortugaProto.TaskResp.RetryContext result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public io.tortuga.TortugaProto.TaskResp.RetryContext buildPartial() {
+          io.tortuga.TortugaProto.TaskResp.RetryContext result = new io.tortuga.TortugaProto.TaskResp.RetryContext(this);
+          result.retries_ = retries_;
+          result.progressMetadata_ = progressMetadata_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder clone() {
+          return (Builder) super.clone();
+        }
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return (Builder) super.setField(field, value);
+        }
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return (Builder) super.clearField(field);
+        }
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return (Builder) super.clearOneof(oneof);
+        }
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return (Builder) super.setRepeatedField(field, index, value);
+        }
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return (Builder) super.addRepeatedField(field, value);
+        }
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof io.tortuga.TortugaProto.TaskResp.RetryContext) {
+            return mergeFrom((io.tortuga.TortugaProto.TaskResp.RetryContext)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(io.tortuga.TortugaProto.TaskResp.RetryContext other) {
+          if (other == io.tortuga.TortugaProto.TaskResp.RetryContext.getDefaultInstance()) return this;
+          if (other.getRetries() != 0) {
+            setRetries(other.getRetries());
+          }
+          if (!other.getProgressMetadata().isEmpty()) {
+            progressMetadata_ = other.progressMetadata_;
+            onChanged();
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          io.tortuga.TortugaProto.TaskResp.RetryContext parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (io.tortuga.TortugaProto.TaskResp.RetryContext) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private int retries_ ;
+        /**
+         * <code>int32 retries = 1;</code>
+         */
+        public int getRetries() {
+          return retries_;
+        }
+        /**
+         * <code>int32 retries = 1;</code>
+         */
+        public Builder setRetries(int value) {
+          
+          retries_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>int32 retries = 1;</code>
+         */
+        public Builder clearRetries() {
+          
+          retries_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object progressMetadata_ = "";
+        /**
+         * <pre>
+         * The last metadata provided, relevant only if retries &gt; 0.
+         * </pre>
+         *
+         * <code>string progress_metadata = 2;</code>
+         */
+        public java.lang.String getProgressMetadata() {
+          java.lang.Object ref = progressMetadata_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            progressMetadata_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <pre>
+         * The last metadata provided, relevant only if retries &gt; 0.
+         * </pre>
+         *
+         * <code>string progress_metadata = 2;</code>
+         */
+        public com.google.protobuf.ByteString
+            getProgressMetadataBytes() {
+          java.lang.Object ref = progressMetadata_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            progressMetadata_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <pre>
+         * The last metadata provided, relevant only if retries &gt; 0.
+         * </pre>
+         *
+         * <code>string progress_metadata = 2;</code>
+         */
+        public Builder setProgressMetadata(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          progressMetadata_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * The last metadata provided, relevant only if retries &gt; 0.
+         * </pre>
+         *
+         * <code>string progress_metadata = 2;</code>
+         */
+        public Builder clearProgressMetadata() {
+          
+          progressMetadata_ = getDefaultInstance().getProgressMetadata();
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * The last metadata provided, relevant only if retries &gt; 0.
+         * </pre>
+         *
+         * <code>string progress_metadata = 2;</code>
+         */
+        public Builder setProgressMetadataBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          progressMetadata_ = value;
+          onChanged();
+          return this;
+        }
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFieldsProto3(unknownFields);
+        }
+
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:tortuga.TaskResp.RetryContext)
+      }
+
+      // @@protoc_insertion_point(class_scope:tortuga.TaskResp.RetryContext)
+      private static final io.tortuga.TortugaProto.TaskResp.RetryContext DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new io.tortuga.TortugaProto.TaskResp.RetryContext();
+      }
+
+      public static io.tortuga.TortugaProto.TaskResp.RetryContext getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<RetryContext>
+          PARSER = new com.google.protobuf.AbstractParser<RetryContext>() {
+        public RetryContext parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new RetryContext(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<RetryContext> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<RetryContext> getParserForType() {
+        return PARSER;
+      }
+
+      public io.tortuga.TortugaProto.TaskResp.RetryContext getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
     }
 
     public static final int ID_FIELD_NUMBER = 1;
@@ -2396,6 +3046,27 @@ public final class TortugaProto {
       return none_;
     }
 
+    public static final int RETRY_CTX_FIELD_NUMBER = 6;
+    private io.tortuga.TortugaProto.TaskResp.RetryContext retryCtx_;
+    /**
+     * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+     */
+    public boolean hasRetryCtx() {
+      return retryCtx_ != null;
+    }
+    /**
+     * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+     */
+    public io.tortuga.TortugaProto.TaskResp.RetryContext getRetryCtx() {
+      return retryCtx_ == null ? io.tortuga.TortugaProto.TaskResp.RetryContext.getDefaultInstance() : retryCtx_;
+    }
+    /**
+     * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+     */
+    public io.tortuga.TortugaProto.TaskResp.RetryContextOrBuilder getRetryCtxOrBuilder() {
+      return getRetryCtx();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -2423,6 +3094,9 @@ public final class TortugaProto {
       if (none_ != false) {
         output.writeBool(5, none_);
       }
+      if (retryCtx_ != null) {
+        output.writeMessage(6, getRetryCtx());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2447,6 +3121,10 @@ public final class TortugaProto {
       if (none_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(5, none_);
+      }
+      if (retryCtx_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, getRetryCtx());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2477,6 +3155,11 @@ public final class TortugaProto {
           .equals(other.getHandle());
       result = result && (getNone()
           == other.getNone());
+      result = result && (hasRetryCtx() == other.hasRetryCtx());
+      if (hasRetryCtx()) {
+        result = result && getRetryCtx()
+            .equals(other.getRetryCtx());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -2501,6 +3184,10 @@ public final class TortugaProto {
       hash = (37 * hash) + NONE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getNone());
+      if (hasRetryCtx()) {
+        hash = (37 * hash) + RETRY_CTX_FIELD_NUMBER;
+        hash = (53 * hash) + getRetryCtx().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2644,6 +3331,12 @@ public final class TortugaProto {
 
         none_ = false;
 
+        if (retryCtxBuilder_ == null) {
+          retryCtx_ = null;
+        } else {
+          retryCtx_ = null;
+          retryCtxBuilder_ = null;
+        }
         return this;
       }
 
@@ -2675,6 +3368,11 @@ public final class TortugaProto {
         }
         result.handle_ = handle_;
         result.none_ = none_;
+        if (retryCtxBuilder_ == null) {
+          result.retryCtx_ = retryCtx_;
+        } else {
+          result.retryCtx_ = retryCtxBuilder_.build();
+        }
         onBuilt();
         return result;
       }
@@ -2733,6 +3431,9 @@ public final class TortugaProto {
         }
         if (other.getNone() != false) {
           setNone(other.getNone());
+        }
+        if (other.hasRetryCtx()) {
+          mergeRetryCtx(other.getRetryCtx());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3109,6 +3810,123 @@ public final class TortugaProto {
         none_ = false;
         onChanged();
         return this;
+      }
+
+      private io.tortuga.TortugaProto.TaskResp.RetryContext retryCtx_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          io.tortuga.TortugaProto.TaskResp.RetryContext, io.tortuga.TortugaProto.TaskResp.RetryContext.Builder, io.tortuga.TortugaProto.TaskResp.RetryContextOrBuilder> retryCtxBuilder_;
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      public boolean hasRetryCtx() {
+        return retryCtxBuilder_ != null || retryCtx_ != null;
+      }
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      public io.tortuga.TortugaProto.TaskResp.RetryContext getRetryCtx() {
+        if (retryCtxBuilder_ == null) {
+          return retryCtx_ == null ? io.tortuga.TortugaProto.TaskResp.RetryContext.getDefaultInstance() : retryCtx_;
+        } else {
+          return retryCtxBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      public Builder setRetryCtx(io.tortuga.TortugaProto.TaskResp.RetryContext value) {
+        if (retryCtxBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          retryCtx_ = value;
+          onChanged();
+        } else {
+          retryCtxBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      public Builder setRetryCtx(
+          io.tortuga.TortugaProto.TaskResp.RetryContext.Builder builderForValue) {
+        if (retryCtxBuilder_ == null) {
+          retryCtx_ = builderForValue.build();
+          onChanged();
+        } else {
+          retryCtxBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      public Builder mergeRetryCtx(io.tortuga.TortugaProto.TaskResp.RetryContext value) {
+        if (retryCtxBuilder_ == null) {
+          if (retryCtx_ != null) {
+            retryCtx_ =
+              io.tortuga.TortugaProto.TaskResp.RetryContext.newBuilder(retryCtx_).mergeFrom(value).buildPartial();
+          } else {
+            retryCtx_ = value;
+          }
+          onChanged();
+        } else {
+          retryCtxBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      public Builder clearRetryCtx() {
+        if (retryCtxBuilder_ == null) {
+          retryCtx_ = null;
+          onChanged();
+        } else {
+          retryCtx_ = null;
+          retryCtxBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      public io.tortuga.TortugaProto.TaskResp.RetryContext.Builder getRetryCtxBuilder() {
+        
+        onChanged();
+        return getRetryCtxFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      public io.tortuga.TortugaProto.TaskResp.RetryContextOrBuilder getRetryCtxOrBuilder() {
+        if (retryCtxBuilder_ != null) {
+          return retryCtxBuilder_.getMessageOrBuilder();
+        } else {
+          return retryCtx_ == null ?
+              io.tortuga.TortugaProto.TaskResp.RetryContext.getDefaultInstance() : retryCtx_;
+        }
+      }
+      /**
+       * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          io.tortuga.TortugaProto.TaskResp.RetryContext, io.tortuga.TortugaProto.TaskResp.RetryContext.Builder, io.tortuga.TortugaProto.TaskResp.RetryContextOrBuilder> 
+          getRetryCtxFieldBuilder() {
+        if (retryCtxBuilder_ == null) {
+          retryCtxBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              io.tortuga.TortugaProto.TaskResp.RetryContext, io.tortuga.TortugaProto.TaskResp.RetryContext.Builder, io.tortuga.TortugaProto.TaskResp.RetryContextOrBuilder>(
+                  getRetryCtx(),
+                  getParentForChildren(),
+                  isClean());
+          retryCtx_ = null;
+        }
+        return retryCtxBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -5063,6 +5881,16 @@ public final class TortugaProto {
         getProgressMessageBytes();
 
     /**
+     * <code>string progress_metadata = 18;</code>
+     */
+    java.lang.String getProgressMetadata();
+    /**
+     * <code>string progress_metadata = 18;</code>
+     */
+    com.google.protobuf.ByteString
+        getProgressMetadataBytes();
+
+    /**
      * <code>string logs = 15;</code>
      */
     java.lang.String getLogs();
@@ -5115,6 +5943,7 @@ public final class TortugaProto {
       done_ = false;
       progress_ = 0F;
       progressMessage_ = "";
+      progressMetadata_ = "";
       logs_ = "";
       workerId_ = "";
       output_ = "";
@@ -5273,6 +6102,12 @@ public final class TortugaProto {
               java.lang.String s = input.readStringRequireUtf8();
 
               output_ = s;
+              break;
+            }
+            case 146: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              progressMetadata_ = s;
               break;
             }
           }
@@ -5573,6 +6408,40 @@ public final class TortugaProto {
       }
     }
 
+    public static final int PROGRESS_METADATA_FIELD_NUMBER = 18;
+    private volatile java.lang.Object progressMetadata_;
+    /**
+     * <code>string progress_metadata = 18;</code>
+     */
+    public java.lang.String getProgressMetadata() {
+      java.lang.Object ref = progressMetadata_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        progressMetadata_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string progress_metadata = 18;</code>
+     */
+    public com.google.protobuf.ByteString
+        getProgressMetadataBytes() {
+      java.lang.Object ref = progressMetadata_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        progressMetadata_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     public static final int LOGS_FIELD_NUMBER = 15;
     private volatile java.lang.Object logs_;
     /**
@@ -5738,6 +6607,9 @@ public final class TortugaProto {
       if (!getOutputBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 17, output_);
       }
+      if (!getProgressMetadataBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 18, progressMetadata_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -5807,6 +6679,9 @@ public final class TortugaProto {
       if (!getOutputBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(17, output_);
       }
+      if (!getProgressMetadataBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, progressMetadata_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -5865,6 +6740,8 @@ public final class TortugaProto {
               other.getProgress()));
       result = result && getProgressMessage()
           .equals(other.getProgressMessage());
+      result = result && getProgressMetadata()
+          .equals(other.getProgressMetadata());
       result = result && getLogs()
           .equals(other.getLogs());
       result = result && getWorkerId()
@@ -5921,6 +6798,8 @@ public final class TortugaProto {
           getProgress());
       hash = (37 * hash) + PROGRESS_MESSAGE_FIELD_NUMBER;
       hash = (53 * hash) + getProgressMessage().hashCode();
+      hash = (37 * hash) + PROGRESS_METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getProgressMetadata().hashCode();
       hash = (37 * hash) + LOGS_FIELD_NUMBER;
       hash = (53 * hash) + getLogs().hashCode();
       hash = (37 * hash) + WORKER_ID_FIELD_NUMBER;
@@ -6100,6 +6979,8 @@ public final class TortugaProto {
 
         progressMessage_ = "";
 
+        progressMetadata_ = "";
+
         logs_ = "";
 
         workerId_ = "";
@@ -6158,6 +7039,7 @@ public final class TortugaProto {
         }
         result.progress_ = progress_;
         result.progressMessage_ = progressMessage_;
+        result.progressMetadata_ = progressMetadata_;
         result.logs_ = logs_;
         result.workerId_ = workerId_;
         result.output_ = output_;
@@ -6246,6 +7128,10 @@ public final class TortugaProto {
         }
         if (!other.getProgressMessage().isEmpty()) {
           progressMessage_ = other.progressMessage_;
+          onChanged();
+        }
+        if (!other.getProgressMetadata().isEmpty()) {
+          progressMetadata_ = other.progressMetadata_;
           onChanged();
         }
         if (!other.getLogs().isEmpty()) {
@@ -7183,6 +8069,75 @@ public final class TortugaProto {
   checkByteStringIsUtf8(value);
         
         progressMessage_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object progressMetadata_ = "";
+      /**
+       * <code>string progress_metadata = 18;</code>
+       */
+      public java.lang.String getProgressMetadata() {
+        java.lang.Object ref = progressMetadata_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          progressMetadata_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string progress_metadata = 18;</code>
+       */
+      public com.google.protobuf.ByteString
+          getProgressMetadataBytes() {
+        java.lang.Object ref = progressMetadata_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          progressMetadata_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string progress_metadata = 18;</code>
+       */
+      public Builder setProgressMetadata(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        progressMetadata_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string progress_metadata = 18;</code>
+       */
+      public Builder clearProgressMetadata() {
+        
+        progressMetadata_ = getDefaultInstance().getProgressMetadata();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string progress_metadata = 18;</code>
+       */
+      public Builder setProgressMetadataBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        progressMetadata_ = value;
         onChanged();
         return this;
       }
@@ -9870,26 +10825,14 @@ public final class TortugaProto {
         getHandleBytes();
 
     /**
-     * <pre>
-     * If set, it erases the value, else it is ignored (progress value will remain what it was).
-     * </pre>
-     *
      * <code>.google.protobuf.FloatValue progress = 3;</code>
      */
     boolean hasProgress();
     /**
-     * <pre>
-     * If set, it erases the value, else it is ignored (progress value will remain what it was).
-     * </pre>
-     *
      * <code>.google.protobuf.FloatValue progress = 3;</code>
      */
     com.google.protobuf.FloatValue getProgress();
     /**
-     * <pre>
-     * If set, it erases the value, else it is ignored (progress value will remain what it was).
-     * </pre>
-     *
      * <code>.google.protobuf.FloatValue progress = 3;</code>
      */
     com.google.protobuf.FloatValueOrBuilder getProgressOrBuilder();
@@ -9906,6 +10849,19 @@ public final class TortugaProto {
      * <code>.google.protobuf.StringValue progress_message = 4;</code>
      */
     com.google.protobuf.StringValueOrBuilder getProgressMessageOrBuilder();
+
+    /**
+     * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+     */
+    boolean hasProgressMetadata();
+    /**
+     * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+     */
+    com.google.protobuf.StringValue getProgressMetadata();
+    /**
+     * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+     */
+    com.google.protobuf.StringValueOrBuilder getProgressMetadataOrBuilder();
   }
   /**
    * Protobuf type {@code tortuga.UpdateProgressReq}
@@ -9999,6 +10955,19 @@ public final class TortugaProto {
 
               break;
             }
+            case 42: {
+              com.google.protobuf.StringValue.Builder subBuilder = null;
+              if (progressMetadata_ != null) {
+                subBuilder = progressMetadata_.toBuilder();
+              }
+              progressMetadata_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(progressMetadata_);
+                progressMetadata_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -10081,30 +11050,18 @@ public final class TortugaProto {
     public static final int PROGRESS_FIELD_NUMBER = 3;
     private com.google.protobuf.FloatValue progress_;
     /**
-     * <pre>
-     * If set, it erases the value, else it is ignored (progress value will remain what it was).
-     * </pre>
-     *
      * <code>.google.protobuf.FloatValue progress = 3;</code>
      */
     public boolean hasProgress() {
       return progress_ != null;
     }
     /**
-     * <pre>
-     * If set, it erases the value, else it is ignored (progress value will remain what it was).
-     * </pre>
-     *
      * <code>.google.protobuf.FloatValue progress = 3;</code>
      */
     public com.google.protobuf.FloatValue getProgress() {
       return progress_ == null ? com.google.protobuf.FloatValue.getDefaultInstance() : progress_;
     }
     /**
-     * <pre>
-     * If set, it erases the value, else it is ignored (progress value will remain what it was).
-     * </pre>
-     *
      * <code>.google.protobuf.FloatValue progress = 3;</code>
      */
     public com.google.protobuf.FloatValueOrBuilder getProgressOrBuilder() {
@@ -10132,6 +11089,27 @@ public final class TortugaProto {
       return getProgressMessage();
     }
 
+    public static final int PROGRESS_METADATA_FIELD_NUMBER = 5;
+    private com.google.protobuf.StringValue progressMetadata_;
+    /**
+     * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+     */
+    public boolean hasProgressMetadata() {
+      return progressMetadata_ != null;
+    }
+    /**
+     * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+     */
+    public com.google.protobuf.StringValue getProgressMetadata() {
+      return progressMetadata_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : progressMetadata_;
+    }
+    /**
+     * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+     */
+    public com.google.protobuf.StringValueOrBuilder getProgressMetadataOrBuilder() {
+      return getProgressMetadata();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -10156,6 +11134,9 @@ public final class TortugaProto {
       if (progressMessage_ != null) {
         output.writeMessage(4, getProgressMessage());
       }
+      if (progressMetadata_ != null) {
+        output.writeMessage(5, getProgressMetadata());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -10178,6 +11159,10 @@ public final class TortugaProto {
       if (progressMessage_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, getProgressMessage());
+      }
+      if (progressMetadata_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, getProgressMetadata());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -10212,6 +11197,11 @@ public final class TortugaProto {
         result = result && getProgressMessage()
             .equals(other.getProgressMessage());
       }
+      result = result && (hasProgressMetadata() == other.hasProgressMetadata());
+      if (hasProgressMetadata()) {
+        result = result && getProgressMetadata()
+            .equals(other.getProgressMetadata());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -10236,6 +11226,10 @@ public final class TortugaProto {
       if (hasProgressMessage()) {
         hash = (37 * hash) + PROGRESS_MESSAGE_FIELD_NUMBER;
         hash = (53 * hash) + getProgressMessage().hashCode();
+      }
+      if (hasProgressMetadata()) {
+        hash = (37 * hash) + PROGRESS_METADATA_FIELD_NUMBER;
+        hash = (53 * hash) + getProgressMetadata().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -10386,6 +11380,12 @@ public final class TortugaProto {
           progressMessage_ = null;
           progressMessageBuilder_ = null;
         }
+        if (progressMetadataBuilder_ == null) {
+          progressMetadata_ = null;
+        } else {
+          progressMetadata_ = null;
+          progressMetadataBuilder_ = null;
+        }
         return this;
       }
 
@@ -10423,6 +11423,11 @@ public final class TortugaProto {
           result.progressMessage_ = progressMessage_;
         } else {
           result.progressMessage_ = progressMessageBuilder_.build();
+        }
+        if (progressMetadataBuilder_ == null) {
+          result.progressMetadata_ = progressMetadata_;
+        } else {
+          result.progressMetadata_ = progressMetadataBuilder_.build();
         }
         onBuilt();
         return result;
@@ -10477,6 +11482,9 @@ public final class TortugaProto {
         }
         if (other.hasProgressMessage()) {
           mergeProgressMessage(other.getProgressMessage());
+        }
+        if (other.hasProgressMetadata()) {
+          mergeProgressMetadata(other.getProgressMetadata());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -10695,20 +11703,12 @@ public final class TortugaProto {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.FloatValue, com.google.protobuf.FloatValue.Builder, com.google.protobuf.FloatValueOrBuilder> progressBuilder_;
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       public boolean hasProgress() {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       public com.google.protobuf.FloatValue getProgress() {
@@ -10719,10 +11719,6 @@ public final class TortugaProto {
         }
       }
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       public Builder setProgress(com.google.protobuf.FloatValue value) {
@@ -10739,10 +11735,6 @@ public final class TortugaProto {
         return this;
       }
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       public Builder setProgress(
@@ -10757,10 +11749,6 @@ public final class TortugaProto {
         return this;
       }
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       public Builder mergeProgress(com.google.protobuf.FloatValue value) {
@@ -10779,10 +11767,6 @@ public final class TortugaProto {
         return this;
       }
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       public Builder clearProgress() {
@@ -10797,10 +11781,6 @@ public final class TortugaProto {
         return this;
       }
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       public com.google.protobuf.FloatValue.Builder getProgressBuilder() {
@@ -10809,10 +11789,6 @@ public final class TortugaProto {
         return getProgressFieldBuilder().getBuilder();
       }
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       public com.google.protobuf.FloatValueOrBuilder getProgressOrBuilder() {
@@ -10824,10 +11800,6 @@ public final class TortugaProto {
         }
       }
       /**
-       * <pre>
-       * If set, it erases the value, else it is ignored (progress value will remain what it was).
-       * </pre>
-       *
        * <code>.google.protobuf.FloatValue progress = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -10959,6 +11931,123 @@ public final class TortugaProto {
           progressMessage_ = null;
         }
         return progressMessageBuilder_;
+      }
+
+      private com.google.protobuf.StringValue progressMetadata_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> progressMetadataBuilder_;
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      public boolean hasProgressMetadata() {
+        return progressMetadataBuilder_ != null || progressMetadata_ != null;
+      }
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      public com.google.protobuf.StringValue getProgressMetadata() {
+        if (progressMetadataBuilder_ == null) {
+          return progressMetadata_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : progressMetadata_;
+        } else {
+          return progressMetadataBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      public Builder setProgressMetadata(com.google.protobuf.StringValue value) {
+        if (progressMetadataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          progressMetadata_ = value;
+          onChanged();
+        } else {
+          progressMetadataBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      public Builder setProgressMetadata(
+          com.google.protobuf.StringValue.Builder builderForValue) {
+        if (progressMetadataBuilder_ == null) {
+          progressMetadata_ = builderForValue.build();
+          onChanged();
+        } else {
+          progressMetadataBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      public Builder mergeProgressMetadata(com.google.protobuf.StringValue value) {
+        if (progressMetadataBuilder_ == null) {
+          if (progressMetadata_ != null) {
+            progressMetadata_ =
+              com.google.protobuf.StringValue.newBuilder(progressMetadata_).mergeFrom(value).buildPartial();
+          } else {
+            progressMetadata_ = value;
+          }
+          onChanged();
+        } else {
+          progressMetadataBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      public Builder clearProgressMetadata() {
+        if (progressMetadataBuilder_ == null) {
+          progressMetadata_ = null;
+          onChanged();
+        } else {
+          progressMetadata_ = null;
+          progressMetadataBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      public com.google.protobuf.StringValue.Builder getProgressMetadataBuilder() {
+        
+        onChanged();
+        return getProgressMetadataFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      public com.google.protobuf.StringValueOrBuilder getProgressMetadataOrBuilder() {
+        if (progressMetadataBuilder_ != null) {
+          return progressMetadataBuilder_.getMessageOrBuilder();
+        } else {
+          return progressMetadata_ == null ?
+              com.google.protobuf.StringValue.getDefaultInstance() : progressMetadata_;
+        }
+      }
+      /**
+       * <code>.google.protobuf.StringValue progress_metadata = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
+          getProgressMetadataFieldBuilder() {
+        if (progressMetadataBuilder_ == null) {
+          progressMetadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
+                  getProgressMetadata(),
+                  getParentForChildren(),
+                  isClean());
+          progressMetadata_ = null;
+        }
+        return progressMetadataBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -13068,6 +14157,11 @@ public final class TortugaProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_tortuga_TaskResp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_TaskResp_RetryContext_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_TaskResp_RetryContext_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_tortuga_Task_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -13130,54 +14224,59 @@ public final class TortugaProto {
       "\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003 \003(\t\",\n\tH" +
       "eartbeat\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worke" +
       "r\"*\n\007TaskReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.W" +
-      "orker\"f\n\010TaskResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 " +
-      "\001(\t\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.Any\022" +
-      "\016\n\006handle\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\"\340\001\n\004Task\022\n" +
-      "\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024" +
-      ".google.protobuf.Any\022-\n\010priority\030\004 \001(\0132\033" +
-      ".google.protobuf.Int32Value\0220\n\013max_retri" +
-      "es\030\005 \001(\0132\033.google.protobuf.Int32Value\022(\n" +
-      "\005delay\030\006 \001(\0132\031.google.protobuf.Duration\022" +
-      "\017\n\007modules\030\007 \003(\t\"\240\003\n\014TaskProgress\022\016\n\006han" +
-      "dle\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013m" +
-      "ax_retries\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010pri" +
-      "ority\030\006 \001(\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010" +
-      " \001(\010\022+\n\007created\030\t \001(\0132\032.google.protobuf." +
-      "Timestamp\0220\n\014started_time\030\n \001(\0132\032.google" +
-      ".protobuf.Timestamp\022-\n\tdone_time\030\013 \001(\0132\032" +
-      ".google.protobuf.Timestamp\022\"\n\006status\030\014 \001" +
-      "(\0132\022.google.rpc.Status\022\020\n\010progress\030\r \001(\002" +
-      "\022\030\n\020progress_message\030\016 \001(\t\022\014\n\004logs\030\017 \001(\t" +
-      "\022\021\n\tworker_id\030\020 \001(\t\022\016\n\006output\030\021 \001(\t\"(\n\tC" +
-      "reateReq\022\033\n\004task\030\001 \001(\0132\r.tortuga.Task\"-\n" +
-      "\nCreateResp\022\016\n\006handle\030\001 \001(\t\022\017\n\007created\030\002" +
-      " \001(\010\"\205\001\n\017CompleteTaskReq\022\037\n\006worker\030\001 \001(\013" +
-      "2\017.tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022\014\n\004cod" +
-      "e\030\003 \001(\005\022\025\n\rerror_message\030\004 \001(\t\022\014\n\004logs\030\005" +
-      " \001(\t\022\016\n\006output\030\006 \001(\t\"\253\001\n\021UpdateProgressR" +
-      "eq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006h" +
-      "andle\030\002 \001(\t\022-\n\010progress\030\003 \001(\0132\033.google.p" +
-      "rotobuf.FloatValue\0226\n\020progress_message\030\004" +
-      " \001(\0132\034.google.protobuf.StringValue\"\035\n\013Pr" +
-      "ogressReq\022\016\n\006handle\030\001 \001(\t\"B\n\014ProgressRes" +
-      "p\022\016\n\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\0132\022.goog" +
-      "le.rpc.Status\"*\n\016TaskIdentifier\022\n\n\002id\030\001 " +
-      "\001(\t\022\014\n\004type\030\002 \001(\t2\257\004\n\007Tortuga\0225\n\nCreateT" +
-      "ask\022\022.tortuga.CreateReq\032\023.tortuga.Create" +
-      "Resp\0222\n\013RequestTask\022\020.tortuga.TaskReq\032\021." +
-      "tortuga.TaskResp\0224\n\tHeartbeat\022\017.tortuga." +
-      "Worker\032\026.google.protobuf.Empty\022@\n\014Comple" +
-      "teTask\022\030.tortuga.CompleteTaskReq\032\026.googl" +
-      "e.protobuf.Empty\022D\n\016UpdateProgress\022\032.tor" +
-      "tuga.UpdateProgressReq\032\026.google.protobuf" +
-      ".Empty\022:\n\010FindTask\022\027.tortuga.TaskIdentif" +
-      "ier\032\025.tortuga.TaskProgress\022G\n\020FindTaskBy" +
-      "Handle\022\034.google.protobuf.StringValue\032\025.t" +
-      "ortuga.TaskProgress\0226\n\004Ping\022\026.google.pro" +
-      "tobuf.Empty\032\026.google.protobuf.Empty\022>\n\014Q" +
-      "uitQuitQuit\022\026.google.protobuf.Empty\032\026.go" +
-      "ogle.protobuf.EmptyB\032\n\nio.tortugaB\014Tortu" +
-      "gaProtob\006proto3"
+      "orker\"\325\001\n\010TaskResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002" +
+      " \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.Any" +
+      "\022\016\n\006handle\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\0221\n\tretry_" +
+      "ctx\030\006 \001(\0132\036.tortuga.TaskResp.RetryContex" +
+      "t\032:\n\014RetryContext\022\017\n\007retries\030\001 \001(\005\022\031\n\021pr" +
+      "ogress_metadata\030\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001 \001" +
+      "(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google." +
+      "protobuf.Any\022-\n\010priority\030\004 \001(\0132\033.google." +
+      "protobuf.Int32Value\0220\n\013max_retries\030\005 \001(\013" +
+      "2\033.google.protobuf.Int32Value\022(\n\005delay\030\006" +
+      " \001(\0132\031.google.protobuf.Duration\022\017\n\007modul" +
+      "es\030\007 \003(\t\"\273\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(" +
+      "\t\022\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retri" +
+      "es\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 " +
+      "\001(\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007" +
+      "created\030\t \001(\0132\032.google.protobuf.Timestam" +
+      "p\0220\n\014started_time\030\n \001(\0132\032.google.protobu" +
+      "f.Timestamp\022-\n\tdone_time\030\013 \001(\0132\032.google." +
+      "protobuf.Timestamp\022\"\n\006status\030\014 \001(\0132\022.goo" +
+      "gle.rpc.Status\022\020\n\010progress\030\r \001(\002\022\030\n\020prog" +
+      "ress_message\030\016 \001(\t\022\031\n\021progress_metadata\030" +
+      "\022 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker_id\030\020 \001(\t\022\016" +
+      "\n\006output\030\021 \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(" +
+      "\0132\r.tortuga.Task\"-\n\nCreateResp\022\016\n\006handle" +
+      "\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"\205\001\n\017CompleteTask" +
+      "Req\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006" +
+      "handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_mess" +
+      "age\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t\022\016\n\006output\030\006 \001(\t\"" +
+      "\344\001\n\021UpdateProgressReq\022\037\n\006worker\030\001 \001(\0132\017." +
+      "tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022-\n\010progre" +
+      "ss\030\003 \001(\0132\033.google.protobuf.FloatValue\0226\n" +
+      "\020progress_message\030\004 \001(\0132\034.google.protobu" +
+      "f.StringValue\0227\n\021progress_metadata\030\005 \001(\013" +
+      "2\034.google.protobuf.StringValue\"\035\n\013Progre" +
+      "ssReq\022\016\n\006handle\030\001 \001(\t\"B\n\014ProgressResp\022\016\n" +
+      "\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\0132\022.google.r" +
+      "pc.Status\"*\n\016TaskIdentifier\022\n\n\002id\030\001 \001(\t\022" +
+      "\014\n\004type\030\002 \001(\t2\257\004\n\007Tortuga\0225\n\nCreateTask\022" +
+      "\022.tortuga.CreateReq\032\023.tortuga.CreateResp" +
+      "\0222\n\013RequestTask\022\020.tortuga.TaskReq\032\021.tort" +
+      "uga.TaskResp\0224\n\tHeartbeat\022\017.tortuga.Work" +
+      "er\032\026.google.protobuf.Empty\022@\n\014CompleteTa" +
+      "sk\022\030.tortuga.CompleteTaskReq\032\026.google.pr" +
+      "otobuf.Empty\022D\n\016UpdateProgress\022\032.tortuga" +
+      ".UpdateProgressReq\032\026.google.protobuf.Emp" +
+      "ty\022:\n\010FindTask\022\027.tortuga.TaskIdentifier\032" +
+      "\025.tortuga.TaskProgress\022G\n\020FindTaskByHand" +
+      "le\022\034.google.protobuf.StringValue\032\025.tortu" +
+      "ga.TaskProgress\0226\n\004Ping\022\026.google.protobu" +
+      "f.Empty\032\026.google.protobuf.Empty\022>\n\014QuitQ" +
+      "uitQuit\022\026.google.protobuf.Empty\032\026.google" +
+      ".protobuf.EmptyB\032\n\nio.tortugaB\014TortugaPr" +
+      "otob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13220,7 +14319,13 @@ public final class TortugaProto {
     internal_static_tortuga_TaskResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_TaskResp_descriptor,
-        new java.lang.String[] { "Id", "Type", "Data", "Handle", "None", });
+        new java.lang.String[] { "Id", "Type", "Data", "Handle", "None", "RetryCtx", });
+    internal_static_tortuga_TaskResp_RetryContext_descriptor =
+      internal_static_tortuga_TaskResp_descriptor.getNestedTypes().get(0);
+    internal_static_tortuga_TaskResp_RetryContext_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_TaskResp_RetryContext_descriptor,
+        new java.lang.String[] { "Retries", "ProgressMetadata", });
     internal_static_tortuga_Task_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_tortuga_Task_fieldAccessorTable = new
@@ -13232,7 +14337,7 @@ public final class TortugaProto {
     internal_static_tortuga_TaskProgress_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_TaskProgress_descriptor,
-        new java.lang.String[] { "Handle", "Id", "Type", "MaxRetries", "Retries", "Priority", "WorkedOn", "Done", "Created", "StartedTime", "DoneTime", "Status", "Progress", "ProgressMessage", "Logs", "WorkerId", "Output", });
+        new java.lang.String[] { "Handle", "Id", "Type", "MaxRetries", "Retries", "Priority", "WorkedOn", "Done", "Created", "StartedTime", "DoneTime", "Status", "Progress", "ProgressMessage", "ProgressMetadata", "Logs", "WorkerId", "Output", });
     internal_static_tortuga_CreateReq_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_tortuga_CreateReq_fieldAccessorTable = new
@@ -13256,7 +14361,7 @@ public final class TortugaProto {
     internal_static_tortuga_UpdateProgressReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_UpdateProgressReq_descriptor,
-        new java.lang.String[] { "Worker", "Handle", "Progress", "ProgressMessage", });
+        new java.lang.String[] { "Worker", "Handle", "Progress", "ProgressMessage", "ProgressMetadata", });
     internal_static_tortuga_ProgressReq_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_tortuga_ProgressReq_fieldAccessorTable = new

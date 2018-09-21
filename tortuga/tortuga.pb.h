@@ -42,7 +42,7 @@ namespace protobuf_tortuga_2ftortuga_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[13];
+  static const ::google::protobuf::internal::ParseTable schema[14];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -54,6 +54,8 @@ void InitDefaultsHeartbeatImpl();
 void InitDefaultsHeartbeat();
 void InitDefaultsTaskReqImpl();
 void InitDefaultsTaskReq();
+void InitDefaultsTaskResp_RetryContextImpl();
+void InitDefaultsTaskResp_RetryContext();
 void InitDefaultsTaskRespImpl();
 void InitDefaultsTaskResp();
 void InitDefaultsTaskImpl();
@@ -78,6 +80,7 @@ inline void InitDefaults() {
   InitDefaultsWorker();
   InitDefaultsHeartbeat();
   InitDefaultsTaskReq();
+  InitDefaultsTaskResp_RetryContext();
   InitDefaultsTaskResp();
   InitDefaultsTask();
   InitDefaultsTaskProgress();
@@ -124,6 +127,9 @@ extern TaskReqDefaultTypeInternal _TaskReq_default_instance_;
 class TaskResp;
 class TaskRespDefaultTypeInternal;
 extern TaskRespDefaultTypeInternal _TaskResp_default_instance_;
+class TaskResp_RetryContext;
+class TaskResp_RetryContextDefaultTypeInternal;
+extern TaskResp_RetryContextDefaultTypeInternal _TaskResp_RetryContext_default_instance_;
 class UpdateProgressReq;
 class UpdateProgressReqDefaultTypeInternal;
 extern UpdateProgressReqDefaultTypeInternal _UpdateProgressReq_default_instance_;
@@ -484,6 +490,120 @@ class TaskReq : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 };
 // -------------------------------------------------------------------
 
+class TaskResp_RetryContext : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.TaskResp.RetryContext) */ {
+ public:
+  TaskResp_RetryContext();
+  virtual ~TaskResp_RetryContext();
+
+  TaskResp_RetryContext(const TaskResp_RetryContext& from);
+
+  inline TaskResp_RetryContext& operator=(const TaskResp_RetryContext& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  TaskResp_RetryContext(TaskResp_RetryContext&& from) noexcept
+    : TaskResp_RetryContext() {
+    *this = ::std::move(from);
+  }
+
+  inline TaskResp_RetryContext& operator=(TaskResp_RetryContext&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const TaskResp_RetryContext& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const TaskResp_RetryContext* internal_default_instance() {
+    return reinterpret_cast<const TaskResp_RetryContext*>(
+               &_TaskResp_RetryContext_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    3;
+
+  void Swap(TaskResp_RetryContext* other);
+  friend void swap(TaskResp_RetryContext& a, TaskResp_RetryContext& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline TaskResp_RetryContext* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  TaskResp_RetryContext* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const TaskResp_RetryContext& from);
+  void MergeFrom(const TaskResp_RetryContext& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(TaskResp_RetryContext* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string progress_metadata = 2;
+  void clear_progress_metadata();
+  static const int kProgressMetadataFieldNumber = 2;
+  const ::std::string& progress_metadata() const;
+  void set_progress_metadata(const ::std::string& value);
+  #if LANG_CXX11
+  void set_progress_metadata(::std::string&& value);
+  #endif
+  void set_progress_metadata(const char* value);
+  void set_progress_metadata(const char* value, size_t size);
+  ::std::string* mutable_progress_metadata();
+  ::std::string* release_progress_metadata();
+  void set_allocated_progress_metadata(::std::string* progress_metadata);
+
+  // int32 retries = 1;
+  void clear_retries();
+  static const int kRetriesFieldNumber = 1;
+  ::google::protobuf::int32 retries() const;
+  void set_retries(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:tortuga.TaskResp.RetryContext)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr progress_metadata_;
+  ::google::protobuf::int32 retries_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
+  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskResp_RetryContextImpl();
+};
+// -------------------------------------------------------------------
+
 class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.TaskResp) */ {
  public:
   TaskResp();
@@ -519,7 +639,7 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_TaskResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    3;
+    4;
 
   void Swap(TaskResp* other);
   friend void swap(TaskResp& a, TaskResp& b) {
@@ -563,6 +683,8 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
 
   // nested types ----------------------------------------------------
+
+  typedef TaskResp_RetryContext RetryContext;
 
   // accessors -------------------------------------------------------
 
@@ -617,6 +739,15 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::Any* mutable_data();
   void set_allocated_data(::google::protobuf::Any* data);
 
+  // .tortuga.TaskResp.RetryContext retry_ctx = 6;
+  bool has_retry_ctx() const;
+  void clear_retry_ctx();
+  static const int kRetryCtxFieldNumber = 6;
+  const ::tortuga::TaskResp_RetryContext& retry_ctx() const;
+  ::tortuga::TaskResp_RetryContext* release_retry_ctx();
+  ::tortuga::TaskResp_RetryContext* mutable_retry_ctx();
+  void set_allocated_retry_ctx(::tortuga::TaskResp_RetryContext* retry_ctx);
+
   // bool none = 5;
   void clear_none();
   static const int kNoneFieldNumber = 5;
@@ -631,6 +762,7 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::ArenaStringPtr type_;
   ::google::protobuf::internal::ArenaStringPtr handle_;
   ::google::protobuf::Any* data_;
+  ::tortuga::TaskResp_RetryContext* retry_ctx_;
   bool none_;
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
@@ -673,7 +805,7 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
                &_Task_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    4;
+    5;
 
   void Swap(Task* other);
   friend void swap(Task& a, Task& b) {
@@ -858,7 +990,7 @@ class TaskProgress : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_TaskProgress_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
+    6;
 
   void Swap(TaskProgress* other);
   friend void swap(TaskProgress& a, TaskProgress& b) {
@@ -1003,6 +1135,20 @@ class TaskProgress : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_output();
   void set_allocated_output(::std::string* output);
 
+  // string progress_metadata = 18;
+  void clear_progress_metadata();
+  static const int kProgressMetadataFieldNumber = 18;
+  const ::std::string& progress_metadata() const;
+  void set_progress_metadata(const ::std::string& value);
+  #if LANG_CXX11
+  void set_progress_metadata(::std::string&& value);
+  #endif
+  void set_progress_metadata(const char* value);
+  void set_progress_metadata(const char* value, size_t size);
+  ::std::string* mutable_progress_metadata();
+  ::std::string* release_progress_metadata();
+  void set_allocated_progress_metadata(::std::string* progress_metadata);
+
   // .google.protobuf.Timestamp created = 9;
   bool has_created() const;
   void clear_created();
@@ -1086,6 +1232,7 @@ class TaskProgress : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::ArenaStringPtr logs_;
   ::google::protobuf::internal::ArenaStringPtr worker_id_;
   ::google::protobuf::internal::ArenaStringPtr output_;
+  ::google::protobuf::internal::ArenaStringPtr progress_metadata_;
   ::google::protobuf::Timestamp* created_;
   ::google::protobuf::Timestamp* started_time_;
   ::google::protobuf::Timestamp* done_time_;
@@ -1137,7 +1284,7 @@ class CreateReq : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_CreateReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
+    7;
 
   void Swap(CreateReq* other);
   friend void swap(CreateReq& a, CreateReq& b) {
@@ -1239,7 +1386,7 @@ class CreateResp : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_CreateResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
+    8;
 
   void Swap(CreateResp* other);
   friend void swap(CreateResp& a, CreateResp& b) {
@@ -1353,7 +1500,7 @@ class CompleteTaskReq : public ::google::protobuf::Message /* @@protoc_insertion
                &_CompleteTaskReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    8;
+    9;
 
   void Swap(CompleteTaskReq* other);
   friend void swap(CompleteTaskReq& a, CompleteTaskReq& b) {
@@ -1522,7 +1669,7 @@ class UpdateProgressReq : public ::google::protobuf::Message /* @@protoc_inserti
                &_UpdateProgressReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    9;
+    10;
 
   void Swap(UpdateProgressReq* other);
   friend void swap(UpdateProgressReq& a, UpdateProgressReq& b) {
@@ -1610,6 +1757,15 @@ class UpdateProgressReq : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::StringValue* mutable_progress_message();
   void set_allocated_progress_message(::google::protobuf::StringValue* progress_message);
 
+  // .google.protobuf.StringValue progress_metadata = 5;
+  bool has_progress_metadata() const;
+  void clear_progress_metadata();
+  static const int kProgressMetadataFieldNumber = 5;
+  const ::google::protobuf::StringValue& progress_metadata() const;
+  ::google::protobuf::StringValue* release_progress_metadata();
+  ::google::protobuf::StringValue* mutable_progress_metadata();
+  void set_allocated_progress_metadata(::google::protobuf::StringValue* progress_metadata);
+
   // @@protoc_insertion_point(class_scope:tortuga.UpdateProgressReq)
  private:
 
@@ -1618,6 +1774,7 @@ class UpdateProgressReq : public ::google::protobuf::Message /* @@protoc_inserti
   ::tortuga::Worker* worker_;
   ::google::protobuf::FloatValue* progress_;
   ::google::protobuf::StringValue* progress_message_;
+  ::google::protobuf::StringValue* progress_metadata_;
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsUpdateProgressReqImpl();
@@ -1659,7 +1816,7 @@ class ProgressReq : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ProgressReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    10;
+    11;
 
   void Swap(ProgressReq* other);
   friend void swap(ProgressReq& a, ProgressReq& b) {
@@ -1766,7 +1923,7 @@ class ProgressResp : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ProgressResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    11;
+    12;
 
   void Swap(ProgressResp* other);
   friend void swap(ProgressResp& a, ProgressResp& b) {
@@ -1883,7 +2040,7 @@ class TaskIdentifier : public ::google::protobuf::Message /* @@protoc_insertion_
                &_TaskIdentifier_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    12;
+    13;
 
   void Swap(TaskIdentifier* other);
   friend void swap(TaskIdentifier& a, TaskIdentifier& b) {
@@ -2264,6 +2421,77 @@ inline void TaskReq::set_allocated_worker(::tortuga::Worker* worker) {
 
 // -------------------------------------------------------------------
 
+// TaskResp_RetryContext
+
+// int32 retries = 1;
+inline void TaskResp_RetryContext::clear_retries() {
+  retries_ = 0;
+}
+inline ::google::protobuf::int32 TaskResp_RetryContext::retries() const {
+  // @@protoc_insertion_point(field_get:tortuga.TaskResp.RetryContext.retries)
+  return retries_;
+}
+inline void TaskResp_RetryContext::set_retries(::google::protobuf::int32 value) {
+  
+  retries_ = value;
+  // @@protoc_insertion_point(field_set:tortuga.TaskResp.RetryContext.retries)
+}
+
+// string progress_metadata = 2;
+inline void TaskResp_RetryContext::clear_progress_metadata() {
+  progress_metadata_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& TaskResp_RetryContext::progress_metadata() const {
+  // @@protoc_insertion_point(field_get:tortuga.TaskResp.RetryContext.progress_metadata)
+  return progress_metadata_.GetNoArena();
+}
+inline void TaskResp_RetryContext::set_progress_metadata(const ::std::string& value) {
+  
+  progress_metadata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.TaskResp.RetryContext.progress_metadata)
+}
+#if LANG_CXX11
+inline void TaskResp_RetryContext::set_progress_metadata(::std::string&& value) {
+  
+  progress_metadata_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.TaskResp.RetryContext.progress_metadata)
+}
+#endif
+inline void TaskResp_RetryContext::set_progress_metadata(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  progress_metadata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.TaskResp.RetryContext.progress_metadata)
+}
+inline void TaskResp_RetryContext::set_progress_metadata(const char* value, size_t size) {
+  
+  progress_metadata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.TaskResp.RetryContext.progress_metadata)
+}
+inline ::std::string* TaskResp_RetryContext::mutable_progress_metadata() {
+  
+  // @@protoc_insertion_point(field_mutable:tortuga.TaskResp.RetryContext.progress_metadata)
+  return progress_metadata_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* TaskResp_RetryContext::release_progress_metadata() {
+  // @@protoc_insertion_point(field_release:tortuga.TaskResp.RetryContext.progress_metadata)
+  
+  return progress_metadata_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void TaskResp_RetryContext::set_allocated_progress_metadata(::std::string* progress_metadata) {
+  if (progress_metadata != NULL) {
+    
+  } else {
+    
+  }
+  progress_metadata_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), progress_metadata);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.TaskResp.RetryContext.progress_metadata)
+}
+
+// -------------------------------------------------------------------
+
 // TaskResp
 
 // string id = 1;
@@ -2481,6 +2709,56 @@ inline void TaskResp::set_none(bool value) {
   
   none_ = value;
   // @@protoc_insertion_point(field_set:tortuga.TaskResp.none)
+}
+
+// .tortuga.TaskResp.RetryContext retry_ctx = 6;
+inline bool TaskResp::has_retry_ctx() const {
+  return this != internal_default_instance() && retry_ctx_ != NULL;
+}
+inline void TaskResp::clear_retry_ctx() {
+  if (GetArenaNoVirtual() == NULL && retry_ctx_ != NULL) {
+    delete retry_ctx_;
+  }
+  retry_ctx_ = NULL;
+}
+inline const ::tortuga::TaskResp_RetryContext& TaskResp::retry_ctx() const {
+  const ::tortuga::TaskResp_RetryContext* p = retry_ctx_;
+  // @@protoc_insertion_point(field_get:tortuga.TaskResp.retry_ctx)
+  return p != NULL ? *p : *reinterpret_cast<const ::tortuga::TaskResp_RetryContext*>(
+      &::tortuga::_TaskResp_RetryContext_default_instance_);
+}
+inline ::tortuga::TaskResp_RetryContext* TaskResp::release_retry_ctx() {
+  // @@protoc_insertion_point(field_release:tortuga.TaskResp.retry_ctx)
+  
+  ::tortuga::TaskResp_RetryContext* temp = retry_ctx_;
+  retry_ctx_ = NULL;
+  return temp;
+}
+inline ::tortuga::TaskResp_RetryContext* TaskResp::mutable_retry_ctx() {
+  
+  if (retry_ctx_ == NULL) {
+    retry_ctx_ = new ::tortuga::TaskResp_RetryContext;
+  }
+  // @@protoc_insertion_point(field_mutable:tortuga.TaskResp.retry_ctx)
+  return retry_ctx_;
+}
+inline void TaskResp::set_allocated_retry_ctx(::tortuga::TaskResp_RetryContext* retry_ctx) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete retry_ctx_;
+  }
+  if (retry_ctx) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      retry_ctx = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, retry_ctx, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  retry_ctx_ = retry_ctx;
+  // @@protoc_insertion_point(field_set_allocated:tortuga.TaskResp.retry_ctx)
 }
 
 // -------------------------------------------------------------------
@@ -3320,6 +3598,59 @@ inline void TaskProgress::set_allocated_progress_message(::std::string* progress
   // @@protoc_insertion_point(field_set_allocated:tortuga.TaskProgress.progress_message)
 }
 
+// string progress_metadata = 18;
+inline void TaskProgress::clear_progress_metadata() {
+  progress_metadata_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& TaskProgress::progress_metadata() const {
+  // @@protoc_insertion_point(field_get:tortuga.TaskProgress.progress_metadata)
+  return progress_metadata_.GetNoArena();
+}
+inline void TaskProgress::set_progress_metadata(const ::std::string& value) {
+  
+  progress_metadata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.TaskProgress.progress_metadata)
+}
+#if LANG_CXX11
+inline void TaskProgress::set_progress_metadata(::std::string&& value) {
+  
+  progress_metadata_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.TaskProgress.progress_metadata)
+}
+#endif
+inline void TaskProgress::set_progress_metadata(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  progress_metadata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.TaskProgress.progress_metadata)
+}
+inline void TaskProgress::set_progress_metadata(const char* value, size_t size) {
+  
+  progress_metadata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.TaskProgress.progress_metadata)
+}
+inline ::std::string* TaskProgress::mutable_progress_metadata() {
+  
+  // @@protoc_insertion_point(field_mutable:tortuga.TaskProgress.progress_metadata)
+  return progress_metadata_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* TaskProgress::release_progress_metadata() {
+  // @@protoc_insertion_point(field_release:tortuga.TaskProgress.progress_metadata)
+  
+  return progress_metadata_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void TaskProgress::set_allocated_progress_metadata(::std::string* progress_metadata) {
+  if (progress_metadata != NULL) {
+    
+  } else {
+    
+  }
+  progress_metadata_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), progress_metadata);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.TaskProgress.progress_metadata)
+}
+
 // string logs = 15;
 inline void TaskProgress::clear_logs() {
   logs_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -4081,6 +4412,51 @@ inline void UpdateProgressReq::set_allocated_progress_message(::google::protobuf
   // @@protoc_insertion_point(field_set_allocated:tortuga.UpdateProgressReq.progress_message)
 }
 
+// .google.protobuf.StringValue progress_metadata = 5;
+inline bool UpdateProgressReq::has_progress_metadata() const {
+  return this != internal_default_instance() && progress_metadata_ != NULL;
+}
+inline const ::google::protobuf::StringValue& UpdateProgressReq::progress_metadata() const {
+  const ::google::protobuf::StringValue* p = progress_metadata_;
+  // @@protoc_insertion_point(field_get:tortuga.UpdateProgressReq.progress_metadata)
+  return p != NULL ? *p : *reinterpret_cast<const ::google::protobuf::StringValue*>(
+      &::google::protobuf::_StringValue_default_instance_);
+}
+inline ::google::protobuf::StringValue* UpdateProgressReq::release_progress_metadata() {
+  // @@protoc_insertion_point(field_release:tortuga.UpdateProgressReq.progress_metadata)
+  
+  ::google::protobuf::StringValue* temp = progress_metadata_;
+  progress_metadata_ = NULL;
+  return temp;
+}
+inline ::google::protobuf::StringValue* UpdateProgressReq::mutable_progress_metadata() {
+  
+  if (progress_metadata_ == NULL) {
+    progress_metadata_ = new ::google::protobuf::StringValue;
+  }
+  // @@protoc_insertion_point(field_mutable:tortuga.UpdateProgressReq.progress_metadata)
+  return progress_metadata_;
+}
+inline void UpdateProgressReq::set_allocated_progress_metadata(::google::protobuf::StringValue* progress_metadata) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(progress_metadata_);
+  }
+  if (progress_metadata) {
+    ::google::protobuf::Arena* submessage_arena =
+      reinterpret_cast< ::google::protobuf::MessageLite*>(progress_metadata)->GetArena();
+    if (message_arena != submessage_arena) {
+      progress_metadata = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, progress_metadata, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  progress_metadata_ = progress_metadata;
+  // @@protoc_insertion_point(field_set_allocated:tortuga.UpdateProgressReq.progress_metadata)
+}
+
 // -------------------------------------------------------------------
 
 // ProgressReq
@@ -4352,6 +4728,8 @@ inline void TaskIdentifier::set_allocated_type(::std::string* type) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -42,6 +42,7 @@ const char* const kCreateTortuga = R"(
     worker_uuid TEXT NULL DEFAULT NULL,
     progress FLOAT NOT NULL DEFAULT 0.0,
     progress_message TEXT NULL,
+    progress_metadata TEXT NULL DEFAULT NULL,
     status_code INTEGER NULL DEFAULT NULL,
     status_message TEXT NULL DEFAULT NULL,
     done BOOLEAN NOT NULL DEFAULT false,

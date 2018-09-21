@@ -64,25 +64,6 @@ static const char* const kCompleteTaskStmt = R"(
     where rowid=? ;
 )";
 
-static const char* const kUpdateTaskProgressStmt = R"(
-    update tasks set
-    progress=?,
-    progress_message=?
-    where rowid=?;
-)";
-
-static const char* const kUpdateTaskProgressOnlyStmt = R"(
-    update tasks set
-    progress=?
-    where rowid=?;
-)";
-
-static const char* const kUpdateTaskProgressMsgOnlyStmt = R"(
-    update tasks set
-    progress_message=?
-    where rowid=?;
-)";
-
 static const char* const kSelectExpiredWorkersStmt = R"(
     select uuid, last_invalidated_uuid from workers where last_beat < ?;
 )";
@@ -115,9 +96,6 @@ TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::stri
       assign_task_stmt_(db, kAssignTaskStmt),
       select_task_to_complete_stmt_(db, kSelectTaskToCompleteStmt),
       complete_task_stmt_(db, kCompleteTaskStmt),
-      update_task_progress_stmt_(db, kUpdateTaskProgressStmt),
-      update_task_progress_only_stmt_(db, kUpdateTaskProgressOnlyStmt),
-      update_task_progress_msg_only_stmt_(db, kUpdateTaskProgressMsgOnlyStmt),
       select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
       unassign_tasks_stmt_(db, kUnassignTasksStmt),
       update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
@@ -648,28 +626,44 @@ UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) 
     return nullptr;
   }
 
-  SqliteStatement* stmt = nullptr;
+  std::ostringstream query;
+  query << "update tasks set ";
 
-  if (req.has_progress() && req.has_progress_message()) {
-    stmt = &update_task_progress_stmt_;
-    stmt->BindFloat(1, req.progress().value());
-    stmt->BindText(2, req.progress_message().value());
-    stmt->BindLong(3, rowid);
-  } else if (req.has_progress()) {
-    stmt = &update_task_progress_only_stmt_;
-    stmt->BindFloat(1, req.progress().value());
-    stmt->BindLong(2, rowid);
-  } else if (req.has_progress_message()) {
-    stmt = &update_task_progress_msg_only_stmt_;
-    stmt->BindText(1, req.progress_message().value());
-    stmt->BindLong(2, rowid);
+  if (req.has_progress()) {
+    query << "progress=? ";
   }
 
-  if (stmt != nullptr) {
-    SqliteReset x2(stmt);
-    stmt->ExecuteOrDie();
+  if (req.has_progress_message()) {
+    query << "progress_message=? ";
   }
-  
+
+  if (req.has_progress_metadata()) {
+    query << "progress_metadata=? ";
+  }
+
+  query << "where rowid=? ;";
+
+  std::string query_str = query.str();
+  SqliteStatement stmt(db_, query_str);
+
+  int idx = 0;
+  if (req.has_progress()) {
+    stmt.BindFloat(++idx, req.progress().value());
+  }
+
+  if (req.has_progress_message()) {
+    stmt.BindText(++idx, req.progress_message().value());
+  }
+
+  if (req.has_progress_metadata()) {
+    stmt.BindText(++idx, req.progress_metadata().value());
+  }
+
+  stmt.BindLong(++idx, rowid);
+
+  SqliteReset x2(&stmt);
+  stmt.ExecuteOrDie();
+
   return progress_mgr_->FindTaskByHandleInExec(req.handle());
 }
 

@@ -35,6 +35,14 @@ message TaskResp {
   google.protobuf.Any data = 3;
   string handle = 4;
   bool none = 5;
+
+  message RetryContext {
+    int32 retries = 1;
+    // The last metadata provided, relevant only if retries > 0.
+    string progress_metadata = 2;
+  }
+
+  RetryContext retry_ctx = 6;
 }
 
 message Task {
@@ -72,6 +80,7 @@ message TaskProgress {
 
   float progress = 13;
   string progress_message = 14;
+  string progress_metadata = 18;
   string logs = 15;
 
   string worker_id = 16;
@@ -102,9 +111,9 @@ message UpdateProgressReq {
   Worker worker = 1;
   string handle = 2;
 
-  // If set, it erases the value, else it is ignored (progress value will remain what it was).
   google.protobuf.FloatValue progress = 3;
   google.protobuf.StringValue progress_message = 4;
+  google.protobuf.StringValue progress_metadata = 5;
 }
 
 message ProgressReq {

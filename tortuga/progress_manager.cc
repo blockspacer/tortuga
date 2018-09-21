@@ -162,24 +162,25 @@ UpdatedTask* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) {
 
   res.set_progress(stmt->ColumnFloat(12));
   res.set_progress_message(stmt->ColumnTextOrEmpty(13));
+  res.set_progress_metadata(stmt->ColumnTextOrEmpty(14));
 
-  res.mutable_status()->set_code(stmt->ColumnInt(14));
-  res.mutable_status()->set_message(stmt->ColumnTextOrEmpty(15));
+  res.mutable_status()->set_code(stmt->ColumnInt(15));
+  res.mutable_status()->set_message(stmt->ColumnTextOrEmpty(16));
 
-  res.set_done(stmt->ColumnBool(16));
+  res.set_done(stmt->ColumnBool(17));
 
-  auto started_time_opt = stmt->ColumnTimestamp(17);
+  auto started_time_opt = stmt->ColumnTimestamp(18);
   if (started_time_opt != nullptr) {
     *res.mutable_started_time() = *started_time_opt;
   }
 
-  auto done_time_opt = stmt->ColumnTimestamp(18);
+  auto done_time_opt = stmt->ColumnTimestamp(19);
   if (done_time_opt != nullptr) {
     *res.mutable_done_time() = *done_time_opt;
   }
 
-  res.set_logs(stmt->ColumnTextOrEmpty(19));
-  res.set_output(stmt->ColumnTextOrEmpty(20));
+  res.set_logs(stmt->ColumnTextOrEmpty(20));
+  res.set_output(stmt->ColumnTextOrEmpty(21));
 
   if (!worker_uuid.empty()) {
     SqliteReset x2(&select_worker_id_by_uuid_stmt_);
