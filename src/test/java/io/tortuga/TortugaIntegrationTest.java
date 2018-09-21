@@ -310,7 +310,13 @@ public class TortugaIntegrationTest {
           if (saw < 7) {
             return Futures.immediateFuture(Status.INTERNAL);
           } else {
-            return Futures.immediateFuture(Status.OK);
+            if (ctx.retryCtx().getRetries() != 7) {
+              // This will fail the test...
+              new Exception("wtf").printStackTrace();
+              return Futures.immediateFuture(Status.ABORTED);
+            } else {
+              return Futures.immediateFuture(Status.OK);
+            }
           }
         } else {
           sawSecond.incrementAndGet();
