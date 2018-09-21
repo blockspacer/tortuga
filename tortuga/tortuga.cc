@@ -634,19 +634,21 @@ UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) 
   std::ostringstream query;
   query << "update tasks set ";
 
+  std::vector<std::string> setters;
   if (req.has_progress()) {
-    query << "progress=? ";
+    setters.push_back("progress=?");
   }
 
   if (req.has_progress_message()) {
-    query << "progress_message=? ";
+    setters.push_back("progress_message=?");    
   }
 
   if (req.has_progress_metadata()) {
-    query << "progress_metadata=? ";
+    setters.push_back("progress_metadata=?");    
   }
 
-  query << "where rowid=? ;";
+  query << folly::join(", ", setters);
+  query << " where rowid=? ;";
 
   std::string query_str = query.str();
   SqliteStatement stmt(db_, query_str);

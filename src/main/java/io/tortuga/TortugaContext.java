@@ -5,6 +5,7 @@ import com.google.protobuf.FloatValue;
 import com.google.protobuf.StringValue;
 
 import io.grpc.Channel;
+import io.tortuga.TortugaProto.TaskResp.RetryContext;
 import io.tortuga.TortugaProto.UpdateProgressReq;
 import io.tortuga.TortugaProto.Worker;
 
@@ -14,15 +15,18 @@ public class TortugaContext {
   private final StringBuilder sb = new StringBuilder();
 
   private final String handle;
+  private final RetryContext retryCtx;
   private final Channel tortugaChan;
   private final Worker worker;
 
   private String output;
 
   TortugaContext(String handle,
+                 RetryContext retryCtx,
                  Channel chan,
                  Worker worker) {
     this.handle = handle;
+    this.retryCtx = retryCtx;
     this.tortugaChan = chan;
     this.worker = worker;
   }
@@ -72,5 +76,9 @@ public class TortugaContext {
     TortugaGrpc.newBlockingStub(tortugaChan)
         .withDeadlineAfter(30L, TimeUnit.SECONDS)
         .updateProgress(req.build());
+  }
+
+  public RetryContext retryCtx() {
+    return retryCtx;
   }
 }
