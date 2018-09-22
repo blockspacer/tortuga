@@ -1,6 +1,10 @@
 package io.tortuga;
 
+import com.google.common.base.Functions;
 import com.google.common.base.Strings;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.protobuf.Empty;
 import com.google.protobuf.FloatValue;
 import com.google.protobuf.StringValue;
 
@@ -51,7 +55,7 @@ public class TortugaContext {
     UpdateProgressReq.Builder req = UpdateProgressReq.newBuilder()
         .setProgress(FloatValue.of(progress));
 
-    updateProgress(req);
+    doUpdateProgress(req);
   }
 
   public void updateProgress(float progress, String progressMsg) {
@@ -59,7 +63,21 @@ public class TortugaContext {
         .setProgress(FloatValue.of(progress))
         .setProgressMessage(StringValue.of(progressMsg));
 
-    updateProgress(req);
+    doUpdateProgress(req);
+  }
+
+  public void updateProgress(UpdateProgressReq.Builder req) {
+    doUpdateProgress(req);
+  }
+
+  public ListenableFuture<Void> updateProgressAsync(UpdateProgressReq.Builder req) {
+    req.setHandle(handle);
+    req.setWorker(worker);
+
+    ListenableFuture<Empty> doneF = TortugaGrpc.newFutureStub(tortugaChan)
+        .withDeadlineAfter(30L, TimeUnit.SECONDS)
+        .updateProgress(req.build());
+    return Futures.transform(doneF, Functions.constant(null));
   }
 
   public void updateProgressMsg(String progressMsg) {
@@ -69,7 +87,7 @@ public class TortugaContext {
     updateProgress(req);
   }
 
-  private void updateProgress(UpdateProgressReq.Builder req) {
+  private void doUpdateProgress(UpdateProgressReq.Builder req) {
     req.setHandle(handle);
     req.setWorker(worker);
 
