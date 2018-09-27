@@ -422,6 +422,9 @@ void TortugaHandler::HandleHeartbeat() {
   });
 
   VLOG(3) << "received Heartbeat RPC: " << req.ShortDebugString();
+  VLOG(3) << "after this req the fibers allocated is: " << rpc_opts_.fibers->fibersAllocated()
+          << " pool size: " << rpc_opts_.fibers->fibersPoolSize();
+
   MaybeUpdateWorker(req);
 
   google::protobuf::Empty reply;
