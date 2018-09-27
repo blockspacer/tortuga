@@ -245,6 +245,7 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
 }
 
 void TortugaHandler::MaybeUpdateWorker(const Worker& worker) {
+  TimeLogger t("maybe_update_worker");
   folly::fibers::await([&](folly::fibers::Promise<folly::Unit> p) {
     exec_.add([this, &worker, promise = std::move(p)]() mutable {
       MaybeUpdateWorkerInExec(worker);
