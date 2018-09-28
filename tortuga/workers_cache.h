@@ -4,6 +4,8 @@
 #include <string>
 
 #include "boost/utility.hpp"
+#include "folly/executors/CPUThreadPoolExecutor.h"
+#include "sqlite3.h"
 
 #include "tortuga/time_utils.h"
 #include "tortuga/tortuga.pb.h"
@@ -18,12 +20,14 @@ struct WorkerInfo {
 
 class WorkersCache : boost::noncopyable {
  public:
-  WorkersCache();
+  WorkersCache(sqlite3* db, folly::CPUThreadPoolExecutor* exec);
   ~WorkersCache();
 
   void Beat(const Worker& worker);
 
  private:
+  folly::CPUThreadPoolExecutor* exec_{ nullptr };
+  sqlite3* db_{ nullptr };
   
   int64_t startup_time_{ CurrentTimeMillis() };
   // by id...
