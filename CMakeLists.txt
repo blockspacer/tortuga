@@ -48,6 +48,7 @@ add_library (tortuga_lib
   tortuga/tortuga.grpc.pb.cc
   tortuga/tortuga_params.pb.cc
   tortuga/tortuga_params.grpc.pb.cc
+  tortuga/workers_cache.cc
 )
 
 target_link_libraries(tortuga_lib
