@@ -2,10 +2,10 @@
 
 namespace tortuga {
 WorkersCache::WorkersCache() {
-
 }
 
 WorkersCache::~WorkersCache() {
 
 }
 }  // namespace tortuga
+

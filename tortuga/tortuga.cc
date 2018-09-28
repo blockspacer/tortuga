@@ -245,6 +245,7 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
 }
 
 void TortugaHandler::MaybeUpdateWorker(const Worker& worker) {
+  TimeLogger t("maybe_update_worker");
   folly::fibers::await([&](folly::fibers::Promise<folly::Unit> p) {
     exec_.add([this, &worker, promise = std::move(p)]() mutable {
       MaybeUpdateWorkerInExec(worker);
@@ -421,6 +422,9 @@ void TortugaHandler::HandleHeartbeat() {
   });
 
   VLOG(3) << "received Heartbeat RPC: " << req.ShortDebugString();
+  VLOG(3) << "after this req the fibers allocated is: " << rpc_opts_.fibers->fibersAllocated()
+          << " pool size: " << rpc_opts_.fibers->fibersPoolSize();
+
   MaybeUpdateWorker(req);
 
   google::protobuf::Empty reply;
