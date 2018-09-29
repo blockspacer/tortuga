@@ -368,6 +368,18 @@ class Heartbeat : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
+  // repeated int64 current_task_handles = 2;
+  int current_task_handles_size() const;
+  void clear_current_task_handles();
+  static const int kCurrentTaskHandlesFieldNumber = 2;
+  ::google::protobuf::int64 current_task_handles(int index) const;
+  void set_current_task_handles(int index, ::google::protobuf::int64 value);
+  void add_current_task_handles(::google::protobuf::int64 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+      current_task_handles() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+      mutable_current_task_handles();
+
   // .tortuga.Worker worker = 1;
   bool has_worker() const;
   void clear_worker();
@@ -381,6 +393,8 @@ class Heartbeat : public ::google::protobuf::Message /* @@protoc_insertion_point
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 > current_task_handles_;
+  mutable int _current_task_handles_cached_byte_size_;
   ::tortuga::Worker* worker_;
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
@@ -2363,6 +2377,36 @@ inline void Heartbeat::set_allocated_worker(::tortuga::Worker* worker) {
   }
   worker_ = worker;
   // @@protoc_insertion_point(field_set_allocated:tortuga.Heartbeat.worker)
+}
+
+// repeated int64 current_task_handles = 2;
+inline int Heartbeat::current_task_handles_size() const {
+  return current_task_handles_.size();
+}
+inline void Heartbeat::clear_current_task_handles() {
+  current_task_handles_.Clear();
+}
+inline ::google::protobuf::int64 Heartbeat::current_task_handles(int index) const {
+  // @@protoc_insertion_point(field_get:tortuga.Heartbeat.current_task_handles)
+  return current_task_handles_.Get(index);
+}
+inline void Heartbeat::set_current_task_handles(int index, ::google::protobuf::int64 value) {
+  current_task_handles_.Set(index, value);
+  // @@protoc_insertion_point(field_set:tortuga.Heartbeat.current_task_handles)
+}
+inline void Heartbeat::add_current_task_handles(::google::protobuf::int64 value) {
+  current_task_handles_.Add(value);
+  // @@protoc_insertion_point(field_add:tortuga.Heartbeat.current_task_handles)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+Heartbeat::current_task_handles() const {
+  // @@protoc_insertion_point(field_list:tortuga.Heartbeat.current_task_handles)
+  return current_task_handles_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+Heartbeat::mutable_current_task_handles() {
+  // @@protoc_insertion_point(field_mutable_list:tortuga.Heartbeat.current_task_handles)
+  return &current_task_handles_;
 }
 
 // -------------------------------------------------------------------

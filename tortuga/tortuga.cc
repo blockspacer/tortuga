@@ -102,6 +102,9 @@ TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::stri
       insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt),
       modules_(std::move(modules)) {
   progress_mgr_.reset(new ProgressManager(db, &exec_, rpc_opts));
+  workers_manager_.reset(new WorkersManager(db, &exec_));
+
+  workers_manager_->LoadWorkers();
 }
 
 void TortugaHandler::HandleCreateTask() {

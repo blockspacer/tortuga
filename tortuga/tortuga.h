@@ -16,6 +16,7 @@
 #include "tortuga/sqlite_statement.h"
 #include "tortuga/tortuga.grpc.pb.h"
 #include "tortuga/tortuga.pb.h"
+#include "tortuga/workers_manager.h"
 
 namespace tortuga {
 struct RegisteredWorker {
@@ -132,5 +133,7 @@ class TortugaHandler : boost::noncopyable {
 
   // all modules
   const std::map<std::string, std::unique_ptr<Module>> modules_;
+
+  std::unique_ptr<WorkersManager> workers_manager_;
 };
 }  // namespace tortuga

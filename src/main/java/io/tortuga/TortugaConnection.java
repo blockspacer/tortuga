@@ -141,8 +141,6 @@ public class TortugaConnection {
   }
 
   public Tortuga newWorker(String workerId) {
-    new Exception("Boom!").printStackTrace();
-    LOG.error("Creating a new WORKER!", new Exception("Badaboom"));
     return new Tortuga(workerId, chan, maintenanceService);
   }
 
