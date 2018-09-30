@@ -28,6 +28,7 @@ class ProgressManager : boost::noncopyable {
   void HandleFindTaskByHandle();
 
   UpdatedTask* FindTaskByHandleInExec(int64_t handle);
+  void UpdateTaskProgressCache(const TaskProgress& progress);
 
  private:
   UpdatedTask* FindTask(const TaskIdentifier& t_id);
@@ -44,6 +45,6 @@ class ProgressManager : boost::noncopyable {
   SqliteStatement select_task_by_identifier_stmt_;
   SqliteStatement select_worker_id_by_uuid_stmt_;
 
-  folly::EvictingCacheMap<int64_t, UpdatedTask> progresses_cache_{ 8192, 128 };
+  folly::EvictingCacheMap<int64_t, TaskProgress> progress_cache_{ 8192, 128 };
 };
 }  // namespace tortuga

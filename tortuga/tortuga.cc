@@ -354,6 +354,7 @@ void TortugaHandler::HandleCompleteTask() {
   std::unique_ptr<UpdatedTask> progress(CompleteTask(req));
   if (progress != nullptr) {
     MaybeNotifyModules(*progress);
+    UpdateProgressManagerCache(*progress);
   }
 
   google::protobuf::Empty reply;
@@ -441,6 +442,7 @@ void TortugaHandler::HandleUpdateProgress() {
   std::unique_ptr<UpdatedTask> progress(UpdateProgress(req));
   if (progress != nullptr) {
     MaybeNotifyModules(*progress);
+    UpdateProgressManagerCache(*progress);
   }
 
   google::protobuf::Empty reply;
@@ -529,6 +531,10 @@ void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {
       (*module)->OnProgressUpdate(*task.progress);
     }
   }
+}
+
+void TortugaHandler::UpdateProgressManagerCache(const UpdatedTask& task) {
+  progress_mgr_->UpdateTaskProgressCache(*task.progress);
 }
 
 void TortugaHandler::HandlePing() {

@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "folly/Conv.h"
+#include "folly/MapUtil.h"
 #include "folly/String.h"
 #include "grpc++/grpc++.h"
 
@@ -91,6 +92,17 @@ void ProgressManager::HandleFindTaskByHandle() {
   });
 
   VLOG(3) << "received FindTaskByHandle RPC: " << req.ShortDebugString();
+
+  auto it = progress_cache_.find(req.handle());
+  if (it != progress_cache_.end()) {
+    VLOG(3) << "progress hit from the cache :)";
+    // we must copy otherwise the cache could evict the object.
+    TaskProgress resp_obj = it->second;
+    handler.Reset();
+    resp.Finish(resp_obj, grpc::Status::OK, &handler);
+    handler.Wait();
+    return;
+  }
 
   std::unique_ptr<UpdatedTask> progress(FindTaskByHandle(req));
 
@@ -200,5 +212,9 @@ UpdatedTask* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) {
   folly::split(",", modules, updated_task->modules);
 
   return updated_task;
+}
+
+void ProgressManager::UpdateTaskProgressCache(const TaskProgress& progress) {
+  progress_cache_.set(folly::to<int64_t>(progress.handle()), progress);
 }
 }  // namespace tortuga
