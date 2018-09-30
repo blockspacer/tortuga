@@ -100,13 +100,13 @@ public class Tortuga {
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-    }, 500L, 500L, TimeUnit.MILLISECONDS);
+    }, 1L, 1L, TimeUnit.SECONDS);
   }
 
   private void heartbeat() {
     LOG.debug("sending heartbeat");
     ListenableFuture<Empty> done = TortugaGrpc.newFutureStub(chan)
-        .withDeadlineAfter(5L, TimeUnit.SECONDS)
+        .withDeadlineAfter(15L, TimeUnit.SECONDS)
         .heartbeat(worker);
     Futures.addCallback(done, new FutureCallback<Empty>() {
       @Override
@@ -140,7 +140,7 @@ public class Tortuga {
         .setWorker(worker)
         .build();
     ListenableFuture<TaskResp> respF = TortugaGrpc.newFutureStub(chan)
-        .withDeadlineAfter(5L, TimeUnit.SECONDS)
+        .withDeadlineAfter(15L, TimeUnit.SECONDS)
         .requestTask(req);
 
     Futures.addCallback(respF, new FutureCallback<TaskResp>() {
@@ -233,7 +233,7 @@ public class Tortuga {
       workersPool.shutdown();
     } catch (InterruptedException ex) {
       Thread.currentThread().interrupt();
-      throw new IllegalStateException("interrupted while shuting down", ex);
+      throw new IllegalStateException("interrupted while shutting down", ex);
     }
   }
 }

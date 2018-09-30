@@ -16,6 +16,7 @@
 #include "tortuga/sqlite_statement.h"
 #include "tortuga/tortuga.grpc.pb.h"
 #include "tortuga/tortuga.pb.h"
+#include "tortuga/workers_manager.h"
 
 namespace tortuga {
 struct RegisteredWorker {
@@ -53,9 +54,7 @@ class TortugaHandler : boost::noncopyable {
     progress_mgr_->HandleFindTaskByHandle();
   }
 
- private:
-  void CheckHeartbeats();
- 
+ private: 
   struct CreateTaskResult {
     bool created{ false };
     std::string handle;
@@ -63,9 +62,6 @@ class TortugaHandler : boost::noncopyable {
 
   CreateTaskResult CreateTask(const Task& task);
   CreateTaskResult CreateTaskInExec(const Task& task);
-
-  void MaybeUpdateWorker(const Worker& worker);
-  void MaybeUpdateWorkerInExec(const Worker& worker);
 
   struct RequestTaskResult {
     bool none { false };
@@ -88,13 +84,6 @@ class TortugaHandler : boost::noncopyable {
 
   void MaybeNotifyModules(const UpdatedTask& task);
 
-  std::vector<std::string> ExpiredWorkersInExec();
-  void UnassignTasksInExec(const std::vector<std::string>& uuids);
-  void UnassignTaskInExec(const std::string& uuid);
-
-  void InsertHistoricWorkerInExec(const std::string& uuid,
-                                  const std::string& worker_id);
-
   // Caller doesn't take ownership.
   // This may return nullptr if the caller has no capabilities. 
   SqliteStatement* GetOrCreateSelectStmtInExec(const Worker& worker);
@@ -112,25 +101,17 @@ class TortugaHandler : boost::noncopyable {
 
   SqliteStatement select_existing_task_stmt_;
   SqliteStatement insert_task_stmt_;
-  SqliteStatement select_worker_uuid_stmt_;
-  SqliteStatement update_worker_beat_stmt_;
-  SqliteStatement update_worker_stmt_;
-  SqliteStatement insert_worker_stmt_;
   SqliteStatement assign_task_stmt_;
 
   SqliteStatement select_task_to_complete_stmt_;
   SqliteStatement complete_task_stmt_;
-  SqliteStatement select_expired_workers_stmt_;
-
-  SqliteStatement unassign_tasks_stmt_;
-  SqliteStatement update_worker_invalidated_uuid_stmt_;
-
-  SqliteStatement insert_historic_worker_stmt_;
 
   // map from worker UUID to its select statement.
   std::map<std::string, std::unique_ptr<SqliteStatement>> select_task_stmts_;
 
   // all modules
   const std::map<std::string, std::unique_ptr<Module>> modules_;
+
+  std::unique_ptr<WorkersManager> workers_manager_;
 };
 }  // namespace tortuga

@@ -23,6 +23,9 @@ message Worker {
 
 message Heartbeat {
   Worker worker = 1;
+
+  // They must be sorted!
+  repeated int64 current_task_handles = 2;
 }
 
 message TaskReq {

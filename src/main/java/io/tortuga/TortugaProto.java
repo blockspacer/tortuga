@@ -954,6 +954,31 @@ public final class TortugaProto {
      * <code>.tortuga.Worker worker = 1;</code>
      */
     io.tortuga.TortugaProto.WorkerOrBuilder getWorkerOrBuilder();
+
+    /**
+     * <pre>
+     * They must be sorted!
+     * </pre>
+     *
+     * <code>repeated int64 current_task_handles = 2;</code>
+     */
+    java.util.List<java.lang.Long> getCurrentTaskHandlesList();
+    /**
+     * <pre>
+     * They must be sorted!
+     * </pre>
+     *
+     * <code>repeated int64 current_task_handles = 2;</code>
+     */
+    int getCurrentTaskHandlesCount();
+    /**
+     * <pre>
+     * They must be sorted!
+     * </pre>
+     *
+     * <code>repeated int64 current_task_handles = 2;</code>
+     */
+    long getCurrentTaskHandles(int index);
   }
   /**
    * Protobuf type {@code tortuga.Heartbeat}
@@ -968,6 +993,7 @@ public final class TortugaProto {
       super(builder);
     }
     private Heartbeat() {
+      currentTaskHandles_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -1014,6 +1040,27 @@ public final class TortugaProto {
 
               break;
             }
+            case 16: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                currentTaskHandles_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              currentTaskHandles_.add(input.readInt64());
+              break;
+            }
+            case 18: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
+                currentTaskHandles_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                currentTaskHandles_.add(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1022,6 +1069,9 @@ public final class TortugaProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          currentTaskHandles_ = java.util.Collections.unmodifiableList(currentTaskHandles_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -1038,6 +1088,7 @@ public final class TortugaProto {
               io.tortuga.TortugaProto.Heartbeat.class, io.tortuga.TortugaProto.Heartbeat.Builder.class);
     }
 
+    private int bitField0_;
     public static final int WORKER_FIELD_NUMBER = 1;
     private io.tortuga.TortugaProto.Worker worker_;
     /**
@@ -1059,6 +1110,41 @@ public final class TortugaProto {
       return getWorker();
     }
 
+    public static final int CURRENT_TASK_HANDLES_FIELD_NUMBER = 2;
+    private java.util.List<java.lang.Long> currentTaskHandles_;
+    /**
+     * <pre>
+     * They must be sorted!
+     * </pre>
+     *
+     * <code>repeated int64 current_task_handles = 2;</code>
+     */
+    public java.util.List<java.lang.Long>
+        getCurrentTaskHandlesList() {
+      return currentTaskHandles_;
+    }
+    /**
+     * <pre>
+     * They must be sorted!
+     * </pre>
+     *
+     * <code>repeated int64 current_task_handles = 2;</code>
+     */
+    public int getCurrentTaskHandlesCount() {
+      return currentTaskHandles_.size();
+    }
+    /**
+     * <pre>
+     * They must be sorted!
+     * </pre>
+     *
+     * <code>repeated int64 current_task_handles = 2;</code>
+     */
+    public long getCurrentTaskHandles(int index) {
+      return currentTaskHandles_.get(index);
+    }
+    private int currentTaskHandlesMemoizedSerializedSize = -1;
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1071,8 +1157,16 @@ public final class TortugaProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      getSerializedSize();
       if (worker_ != null) {
         output.writeMessage(1, getWorker());
+      }
+      if (getCurrentTaskHandlesList().size() > 0) {
+        output.writeUInt32NoTag(18);
+        output.writeUInt32NoTag(currentTaskHandlesMemoizedSerializedSize);
+      }
+      for (int i = 0; i < currentTaskHandles_.size(); i++) {
+        output.writeInt64NoTag(currentTaskHandles_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -1085,6 +1179,20 @@ public final class TortugaProto {
       if (worker_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getWorker());
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < currentTaskHandles_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(currentTaskHandles_.get(i));
+        }
+        size += dataSize;
+        if (!getCurrentTaskHandlesList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        currentTaskHandlesMemoizedSerializedSize = dataSize;
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1107,6 +1215,8 @@ public final class TortugaProto {
         result = result && getWorker()
             .equals(other.getWorker());
       }
+      result = result && getCurrentTaskHandlesList()
+          .equals(other.getCurrentTaskHandlesList());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1121,6 +1231,10 @@ public final class TortugaProto {
       if (hasWorker()) {
         hash = (37 * hash) + WORKER_FIELD_NUMBER;
         hash = (53 * hash) + getWorker().hashCode();
+      }
+      if (getCurrentTaskHandlesCount() > 0) {
+        hash = (37 * hash) + CURRENT_TASK_HANDLES_FIELD_NUMBER;
+        hash = (53 * hash) + getCurrentTaskHandlesList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1257,6 +1371,8 @@ public final class TortugaProto {
           worker_ = null;
           workerBuilder_ = null;
         }
+        currentTaskHandles_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -1279,11 +1395,19 @@ public final class TortugaProto {
 
       public io.tortuga.TortugaProto.Heartbeat buildPartial() {
         io.tortuga.TortugaProto.Heartbeat result = new io.tortuga.TortugaProto.Heartbeat(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (workerBuilder_ == null) {
           result.worker_ = worker_;
         } else {
           result.worker_ = workerBuilder_.build();
         }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          currentTaskHandles_ = java.util.Collections.unmodifiableList(currentTaskHandles_);
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.currentTaskHandles_ = currentTaskHandles_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1328,6 +1452,16 @@ public final class TortugaProto {
         if (other.hasWorker()) {
           mergeWorker(other.getWorker());
         }
+        if (!other.currentTaskHandles_.isEmpty()) {
+          if (currentTaskHandles_.isEmpty()) {
+            currentTaskHandles_ = other.currentTaskHandles_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureCurrentTaskHandlesIsMutable();
+            currentTaskHandles_.addAll(other.currentTaskHandles_);
+          }
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1354,6 +1488,7 @@ public final class TortugaProto {
         }
         return this;
       }
+      private int bitField0_;
 
       private io.tortuga.TortugaProto.Worker worker_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1470,6 +1605,100 @@ public final class TortugaProto {
           worker_ = null;
         }
         return workerBuilder_;
+      }
+
+      private java.util.List<java.lang.Long> currentTaskHandles_ = java.util.Collections.emptyList();
+      private void ensureCurrentTaskHandlesIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          currentTaskHandles_ = new java.util.ArrayList<java.lang.Long>(currentTaskHandles_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <pre>
+       * They must be sorted!
+       * </pre>
+       *
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public java.util.List<java.lang.Long>
+          getCurrentTaskHandlesList() {
+        return java.util.Collections.unmodifiableList(currentTaskHandles_);
+      }
+      /**
+       * <pre>
+       * They must be sorted!
+       * </pre>
+       *
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public int getCurrentTaskHandlesCount() {
+        return currentTaskHandles_.size();
+      }
+      /**
+       * <pre>
+       * They must be sorted!
+       * </pre>
+       *
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public long getCurrentTaskHandles(int index) {
+        return currentTaskHandles_.get(index);
+      }
+      /**
+       * <pre>
+       * They must be sorted!
+       * </pre>
+       *
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public Builder setCurrentTaskHandles(
+          int index, long value) {
+        ensureCurrentTaskHandlesIsMutable();
+        currentTaskHandles_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * They must be sorted!
+       * </pre>
+       *
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public Builder addCurrentTaskHandles(long value) {
+        ensureCurrentTaskHandlesIsMutable();
+        currentTaskHandles_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * They must be sorted!
+       * </pre>
+       *
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public Builder addAllCurrentTaskHandles(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureCurrentTaskHandlesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, currentTaskHandles_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * They must be sorted!
+       * </pre>
+       *
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public Builder clearCurrentTaskHandles() {
+        currentTaskHandles_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -14221,62 +14450,63 @@ public final class TortugaProto {
       "\032\037google/protobuf/timestamp.proto\032\036googl" +
       "e/protobuf/wrappers.proto\032\027google/rpc/st" +
       "atus.proto\"?\n\006Worker\022\021\n\tworker_id\030\001 \001(\t\022" +
-      "\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003 \003(\t\",\n\tH" +
+      "\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003 \003(\t\"J\n\tH" +
       "eartbeat\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worke" +
-      "r\"*\n\007TaskReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.W" +
-      "orker\"\325\001\n\010TaskResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002" +
-      " \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.Any" +
-      "\022\016\n\006handle\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\0221\n\tretry_" +
-      "ctx\030\006 \001(\0132\036.tortuga.TaskResp.RetryContex" +
-      "t\032:\n\014RetryContext\022\017\n\007retries\030\001 \001(\005\022\031\n\021pr" +
-      "ogress_metadata\030\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001 \001" +
-      "(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google." +
-      "protobuf.Any\022-\n\010priority\030\004 \001(\0132\033.google." +
-      "protobuf.Int32Value\0220\n\013max_retries\030\005 \001(\013" +
-      "2\033.google.protobuf.Int32Value\022(\n\005delay\030\006" +
-      " \001(\0132\031.google.protobuf.Duration\022\017\n\007modul" +
-      "es\030\007 \003(\t\"\273\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(" +
-      "\t\022\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retri" +
-      "es\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 " +
-      "\001(\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007" +
-      "created\030\t \001(\0132\032.google.protobuf.Timestam" +
-      "p\0220\n\014started_time\030\n \001(\0132\032.google.protobu" +
-      "f.Timestamp\022-\n\tdone_time\030\013 \001(\0132\032.google." +
-      "protobuf.Timestamp\022\"\n\006status\030\014 \001(\0132\022.goo" +
-      "gle.rpc.Status\022\020\n\010progress\030\r \001(\002\022\030\n\020prog" +
-      "ress_message\030\016 \001(\t\022\031\n\021progress_metadata\030" +
-      "\022 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker_id\030\020 \001(\t\022\016" +
-      "\n\006output\030\021 \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(" +
-      "\0132\r.tortuga.Task\"-\n\nCreateResp\022\016\n\006handle" +
-      "\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"\205\001\n\017CompleteTask" +
-      "Req\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006" +
-      "handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_mess" +
-      "age\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t\022\016\n\006output\030\006 \001(\t\"" +
-      "\344\001\n\021UpdateProgressReq\022\037\n\006worker\030\001 \001(\0132\017." +
-      "tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022-\n\010progre" +
-      "ss\030\003 \001(\0132\033.google.protobuf.FloatValue\0226\n" +
-      "\020progress_message\030\004 \001(\0132\034.google.protobu" +
-      "f.StringValue\0227\n\021progress_metadata\030\005 \001(\013" +
-      "2\034.google.protobuf.StringValue\"\035\n\013Progre" +
-      "ssReq\022\016\n\006handle\030\001 \001(\t\"B\n\014ProgressResp\022\016\n" +
-      "\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\0132\022.google.r" +
-      "pc.Status\"*\n\016TaskIdentifier\022\n\n\002id\030\001 \001(\t\022" +
-      "\014\n\004type\030\002 \001(\t2\257\004\n\007Tortuga\0225\n\nCreateTask\022" +
-      "\022.tortuga.CreateReq\032\023.tortuga.CreateResp" +
-      "\0222\n\013RequestTask\022\020.tortuga.TaskReq\032\021.tort" +
-      "uga.TaskResp\0224\n\tHeartbeat\022\017.tortuga.Work" +
-      "er\032\026.google.protobuf.Empty\022@\n\014CompleteTa" +
-      "sk\022\030.tortuga.CompleteTaskReq\032\026.google.pr" +
-      "otobuf.Empty\022D\n\016UpdateProgress\022\032.tortuga" +
-      ".UpdateProgressReq\032\026.google.protobuf.Emp" +
-      "ty\022:\n\010FindTask\022\027.tortuga.TaskIdentifier\032" +
-      "\025.tortuga.TaskProgress\022G\n\020FindTaskByHand" +
-      "le\022\034.google.protobuf.StringValue\032\025.tortu" +
-      "ga.TaskProgress\0226\n\004Ping\022\026.google.protobu" +
-      "f.Empty\032\026.google.protobuf.Empty\022>\n\014QuitQ" +
-      "uitQuit\022\026.google.protobuf.Empty\032\026.google" +
-      ".protobuf.EmptyB\032\n\nio.tortugaB\014TortugaPr" +
-      "otob\006proto3"
+      "r\022\034\n\024current_task_handles\030\002 \003(\003\"*\n\007TaskR" +
+      "eq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\"\325\001\n\010" +
+      "TaskResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004da" +
+      "ta\030\003 \001(\0132\024.google.protobuf.Any\022\016\n\006handle" +
+      "\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\0221\n\tretry_ctx\030\006 \001(\0132" +
+      "\036.tortuga.TaskResp.RetryContext\032:\n\014Retry" +
+      "Context\022\017\n\007retries\030\001 \001(\005\022\031\n\021progress_met" +
+      "adata\030\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001 \001(\t\022\014\n\004type" +
+      "\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.A" +
+      "ny\022-\n\010priority\030\004 \001(\0132\033.google.protobuf.I" +
+      "nt32Value\0220\n\013max_retries\030\005 \001(\0132\033.google." +
+      "protobuf.Int32Value\022(\n\005delay\030\006 \001(\0132\031.goo" +
+      "gle.protobuf.Duration\022\017\n\007modules\030\007 \003(\t\"\273" +
+      "\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(\t\022\n\n\002id\030\002 " +
+      "\001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retries\030\004 \001(\005\022\017" +
+      "\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 \001(\005\022\021\n\twor" +
+      "ked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007created\030\t " +
+      "\001(\0132\032.google.protobuf.Timestamp\0220\n\014start" +
+      "ed_time\030\n \001(\0132\032.google.protobuf.Timestam" +
+      "p\022-\n\tdone_time\030\013 \001(\0132\032.google.protobuf.T" +
+      "imestamp\022\"\n\006status\030\014 \001(\0132\022.google.rpc.St" +
+      "atus\022\020\n\010progress\030\r \001(\002\022\030\n\020progress_messa" +
+      "ge\030\016 \001(\t\022\031\n\021progress_metadata\030\022 \001(\t\022\014\n\004l" +
+      "ogs\030\017 \001(\t\022\021\n\tworker_id\030\020 \001(\t\022\016\n\006output\030\021" +
+      " \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(\0132\r.tortug" +
+      "a.Task\"-\n\nCreateResp\022\016\n\006handle\030\001 \001(\t\022\017\n\007" +
+      "created\030\002 \001(\010\"\205\001\n\017CompleteTaskReq\022\037\n\006wor" +
+      "ker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006handle\030\002 \001" +
+      "(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_message\030\004 \001(\t\022" +
+      "\014\n\004logs\030\005 \001(\t\022\016\n\006output\030\006 \001(\t\"\344\001\n\021Update" +
+      "ProgressReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Wo" +
+      "rker\022\016\n\006handle\030\002 \001(\t\022-\n\010progress\030\003 \001(\0132\033" +
+      ".google.protobuf.FloatValue\0226\n\020progress_" +
+      "message\030\004 \001(\0132\034.google.protobuf.StringVa" +
+      "lue\0227\n\021progress_metadata\030\005 \001(\0132\034.google." +
+      "protobuf.StringValue\"\035\n\013ProgressReq\022\016\n\006h" +
+      "andle\030\001 \001(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 " +
+      "\001(\t\022\"\n\006status\030\002 \001(\0132\022.google.rpc.Status\"" +
+      "*\n\016TaskIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 " +
+      "\001(\t2\257\004\n\007Tortuga\0225\n\nCreateTask\022\022.tortuga." +
+      "CreateReq\032\023.tortuga.CreateResp\0222\n\013Reques" +
+      "tTask\022\020.tortuga.TaskReq\032\021.tortuga.TaskRe" +
+      "sp\0224\n\tHeartbeat\022\017.tortuga.Worker\032\026.googl" +
+      "e.protobuf.Empty\022@\n\014CompleteTask\022\030.tortu" +
+      "ga.CompleteTaskReq\032\026.google.protobuf.Emp" +
+      "ty\022D\n\016UpdateProgress\022\032.tortuga.UpdatePro" +
+      "gressReq\032\026.google.protobuf.Empty\022:\n\010Find" +
+      "Task\022\027.tortuga.TaskIdentifier\032\025.tortuga." +
+      "TaskProgress\022G\n\020FindTaskByHandle\022\034.googl" +
+      "e.protobuf.StringValue\032\025.tortuga.TaskPro" +
+      "gress\0226\n\004Ping\022\026.google.protobuf.Empty\032\026." +
+      "google.protobuf.Empty\022>\n\014QuitQuitQuit\022\026." +
+      "google.protobuf.Empty\032\026.google.protobuf." +
+      "EmptyB\032\n\nio.tortugaB\014TortugaProtob\006proto" +
+      "3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14307,7 +14537,7 @@ public final class TortugaProto {
     internal_static_tortuga_Heartbeat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_Heartbeat_descriptor,
-        new java.lang.String[] { "Worker", });
+        new java.lang.String[] { "Worker", "CurrentTaskHandles", });
     internal_static_tortuga_TaskReq_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_tortuga_TaskReq_fieldAccessorTable = new
