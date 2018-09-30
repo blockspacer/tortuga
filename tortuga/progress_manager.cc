@@ -76,7 +76,7 @@ void ProgressManager::HandleFindTaskByHandle() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
-  google::protobuf::StringValue req;
+  FindTaskReq req;
   grpc::ServerAsyncResponseWriter<TaskProgress> resp(&ctx);
 
   // start a new RPC and wait.
@@ -92,9 +92,7 @@ void ProgressManager::HandleFindTaskByHandle() {
 
   VLOG(3) << "received FindTaskByHandle RPC: " << req.ShortDebugString();
 
-  
-
-  std::unique_ptr<UpdatedTask> progress(FindTaskByHandle(req.value()));
+  std::unique_ptr<UpdatedTask> progress(FindTaskByHandle(req));
 
   handler.Reset();
   if (progress == nullptr) {
@@ -108,16 +106,16 @@ void ProgressManager::HandleFindTaskByHandle() {
   handler.Wait();
 }
 
-UpdatedTask* ProgressManager::FindTaskByHandle(const std::string& handle) {
+UpdatedTask* ProgressManager::FindTaskByHandle(const FindTaskReq& req) {
   folly::fibers::await([&](folly::fibers::Promise<UpdatedTask*> p) {
-    exec_->add([this, &handle, promise = std::move(p)]() mutable {
-      promise.setValue(FindTaskByHandleInExec(handle));
+    exec_->add([this, &req, promise = std::move(p)]() mutable {
+      promise.setValue(FindTaskByHandleInExec(req.handle()));
     });
   });
 }
 
-UpdatedTask* ProgressManager::FindTaskByHandleInExec(const std::string& handle) {
-  select_task_stmt_.BindLong(1, folly::to<int64_t>(handle));
+UpdatedTask* ProgressManager::FindTaskByHandleInExec(int64_t handle) {
+  select_task_stmt_.BindLong(1, handle);
 
   return FindTaskByBoundStmtInExec(&select_task_stmt_);
 }

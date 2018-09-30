@@ -408,7 +408,7 @@ UpdatedTask* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
 
   complete_task_stmt_.ExecuteOrDie();
   
-  return progress_mgr_->FindTaskByHandleInExec(req.handle());
+  return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
 
 void TortugaHandler::CheckHeartbeatsLoop() {
@@ -518,7 +518,7 @@ UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) 
   SqliteReset x2(&stmt);
   stmt.ExecuteOrDie();
 
-  return progress_mgr_->FindTaskByHandleInExec(req.handle());
+  return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
 
 void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {

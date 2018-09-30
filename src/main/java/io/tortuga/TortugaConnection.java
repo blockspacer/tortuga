@@ -21,6 +21,7 @@ import io.grpc.Status.Code;
 import io.grpc.StatusRuntimeException;
 import io.tortuga.TortugaProto.CreateReq;
 import io.tortuga.TortugaProto.CreateResp;
+import io.tortuga.TortugaProto.FindTaskReq;
 import io.tortuga.TortugaProto.HeartbeatReq;
 import io.tortuga.TortugaProto.TaskIdentifier;
 import io.tortuga.TortugaProto.TaskProgress;
@@ -191,28 +192,37 @@ public class TortugaConnection {
   }
 
   boolean isDone(String handle) {
+    FindTaskReq req = FindTaskReq.newBuilder()
+        .setHandle(Long.parseLong(handle))
+        .setIsForDoneOnly(true)
+        .build();
+
     return TortugaGrpc.newBlockingStub(chan)
         .withDeadlineAfter(30L, TimeUnit.SECONDS)
-        .findTaskByHandle(StringValue.newBuilder()
-            .setValue(handle)
-            .build())
+        .findTaskByHandle(req)
         .getDone();
   }
 
   TaskProgress getProgress(String handle) {
+    FindTaskReq req = FindTaskReq.newBuilder()
+        .setHandle(Long.parseLong(handle))
+        .setIsForDoneOnly(false)
+        .build();
+
     return TortugaGrpc.newBlockingStub(chan)
         .withDeadlineAfter(30L, TimeUnit.SECONDS)
-        .findTaskByHandle(StringValue.newBuilder()
-            .setValue(handle)
-            .build());
+        .findTaskByHandle(req);
   }
 
   ListenableFuture<TaskProgress> getProgressAsync(String handle) {
+    FindTaskReq req = FindTaskReq.newBuilder()
+        .setHandle(Long.parseLong(handle))
+        .setIsForDoneOnly(false)
+        .build();
+
     return TortugaGrpc.newFutureStub(chan)
         .withDeadlineAfter(30L, TimeUnit.SECONDS)
-        .findTaskByHandle(StringValue.newBuilder()
-            .setValue(handle)
-            .build());
+        .findTaskByHandle(req);
   }
 
   public Optional<TaskWatcher> createWatcher(String id, String type) {
@@ -307,12 +317,15 @@ public class TortugaConnection {
     }
 
     try {
+      FindTaskReq req = FindTaskReq.newBuilder()
+          .setHandle(Long.parseLong(handle))
+          .setIsForDoneOnly(true)
+          .build();
+
       ListenableFuture<TaskProgress> progressF = TortugaGrpc.newFutureStub(chan)
           // we make this long running so the server can later optimize...
           .withDeadlineAfter(30L, TimeUnit.SECONDS)
-          .findTaskByHandle(StringValue.newBuilder()
-              .setValue(handle)
-              .build());
+          .findTaskByHandle(req);
 
       Futures.addCallback(progressF, new FutureCallback<TaskProgress>() {
         @Override

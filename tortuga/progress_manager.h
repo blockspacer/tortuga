@@ -27,12 +27,12 @@ class ProgressManager : boost::noncopyable {
   void HandleFindTask();
   void HandleFindTaskByHandle();
 
-  UpdatedTask* FindTaskByHandleInExec(const std::string& handle);
+  UpdatedTask* FindTaskByHandleInExec(int64_t handle);
 
  private:
   UpdatedTask* FindTask(const TaskIdentifier& t_id);
   UpdatedTask* FindTaskInExec(const TaskIdentifier& t_id);
-  UpdatedTask* FindTaskByHandle(const std::string& handle);
+  UpdatedTask* FindTaskByHandle(const FindTaskReq& req);
 
   UpdatedTask* FindTaskByBoundStmtInExec(SqliteStatement* stmt);
 
