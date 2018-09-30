@@ -308,7 +308,7 @@ void TortugaHandler::HandleHeartbeat() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
-  Worker req;
+  HeartbeatReq req;
   grpc::ServerAsyncResponseWriter<google::protobuf::Empty> resp(&ctx);
 
   // start a new RPC and wait.
@@ -324,7 +324,9 @@ void TortugaHandler::HandleHeartbeat() {
   VLOG(3) << "after this req the fibers allocated is: " << rpc_opts_.fibers->fibersAllocated()
           << " pool size: " << rpc_opts_.fibers->fibersPoolSize();
 
-  workers_manager_->Beat(req);
+  for (const auto& worker_beat : req.worker_beats()) {
+    workers_manager_->Beat(worker_beat.worker());
+  }
 
   google::protobuf::Empty reply;
   handler.Reset();

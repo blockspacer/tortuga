@@ -81,23 +81,23 @@ public final class TortugaGrpc {
      return getRequestTaskMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<io.tortuga.TortugaProto.Worker,
+  private static volatile io.grpc.MethodDescriptor<io.tortuga.TortugaProto.HeartbeatReq,
       com.google.protobuf.Empty> getHeartbeatMethod;
 
-  public static io.grpc.MethodDescriptor<io.tortuga.TortugaProto.Worker,
+  public static io.grpc.MethodDescriptor<io.tortuga.TortugaProto.HeartbeatReq,
       com.google.protobuf.Empty> getHeartbeatMethod() {
-    io.grpc.MethodDescriptor<io.tortuga.TortugaProto.Worker, com.google.protobuf.Empty> getHeartbeatMethod;
+    io.grpc.MethodDescriptor<io.tortuga.TortugaProto.HeartbeatReq, com.google.protobuf.Empty> getHeartbeatMethod;
     if ((getHeartbeatMethod = TortugaGrpc.getHeartbeatMethod) == null) {
       synchronized (TortugaGrpc.class) {
         if ((getHeartbeatMethod = TortugaGrpc.getHeartbeatMethod) == null) {
           TortugaGrpc.getHeartbeatMethod = getHeartbeatMethod = 
-              io.grpc.MethodDescriptor.<io.tortuga.TortugaProto.Worker, com.google.protobuf.Empty>newBuilder()
+              io.grpc.MethodDescriptor.<io.tortuga.TortugaProto.HeartbeatReq, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "tortuga.Tortuga", "Heartbeat"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  io.tortuga.TortugaProto.Worker.getDefaultInstance()))
+                  io.tortuga.TortugaProto.HeartbeatReq.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.google.protobuf.Empty.getDefaultInstance()))
                   .setSchemaDescriptor(new TortugaMethodDescriptorSupplier("Heartbeat"))
@@ -313,7 +313,7 @@ public final class TortugaGrpc {
 
     /**
      */
-    public void heartbeat(io.tortuga.TortugaProto.Worker request,
+    public void heartbeat(io.tortuga.TortugaProto.HeartbeatReq request,
         io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnimplementedUnaryCall(getHeartbeatMethod(), responseObserver);
     }
@@ -389,7 +389,7 @@ public final class TortugaGrpc {
             getHeartbeatMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                io.tortuga.TortugaProto.Worker,
+                io.tortuga.TortugaProto.HeartbeatReq,
                 com.google.protobuf.Empty>(
                   this, METHODID_HEARTBEAT)))
           .addMethod(
@@ -474,7 +474,7 @@ public final class TortugaGrpc {
 
     /**
      */
-    public void heartbeat(io.tortuga.TortugaProto.Worker request,
+    public void heartbeat(io.tortuga.TortugaProto.HeartbeatReq request,
         io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getHeartbeatMethod(), getCallOptions()), request, responseObserver);
@@ -572,7 +572,7 @@ public final class TortugaGrpc {
 
     /**
      */
-    public com.google.protobuf.Empty heartbeat(io.tortuga.TortugaProto.Worker request) {
+    public com.google.protobuf.Empty heartbeat(io.tortuga.TortugaProto.HeartbeatReq request) {
       return blockingUnaryCall(
           getChannel(), getHeartbeatMethod(), getCallOptions(), request);
     }
@@ -666,7 +666,7 @@ public final class TortugaGrpc {
     /**
      */
     public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> heartbeat(
-        io.tortuga.TortugaProto.Worker request) {
+        io.tortuga.TortugaProto.HeartbeatReq request) {
       return futureUnaryCall(
           getChannel().newCall(getHeartbeatMethod(), getCallOptions()), request);
     }
@@ -765,7 +765,7 @@ public final class TortugaGrpc {
               (io.grpc.stub.StreamObserver<io.tortuga.TortugaProto.TaskResp>) responseObserver);
           break;
         case METHODID_HEARTBEAT:
-          serviceImpl.heartbeat((io.tortuga.TortugaProto.Worker) request,
+          serviceImpl.heartbeat((io.tortuga.TortugaProto.HeartbeatReq) request,
               (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
           break;
         case METHODID_COMPLETE_TASK:

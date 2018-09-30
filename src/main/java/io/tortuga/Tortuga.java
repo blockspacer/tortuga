@@ -13,6 +13,7 @@ import com.google.protobuf.Empty;
 import io.grpc.Channel;
 import io.grpc.Status;
 import io.tortuga.TortugaProto.CompleteTaskReq;
+import io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat;
 import io.tortuga.TortugaProto.TaskReq;
 import io.tortuga.TortugaProto.TaskResp;
 import io.tortuga.TortugaProto.Worker;
@@ -36,6 +37,7 @@ public class Tortuga {
   private final Channel chan;
   // Single thread that handles the heartbeat and the GRPC communication to server.
   private final ListeningScheduledExecutorService maintenanceService;
+  private final TortugaConnection tortugaConn;
   // Executor where performing tasks.
   private ListeningExecutorService workersPool;
 
@@ -44,14 +46,17 @@ public class Tortuga {
   private int concurrency = 4;
   private Semaphore semaphore;
 
-  private ListenableScheduledFuture<?> heartbeatSchedulation;
   private ListenableScheduledFuture<?> pollSchedulation;
   private final AtomicBoolean shuttingDown = new AtomicBoolean();
 
   private final TaskHandlerRegistry registry = new TaskHandlerRegistry();
 
-  Tortuga(String workerId, Channel chan, ListeningScheduledExecutorService maintenanceService) {
+  Tortuga(String workerId,
+          Channel chan,
+          TortugaConnection tortugaConn,
+          ListeningScheduledExecutorService maintenanceService) {
     this.chan = chan;
+    this.tortugaConn = tortugaConn;
     this.maintenanceService = maintenanceService;
 
     worker = Worker.newBuilder()
@@ -80,6 +85,8 @@ public class Tortuga {
         .addAllCapabilities(registry.capabilities())
         .build();
 
+    tortugaConn.workerIsStarted(this);
+
     if (workersPool == null) {
       // If the caller didn't specify a executor service for workers we default to a cached thread pool.
       ThreadFactory workersTf = new ThreadFactoryBuilder()
@@ -90,9 +97,7 @@ public class Tortuga {
 
     semaphore = new Semaphore(concurrency);
 
-    heartbeatSchedulation = maintenanceService.scheduleWithFixedDelay(() -> {
-      heartbeat();
-    }, 1L, 1L, TimeUnit.SECONDS);
+    // Tell the connection that at least one worker is started so it can start scheduling heartbeats.
 
     pollSchedulation = maintenanceService.scheduleWithFixedDelay(() -> {
       try {
@@ -101,23 +106,6 @@ public class Tortuga {
         ex.printStackTrace();
       }
     }, 1L, 1L, TimeUnit.SECONDS);
-  }
-
-  private void heartbeat() {
-    LOG.debug("sending heartbeat");
-    ListenableFuture<Empty> done = TortugaGrpc.newFutureStub(chan)
-        .withDeadlineAfter(15L, TimeUnit.SECONDS)
-        .heartbeat(worker);
-    Futures.addCallback(done, new FutureCallback<Empty>() {
-      @Override
-      public void onSuccess(Empty result) {
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-        LOG.error("heartbeats are failing: ", t);
-      }
-    });
   }
 
   private void pollTask() {
@@ -225,8 +213,10 @@ public class Tortuga {
 
   public void shutdown() {
     shuttingDown.set(true);
-    heartbeatSchedulation.cancel(false);
     pollSchedulation.cancel(false);
+
+    // remove self from heartbeats.
+    tortugaConn.workerShutdown(this);
 
     try {
       semaphore.acquire(concurrency);
@@ -235,5 +225,11 @@ public class Tortuga {
       Thread.currentThread().interrupt();
       throw new IllegalStateException("interrupted while shutting down", ex);
     }
+  }
+
+  WorkerBeat toWorkerBeat() {
+    return WorkerBeat.newBuilder()
+        .setWorker(worker)
+        .build();
   }
 }

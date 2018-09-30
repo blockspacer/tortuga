@@ -21,11 +21,17 @@ message Worker {
   repeated string capabilities = 3;
 }
 
-message Heartbeat {
-  Worker worker = 1;
+message HeartbeatReq {
+  // a connection handling multiple workers will beat for all of them at once
+  // hence this is repeated.
+  message WorkerBeat {
+    Worker worker = 1;
 
-  // They must be sorted!
-  repeated int64 current_task_handles = 2;
+    // They must be sorted!
+    repeated int64 current_task_handles = 2;
+  }
+
+  repeated WorkerBeat worker_beats = 1;
 }
 
 message TaskReq {
@@ -139,7 +145,7 @@ message TaskIdentifier {
 service Tortuga {
   rpc CreateTask(CreateReq) returns (CreateResp);
   rpc RequestTask(TaskReq) returns (TaskResp);
-  rpc Heartbeat(Worker) returns (google.protobuf.Empty);
+  rpc Heartbeat(HeartbeatReq) returns (google.protobuf.Empty);
   rpc CompleteTask(CompleteTaskReq) returns (google.protobuf.Empty);
   rpc UpdateProgress(UpdateProgressReq) returns (google.protobuf.Empty);
 
