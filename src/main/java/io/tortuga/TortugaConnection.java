@@ -1,6 +1,7 @@
 package io.tortuga;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -28,10 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
@@ -44,10 +45,14 @@ public class TortugaConnection {
   private ListeningScheduledExecutorService maintenanceService;
   private final ManagedChannel chan;
 
-  private final Map<String, SettableFuture<Status>> completionListeners = new ConcurrentHashMap<>();
+  private static final class TaskCompletionListener {
+    // The future to set when the task completed.
+    final SettableFuture<Status> future = SettableFuture.create();
+    // Such that there is only one beating at a time for the completion of this task.
+    final Semaphore beatingSem = new Semaphore(1);
+  }
 
-  // only one at a time.
-  private final Semaphore completionBeatSem = new Semaphore(1);
+  private final Map<String, TaskCompletionListener> completionListeners = new HashMap<>();
   private ListenableScheduledFuture<?> completionBeatF;
 
   // There is never the need for more than a heartbeat at once...
@@ -260,45 +265,92 @@ public class TortugaConnection {
    * Returns a future for when a given task is complete.
    */
   public synchronized ListenableFuture<Status> completionFuture(String handle) {
-    SettableFuture<Status> statusF = completionListeners.get(handle);
-    if (statusF != null) {
-      return statusF;
+    TaskCompletionListener listener = null;
+
+    synchronized (completionListeners) {
+      listener = completionListeners.get(handle);
+      if (listener != null) {
+        return listener.future;
+      }
+
+      listener = new TaskCompletionListener();
+      completionListeners.put(handle, listener);
     }
 
-    statusF = SettableFuture.create();
-    completionListeners.put(handle, statusF);
-
-    if (completionBeatF == null) {
-      completionBeatF = maintenanceService.scheduleWithFixedDelay(() -> {
-        beatForCompletions();
-      }, 100L, 100L, TimeUnit.MILLISECONDS);
+    synchronized (this) {
+      if (completionBeatF == null) {
+        completionBeatF = maintenanceService.scheduleWithFixedDelay(() -> {
+          beatForCompletions();
+        }, 100L, 100L, TimeUnit.MILLISECONDS);
+      }
     }
 
-    return statusF;
+    return listener.future;
   }
 
-  private synchronized void beatForCompletions() {
-    List<String> toRemove = new ArrayList<>();
-
-    for (Map.Entry<String, SettableFuture<Status>> e : completionListeners.entrySet()) {
-       try {
-         TaskProgress progress = TortugaGrpc.newBlockingStub(chan)
-             .withDeadlineAfter(5L, TimeUnit.SECONDS)
-             .findTaskByHandle(StringValue.newBuilder().setValue(e.getKey()).build());
-
-         if (progress.getDone()) {
-           Status status = Status.fromCodeValue(progress.getStatus().getCode());
-           e.getValue().set(status);
-           toRemove.add(e.getKey());
-         }
-       } catch (StatusRuntimeException ex) {
-         ex.printStackTrace();
-       }
+  private void beatForCompletions() {
+    // For thread safetyness make an immutable copy of the map.
+    // any task added later will be part of the next check;
+    ImmutableMap<String, TaskCompletionListener> listeners = null;
+    synchronized (completionListeners) {
+      listeners = ImmutableMap.copyOf(completionListeners);
     }
 
-    for (String key : toRemove) {
-      completionListeners.remove(key);
+    for (Map.Entry<String, TaskCompletionListener> e : listeners.entrySet()) {
+      beatForCompletion(e.getKey(), e.getValue());
     }
+  }
+
+  private void beatForCompletion(String handle, TaskCompletionListener listener) {
+    if (!listener.beatingSem.tryAcquire()) {
+      return;
+    }
+
+    try {
+      ListenableFuture<TaskProgress> progressF = TortugaGrpc.newFutureStub(chan)
+          // we make this long running so the server can later optimize...
+          .withDeadlineAfter(30L, TimeUnit.SECONDS)
+          .findTaskByHandle(StringValue.newBuilder()
+              .setValue(handle)
+              .build());
+
+      Futures.addCallback(progressF, new FutureCallback<TaskProgress>() {
+        @Override
+        public void onSuccess(TaskProgress progress) {
+          onTaskProgressSuccess(progress, handle, listener);
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+          listener.beatingSem.release();
+          LOG.error("completion beats are failing", t);
+        }
+      });
+
+
+    } catch (RuntimeException ex) {
+      LOG.error("Scheduling completion beats is failing", ex);
+      listener.beatingSem.release();
+    }
+  }
+
+  private void onTaskProgressSuccess(TaskProgress progress, String handle, TaskCompletionListener listener) {
+    if (!progress.getDone()) {
+      listener.beatingSem.release();
+      return;
+    }
+
+    synchronized (completionListeners) {
+      // until then anyone asking for the future has gotten our listener as a result,
+      // so necessarily we are not erasing another listener here.
+      completionListeners.remove(handle);
+    }
+
+    // If the beat for completion had made a copy that included this task before our removal,
+    // then we'd be fine because it won't be able to acquire the last sem that we'll never release :)
+
+    Status status = Status.fromCodeValue(progress.getStatus().getCode());
+    listener.future.set(status);
   }
 
   private void heartbeatForAllWorkers() {
@@ -337,6 +389,7 @@ public class TortugaConnection {
       });
     } catch (RuntimeException ex) {
       heartbeatSem.release();
+      LOG.error("Couldn't schedule a hearbeat", ex);
       throw ex;
     }
   }

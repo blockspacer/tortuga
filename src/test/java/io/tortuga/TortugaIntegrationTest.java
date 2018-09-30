@@ -426,7 +426,7 @@ public class TortugaIntegrationTest {
 
     for (int i = 0; i < 100; ++i) {
       publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeTask" + i), TestMessage.getDefaultInstance());
-      TaskResult handle = publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeId"), TestMessage.getDefaultInstance());
+      TaskResult handle = publisher.publishHandleCustomMessageTask(TaskSpec.ofId("SomeId" + i), TestMessage.getDefaultInstance());
       ListenableFuture<Status> completionF = handle.completionFuture();
       
       Futures.addCallback(completionF, new FutureCallback<Status>() {
@@ -445,15 +445,17 @@ public class TortugaIntegrationTest {
 
     Tortuga tortuga = conn.newWorker("test_worker");
     tortuga.withConcurrency(4);
+    final AtomicInteger done = new AtomicInteger();
     tortuga.addService(new ImplBase() {
       @Override
       public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        System.out.println("Completed: " + done.incrementAndGet() + " tasks.");
         return Futures.immediateFuture(Status.OK);
       }
     });
     tortuga.start();
 
-    Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 60L, TimeUnit.SECONDS));
+    Assert.assertTrue(Uninterruptibles.awaitUninterruptibly(latch, 180L, TimeUnit.SECONDS));
     tortuga.shutdown();
     conn.shutdown();
   }
