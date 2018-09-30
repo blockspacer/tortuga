@@ -69,15 +69,15 @@ Tortuga::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::tortuga::TaskResp>::Create(channel_.get(), cq, rpcmethod_RequestTask_, context, request, false);
 }
 
-::grpc::Status Tortuga::Stub::Heartbeat(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::google::protobuf::Empty* response) {
+::grpc::Status Tortuga::Stub::Heartbeat(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::google::protobuf::Empty* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Heartbeat_, context, request, response);
 }
 
-::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* Tortuga::Stub::AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* Tortuga::Stub::AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::google::protobuf::Empty>::Create(channel_.get(), cq, rpcmethod_Heartbeat_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* Tortuga::Stub::PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* Tortuga::Stub::PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::google::protobuf::Empty>::Create(channel_.get(), cq, rpcmethod_Heartbeat_, context, request, false);
 }
 
@@ -167,7 +167,7 @@ Tortuga::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Tortuga_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::tortuga::Worker, ::google::protobuf::Empty>(
+      new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::tortuga::HeartbeatReq, ::google::protobuf::Empty>(
           std::mem_fn(&Tortuga::Service::Heartbeat), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Tortuga_method_names[3],
@@ -218,7 +218,7 @@ Tortuga::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status Tortuga::Service::Heartbeat(::grpc::ServerContext* context, const ::tortuga::Worker* request, ::google::protobuf::Empty* response) {
+::grpc::Status Tortuga::Service::Heartbeat(::grpc::ServerContext* context, const ::tortuga::HeartbeatReq* request, ::google::protobuf::Empty* response) {
   (void) context;
   (void) request;
   (void) response;

@@ -1,5 +1,7 @@
 package io.tortuga;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableScheduledFuture;
@@ -8,6 +10,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.protobuf.Any;
+import com.google.protobuf.Empty;
 import com.google.protobuf.StringValue;
 
 import io.grpc.ManagedChannel;
@@ -17,6 +20,7 @@ import io.grpc.Status.Code;
 import io.grpc.StatusRuntimeException;
 import io.tortuga.TortugaProto.CreateReq;
 import io.tortuga.TortugaProto.CreateResp;
+import io.tortuga.TortugaProto.HeartbeatReq;
 import io.tortuga.TortugaProto.TaskIdentifier;
 import io.tortuga.TortugaProto.TaskProgress;
 
@@ -29,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +46,14 @@ public class TortugaConnection {
 
   private final Map<String, SettableFuture<Status>> completionListeners = new ConcurrentHashMap<>();
 
-  private ListenableScheduledFuture<?> heartbeatF;
+  // only one at a time.
+  private final Semaphore completionBeatSem = new Semaphore(1);
+  private ListenableScheduledFuture<?> completionBeatF;
+
+  // There is never the need for more than a heartbeat at once...
+  private final Semaphore heartbeatSem = new Semaphore(1);
+  private final List<Tortuga> startedWorkers = new ArrayList<>();
+  private ListenableScheduledFuture<?> heartBeatF;
 
   private TortugaConnection(ManagedChannel chan) {
     this.chan = chan;
@@ -60,8 +72,12 @@ public class TortugaConnection {
   }
 
   public synchronized void shutdown() {
-    if (heartbeatF != null) {
-      heartbeatF.cancel(false);
+    if (completionBeatF != null) {
+      completionBeatF.cancel(false);
+    }
+
+    if (heartBeatF != null) {
+      heartBeatF.cancel(false);
     }
 
     try {
@@ -141,7 +157,32 @@ public class TortugaConnection {
   }
 
   public Tortuga newWorker(String workerId) {
-    return new Tortuga(workerId, chan, maintenanceService);
+    Tortuga tortuga = new Tortuga(workerId, chan, this, maintenanceService);
+    return tortuga;
+  }
+
+  void workerIsStarted(Tortuga tortuga) {
+    synchronized (startedWorkers) {
+      startedWorkers.add(tortuga);
+    }
+
+    if (heartBeatF == null) {
+      heartBeatF = maintenanceService.scheduleWithFixedDelay(() -> {
+        heartbeatForAllWorkers();
+      }, 1L, 1L, TimeUnit.SECONDS);
+    }
+  }
+
+  void workerShutdown(Tortuga tortuga) {
+    synchronized (startedWorkers) {
+      startedWorkers.remove(tortuga);
+    }
+
+    if (heartBeatF == null) {
+      heartBeatF = maintenanceService.scheduleWithFixedDelay(() -> {
+        heartbeatForAllWorkers();
+      }, 1L, 1L, TimeUnit.SECONDS);
+    }
   }
 
   boolean isDone(String handle) {
@@ -227,8 +268,8 @@ public class TortugaConnection {
     statusF = SettableFuture.create();
     completionListeners.put(handle, statusF);
 
-    if (heartbeatF == null) {
-      heartbeatF = maintenanceService.scheduleWithFixedDelay(() -> {
+    if (completionBeatF == null) {
+      completionBeatF = maintenanceService.scheduleWithFixedDelay(() -> {
         beatForCompletions();
       }, 100L, 100L, TimeUnit.MILLISECONDS);
     }
@@ -257,6 +298,46 @@ public class TortugaConnection {
 
     for (String key : toRemove) {
       completionListeners.remove(key);
+    }
+  }
+
+  private void heartbeatForAllWorkers() {
+    LOG.debug("sending heartbeat for {} workers", startedWorkers.size());
+
+    if (!heartbeatSem.tryAcquire()) {
+      return;
+    }
+
+    try {
+      ImmutableList<Tortuga> started = null;
+      synchronized (startedWorkers) {
+        started = ImmutableList.copyOf(startedWorkers);
+      }
+
+      HeartbeatReq.Builder req = HeartbeatReq.newBuilder();
+
+      for (Tortuga tortuga : started) {
+        req.addWorkerBeats(tortuga.toWorkerBeat());
+      }
+
+      ListenableFuture<Empty> done = TortugaGrpc.newFutureStub(chan)
+          .withDeadlineAfter(15L, TimeUnit.SECONDS)
+          .heartbeat(req.build());
+      Futures.addCallback(done, new FutureCallback<Empty>() {
+        @Override
+        public void onSuccess(Empty result) {
+          heartbeatSem.release();
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+          LOG.error("heartbeats are failing: ", t);
+          heartbeatSem.release();
+        }
+      });
+    } catch (RuntimeException ex) {
+      heartbeatSem.release();
+      throw ex;
     }
   }
 }

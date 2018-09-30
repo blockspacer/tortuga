@@ -25,11 +25,16 @@ class WorkerDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<Worker>
       _instance;
 } _Worker_default_instance_;
-class HeartbeatDefaultTypeInternal {
+class HeartbeatReq_WorkerBeatDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Heartbeat>
+  ::google::protobuf::internal::ExplicitlyConstructed<HeartbeatReq_WorkerBeat>
       _instance;
-} _Heartbeat_default_instance_;
+} _HeartbeatReq_WorkerBeat_default_instance_;
+class HeartbeatReqDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<HeartbeatReq>
+      _instance;
+} _HeartbeatReq_default_instance_;
 class TaskReqDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<TaskReq>
@@ -113,7 +118,7 @@ void InitDefaultsWorker() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsWorkerImpl);
 }
 
-void InitDefaultsHeartbeatImpl() {
+void InitDefaultsHeartbeatReq_WorkerBeatImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -123,16 +128,38 @@ void InitDefaultsHeartbeatImpl() {
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   protobuf_tortuga_2ftortuga_2eproto::InitDefaultsWorker();
   {
-    void* ptr = &::tortuga::_Heartbeat_default_instance_;
-    new (ptr) ::tortuga::Heartbeat();
+    void* ptr = &::tortuga::_HeartbeatReq_WorkerBeat_default_instance_;
+    new (ptr) ::tortuga::HeartbeatReq_WorkerBeat();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::tortuga::Heartbeat::InitAsDefaultInstance();
+  ::tortuga::HeartbeatReq_WorkerBeat::InitAsDefaultInstance();
 }
 
-void InitDefaultsHeartbeat() {
+void InitDefaultsHeartbeatReq_WorkerBeat() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsHeartbeatImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsHeartbeatReq_WorkerBeatImpl);
+}
+
+void InitDefaultsHeartbeatReqImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeatReq_WorkerBeat();
+  {
+    void* ptr = &::tortuga::_HeartbeatReq_default_instance_;
+    new (ptr) ::tortuga::HeartbeatReq();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::HeartbeatReq::InitAsDefaultInstance();
+}
+
+void InitDefaultsHeartbeatReq() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsHeartbeatReqImpl);
 }
 
 void InitDefaultsTaskReqImpl() {
@@ -401,7 +428,7 @@ void InitDefaultsTaskIdentifier() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsTaskIdentifierImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[14];
+::google::protobuf::Metadata file_level_metadata[15];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -413,12 +440,18 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::Worker, uuid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::Worker, capabilities_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::Heartbeat, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::HeartbeatReq_WorkerBeat, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::Heartbeat, worker_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::Heartbeat, current_task_handles_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::HeartbeatReq_WorkerBeat, worker_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::HeartbeatReq_WorkerBeat, current_task_handles_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::HeartbeatReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::HeartbeatReq, worker_beats_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskReq, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -535,24 +568,26 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::tortuga::Worker)},
-  { 8, -1, sizeof(::tortuga::Heartbeat)},
-  { 15, -1, sizeof(::tortuga::TaskReq)},
-  { 21, -1, sizeof(::tortuga::TaskResp_RetryContext)},
-  { 28, -1, sizeof(::tortuga::TaskResp)},
-  { 39, -1, sizeof(::tortuga::Task)},
-  { 51, -1, sizeof(::tortuga::TaskProgress)},
-  { 74, -1, sizeof(::tortuga::CreateReq)},
-  { 80, -1, sizeof(::tortuga::CreateResp)},
-  { 87, -1, sizeof(::tortuga::CompleteTaskReq)},
-  { 98, -1, sizeof(::tortuga::UpdateProgressReq)},
-  { 108, -1, sizeof(::tortuga::ProgressReq)},
-  { 114, -1, sizeof(::tortuga::ProgressResp)},
-  { 121, -1, sizeof(::tortuga::TaskIdentifier)},
+  { 8, -1, sizeof(::tortuga::HeartbeatReq_WorkerBeat)},
+  { 15, -1, sizeof(::tortuga::HeartbeatReq)},
+  { 21, -1, sizeof(::tortuga::TaskReq)},
+  { 27, -1, sizeof(::tortuga::TaskResp_RetryContext)},
+  { 34, -1, sizeof(::tortuga::TaskResp)},
+  { 45, -1, sizeof(::tortuga::Task)},
+  { 57, -1, sizeof(::tortuga::TaskProgress)},
+  { 80, -1, sizeof(::tortuga::CreateReq)},
+  { 86, -1, sizeof(::tortuga::CreateResp)},
+  { 93, -1, sizeof(::tortuga::CompleteTaskReq)},
+  { 104, -1, sizeof(::tortuga::UpdateProgressReq)},
+  { 114, -1, sizeof(::tortuga::ProgressReq)},
+  { 120, -1, sizeof(::tortuga::ProgressResp)},
+  { 127, -1, sizeof(::tortuga::TaskIdentifier)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_Worker_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_Heartbeat_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_HeartbeatReq_WorkerBeat_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_HeartbeatReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskResp_RetryContext_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskResp_default_instance_),
@@ -583,7 +618,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 14);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 15);
 }
 
 void AddDescriptorsImpl() {
@@ -595,51 +630,53 @@ void AddDescriptorsImpl() {
       "\032\037google/protobuf/timestamp.proto\032\036googl"
       "e/protobuf/wrappers.proto\032\027google/rpc/st"
       "atus.proto\"\?\n\006Worker\022\021\n\tworker_id\030\001 \001(\t\022"
-      "\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003 \003(\t\"J\n\tH"
-      "eartbeat\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worke"
-      "r\022\034\n\024current_task_handles\030\002 \003(\003\"*\n\007TaskR"
-      "eq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\"\325\001\n\010"
-      "TaskResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004da"
-      "ta\030\003 \001(\0132\024.google.protobuf.Any\022\016\n\006handle"
-      "\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\0221\n\tretry_ctx\030\006 \001(\0132"
-      "\036.tortuga.TaskResp.RetryContext\032:\n\014Retry"
-      "Context\022\017\n\007retries\030\001 \001(\005\022\031\n\021progress_met"
-      "adata\030\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001 \001(\t\022\014\n\004type"
-      "\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.A"
-      "ny\022-\n\010priority\030\004 \001(\0132\033.google.protobuf.I"
-      "nt32Value\0220\n\013max_retries\030\005 \001(\0132\033.google."
-      "protobuf.Int32Value\022(\n\005delay\030\006 \001(\0132\031.goo"
-      "gle.protobuf.Duration\022\017\n\007modules\030\007 \003(\t\"\273"
-      "\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(\t\022\n\n\002id\030\002 "
-      "\001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retries\030\004 \001(\005\022\017"
-      "\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 \001(\005\022\021\n\twor"
-      "ked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007created\030\t "
-      "\001(\0132\032.google.protobuf.Timestamp\0220\n\014start"
-      "ed_time\030\n \001(\0132\032.google.protobuf.Timestam"
-      "p\022-\n\tdone_time\030\013 \001(\0132\032.google.protobuf.T"
-      "imestamp\022\"\n\006status\030\014 \001(\0132\022.google.rpc.St"
-      "atus\022\020\n\010progress\030\r \001(\002\022\030\n\020progress_messa"
-      "ge\030\016 \001(\t\022\031\n\021progress_metadata\030\022 \001(\t\022\014\n\004l"
-      "ogs\030\017 \001(\t\022\021\n\tworker_id\030\020 \001(\t\022\016\n\006output\030\021"
-      " \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(\0132\r.tortug"
-      "a.Task\"-\n\nCreateResp\022\016\n\006handle\030\001 \001(\t\022\017\n\007"
-      "created\030\002 \001(\010\"\205\001\n\017CompleteTaskReq\022\037\n\006wor"
-      "ker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006handle\030\002 \001"
-      "(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_message\030\004 \001(\t\022"
-      "\014\n\004logs\030\005 \001(\t\022\016\n\006output\030\006 \001(\t\"\344\001\n\021Update"
-      "ProgressReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Wo"
-      "rker\022\016\n\006handle\030\002 \001(\t\022-\n\010progress\030\003 \001(\0132\033"
-      ".google.protobuf.FloatValue\0226\n\020progress_"
-      "message\030\004 \001(\0132\034.google.protobuf.StringVa"
-      "lue\0227\n\021progress_metadata\030\005 \001(\0132\034.google."
-      "protobuf.StringValue\"\035\n\013ProgressReq\022\016\n\006h"
-      "andle\030\001 \001(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 "
-      "\001(\t\022\"\n\006status\030\002 \001(\0132\022.google.rpc.Status\""
-      "*\n\016TaskIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 "
-      "\001(\t2\257\004\n\007Tortuga\0225\n\nCreateTask\022\022.tortuga."
-      "CreateReq\032\023.tortuga.CreateResp\0222\n\013Reques"
-      "tTask\022\020.tortuga.TaskReq\032\021.tortuga.TaskRe"
-      "sp\0224\n\tHeartbeat\022\017.tortuga.Worker\032\026.googl"
+      "\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003 \003(\t\"\223\001\n\014"
+      "HeartbeatReq\0226\n\014worker_beats\030\001 \003(\0132 .tor"
+      "tuga.HeartbeatReq.WorkerBeat\032K\n\nWorkerBe"
+      "at\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\034\n\024c"
+      "urrent_task_handles\030\002 \003(\003\"*\n\007TaskReq\022\037\n\006"
+      "worker\030\001 \001(\0132\017.tortuga.Worker\"\325\001\n\010TaskRe"
+      "sp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001"
+      "(\0132\024.google.protobuf.Any\022\016\n\006handle\030\004 \001(\t"
+      "\022\014\n\004none\030\005 \001(\010\0221\n\tretry_ctx\030\006 \001(\0132\036.tort"
+      "uga.TaskResp.RetryContext\032:\n\014RetryContex"
+      "t\022\017\n\007retries\030\001 \001(\005\022\031\n\021progress_metadata\030"
+      "\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t"
+      "\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.Any\022-\n\010"
+      "priority\030\004 \001(\0132\033.google.protobuf.Int32Va"
+      "lue\0220\n\013max_retries\030\005 \001(\0132\033.google.protob"
+      "uf.Int32Value\022(\n\005delay\030\006 \001(\0132\031.google.pr"
+      "otobuf.Duration\022\017\n\007modules\030\007 \003(\t\"\273\003\n\014Tas"
+      "kProgress\022\016\n\006handle\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\022\014\n"
+      "\004type\030\003 \001(\t\022\023\n\013max_retries\030\004 \001(\005\022\017\n\007retr"
+      "ies\030\005 \001(\005\022\020\n\010priority\030\006 \001(\005\022\021\n\tworked_on"
+      "\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007created\030\t \001(\0132\032."
+      "google.protobuf.Timestamp\0220\n\014started_tim"
+      "e\030\n \001(\0132\032.google.protobuf.Timestamp\022-\n\td"
+      "one_time\030\013 \001(\0132\032.google.protobuf.Timesta"
+      "mp\022\"\n\006status\030\014 \001(\0132\022.google.rpc.Status\022\020"
+      "\n\010progress\030\r \001(\002\022\030\n\020progress_message\030\016 \001"
+      "(\t\022\031\n\021progress_metadata\030\022 \001(\t\022\014\n\004logs\030\017 "
+      "\001(\t\022\021\n\tworker_id\030\020 \001(\t\022\016\n\006output\030\021 \001(\t\"("
+      "\n\tCreateReq\022\033\n\004task\030\001 \001(\0132\r.tortuga.Task"
+      "\"-\n\nCreateResp\022\016\n\006handle\030\001 \001(\t\022\017\n\007create"
+      "d\030\002 \001(\010\"\205\001\n\017CompleteTaskReq\022\037\n\006worker\030\001 "
+      "\001(\0132\017.tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022\014\n\004"
+      "code\030\003 \001(\005\022\025\n\rerror_message\030\004 \001(\t\022\014\n\004log"
+      "s\030\005 \001(\t\022\016\n\006output\030\006 \001(\t\"\344\001\n\021UpdateProgre"
+      "ssReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016"
+      "\n\006handle\030\002 \001(\t\022-\n\010progress\030\003 \001(\0132\033.googl"
+      "e.protobuf.FloatValue\0226\n\020progress_messag"
+      "e\030\004 \001(\0132\034.google.protobuf.StringValue\0227\n"
+      "\021progress_metadata\030\005 \001(\0132\034.google.protob"
+      "uf.StringValue\"\035\n\013ProgressReq\022\016\n\006handle\030"
+      "\001 \001(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 \001(\t\022\"\n"
+      "\006status\030\002 \001(\0132\022.google.rpc.Status\"*\n\016Tas"
+      "kIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t2\265\004"
+      "\n\007Tortuga\0225\n\nCreateTask\022\022.tortuga.Create"
+      "Req\032\023.tortuga.CreateResp\0222\n\013RequestTask\022"
+      "\020.tortuga.TaskReq\032\021.tortuga.TaskResp\022:\n\t"
+      "Heartbeat\022\025.tortuga.HeartbeatReq\032\026.googl"
       "e.protobuf.Empty\022@\n\014CompleteTask\022\030.tortu"
       "ga.CompleteTaskReq\032\026.google.protobuf.Emp"
       "ty\022D\n\016UpdateProgress\022\032.tortuga.UpdatePro"
@@ -654,7 +691,7 @@ void AddDescriptorsImpl() {
       "3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2481);
+      descriptor, 2561);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tortuga/tortuga.proto", &protobuf_RegisterTypes);
   ::protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptors();
@@ -1043,24 +1080,24 @@ void Worker::InternalSwap(Worker* other) {
 
 // ===================================================================
 
-void Heartbeat::InitAsDefaultInstance() {
-  ::tortuga::_Heartbeat_default_instance_._instance.get_mutable()->worker_ = const_cast< ::tortuga::Worker*>(
+void HeartbeatReq_WorkerBeat::InitAsDefaultInstance() {
+  ::tortuga::_HeartbeatReq_WorkerBeat_default_instance_._instance.get_mutable()->worker_ = const_cast< ::tortuga::Worker*>(
       ::tortuga::Worker::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Heartbeat::kWorkerFieldNumber;
-const int Heartbeat::kCurrentTaskHandlesFieldNumber;
+const int HeartbeatReq_WorkerBeat::kWorkerFieldNumber;
+const int HeartbeatReq_WorkerBeat::kCurrentTaskHandlesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Heartbeat::Heartbeat()
+HeartbeatReq_WorkerBeat::HeartbeatReq_WorkerBeat()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeat();
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeatReq_WorkerBeat();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:tortuga.Heartbeat)
+  // @@protoc_insertion_point(constructor:tortuga.HeartbeatReq.WorkerBeat)
 }
-Heartbeat::Heartbeat(const Heartbeat& from)
+HeartbeatReq_WorkerBeat::HeartbeatReq_WorkerBeat(const HeartbeatReq_WorkerBeat& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       current_task_handles_(from.current_task_handles_),
@@ -1071,48 +1108,48 @@ Heartbeat::Heartbeat(const Heartbeat& from)
   } else {
     worker_ = NULL;
   }
-  // @@protoc_insertion_point(copy_constructor:tortuga.Heartbeat)
+  // @@protoc_insertion_point(copy_constructor:tortuga.HeartbeatReq.WorkerBeat)
 }
 
-void Heartbeat::SharedCtor() {
+void HeartbeatReq_WorkerBeat::SharedCtor() {
   worker_ = NULL;
   _cached_size_ = 0;
 }
 
-Heartbeat::~Heartbeat() {
-  // @@protoc_insertion_point(destructor:tortuga.Heartbeat)
+HeartbeatReq_WorkerBeat::~HeartbeatReq_WorkerBeat() {
+  // @@protoc_insertion_point(destructor:tortuga.HeartbeatReq.WorkerBeat)
   SharedDtor();
 }
 
-void Heartbeat::SharedDtor() {
+void HeartbeatReq_WorkerBeat::SharedDtor() {
   if (this != internal_default_instance()) delete worker_;
 }
 
-void Heartbeat::SetCachedSize(int size) const {
+void HeartbeatReq_WorkerBeat::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Heartbeat::descriptor() {
+const ::google::protobuf::Descriptor* HeartbeatReq_WorkerBeat::descriptor() {
   ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const Heartbeat& Heartbeat::default_instance() {
-  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeat();
+const HeartbeatReq_WorkerBeat& HeartbeatReq_WorkerBeat::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeatReq_WorkerBeat();
   return *internal_default_instance();
 }
 
-Heartbeat* Heartbeat::New(::google::protobuf::Arena* arena) const {
-  Heartbeat* n = new Heartbeat;
+HeartbeatReq_WorkerBeat* HeartbeatReq_WorkerBeat::New(::google::protobuf::Arena* arena) const {
+  HeartbeatReq_WorkerBeat* n = new HeartbeatReq_WorkerBeat;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void Heartbeat::Clear() {
-// @@protoc_insertion_point(message_clear_start:tortuga.Heartbeat)
+void HeartbeatReq_WorkerBeat::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.HeartbeatReq.WorkerBeat)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1125,11 +1162,11 @@ void Heartbeat::Clear() {
   _internal_metadata_.Clear();
 }
 
-bool Heartbeat::MergePartialFromCodedStream(
+bool HeartbeatReq_WorkerBeat::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:tortuga.Heartbeat)
+  // @@protoc_insertion_point(parse_start:tortuga.HeartbeatReq.WorkerBeat)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1178,17 +1215,17 @@ bool Heartbeat::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:tortuga.Heartbeat)
+  // @@protoc_insertion_point(parse_success:tortuga.HeartbeatReq.WorkerBeat)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:tortuga.Heartbeat)
+  // @@protoc_insertion_point(parse_failure:tortuga.HeartbeatReq.WorkerBeat)
   return false;
 #undef DO_
 }
 
-void Heartbeat::SerializeWithCachedSizes(
+void HeartbeatReq_WorkerBeat::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:tortuga.Heartbeat)
+  // @@protoc_insertion_point(serialize_start:tortuga.HeartbeatReq.WorkerBeat)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1213,13 +1250,13 @@ void Heartbeat::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:tortuga.Heartbeat)
+  // @@protoc_insertion_point(serialize_end:tortuga.HeartbeatReq.WorkerBeat)
 }
 
-::google::protobuf::uint8* Heartbeat::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* HeartbeatReq_WorkerBeat::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:tortuga.Heartbeat)
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.HeartbeatReq.WorkerBeat)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1247,12 +1284,12 @@ void Heartbeat::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:tortuga.Heartbeat)
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.HeartbeatReq.WorkerBeat)
   return target;
 }
 
-size_t Heartbeat::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:tortuga.Heartbeat)
+size_t HeartbeatReq_WorkerBeat::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.HeartbeatReq.WorkerBeat)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1290,23 +1327,23 @@ size_t Heartbeat::ByteSizeLong() const {
   return total_size;
 }
 
-void Heartbeat::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:tortuga.Heartbeat)
+void HeartbeatReq_WorkerBeat::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.HeartbeatReq.WorkerBeat)
   GOOGLE_DCHECK_NE(&from, this);
-  const Heartbeat* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Heartbeat>(
+  const HeartbeatReq_WorkerBeat* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const HeartbeatReq_WorkerBeat>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.Heartbeat)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.HeartbeatReq.WorkerBeat)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.Heartbeat)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.HeartbeatReq.WorkerBeat)
     MergeFrom(*source);
   }
 }
 
-void Heartbeat::MergeFrom(const Heartbeat& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.Heartbeat)
+void HeartbeatReq_WorkerBeat::MergeFrom(const HeartbeatReq_WorkerBeat& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.HeartbeatReq.WorkerBeat)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1318,29 +1355,29 @@ void Heartbeat::MergeFrom(const Heartbeat& from) {
   }
 }
 
-void Heartbeat::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:tortuga.Heartbeat)
+void HeartbeatReq_WorkerBeat::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.HeartbeatReq.WorkerBeat)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Heartbeat::CopyFrom(const Heartbeat& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.Heartbeat)
+void HeartbeatReq_WorkerBeat::CopyFrom(const HeartbeatReq_WorkerBeat& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.HeartbeatReq.WorkerBeat)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Heartbeat::IsInitialized() const {
+bool HeartbeatReq_WorkerBeat::IsInitialized() const {
   return true;
 }
 
-void Heartbeat::Swap(Heartbeat* other) {
+void HeartbeatReq_WorkerBeat::Swap(HeartbeatReq_WorkerBeat* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void Heartbeat::InternalSwap(Heartbeat* other) {
+void HeartbeatReq_WorkerBeat::InternalSwap(HeartbeatReq_WorkerBeat* other) {
   using std::swap;
   current_task_handles_.InternalSwap(&other->current_task_handles_);
   swap(worker_, other->worker_);
@@ -1348,7 +1385,248 @@ void Heartbeat::InternalSwap(Heartbeat* other) {
   swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata Heartbeat::GetMetadata() const {
+::google::protobuf::Metadata HeartbeatReq_WorkerBeat::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void HeartbeatReq::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int HeartbeatReq::kWorkerBeatsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+HeartbeatReq::HeartbeatReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeatReq();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.HeartbeatReq)
+}
+HeartbeatReq::HeartbeatReq(const HeartbeatReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      worker_beats_(from.worker_beats_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:tortuga.HeartbeatReq)
+}
+
+void HeartbeatReq::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+HeartbeatReq::~HeartbeatReq() {
+  // @@protoc_insertion_point(destructor:tortuga.HeartbeatReq)
+  SharedDtor();
+}
+
+void HeartbeatReq::SharedDtor() {
+}
+
+void HeartbeatReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* HeartbeatReq::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const HeartbeatReq& HeartbeatReq::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeatReq();
+  return *internal_default_instance();
+}
+
+HeartbeatReq* HeartbeatReq::New(::google::protobuf::Arena* arena) const {
+  HeartbeatReq* n = new HeartbeatReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void HeartbeatReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.HeartbeatReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  worker_beats_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool HeartbeatReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.HeartbeatReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_worker_beats()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.HeartbeatReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.HeartbeatReq)
+  return false;
+#undef DO_
+}
+
+void HeartbeatReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.HeartbeatReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->worker_beats_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->worker_beats(static_cast<int>(i)), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.HeartbeatReq)
+}
+
+::google::protobuf::uint8* HeartbeatReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.HeartbeatReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->worker_beats_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->worker_beats(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.HeartbeatReq)
+  return target;
+}
+
+size_t HeartbeatReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.HeartbeatReq)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->worker_beats_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->worker_beats(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void HeartbeatReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.HeartbeatReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const HeartbeatReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const HeartbeatReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.HeartbeatReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.HeartbeatReq)
+    MergeFrom(*source);
+  }
+}
+
+void HeartbeatReq::MergeFrom(const HeartbeatReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.HeartbeatReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  worker_beats_.MergeFrom(from.worker_beats_);
+}
+
+void HeartbeatReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.HeartbeatReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void HeartbeatReq::CopyFrom(const HeartbeatReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.HeartbeatReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HeartbeatReq::IsInitialized() const {
+  return true;
+}
+
+void HeartbeatReq::Swap(HeartbeatReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void HeartbeatReq::InternalSwap(HeartbeatReq* other) {
+  using std::swap;
+  worker_beats_.InternalSwap(&other->worker_beats_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata HeartbeatReq::GetMetadata() const {
   protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
 }

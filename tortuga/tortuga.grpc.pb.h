@@ -49,11 +49,11 @@ class Tortuga final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::TaskResp>> PrepareAsyncRequestTask(::grpc::ClientContext* context, const ::tortuga::TaskReq& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::TaskResp>>(PrepareAsyncRequestTaskRaw(context, request, cq));
     }
-    virtual ::grpc::Status Heartbeat(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::google::protobuf::Empty* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncHeartbeat(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) {
+    virtual ::grpc::Status Heartbeat(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::google::protobuf::Empty* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncHeartbeat(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(AsyncHeartbeatRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncHeartbeat(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncHeartbeat(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(PrepareAsyncHeartbeatRaw(context, request, cq));
     }
     virtual ::grpc::Status CompleteTask(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::google::protobuf::Empty* response) = 0;
@@ -106,8 +106,8 @@ class Tortuga final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::CreateResp>* PrepareAsyncCreateTaskRaw(::grpc::ClientContext* context, const ::tortuga::CreateReq& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::TaskResp>* AsyncRequestTaskRaw(::grpc::ClientContext* context, const ::tortuga::TaskReq& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tortuga::TaskResp>* PrepareAsyncRequestTaskRaw(::grpc::ClientContext* context, const ::tortuga::TaskReq& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncCompleteTaskRaw(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncCompleteTaskRaw(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncUpdateProgressRaw(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) = 0;
@@ -138,11 +138,11 @@ class Tortuga final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tortuga::TaskResp>> PrepareAsyncRequestTask(::grpc::ClientContext* context, const ::tortuga::TaskReq& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tortuga::TaskResp>>(PrepareAsyncRequestTaskRaw(context, request, cq));
     }
-    ::grpc::Status Heartbeat(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::google::protobuf::Empty* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> AsyncHeartbeat(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) {
+    ::grpc::Status Heartbeat(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::google::protobuf::Empty* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> AsyncHeartbeat(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(AsyncHeartbeatRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> PrepareAsyncHeartbeat(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> PrepareAsyncHeartbeat(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(PrepareAsyncHeartbeatRaw(context, request, cq));
     }
     ::grpc::Status CompleteTask(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::google::protobuf::Empty* response) override;
@@ -194,8 +194,8 @@ class Tortuga final {
     ::grpc::ClientAsyncResponseReader< ::tortuga::CreateResp>* PrepareAsyncCreateTaskRaw(::grpc::ClientContext* context, const ::tortuga::CreateReq& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::tortuga::TaskResp>* AsyncRequestTaskRaw(::grpc::ClientContext* context, const ::tortuga::TaskReq& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::tortuga::TaskResp>* PrepareAsyncRequestTaskRaw(::grpc::ClientContext* context, const ::tortuga::TaskReq& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::Worker& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::tortuga::HeartbeatReq& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncCompleteTaskRaw(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncCompleteTaskRaw(::grpc::ClientContext* context, const ::tortuga::CompleteTaskReq& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncUpdateProgressRaw(::grpc::ClientContext* context, const ::tortuga::UpdateProgressReq& request, ::grpc::CompletionQueue* cq) override;
@@ -226,7 +226,7 @@ class Tortuga final {
     virtual ~Service();
     virtual ::grpc::Status CreateTask(::grpc::ServerContext* context, const ::tortuga::CreateReq* request, ::tortuga::CreateResp* response);
     virtual ::grpc::Status RequestTask(::grpc::ServerContext* context, const ::tortuga::TaskReq* request, ::tortuga::TaskResp* response);
-    virtual ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::Worker* request, ::google::protobuf::Empty* response);
+    virtual ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::HeartbeatReq* request, ::google::protobuf::Empty* response);
     virtual ::grpc::Status CompleteTask(::grpc::ServerContext* context, const ::tortuga::CompleteTaskReq* request, ::google::protobuf::Empty* response);
     virtual ::grpc::Status UpdateProgress(::grpc::ServerContext* context, const ::tortuga::UpdateProgressReq* request, ::google::protobuf::Empty* response);
     // Finds a task by id and type.
@@ -289,11 +289,11 @@ class Tortuga final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::Worker* request, ::google::protobuf::Empty* response) final override {
+    ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::HeartbeatReq* request, ::google::protobuf::Empty* response) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestHeartbeat(::grpc::ServerContext* context, ::tortuga::Worker* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestHeartbeat(::grpc::ServerContext* context, ::tortuga::HeartbeatReq* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -464,7 +464,7 @@ class Tortuga final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::Worker* request, ::google::protobuf::Empty* response) final override {
+    ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::HeartbeatReq* request, ::google::protobuf::Empty* response) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -618,18 +618,18 @@ class Tortuga final {
    public:
     WithStreamedUnaryMethod_Heartbeat() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::tortuga::Worker, ::google::protobuf::Empty>(std::bind(&WithStreamedUnaryMethod_Heartbeat<BaseClass>::StreamedHeartbeat, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::tortuga::HeartbeatReq, ::google::protobuf::Empty>(std::bind(&WithStreamedUnaryMethod_Heartbeat<BaseClass>::StreamedHeartbeat, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_Heartbeat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::Worker* request, ::google::protobuf::Empty* response) final override {
+    ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::tortuga::HeartbeatReq* request, ::google::protobuf::Empty* response) final override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedHeartbeat(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tortuga::Worker,::google::protobuf::Empty>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedHeartbeat(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tortuga::HeartbeatReq,::google::protobuf::Empty>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_CompleteTask : public BaseClass {
