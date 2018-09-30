@@ -182,12 +182,6 @@ public class TortugaConnection {
     synchronized (startedWorkers) {
       startedWorkers.remove(tortuga);
     }
-
-    if (heartBeatF == null) {
-      heartBeatF = maintenanceService.scheduleWithFixedDelay(() -> {
-        heartbeatForAllWorkers();
-      }, 1L, 1L, TimeUnit.SECONDS);
-    }
   }
 
   boolean isDone(String handle) {
@@ -376,6 +370,12 @@ public class TortugaConnection {
       ImmutableList<Tortuga> started = null;
       synchronized (startedWorkers) {
         started = ImmutableList.copyOf(startedWorkers);
+      }
+
+      if (started.isEmpty()) {
+        // what's the point? :)
+        heartbeatSem.release();
+        return;
       }
 
       HeartbeatReq.Builder req = HeartbeatReq.newBuilder();

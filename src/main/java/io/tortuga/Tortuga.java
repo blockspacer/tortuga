@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -50,6 +52,8 @@ public class Tortuga {
   private final AtomicBoolean shuttingDown = new AtomicBoolean();
 
   private final TaskHandlerRegistry registry = new TaskHandlerRegistry();
+  // access must be synchronized on it.
+  private final Set<String> currentTasks = new HashSet<>();
 
   Tortuga(String workerId,
           Channel chan,
@@ -141,6 +145,12 @@ public class Tortuga {
         }
 
         LOG.debug("got task: {}", resp);
+
+        // as soon as we got a new task, record that...
+        synchronized (currentTasks) {
+          currentTasks.add(resp.getHandle());
+        }
+
         TaskHandler handler = registry.get(resp.getType());
         if (handler == null) {
           // something is really wrong at the server level if we get tasks that we shouldn't get.
@@ -193,12 +203,21 @@ public class Tortuga {
           public void onSuccess(Empty result) {
             semaphore.release();
             LOG.debug("completed task {}.", resp.getHandle());
+
+            synchronized (currentTasks) {
+              currentTasks.remove(resp.getHandle());
+            }
           }
 
           @Override
           public void onFailure(Throwable t) {
             semaphore.release();
             LOG.error("couldn't complete task {}.", resp.getHandle(), t);
+
+            // If we couldn't complete a task, that task will be assigned to us forever and whoever is
+            // waiting on its success will never complete. It's better that we commit suicide here.
+            // TODO(christian) Reschedule that completion call for later.
+            System.exit(1);
           }
         });
       }
@@ -228,8 +247,15 @@ public class Tortuga {
   }
 
   WorkerBeat toWorkerBeat() {
-    return WorkerBeat.newBuilder()
-        .setWorker(worker)
-        .build();
+    WorkerBeat.Builder b = WorkerBeat.newBuilder()
+        .setWorker(worker);
+
+    synchronized (currentTasks) {
+      for (String handle : currentTasks) {
+        b.addCurrentTaskHandles(Long.parseLong(handle));
+      }
+    }
+
+    return b.build();
   }
 }

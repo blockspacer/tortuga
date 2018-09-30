@@ -128,7 +128,7 @@ void TortugaHandler::HandleRequestTask() {
       reply.set_id(res.id);
       reply.set_type(res.type);
       CHECK(reply.mutable_data()->ParseFromString(res.data));
-      reply.set_handle(res.handle);
+      reply.set_handle(folly::to<std::string>(res.handle));
       reply.mutable_retry_ctx()->set_retries(res.retries);
       reply.mutable_retry_ctx()->set_progress_metadata(res.progress_metadata);
     }
@@ -216,11 +216,17 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
 }
 
 TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& worker) {
-  return folly::fibers::await([&](folly::fibers::Promise<RequestTaskResult> p) {
+  RequestTaskResult res = folly::fibers::await([&](folly::fibers::Promise<RequestTaskResult> p) {
     exec_.add([this, &worker, promise = std::move(p)]() mutable {
       promise.setValue(RequestTaskInExec(worker));
     });
   });
+
+  if (!res.none) {
+    workers_manager_->OnTaskAssign(res.handle, worker.worker_id(), worker.uuid());
+  }
+
+  return res;
 }
 
 TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker& worker) {
@@ -264,7 +270,7 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   RequestTaskResult res;
   res.none = false;
   res.id = id;
-  res.handle = folly::to<std::string>(rowid);
+  res.handle = rowid;
   res.type = task_type;
   res.data = data;
   res.retries = retries + 1;
@@ -325,7 +331,7 @@ void TortugaHandler::HandleHeartbeat() {
           << " pool size: " << rpc_opts_.fibers->fibersPoolSize();
 
   for (const auto& worker_beat : req.worker_beats()) {
-    workers_manager_->Beat(worker_beat.worker());
+    workers_manager_->Beat(worker_beat);
   }
 
   google::protobuf::Empty reply;
@@ -355,6 +361,8 @@ void TortugaHandler::HandleCompleteTask() {
   if (progress != nullptr) {
     MaybeNotifyModules(*progress);
     UpdateProgressManagerCache(*progress);
+    workers_manager_->OnTaskComplete(folly::to<int64_t>(progress->progress->handle()),
+        req.worker());
   }
 
   google::protobuf::Empty reply;

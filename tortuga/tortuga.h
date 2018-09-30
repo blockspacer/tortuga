@@ -66,7 +66,7 @@ class TortugaHandler : boost::noncopyable {
   struct RequestTaskResult {
     bool none { false };
     std::string id;
-    std::string handle;
+    int64_t handle{ 0 };
     std::string type;
     std::string data;
     int retries{ 0 };

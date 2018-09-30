@@ -1067,26 +1067,14 @@ public final class TortugaProto {
       io.tortuga.TortugaProto.WorkerOrBuilder getWorkerOrBuilder();
 
       /**
-       * <pre>
-       * They must be sorted!
-       * </pre>
-       *
        * <code>repeated int64 current_task_handles = 2;</code>
        */
       java.util.List<java.lang.Long> getCurrentTaskHandlesList();
       /**
-       * <pre>
-       * They must be sorted!
-       * </pre>
-       *
        * <code>repeated int64 current_task_handles = 2;</code>
        */
       int getCurrentTaskHandlesCount();
       /**
-       * <pre>
-       * They must be sorted!
-       * </pre>
-       *
        * <code>repeated int64 current_task_handles = 2;</code>
        */
       long getCurrentTaskHandles(int index);
@@ -1229,10 +1217,6 @@ public final class TortugaProto {
       public static final int CURRENT_TASK_HANDLES_FIELD_NUMBER = 2;
       private java.util.List<java.lang.Long> currentTaskHandles_;
       /**
-       * <pre>
-       * They must be sorted!
-       * </pre>
-       *
        * <code>repeated int64 current_task_handles = 2;</code>
        */
       public java.util.List<java.lang.Long>
@@ -1240,20 +1224,12 @@ public final class TortugaProto {
         return currentTaskHandles_;
       }
       /**
-       * <pre>
-       * They must be sorted!
-       * </pre>
-       *
        * <code>repeated int64 current_task_handles = 2;</code>
        */
       public int getCurrentTaskHandlesCount() {
         return currentTaskHandles_.size();
       }
       /**
-       * <pre>
-       * They must be sorted!
-       * </pre>
-       *
        * <code>repeated int64 current_task_handles = 2;</code>
        */
       public long getCurrentTaskHandles(int index) {
@@ -1736,10 +1712,6 @@ public final class TortugaProto {
            }
         }
         /**
-         * <pre>
-         * They must be sorted!
-         * </pre>
-         *
          * <code>repeated int64 current_task_handles = 2;</code>
          */
         public java.util.List<java.lang.Long>
@@ -1747,30 +1719,18 @@ public final class TortugaProto {
           return java.util.Collections.unmodifiableList(currentTaskHandles_);
         }
         /**
-         * <pre>
-         * They must be sorted!
-         * </pre>
-         *
          * <code>repeated int64 current_task_handles = 2;</code>
          */
         public int getCurrentTaskHandlesCount() {
           return currentTaskHandles_.size();
         }
         /**
-         * <pre>
-         * They must be sorted!
-         * </pre>
-         *
          * <code>repeated int64 current_task_handles = 2;</code>
          */
         public long getCurrentTaskHandles(int index) {
           return currentTaskHandles_.get(index);
         }
         /**
-         * <pre>
-         * They must be sorted!
-         * </pre>
-         *
          * <code>repeated int64 current_task_handles = 2;</code>
          */
         public Builder setCurrentTaskHandles(
@@ -1781,10 +1741,6 @@ public final class TortugaProto {
           return this;
         }
         /**
-         * <pre>
-         * They must be sorted!
-         * </pre>
-         *
          * <code>repeated int64 current_task_handles = 2;</code>
          */
         public Builder addCurrentTaskHandles(long value) {
@@ -1794,10 +1750,6 @@ public final class TortugaProto {
           return this;
         }
         /**
-         * <pre>
-         * They must be sorted!
-         * </pre>
-         *
          * <code>repeated int64 current_task_handles = 2;</code>
          */
         public Builder addAllCurrentTaskHandles(
@@ -1809,10 +1761,6 @@ public final class TortugaProto {
           return this;
         }
         /**
-         * <pre>
-         * They must be sorted!
-         * </pre>
-         *
          * <code>repeated int64 current_task_handles = 2;</code>
          */
         public Builder clearCurrentTaskHandles() {

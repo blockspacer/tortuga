@@ -111,14 +111,17 @@ void WorkersManager::LoadWorkers() {
       LOG(WARNING) << "Task: " << row_id << " belonging to unknown worker: " << uuid << ", we will unassign";
       to_unassign.push_back(row_id);
     } else {
-      WorkerInfo* worker_info = folly::get_ptr(workers_, uuid);
+      std::string id = select_task_worker.ColumnText(WorkersFields::kWorkerId);
+      WorkerInfo* worker_info = folly::get_ptr(workers_, id);
       if (worker_info == nullptr) {
-        std::string id = select_task_worker.ColumnText(WorkersFields::kWorkerId);
         WorkerInfo& w = workers_[id];
         w.uuid = uuid;
         w.id = id;
         w.last_beat_millis = CurrentTimeMillis();
+        worker_info = folly::get_ptr(workers_, id);
       }
+
+      worker_info->tasks[row_id].handle = row_id;
     }
   }
 
@@ -184,6 +187,28 @@ void WorkersManager::CheckHeartbeats() {
     });
   });
 
+  // Now check for dead tasks.
+  int64_t expired_tasks_millis = CurrentTimeMillis() - 15000L;
+
+  for (auto& it : workers_) {
+    WorkerInfo& worker_info = it.second;
+    
+    auto it2 = workers_.begin();
+    while (it2 != workers_.end()) {
+      WorkerInfo& info = it2->second;
+      if (info.last_beat_millis < expired_millis) {
+        uuids.push_back(info.uuid);
+        auto toErase = it2;
+        ++it2;
+        workers_.erase(toErase);
+      } else {
+        ++it2;
+      }
+    }
+
+    
+  }
+
   VLOG(3) << "done checking heartbeats...";
 }
 
@@ -193,11 +218,12 @@ void WorkersManager::UnassignTasksInExec(const std::vector<std::string>& uuids) 
   }
 }
 
-void WorkersManager::Beat(const Worker& worker) {
+void WorkersManager::Beat(const HeartbeatReq::WorkerBeat& worker_beat) {
+  const Worker& worker = worker_beat.worker();
   WorkerInfo* worker_info = folly::get_ptr(workers_, worker.worker_id());
   if (worker_info != nullptr) {
     if (worker_info->uuid == worker.uuid()) {
-      RegularBeat(worker, worker_info);
+      RegularBeat(worker_beat, worker_info);
     } else {
       WorkerChangeBeat(worker, worker_info);
     }
@@ -206,9 +232,27 @@ void WorkersManager::Beat(const Worker& worker) {
   }
 }
 
-void WorkersManager::RegularBeat(const Worker& worker, WorkerInfo* worker_info) {
+void WorkersManager::RegularBeat(const HeartbeatReq::WorkerBeat& worker_beat, WorkerInfo* worker_info) {
+  const Worker& worker = worker_beat.worker();
   VLOG(3) << "beating worker " << worker.uuid() << " is known and uptodate";
   worker_info->last_beat_millis = CurrentTimeMillis();
+
+  // Check the tasks.
+  std::set<int64_t> handles_of_worker;
+  for (int64_t h : worker_beat.current_task_handles()) {
+    handles_of_worker.insert(h);
+  }
+
+  for (auto& it : worker_info->tasks) {
+    WorkerTaskInfo& info = it.second;
+    bool worker_has_it = handles_of_worker.find(info.handle) != handles_of_worker.end();
+    if (!worker_has_it) {
+      if (info.first_miss_millis == -1) {
+        LOG(ERROR) << "Oops, we have a dead task: " << info.handle;
+        info.first_miss_millis = CurrentTimeMillis();
+      }
+    }
+  }
 }
 
 void WorkersManager::WorkerChangeBeat(const Worker& worker,  WorkerInfo* worker_info) {
@@ -234,6 +278,7 @@ void WorkersManager::WorkerChangeBeat(const Worker& worker,  WorkerInfo* worker_
 
   worker_info->uuid = worker.uuid();
   worker_info->last_beat_millis = CurrentTimeMillis();
+  worker_info->tasks.clear();
 }
 
 void WorkersManager::NewWorkerBeat(const Worker& worker) {
@@ -266,5 +311,26 @@ bool WorkersManager::IsKnownWorker(const Worker& worker) {
   }
 
   return worker_info->uuid == worker.uuid();
+}
+
+void WorkersManager::OnTaskAssign(int64_t handle,
+                                  const std::string& worker_id,
+                                  const std::string& worker_uuid) {
+  WorkerInfo* worker_info = folly::get_ptr(workers_, worker_id);
+  // This could theorically happen if a heartbeat cleaned up a worker while we are assigning
+  // some tasks to it in Exec. However this is highly weird, since a worker that request tasks
+  // would most likely be heartbeating normally?
+  CHECK(worker_info) << "How could we assign to an unknown worker?";
+  CHECK(worker_info->uuid == worker_uuid) << "How could we assign to outdated worker?";
+
+  worker_info->tasks[handle].handle = handle;
+}
+
+void WorkersManager::OnTaskComplete(int64_t handle, const Worker& worker) {
+  WorkerInfo* worker_info = folly::get_ptr(workers_, worker.worker_id());
+  // see above.
+  CHECK(worker_info) << "How could we complete from an unknown worker?";
+  CHECK(worker_info->uuid == worker.uuid()) << "How could we complete from an outdated worker?";
+  worker_info->tasks.erase(handle);
 }
 }  // namespace tortuga
