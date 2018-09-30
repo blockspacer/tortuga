@@ -42,7 +42,7 @@ namespace protobuf_tortuga_2ftortuga_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[15];
+  static const ::google::protobuf::internal::ParseTable schema[16];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -78,6 +78,8 @@ void InitDefaultsProgressRespImpl();
 void InitDefaultsProgressResp();
 void InitDefaultsTaskIdentifierImpl();
 void InitDefaultsTaskIdentifier();
+void InitDefaultsFindTaskReqImpl();
+void InitDefaultsFindTaskReq();
 inline void InitDefaults() {
   InitDefaultsWorker();
   InitDefaultsHeartbeatReq_WorkerBeat();
@@ -94,6 +96,7 @@ inline void InitDefaults() {
   InitDefaultsProgressReq();
   InitDefaultsProgressResp();
   InitDefaultsTaskIdentifier();
+  InitDefaultsFindTaskReq();
 }
 }  // namespace protobuf_tortuga_2ftortuga_2eproto
 namespace tortuga {
@@ -106,6 +109,9 @@ extern CreateReqDefaultTypeInternal _CreateReq_default_instance_;
 class CreateResp;
 class CreateRespDefaultTypeInternal;
 extern CreateRespDefaultTypeInternal _CreateResp_default_instance_;
+class FindTaskReq;
+class FindTaskReqDefaultTypeInternal;
+extern FindTaskReqDefaultTypeInternal _FindTaskReq_default_instance_;
 class HeartbeatReq;
 class HeartbeatReqDefaultTypeInternal;
 extern HeartbeatReqDefaultTypeInternal _HeartbeatReq_default_instance_;
@@ -2251,6 +2257,112 @@ class TaskIdentifier : public ::google::protobuf::Message /* @@protoc_insertion_
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskIdentifierImpl();
+};
+// -------------------------------------------------------------------
+
+class FindTaskReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.FindTaskReq) */ {
+ public:
+  FindTaskReq();
+  virtual ~FindTaskReq();
+
+  FindTaskReq(const FindTaskReq& from);
+
+  inline FindTaskReq& operator=(const FindTaskReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  FindTaskReq(FindTaskReq&& from) noexcept
+    : FindTaskReq() {
+    *this = ::std::move(from);
+  }
+
+  inline FindTaskReq& operator=(FindTaskReq&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const FindTaskReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const FindTaskReq* internal_default_instance() {
+    return reinterpret_cast<const FindTaskReq*>(
+               &_FindTaskReq_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    15;
+
+  void Swap(FindTaskReq* other);
+  friend void swap(FindTaskReq& a, FindTaskReq& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline FindTaskReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  FindTaskReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const FindTaskReq& from);
+  void MergeFrom(const FindTaskReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(FindTaskReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int64 handle = 1;
+  void clear_handle();
+  static const int kHandleFieldNumber = 1;
+  ::google::protobuf::int64 handle() const;
+  void set_handle(::google::protobuf::int64 value);
+
+  // bool is_for_done_only = 2;
+  void clear_is_for_done_only();
+  static const int kIsForDoneOnlyFieldNumber = 2;
+  bool is_for_done_only() const;
+  void set_is_for_done_only(bool value);
+
+  // @@protoc_insertion_point(class_scope:tortuga.FindTaskReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int64 handle_;
+  bool is_for_done_only_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
+  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsFindTaskReqImpl();
 };
 // ===================================================================
 
@@ -4916,9 +5028,43 @@ inline void TaskIdentifier::set_allocated_type(::std::string* type) {
   // @@protoc_insertion_point(field_set_allocated:tortuga.TaskIdentifier.type)
 }
 
+// -------------------------------------------------------------------
+
+// FindTaskReq
+
+// int64 handle = 1;
+inline void FindTaskReq::clear_handle() {
+  handle_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FindTaskReq::handle() const {
+  // @@protoc_insertion_point(field_get:tortuga.FindTaskReq.handle)
+  return handle_;
+}
+inline void FindTaskReq::set_handle(::google::protobuf::int64 value) {
+  
+  handle_ = value;
+  // @@protoc_insertion_point(field_set:tortuga.FindTaskReq.handle)
+}
+
+// bool is_for_done_only = 2;
+inline void FindTaskReq::clear_is_for_done_only() {
+  is_for_done_only_ = false;
+}
+inline bool FindTaskReq::is_for_done_only() const {
+  // @@protoc_insertion_point(field_get:tortuga.FindTaskReq.is_for_done_only)
+  return is_for_done_only_;
+}
+inline void FindTaskReq::set_is_for_done_only(bool value) {
+  
+  is_for_done_only_ = value;
+  // @@protoc_insertion_point(field_set:tortuga.FindTaskReq.is_for_done_only)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

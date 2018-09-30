@@ -83,6 +83,7 @@ class TortugaHandler : boost::noncopyable {
   UpdatedTask* UpdateProgressInExec(const UpdateProgressReq& req);
 
   void MaybeNotifyModules(const UpdatedTask& task);
+  void UpdateProgressManagerCache(const UpdatedTask& task);
 
   // Caller doesn't take ownership.
   // This may return nullptr if the caller has no capabilities. 
@@ -92,7 +93,7 @@ class TortugaHandler : boost::noncopyable {
   RpcOpts rpc_opts_;
 
   // executor in which we perform sqlite tasks.
-  folly::CPUThreadPoolExecutor exec_{ 1, 1, 1024 };
+  folly::CPUThreadPoolExecutor exec_{ 1, 1, 8192 };
 
   // progress manager
   std::unique_ptr<ProgressManager> progress_mgr_;

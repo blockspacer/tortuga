@@ -95,6 +95,11 @@ class TaskIdentifierDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<TaskIdentifier>
       _instance;
 } _TaskIdentifier_default_instance_;
+class FindTaskReqDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<FindTaskReq>
+      _instance;
+} _FindTaskReq_default_instance_;
 }  // namespace tortuga
 namespace protobuf_tortuga_2ftortuga_2eproto {
 void InitDefaultsWorkerImpl() {
@@ -428,7 +433,28 @@ void InitDefaultsTaskIdentifier() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsTaskIdentifierImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[15];
+void InitDefaultsFindTaskReqImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::tortuga::_FindTaskReq_default_instance_;
+    new (ptr) ::tortuga::FindTaskReq();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::FindTaskReq::InitAsDefaultInstance();
+}
+
+void InitDefaultsFindTaskReq() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsFindTaskReqImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[16];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -565,6 +591,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskIdentifier, id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskIdentifier, type_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::FindTaskReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::FindTaskReq, handle_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::FindTaskReq, is_for_done_only_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::tortuga::Worker)},
@@ -582,6 +615,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 114, -1, sizeof(::tortuga::ProgressReq)},
   { 120, -1, sizeof(::tortuga::ProgressResp)},
   { 127, -1, sizeof(::tortuga::TaskIdentifier)},
+  { 134, -1, sizeof(::tortuga::FindTaskReq)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -600,6 +634,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_ProgressReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_ProgressResp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskIdentifier_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_FindTaskReq_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -618,7 +653,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 15);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 16);
 }
 
 void AddDescriptorsImpl() {
@@ -672,26 +707,27 @@ void AddDescriptorsImpl() {
       "uf.StringValue\"\035\n\013ProgressReq\022\016\n\006handle\030"
       "\001 \001(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 \001(\t\022\"\n"
       "\006status\030\002 \001(\0132\022.google.rpc.Status\"*\n\016Tas"
-      "kIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t2\265\004"
-      "\n\007Tortuga\0225\n\nCreateTask\022\022.tortuga.Create"
-      "Req\032\023.tortuga.CreateResp\0222\n\013RequestTask\022"
-      "\020.tortuga.TaskReq\032\021.tortuga.TaskResp\022:\n\t"
-      "Heartbeat\022\025.tortuga.HeartbeatReq\032\026.googl"
-      "e.protobuf.Empty\022@\n\014CompleteTask\022\030.tortu"
-      "ga.CompleteTaskReq\032\026.google.protobuf.Emp"
-      "ty\022D\n\016UpdateProgress\022\032.tortuga.UpdatePro"
-      "gressReq\032\026.google.protobuf.Empty\022:\n\010Find"
-      "Task\022\027.tortuga.TaskIdentifier\032\025.tortuga."
-      "TaskProgress\022G\n\020FindTaskByHandle\022\034.googl"
-      "e.protobuf.StringValue\032\025.tortuga.TaskPro"
-      "gress\0226\n\004Ping\022\026.google.protobuf.Empty\032\026."
-      "google.protobuf.Empty\022>\n\014QuitQuitQuit\022\026."
-      "google.protobuf.Empty\032\026.google.protobuf."
-      "EmptyB\032\n\nio.tortugaB\014TortugaProtob\006proto"
-      "3"
+      "kIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\"7\n"
+      "\013FindTaskReq\022\016\n\006handle\030\001 \001(\003\022\030\n\020is_for_d"
+      "one_only\030\002 \001(\0102\255\004\n\007Tortuga\0225\n\nCreateTask"
+      "\022\022.tortuga.CreateReq\032\023.tortuga.CreateRes"
+      "p\0222\n\013RequestTask\022\020.tortuga.TaskReq\032\021.tor"
+      "tuga.TaskResp\022:\n\tHeartbeat\022\025.tortuga.Hea"
+      "rtbeatReq\032\026.google.protobuf.Empty\022@\n\014Com"
+      "pleteTask\022\030.tortuga.CompleteTaskReq\032\026.go"
+      "ogle.protobuf.Empty\022D\n\016UpdateProgress\022\032."
+      "tortuga.UpdateProgressReq\032\026.google.proto"
+      "buf.Empty\022:\n\010FindTask\022\027.tortuga.TaskIden"
+      "tifier\032\025.tortuga.TaskProgress\022\?\n\020FindTas"
+      "kByHandle\022\024.tortuga.FindTaskReq\032\025.tortug"
+      "a.TaskProgress\0226\n\004Ping\022\026.google.protobuf"
+      ".Empty\032\026.google.protobuf.Empty\022>\n\014QuitQu"
+      "itQuit\022\026.google.protobuf.Empty\032\026.google."
+      "protobuf.EmptyB\032\n\nio.tortugaB\014TortugaPro"
+      "tob\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2561);
+      descriptor, 2610);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tortuga/tortuga.proto", &protobuf_RegisterTypes);
   ::protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptors();
@@ -6777,6 +6813,284 @@ void TaskIdentifier::InternalSwap(TaskIdentifier* other) {
 }
 
 ::google::protobuf::Metadata TaskIdentifier::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void FindTaskReq::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int FindTaskReq::kHandleFieldNumber;
+const int FindTaskReq::kIsForDoneOnlyFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+FindTaskReq::FindTaskReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsFindTaskReq();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.FindTaskReq)
+}
+FindTaskReq::FindTaskReq(const FindTaskReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&handle_, &from.handle_,
+    static_cast<size_t>(reinterpret_cast<char*>(&is_for_done_only_) -
+    reinterpret_cast<char*>(&handle_)) + sizeof(is_for_done_only_));
+  // @@protoc_insertion_point(copy_constructor:tortuga.FindTaskReq)
+}
+
+void FindTaskReq::SharedCtor() {
+  ::memset(&handle_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&is_for_done_only_) -
+      reinterpret_cast<char*>(&handle_)) + sizeof(is_for_done_only_));
+  _cached_size_ = 0;
+}
+
+FindTaskReq::~FindTaskReq() {
+  // @@protoc_insertion_point(destructor:tortuga.FindTaskReq)
+  SharedDtor();
+}
+
+void FindTaskReq::SharedDtor() {
+}
+
+void FindTaskReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* FindTaskReq::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const FindTaskReq& FindTaskReq::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsFindTaskReq();
+  return *internal_default_instance();
+}
+
+FindTaskReq* FindTaskReq::New(::google::protobuf::Arena* arena) const {
+  FindTaskReq* n = new FindTaskReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void FindTaskReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.FindTaskReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&handle_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&is_for_done_only_) -
+      reinterpret_cast<char*>(&handle_)) + sizeof(is_for_done_only_));
+  _internal_metadata_.Clear();
+}
+
+bool FindTaskReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.FindTaskReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int64 handle = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &handle_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool is_for_done_only = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &is_for_done_only_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.FindTaskReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.FindTaskReq)
+  return false;
+#undef DO_
+}
+
+void FindTaskReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.FindTaskReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 handle = 1;
+  if (this->handle() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->handle(), output);
+  }
+
+  // bool is_for_done_only = 2;
+  if (this->is_for_done_only() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->is_for_done_only(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.FindTaskReq)
+}
+
+::google::protobuf::uint8* FindTaskReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.FindTaskReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 handle = 1;
+  if (this->handle() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->handle(), target);
+  }
+
+  // bool is_for_done_only = 2;
+  if (this->is_for_done_only() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->is_for_done_only(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.FindTaskReq)
+  return target;
+}
+
+size_t FindTaskReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.FindTaskReq)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // int64 handle = 1;
+  if (this->handle() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->handle());
+  }
+
+  // bool is_for_done_only = 2;
+  if (this->is_for_done_only() != 0) {
+    total_size += 1 + 1;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void FindTaskReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.FindTaskReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const FindTaskReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const FindTaskReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.FindTaskReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.FindTaskReq)
+    MergeFrom(*source);
+  }
+}
+
+void FindTaskReq::MergeFrom(const FindTaskReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.FindTaskReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.handle() != 0) {
+    set_handle(from.handle());
+  }
+  if (from.is_for_done_only() != 0) {
+    set_is_for_done_only(from.is_for_done_only());
+  }
+}
+
+void FindTaskReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.FindTaskReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void FindTaskReq::CopyFrom(const FindTaskReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.FindTaskReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FindTaskReq::IsInitialized() const {
+  return true;
+}
+
+void FindTaskReq::Swap(FindTaskReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void FindTaskReq::InternalSwap(FindTaskReq* other) {
+  using std::swap;
+  swap(handle_, other->handle_);
+  swap(is_for_done_only_, other->is_for_done_only_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata FindTaskReq::GetMetadata() const {
   protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
 }

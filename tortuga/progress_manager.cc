@@ -5,10 +5,12 @@
 #include <utility>
 
 #include "folly/Conv.h"
+#include "folly/MapUtil.h"
 #include "folly/String.h"
 #include "grpc++/grpc++.h"
 
 #include "tortuga/baton_handler.h"
+#include "tortuga/time_logger.h"
 #include "tortuga/tortuga.grpc.pb.h"
 
 namespace tortuga {
@@ -75,12 +77,14 @@ void ProgressManager::HandleFindTaskByHandle() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
-  google::protobuf::StringValue req;
+  FindTaskReq req;
   grpc::ServerAsyncResponseWriter<TaskProgress> resp(&ctx);
 
   // start a new RPC and wait.
   rpc_opts_.tortuga_grpc->RequestFindTaskByHandle(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
   CHECK(handler.Wait());
+
+  TimeLogger time_log("find_task_by_handle");
 
   // adds a new RPC processor.
   rpc_opts_.fibers->addTask([this]() {
@@ -89,7 +93,18 @@ void ProgressManager::HandleFindTaskByHandle() {
 
   VLOG(3) << "received FindTaskByHandle RPC: " << req.ShortDebugString();
 
-  std::unique_ptr<UpdatedTask> progress(FindTaskByHandle(req.value()));
+  auto it = progress_cache_.find(req.handle());
+  if (it != progress_cache_.end()) {
+    VLOG(3) << "progress hit from the cache :)";
+    // we must copy otherwise the cache could evict the object.
+    TaskProgress resp_obj = it->second;
+    handler.Reset();
+    resp.Finish(resp_obj, grpc::Status::OK, &handler);
+    handler.Wait();
+    return;
+  }
+
+  std::unique_ptr<UpdatedTask> progress(FindTaskByHandle(req));
 
   handler.Reset();
   if (progress == nullptr) {
@@ -103,16 +118,16 @@ void ProgressManager::HandleFindTaskByHandle() {
   handler.Wait();
 }
 
-UpdatedTask* ProgressManager::FindTaskByHandle(const std::string& handle) {
+UpdatedTask* ProgressManager::FindTaskByHandle(const FindTaskReq& req) {
   folly::fibers::await([&](folly::fibers::Promise<UpdatedTask*> p) {
-    exec_->add([this, &handle, promise = std::move(p)]() mutable {
-      promise.setValue(FindTaskByHandleInExec(handle));
+    exec_->add([this, &req, promise = std::move(p)]() mutable {
+      promise.setValue(FindTaskByHandleInExec(req.handle()));
     });
   });
 }
 
-UpdatedTask* ProgressManager::FindTaskByHandleInExec(const std::string& handle) {
-  select_task_stmt_.BindLong(1, folly::to<int64_t>(handle));
+UpdatedTask* ProgressManager::FindTaskByHandleInExec(int64_t handle) {
+  select_task_stmt_.BindLong(1, handle);
 
   return FindTaskByBoundStmtInExec(&select_task_stmt_);
 }
@@ -197,5 +212,9 @@ UpdatedTask* ProgressManager::FindTaskByBoundStmtInExec(SqliteStatement* stmt) {
   folly::split(",", modules, updated_task->modules);
 
   return updated_task;
+}
+
+void ProgressManager::UpdateTaskProgressCache(const TaskProgress& progress) {
+  progress_cache_.set(folly::to<int64_t>(progress.handle()), progress);
 }
 }  // namespace tortuga

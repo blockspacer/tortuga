@@ -105,7 +105,7 @@ public class Tortuga {
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-    }, 1L, 1L, TimeUnit.SECONDS);
+    }, 50L, 50L, TimeUnit.MILLISECONDS);
   }
 
   private void pollTask() {

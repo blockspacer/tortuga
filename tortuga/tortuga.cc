@@ -354,6 +354,7 @@ void TortugaHandler::HandleCompleteTask() {
   std::unique_ptr<UpdatedTask> progress(CompleteTask(req));
   if (progress != nullptr) {
     MaybeNotifyModules(*progress);
+    UpdateProgressManagerCache(*progress);
   }
 
   google::protobuf::Empty reply;
@@ -408,7 +409,7 @@ UpdatedTask* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
 
   complete_task_stmt_.ExecuteOrDie();
   
-  return progress_mgr_->FindTaskByHandleInExec(req.handle());
+  return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
 
 void TortugaHandler::CheckHeartbeatsLoop() {
@@ -441,6 +442,7 @@ void TortugaHandler::HandleUpdateProgress() {
   std::unique_ptr<UpdatedTask> progress(UpdateProgress(req));
   if (progress != nullptr) {
     MaybeNotifyModules(*progress);
+    UpdateProgressManagerCache(*progress);
   }
 
   google::protobuf::Empty reply;
@@ -518,7 +520,7 @@ UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) 
   SqliteReset x2(&stmt);
   stmt.ExecuteOrDie();
 
-  return progress_mgr_->FindTaskByHandleInExec(req.handle());
+  return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
 
 void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {
@@ -529,6 +531,10 @@ void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {
       (*module)->OnProgressUpdate(*task.progress);
     }
   }
+}
+
+void TortugaHandler::UpdateProgressManagerCache(const UpdatedTask& task) {
+  progress_mgr_->UpdateTaskProgressCache(*task.progress);
 }
 
 void TortugaHandler::HandlePing() {
