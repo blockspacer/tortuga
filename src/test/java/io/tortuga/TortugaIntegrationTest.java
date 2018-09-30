@@ -287,6 +287,73 @@ public class TortugaIntegrationTest {
     tortuga2.shutdown();
   }
 
+  // This is basically the same test as above except we check for a failed hearbeats
+  // new worker has a different id and shall still get the tasks after some time...
+  @Test
+  public void testFailedHeartbeats() {
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    CountDownLatch checkedAllFour = new CountDownLatch(4);
+    tortuga.addService(new ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        LOG.info("received task to handle: {}", t);
+        checkedAllFour.countDown();
+        SettableFuture<Status> f = SettableFuture.create();
+        return f;
+      }
+    });
+
+    tortuga.start();
+
+    Set<String> expected = new HashSet<>();
+    TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+    for (int i = 1; i <= 10; ++i) {
+      TestMessage testMessage = TestMessage.newBuilder()
+          .setId("field_" + i)
+          .build();
+      expected.add("field_" + i);
+      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask" + i), testMessage);
+    }
+
+    Uninterruptibles.awaitUninterruptibly(checkedAllFour);
+    LOG.info("Tortuga 1 received 4 messages...");
+
+    // This will never return so we do it in a thread.
+    new Thread(() -> {
+      tortuga.shutdown();
+    }).start();
+
+    TortugaConnection conn2 = TortugaConnection.newConnection("127.0.0.1", 4000);
+    // It has another id but it shall still get the tasks since the other one will fail its heartbeats.
+    Tortuga tortuga2 = conn2.newWorker("test_worker_another_id");
+    tortuga2.withConcurrency(4);
+    CountDownLatch latch = new CountDownLatch(10);
+    Set<String> found = Collections.synchronizedSet(new HashSet<>());
+    tortuga2.addService(new ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        LOG.info("received task to handle: {}", t);
+        found.add(t.getId());
+        latch.countDown();
+        return Futures.immediateFuture(Status.OK);
+      }
+    });
+
+    tortuga2.start();
+    Uninterruptibles.awaitUninterruptibly(latch);
+
+    List<String> expectedList = new ArrayList<>(expected);
+    Collections.sort(expectedList);
+
+    List<String> foundList = new ArrayList<>(found);
+    Collections.sort(foundList);
+
+    Assert.assertEquals(expectedList, foundList);
+    tortuga2.shutdown();
+  }
+
   @Test
   public void testRetries() {
     TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
