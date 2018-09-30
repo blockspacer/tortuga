@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "boost/utility.hpp"
+#include "folly/container/EvictingCacheMap.h"
 #include "folly/executors/CPUThreadPoolExecutor.h"
 #include "grpc++/grpc++.h"
 #include "sqlite3.h"
@@ -42,5 +43,7 @@ class ProgressManager : boost::noncopyable {
   SqliteStatement select_task_stmt_;
   SqliteStatement select_task_by_identifier_stmt_;
   SqliteStatement select_worker_id_by_uuid_stmt_;
+
+  folly::EvictingCacheMap<int64_t, UpdatedTask> progresses_cache_{ 8192, 128 };
 };
 }  // namespace tortuga

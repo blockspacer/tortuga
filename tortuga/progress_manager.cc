@@ -9,6 +9,7 @@
 #include "grpc++/grpc++.h"
 
 #include "tortuga/baton_handler.h"
+#include "tortuga/time_logger.h"
 #include "tortuga/tortuga.grpc.pb.h"
 
 namespace tortuga {
@@ -82,12 +83,16 @@ void ProgressManager::HandleFindTaskByHandle() {
   rpc_opts_.tortuga_grpc->RequestFindTaskByHandle(&ctx, &req, &resp, rpc_opts_.cq, rpc_opts_.cq, &handler);
   CHECK(handler.Wait());
 
+  TimeLogger time_log("find_task_by_handle");
+
   // adds a new RPC processor.
   rpc_opts_.fibers->addTask([this]() {
     HandleFindTaskByHandle();
   });
 
   VLOG(3) << "received FindTaskByHandle RPC: " << req.ShortDebugString();
+
+  
 
   std::unique_ptr<UpdatedTask> progress(FindTaskByHandle(req.value()));
 
