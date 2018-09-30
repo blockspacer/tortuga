@@ -117,15 +117,15 @@ Tortuga::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::tortuga::TaskProgress>::Create(channel_.get(), cq, rpcmethod_FindTask_, context, request, false);
 }
 
-::grpc::Status Tortuga::Stub::FindTaskByHandle(::grpc::ClientContext* context, const ::google::protobuf::StringValue& request, ::tortuga::TaskProgress* response) {
+::grpc::Status Tortuga::Stub::FindTaskByHandle(::grpc::ClientContext* context, const ::tortuga::FindTaskReq& request, ::tortuga::TaskProgress* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_FindTaskByHandle_, context, request, response);
 }
 
-::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>* Tortuga::Stub::AsyncFindTaskByHandleRaw(::grpc::ClientContext* context, const ::google::protobuf::StringValue& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>* Tortuga::Stub::AsyncFindTaskByHandleRaw(::grpc::ClientContext* context, const ::tortuga::FindTaskReq& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::tortuga::TaskProgress>::Create(channel_.get(), cq, rpcmethod_FindTaskByHandle_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>* Tortuga::Stub::PrepareAsyncFindTaskByHandleRaw(::grpc::ClientContext* context, const ::google::protobuf::StringValue& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::tortuga::TaskProgress>* Tortuga::Stub::PrepareAsyncFindTaskByHandleRaw(::grpc::ClientContext* context, const ::tortuga::FindTaskReq& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::tortuga::TaskProgress>::Create(channel_.get(), cq, rpcmethod_FindTaskByHandle_, context, request, false);
 }
 
@@ -187,7 +187,7 @@ Tortuga::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Tortuga_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::google::protobuf::StringValue, ::tortuga::TaskProgress>(
+      new ::grpc::internal::RpcMethodHandler< Tortuga::Service, ::tortuga::FindTaskReq, ::tortuga::TaskProgress>(
           std::mem_fn(&Tortuga::Service::FindTaskByHandle), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Tortuga_method_names[7],
@@ -246,7 +246,7 @@ Tortuga::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status Tortuga::Service::FindTaskByHandle(::grpc::ServerContext* context, const ::google::protobuf::StringValue* request, ::tortuga::TaskProgress* response) {
+::grpc::Status Tortuga::Service::FindTaskByHandle(::grpc::ServerContext* context, const ::tortuga::FindTaskReq* request, ::tortuga::TaskProgress* response) {
   (void) context;
   (void) request;
   (void) response;
