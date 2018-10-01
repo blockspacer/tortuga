@@ -632,4 +632,52 @@ public class TortugaIntegrationTest {
     tortuga.shutdown();
     conn.shutdown();
   }
+
+  @Test
+  public void testRequestTaskSleeping() throws Exception {
+    CountDownLatch latch = new CountDownLatch(1);
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    Set<String> found = Collections.synchronizedSet(new HashSet<>());
+
+    TestServiceTortuga.ImplBase handler = new TestServiceTortuga.ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        LOG.info("received task to handle: {}", t);
+        found.add(t.getId());
+        latch.countDown();
+        return Futures.immediateFuture(Status.OK);
+      }
+    };
+
+    tortuga.addService(handler);
+    tortuga.start();
+    TimeUnit.SECONDS.sleep(5L);
+
+    Set<String> expected = new HashSet<>();
+    TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+    TaskResult task = null;
+    for (int i = 1; i <= 1; ++i) {
+      TestMessage testMessage = TestMessage.newBuilder()
+          .setId("field_" + i)
+          .build();
+      expected.add("field_" + i);
+      task = publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask" + i), testMessage);
+    }
+
+    Uninterruptibles.awaitUninterruptibly(latch);
+    List<String> expectedList = new ArrayList<>(expected);
+    Collections.sort(expectedList);
+
+    List<String> foundList = new ArrayList<>(found);
+    Collections.sort(foundList);
+
+    Assert.assertEquals(expectedList, foundList);
+    TimeUnit.SECONDS.sleep(3L);  // to ensure the completion has reached tortuga server.
+    Assert.assertTrue(task.isDone());
+
+    tortuga.shutdown();
+    conn.shutdown();
+  }
 }

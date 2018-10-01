@@ -6,6 +6,7 @@
 
 #include "folly/Conv.h"
 #include "folly/MapUtil.h"
+#include "folly/ScopeGuard.h"
 #include "folly/String.h"
 #include "folly/Unit.h"
 #include "glog/logging.h"
@@ -121,7 +122,7 @@ void TortugaHandler::HandleRequestTask() {
     // Hopefully this worker has a functioning Heartbeat() that will declare it real soon.
     reply.set_none(true);
   } else {
-    RequestTaskResult res = RequestTask(req.worker());
+    RequestTaskResult res = RequestTask(req.worker(), ctx.deadline(), true);
     if (res.none) {
       reply.set_none(true);
     } else {
@@ -140,11 +141,22 @@ void TortugaHandler::HandleRequestTask() {
 }
 
 TortugaHandler::CreateTaskResult TortugaHandler::CreateTask(const Task& task) {
-  return folly::fibers::await([&](folly::fibers::Promise<CreateTaskResult> p) {
+  auto result = folly::fibers::await([&](folly::fibers::Promise<CreateTaskResult> p) {
     exec_.add([this, &task, promise = std::move(p)]() mutable {
       promise.setValue(CreateTaskInExec(task));
     });
   });
+
+  // See if we can notify someone.
+  std::set<folly::fibers::Baton*>& batons = waiting_for_tasks_[task.type()];
+  if (!batons.empty()) {
+    auto it = batons.begin();
+    folly::fibers::Baton* baton = *it;
+    batons.erase(it);
+    baton->post();
+  }
+
+  return result;
 }
 
 TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& task) {
@@ -215,7 +227,9 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
   return res;
 }
 
-TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& worker) {
+TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& worker,
+                                                              std::chrono::system_clock::time_point rpc_exp,
+                                                              bool first_try) {
   RequestTaskResult res = folly::fibers::await([&](folly::fibers::Promise<RequestTaskResult> p) {
     exec_.add([this, &worker, promise = std::move(p)]() mutable {
       promise.setValue(RequestTaskInExec(worker));
@@ -224,6 +238,27 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& work
 
   if (!res.none) {
     workers_manager_->OnTaskAssign(res.handle, worker.worker_id(), worker.uuid());
+  } else {
+    if (first_try) {
+      auto now = std::chrono::system_clock::now();
+      auto delay = rpc_exp - now;
+      if (delay > std::chrono::seconds(1)) {
+        // If there is no task, then we can sleep in the hope that there can be one soon.
+        // we only do that if there is a second or more left to the RPC deadline.
+        VLOG(2) << "worker: " << worker.uuid() << "will be waiting in case a task shows up";
+        folly::fibers::Baton baton;
+        RegisterWaitingWorker(worker, &baton);
+        // we leave a second to answer and end the RPC without deadlock.
+        auto wait_duration = delay - std::chrono::seconds(1);
+        SCOPE_EXIT {
+          UnregisterWaitingWorker(worker, &baton);
+        };
+        if (baton.try_wait_for(wait_duration)) {
+          VLOG(1) << "cool, it was worth waiting, requesting task for: " << worker.uuid();
+          return RequestTask(worker, rpc_exp, false);
+        }
+      }
+    }
   }
 
   return res;
@@ -276,6 +311,18 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   res.retries = retries + 1;
   std::swap(res.progress_metadata, progress_metadata);
   return res;
+}
+
+void TortugaHandler::RegisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton) {
+  for (const auto& cap : worker.capabilities()) {
+    waiting_for_tasks_[cap].insert(baton);
+  }
+}
+
+void TortugaHandler::UnregisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton) {
+  for (const auto& cap : worker.capabilities()) {
+    waiting_for_tasks_[cap].erase(baton);
+  }
 }
 
 SqliteStatement* TortugaHandler::GetOrCreateSelectStmtInExec(const Worker& worker) {
