@@ -1,12 +1,15 @@
 #pragma once
 
+#include <chrono>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
 #include "boost/utility.hpp"
 #include "folly/executors/CPUThreadPoolExecutor.h" 
+#include "folly/fibers/Baton.h" 
 #include "grpc++/grpc++.h"
 #include "sqlite3.h"
 
@@ -73,7 +76,9 @@ class TortugaHandler : boost::noncopyable {
     std::string progress_metadata;
   };
 
-  RequestTaskResult RequestTask(const Worker& worker);
+  RequestTaskResult RequestTask(const Worker& worker,
+                                std::chrono::system_clock::time_point rpc_exp,
+                                bool first_try);
   RequestTaskResult RequestTaskInExec(const Worker& worker);
 
   UpdatedTask* CompleteTask(const CompleteTaskReq& req);
@@ -88,6 +93,9 @@ class TortugaHandler : boost::noncopyable {
   // Caller doesn't take ownership.
   // This may return nullptr if the caller has no capabilities. 
   SqliteStatement* GetOrCreateSelectStmtInExec(const Worker& worker);
+
+  void RegisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton);
+  void UnregisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton);
 
   sqlite3* db_{ nullptr };
   RpcOpts rpc_opts_;
@@ -114,5 +122,8 @@ class TortugaHandler : boost::noncopyable {
   const std::map<std::string, std::unique_ptr<Module>> modules_;
 
   std::unique_ptr<WorkersManager> workers_manager_;
+
+  // Map from task type to batons that are waiting for that task.
+  std::map<std::string, std::set<folly::fibers::Baton*>> waiting_for_tasks_;
 };
 }  // namespace tortuga
