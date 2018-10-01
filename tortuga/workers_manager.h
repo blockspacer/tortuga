@@ -58,8 +58,10 @@ class WorkersManager : boost::noncopyable {
 
  private:
    // unassign all the tasks of this uuid worker.
-  void UnassignTaskInExec(const std::string& uuid);
-  void UnassignTasksInExec(const std::vector<std::string>& uuids);
+  void UnassignTasksOfWorkerInExec(const std::string& uuid);
+  void UnassignTasksOfWorkersInExec(const std::vector<std::string>& uuids);
+
+  void UnassignTaskInExec(int64_t handle);
 
   void InsertHistoricWorkerInExec(const std::string& uuid,
                                   const std::string& worker_id);
@@ -81,6 +83,7 @@ class WorkersManager : boost::noncopyable {
   SqliteStatement insert_historic_worker_stmt_;
 
   SqliteStatement unassign_tasks_stmt_;
+  SqliteStatement unassign_single_task_stmt_;
   SqliteStatement update_worker_invalidated_uuid_stmt_;
   SqliteStatement select_expired_workers_stmt_;
 

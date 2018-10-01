@@ -77,6 +77,7 @@ WorkersManager::WorkersManager(sqlite3* db,
       insert_worker_stmt_(db, kInsertWorkerStmt),
       insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt),
       unassign_tasks_stmt_(db, kUnassignTasksStmt),
+      unassign_single_task_stmt_(db, kUnassignSingleTaskByRowidStmt),
       update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
       select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
       on_worker_death_(std::move(on_worker_death)) {
@@ -145,7 +146,7 @@ void WorkersManager::InsertHistoricWorkerInExec(const std::string& uuid,
   insert_historic_worker_stmt_.ExecuteOrDie();
 }
 
-void WorkersManager::UnassignTaskInExec(const std::string& uuid) {
+void WorkersManager::UnassignTasksOfWorkerInExec(const std::string& uuid) {
   VLOG(2) << "unassigning tasks of expired worker: " << uuid;
 
   SqliteTx tx(db_);
@@ -161,60 +162,75 @@ void WorkersManager::UnassignTaskInExec(const std::string& uuid) {
   on_worker_death_(uuid);
 }
 
+void WorkersManager::UnassignTaskInExec(int64_t handle) {
+  SqliteReset x(&unassign_single_task_stmt_);
+  unassign_single_task_stmt_.BindLong(1, handle);
+  unassign_single_task_stmt_.ExecuteOrDie();
+
+  LOG(WARNING) << "reclaimed dead task: " << handle;
+}
+
+namespace {
+void FindMissingTasks(int64_t expired_tasks_ms,
+                      WorkerInfo* worker,
+                      std::vector<int64_t>* expired_handles) {
+  auto it = worker->tasks.begin();
+  while (it != worker->tasks.end()) {
+    WorkerTaskInfo& task_info = it->second;
+    if (task_info.first_miss_millis != -1 && task_info.first_miss_millis < expired_tasks_ms) {
+      expired_handles->push_back(task_info.handle);
+      auto toErase = it;
+      ++it;
+      worker->tasks.erase(toErase);
+    } else {
+      ++it;
+    }
+  }
+}
+}  // anonymous namespace
+
 void WorkersManager::CheckHeartbeats() {
   VLOG(3) << "checking heartbeats";
-  int64_t expired_millis = CurrentTimeMillis() - 30000L;
-  // uuids of expired workers.
-  std::vector<std::string> uuids;
+  int64_t now = CurrentTimeMillis();
+  // Workers who haven't beat since then are dead.
+  int64_t expired_millis = now - 30000L;
+  // Tasks that have been missing since then are dead.
+  int64_t expired_tasks_millis = now - 15000L;
+  std::vector<int64_t> dead_tasks_handles;
+  std::vector<std::string> dead_worker_uuids;
 
   auto it = workers_.begin();
   while (it != workers_.end()) {
     WorkerInfo& info = it->second;
     if (info.last_beat_millis < expired_millis) {
-      uuids.push_back(info.uuid);
+      dead_worker_uuids.push_back(info.uuid);
       auto toErase = it;
       ++it;
       workers_.erase(toErase);
     } else {
+      FindMissingTasks(expired_tasks_millis, &info, &dead_tasks_handles);
        ++it;
     }
   }
 
   folly::fibers::await([&](folly::fibers::Promise<folly::Unit> p) {
-    exec_->add([this, promise = std::move(p), exp_uuids = std::move(uuids)]() mutable {
-      UnassignTasksInExec(exp_uuids);
+    exec_->add([this, promise = std::move(p), exp_uuids = std::move(dead_worker_uuids), exp_tasks = std::move(dead_tasks_handles)]() mutable {
+      UnassignTasksOfWorkersInExec(exp_uuids);
+      
+      for (int64_t handle : exp_tasks) {
+        UnassignTaskInExec(handle);
+      }
+
       promise.setValue(folly::Unit());
     });
   });
 
-  // Now check for dead tasks.
-  int64_t expired_tasks_millis = CurrentTimeMillis() - 15000L;
-
-  for (auto& it : workers_) {
-    WorkerInfo& worker_info = it.second;
-    
-    auto it2 = workers_.begin();
-    while (it2 != workers_.end()) {
-      WorkerInfo& info = it2->second;
-      if (info.last_beat_millis < expired_millis) {
-        uuids.push_back(info.uuid);
-        auto toErase = it2;
-        ++it2;
-        workers_.erase(toErase);
-      } else {
-        ++it2;
-      }
-    }
-
-    
-  }
-
   VLOG(3) << "done checking heartbeats...";
 }
 
-void WorkersManager::UnassignTasksInExec(const std::vector<std::string>& uuids) {
+void WorkersManager::UnassignTasksOfWorkersInExec(const std::vector<std::string>& uuids) {
   for (const auto& uuid : uuids) {
-    UnassignTaskInExec(uuid);
+    UnassignTasksOfWorkerInExec(uuid);
   }
 }
 
@@ -251,6 +267,8 @@ void WorkersManager::RegularBeat(const HeartbeatReq::WorkerBeat& worker_beat, Wo
         LOG(ERROR) << "Oops, we have a dead task: " << info.handle;
         info.first_miss_millis = CurrentTimeMillis();
       }
+    } else {
+      info.first_miss_millis = -1;
     }
   }
 }
@@ -261,7 +279,7 @@ void WorkersManager::WorkerChangeBeat(const Worker& worker,  WorkerInfo* worker_
   folly::fibers::await([&](folly::fibers::Promise<folly::Unit> p) {
     exec_->add([this, promise = std::move(p), old_uuid = worker_info->uuid, &worker]() mutable {
       // invalidate all the tasks assigned to this whole worker.
-      UnassignTaskInExec(old_uuid);
+      UnassignTasksOfWorkerInExec(old_uuid);
       // insert the new one
       SqliteReset x2(&update_worker_stmt_);
       update_worker_stmt_.BindText(1, worker.uuid());
