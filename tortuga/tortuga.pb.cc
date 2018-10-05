@@ -502,6 +502,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskResp, handle_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskResp, none_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskResp, retry_ctx_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TaskResp, priority_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::Task, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -606,16 +607,16 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 21, -1, sizeof(::tortuga::TaskReq)},
   { 27, -1, sizeof(::tortuga::TaskResp_RetryContext)},
   { 34, -1, sizeof(::tortuga::TaskResp)},
-  { 45, -1, sizeof(::tortuga::Task)},
-  { 57, -1, sizeof(::tortuga::TaskProgress)},
-  { 80, -1, sizeof(::tortuga::CreateReq)},
-  { 86, -1, sizeof(::tortuga::CreateResp)},
-  { 93, -1, sizeof(::tortuga::CompleteTaskReq)},
-  { 104, -1, sizeof(::tortuga::UpdateProgressReq)},
-  { 114, -1, sizeof(::tortuga::ProgressReq)},
-  { 120, -1, sizeof(::tortuga::ProgressResp)},
-  { 127, -1, sizeof(::tortuga::TaskIdentifier)},
-  { 134, -1, sizeof(::tortuga::FindTaskReq)},
+  { 46, -1, sizeof(::tortuga::Task)},
+  { 58, -1, sizeof(::tortuga::TaskProgress)},
+  { 81, -1, sizeof(::tortuga::CreateReq)},
+  { 87, -1, sizeof(::tortuga::CreateResp)},
+  { 94, -1, sizeof(::tortuga::CompleteTaskReq)},
+  { 105, -1, sizeof(::tortuga::UpdateProgressReq)},
+  { 115, -1, sizeof(::tortuga::ProgressReq)},
+  { 121, -1, sizeof(::tortuga::ProgressResp)},
+  { 128, -1, sizeof(::tortuga::TaskIdentifier)},
+  { 135, -1, sizeof(::tortuga::FindTaskReq)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -670,64 +671,64 @@ void AddDescriptorsImpl() {
       "tuga.HeartbeatReq.WorkerBeat\032K\n\nWorkerBe"
       "at\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\034\n\024c"
       "urrent_task_handles\030\002 \003(\003\"*\n\007TaskReq\022\037\n\006"
-      "worker\030\001 \001(\0132\017.tortuga.Worker\"\325\001\n\010TaskRe"
+      "worker\030\001 \001(\0132\017.tortuga.Worker\"\347\001\n\010TaskRe"
       "sp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001"
       "(\0132\024.google.protobuf.Any\022\016\n\006handle\030\004 \001(\t"
       "\022\014\n\004none\030\005 \001(\010\0221\n\tretry_ctx\030\006 \001(\0132\036.tort"
-      "uga.TaskResp.RetryContext\032:\n\014RetryContex"
-      "t\022\017\n\007retries\030\001 \001(\005\022\031\n\021progress_metadata\030"
-      "\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t"
-      "\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.Any\022-\n\010"
-      "priority\030\004 \001(\0132\033.google.protobuf.Int32Va"
-      "lue\0220\n\013max_retries\030\005 \001(\0132\033.google.protob"
-      "uf.Int32Value\022(\n\005delay\030\006 \001(\0132\031.google.pr"
-      "otobuf.Duration\022\017\n\007modules\030\007 \003(\t\"\273\003\n\014Tas"
-      "kProgress\022\016\n\006handle\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\022\014\n"
-      "\004type\030\003 \001(\t\022\023\n\013max_retries\030\004 \001(\005\022\017\n\007retr"
-      "ies\030\005 \001(\005\022\020\n\010priority\030\006 \001(\005\022\021\n\tworked_on"
-      "\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007created\030\t \001(\0132\032."
-      "google.protobuf.Timestamp\0220\n\014started_tim"
-      "e\030\n \001(\0132\032.google.protobuf.Timestamp\022-\n\td"
-      "one_time\030\013 \001(\0132\032.google.protobuf.Timesta"
-      "mp\022\"\n\006status\030\014 \001(\0132\022.google.rpc.Status\022\020"
-      "\n\010progress\030\r \001(\002\022\030\n\020progress_message\030\016 \001"
-      "(\t\022\031\n\021progress_metadata\030\022 \001(\t\022\014\n\004logs\030\017 "
-      "\001(\t\022\021\n\tworker_id\030\020 \001(\t\022\016\n\006output\030\021 \001(\t\"("
-      "\n\tCreateReq\022\033\n\004task\030\001 \001(\0132\r.tortuga.Task"
-      "\"-\n\nCreateResp\022\016\n\006handle\030\001 \001(\t\022\017\n\007create"
-      "d\030\002 \001(\010\"\205\001\n\017CompleteTaskReq\022\037\n\006worker\030\001 "
-      "\001(\0132\017.tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022\014\n\004"
-      "code\030\003 \001(\005\022\025\n\rerror_message\030\004 \001(\t\022\014\n\004log"
-      "s\030\005 \001(\t\022\016\n\006output\030\006 \001(\t\"\344\001\n\021UpdateProgre"
-      "ssReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016"
-      "\n\006handle\030\002 \001(\t\022-\n\010progress\030\003 \001(\0132\033.googl"
-      "e.protobuf.FloatValue\0226\n\020progress_messag"
-      "e\030\004 \001(\0132\034.google.protobuf.StringValue\0227\n"
-      "\021progress_metadata\030\005 \001(\0132\034.google.protob"
-      "uf.StringValue\"\035\n\013ProgressReq\022\016\n\006handle\030"
-      "\001 \001(\t\"B\n\014ProgressResp\022\016\n\006handle\030\001 \001(\t\022\"\n"
-      "\006status\030\002 \001(\0132\022.google.rpc.Status\"*\n\016Tas"
-      "kIdentifier\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\"7\n"
-      "\013FindTaskReq\022\016\n\006handle\030\001 \001(\003\022\030\n\020is_for_d"
-      "one_only\030\002 \001(\0102\255\004\n\007Tortuga\0225\n\nCreateTask"
-      "\022\022.tortuga.CreateReq\032\023.tortuga.CreateRes"
-      "p\0222\n\013RequestTask\022\020.tortuga.TaskReq\032\021.tor"
-      "tuga.TaskResp\022:\n\tHeartbeat\022\025.tortuga.Hea"
-      "rtbeatReq\032\026.google.protobuf.Empty\022@\n\014Com"
-      "pleteTask\022\030.tortuga.CompleteTaskReq\032\026.go"
-      "ogle.protobuf.Empty\022D\n\016UpdateProgress\022\032."
-      "tortuga.UpdateProgressReq\032\026.google.proto"
-      "buf.Empty\022:\n\010FindTask\022\027.tortuga.TaskIden"
-      "tifier\032\025.tortuga.TaskProgress\022\?\n\020FindTas"
-      "kByHandle\022\024.tortuga.FindTaskReq\032\025.tortug"
-      "a.TaskProgress\0226\n\004Ping\022\026.google.protobuf"
-      ".Empty\032\026.google.protobuf.Empty\022>\n\014QuitQu"
-      "itQuit\022\026.google.protobuf.Empty\032\026.google."
-      "protobuf.EmptyB\032\n\nio.tortugaB\014TortugaPro"
-      "tob\006proto3"
+      "uga.TaskResp.RetryContext\022\020\n\010priority\030\007 "
+      "\001(\005\032:\n\014RetryContext\022\017\n\007retries\030\001 \001(\005\022\031\n\021"
+      "progress_metadata\030\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001"
+      " \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.googl"
+      "e.protobuf.Any\022-\n\010priority\030\004 \001(\0132\033.googl"
+      "e.protobuf.Int32Value\0220\n\013max_retries\030\005 \001"
+      "(\0132\033.google.protobuf.Int32Value\022(\n\005delay"
+      "\030\006 \001(\0132\031.google.protobuf.Duration\022\017\n\007mod"
+      "ules\030\007 \003(\t\"\273\003\n\014TaskProgress\022\016\n\006handle\030\001 "
+      "\001(\t\022\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_ret"
+      "ries\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030"
+      "\006 \001(\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+"
+      "\n\007created\030\t \001(\0132\032.google.protobuf.Timest"
+      "amp\0220\n\014started_time\030\n \001(\0132\032.google.proto"
+      "buf.Timestamp\022-\n\tdone_time\030\013 \001(\0132\032.googl"
+      "e.protobuf.Timestamp\022\"\n\006status\030\014 \001(\0132\022.g"
+      "oogle.rpc.Status\022\020\n\010progress\030\r \001(\002\022\030\n\020pr"
+      "ogress_message\030\016 \001(\t\022\031\n\021progress_metadat"
+      "a\030\022 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker_id\030\020 \001(\t"
+      "\022\016\n\006output\030\021 \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 "
+      "\001(\0132\r.tortuga.Task\"-\n\nCreateResp\022\016\n\006hand"
+      "le\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"\205\001\n\017CompleteTa"
+      "skReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016"
+      "\n\006handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_me"
+      "ssage\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t\022\016\n\006output\030\006 \001("
+      "\t\"\344\001\n\021UpdateProgressReq\022\037\n\006worker\030\001 \001(\0132"
+      "\017.tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022-\n\010prog"
+      "ress\030\003 \001(\0132\033.google.protobuf.FloatValue\022"
+      "6\n\020progress_message\030\004 \001(\0132\034.google.proto"
+      "buf.StringValue\0227\n\021progress_metadata\030\005 \001"
+      "(\0132\034.google.protobuf.StringValue\"\035\n\013Prog"
+      "ressReq\022\016\n\006handle\030\001 \001(\t\"B\n\014ProgressResp\022"
+      "\016\n\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\0132\022.google"
+      ".rpc.Status\"*\n\016TaskIdentifier\022\n\n\002id\030\001 \001("
+      "\t\022\014\n\004type\030\002 \001(\t\"7\n\013FindTaskReq\022\016\n\006handle"
+      "\030\001 \001(\003\022\030\n\020is_for_done_only\030\002 \001(\0102\255\004\n\007Tor"
+      "tuga\0225\n\nCreateTask\022\022.tortuga.CreateReq\032\023"
+      ".tortuga.CreateResp\0222\n\013RequestTask\022\020.tor"
+      "tuga.TaskReq\032\021.tortuga.TaskResp\022:\n\tHeart"
+      "beat\022\025.tortuga.HeartbeatReq\032\026.google.pro"
+      "tobuf.Empty\022@\n\014CompleteTask\022\030.tortuga.Co"
+      "mpleteTaskReq\032\026.google.protobuf.Empty\022D\n"
+      "\016UpdateProgress\022\032.tortuga.UpdateProgress"
+      "Req\032\026.google.protobuf.Empty\022:\n\010FindTask\022"
+      "\027.tortuga.TaskIdentifier\032\025.tortuga.TaskP"
+      "rogress\022\?\n\020FindTaskByHandle\022\024.tortuga.Fi"
+      "ndTaskReq\032\025.tortuga.TaskProgress\0226\n\004Ping"
+      "\022\026.google.protobuf.Empty\032\026.google.protob"
+      "uf.Empty\022>\n\014QuitQuitQuit\022\026.google.protob"
+      "uf.Empty\032\026.google.protobuf.EmptyB\032\n\nio.t"
+      "ortugaB\014TortugaProtob\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2610);
+      descriptor, 2628);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tortuga/tortuga.proto", &protobuf_RegisterTypes);
   ::protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptors();
@@ -2233,6 +2234,7 @@ const int TaskResp::kDataFieldNumber;
 const int TaskResp::kHandleFieldNumber;
 const int TaskResp::kNoneFieldNumber;
 const int TaskResp::kRetryCtxFieldNumber;
+const int TaskResp::kPriorityFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 TaskResp::TaskResp()
@@ -2270,7 +2272,9 @@ TaskResp::TaskResp(const TaskResp& from)
   } else {
     retry_ctx_ = NULL;
   }
-  none_ = from.none_;
+  ::memcpy(&none_, &from.none_,
+    static_cast<size_t>(reinterpret_cast<char*>(&priority_) -
+    reinterpret_cast<char*>(&none_)) + sizeof(priority_));
   // @@protoc_insertion_point(copy_constructor:tortuga.TaskResp)
 }
 
@@ -2279,8 +2283,8 @@ void TaskResp::SharedCtor() {
   type_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   handle_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&data_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&none_) -
-      reinterpret_cast<char*>(&data_)) + sizeof(none_));
+      reinterpret_cast<char*>(&priority_) -
+      reinterpret_cast<char*>(&data_)) + sizeof(priority_));
   _cached_size_ = 0;
 }
 
@@ -2337,7 +2341,9 @@ void TaskResp::Clear() {
     delete retry_ctx_;
   }
   retry_ctx_ = NULL;
-  none_ = false;
+  ::memset(&none_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&priority_) -
+      reinterpret_cast<char*>(&none_)) + sizeof(priority_));
   _internal_metadata_.Clear();
 }
 
@@ -2437,6 +2443,20 @@ bool TaskResp::MergePartialFromCodedStream(
         break;
       }
 
+      // int32 priority = 7;
+      case 7: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &priority_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -2510,6 +2530,11 @@ void TaskResp::SerializeWithCachedSizes(
       6, *this->retry_ctx_, output);
   }
 
+  // int32 priority = 7;
+  if (this->priority() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->priority(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2576,6 +2601,11 @@ void TaskResp::SerializeWithCachedSizes(
         6, *this->retry_ctx_, deterministic, target);
   }
 
+  // int32 priority = 7;
+  if (this->priority() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->priority(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -2633,6 +2663,13 @@ size_t TaskResp::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
+  // int32 priority = 7;
+  if (this->priority() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->priority());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -2683,6 +2720,9 @@ void TaskResp::MergeFrom(const TaskResp& from) {
   if (from.none() != 0) {
     set_none(from.none());
   }
+  if (from.priority() != 0) {
+    set_priority(from.priority());
+  }
 }
 
 void TaskResp::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2715,6 +2755,7 @@ void TaskResp::InternalSwap(TaskResp* other) {
   swap(data_, other->data_);
   swap(retry_ctx_, other->retry_ctx_);
   swap(none_, other->none_);
+  swap(priority_, other->priority_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

@@ -132,6 +132,7 @@ void TortugaHandler::HandleRequestTask() {
       reply.set_handle(folly::to<std::string>(res.handle));
       reply.mutable_retry_ctx()->set_retries(res.retries);
       reply.mutable_retry_ctx()->set_progress_metadata(res.progress_metadata);
+      reply.set_priority(res.priority);
     }
   }
 
@@ -292,8 +293,9 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   std::string id = select_task_stmt->ColumnText(1);
   std::string task_type = select_task_stmt->ColumnText(2);
   std::string data = select_task_stmt->ColumnBlob(3);
-  int retries = select_task_stmt->ColumnInt(4);
-  std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty(5);
+  int priority = select_task_stmt->ColumnInt(4);
+  int retries = select_task_stmt->ColumnInt(5);
+  std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty(6);
 
   SqliteReset x2(&assign_task_stmt_);
   assign_task_stmt_.BindInt(1, retries + 1);
@@ -308,6 +310,7 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   res.handle = rowid;
   res.type = task_type;
   res.data = data;
+  res.priority = priority;
   res.retries = retries + 1;
   std::swap(res.progress_metadata, progress_metadata);
   return res;
@@ -336,7 +339,7 @@ SqliteStatement* TortugaHandler::GetOrCreateSelectStmtInExec(const Worker& worke
   }
 
   std::string tpl = R"(
-    select rowid, id, task_type, data, retries, progress_metadata from tasks where
+    select rowid, id, task_type, data, priority, retries, progress_metadata from tasks where
         worked_on != 1
         and done != 1
         and task_type IN (%s)

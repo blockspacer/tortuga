@@ -22,17 +22,20 @@ public class TortugaContext {
   private final RetryContext retryCtx;
   private final Channel tortugaChan;
   private final Worker worker;
+  private final int priority;
 
   private String output;
 
   TortugaContext(String handle,
                  RetryContext retryCtx,
                  Channel chan,
-                 Worker worker) {
+                 Worker worker,
+                 int priority) {
     this.handle = handle;
     this.retryCtx = retryCtx;
     this.tortugaChan = chan;
     this.worker = worker;
+    this.priority = priority;
   }
 
   public void log(String s) {
@@ -98,5 +101,9 @@ public class TortugaContext {
 
   public RetryContext retryCtx() {
     return retryCtx;
+  }
+
+  public int priority() {
+    return priority;
   }
 }
