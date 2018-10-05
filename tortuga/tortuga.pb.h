@@ -887,6 +887,12 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
   bool none() const;
   void set_none(bool value);
 
+  // int32 priority = 7;
+  void clear_priority();
+  static const int kPriorityFieldNumber = 7;
+  ::google::protobuf::int32 priority() const;
+  void set_priority(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:tortuga.TaskResp)
  private:
 
@@ -897,6 +903,7 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::Any* data_;
   ::tortuga::TaskResp_RetryContext* retry_ctx_;
   bool none_;
+  ::google::protobuf::int32 priority_;
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskRespImpl();
@@ -3062,6 +3069,20 @@ inline void TaskResp::set_allocated_retry_ctx(::tortuga::TaskResp_RetryContext* 
   }
   retry_ctx_ = retry_ctx;
   // @@protoc_insertion_point(field_set_allocated:tortuga.TaskResp.retry_ctx)
+}
+
+// int32 priority = 7;
+inline void TaskResp::clear_priority() {
+  priority_ = 0;
+}
+inline ::google::protobuf::int32 TaskResp::priority() const {
+  // @@protoc_insertion_point(field_get:tortuga.TaskResp.priority)
+  return priority_;
+}
+inline void TaskResp::set_priority(::google::protobuf::int32 value) {
+  
+  priority_ = value;
+  // @@protoc_insertion_point(field_set:tortuga.TaskResp.priority)
 }
 
 // -------------------------------------------------------------------

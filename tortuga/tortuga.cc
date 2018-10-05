@@ -132,6 +132,7 @@ void TortugaHandler::HandleRequestTask() {
       reply.set_handle(folly::to<std::string>(res.handle));
       reply.mutable_retry_ctx()->set_retries(res.retries);
       reply.mutable_retry_ctx()->set_progress_metadata(res.progress_metadata);
+      reply.set_priority(res.priority);
     }
   }
 

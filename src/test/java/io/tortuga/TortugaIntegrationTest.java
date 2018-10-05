@@ -1,6 +1,9 @@
 package io.tortuga;
 
+import com.google.common.collect.ConcurrentHashMultiset;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Multiset;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -679,5 +682,42 @@ public class TortugaIntegrationTest {
 
     tortuga.shutdown();
     conn.shutdown();
+  }
+
+  @Test
+  public void testRequestPriority() {
+    CountDownLatch latch = new CountDownLatch(10);
+    TortugaConnection conn = TortugaConnection.newConnection("127.0.0.1", 4000);
+    Tortuga tortuga = conn.newWorker("test_worker");
+    tortuga.withConcurrency(4);
+    Multiset<Integer> foundPriorities = ConcurrentHashMultiset.create();
+
+    TestServiceTortuga.ImplBase handler = new TestServiceTortuga.ImplBase() {
+      @Override
+      public ListenableFuture<Status> handleCustomMessage(TestMessage t, TortugaContext ctx) {
+        LOG.info("received task to handle: {}", t);
+        foundPriorities.add(ctx.priority());
+        latch.countDown();
+        return Futures.immediateFuture(Status.OK);
+      }
+    };
+
+    tortuga.addService(handler);
+    tortuga.start();
+
+    TestServiceTortuga.Publisher publisher = TestServiceTortuga.newPublisher(conn);
+    int[] priorities = new int[] {0, 10, 3, 4, 10, 0, 0, 3, 5, 7};
+    Multiset<Integer> expected = HashMultiset.create();
+
+    for (int i = 1; i <= 10; ++i) {
+      TestMessage testMessage = TestMessage.newBuilder()
+          .setId("field_" + i)
+          .build();
+      publisher.publishHandleCustomMessageTask(TaskSpec.ofId("TestTask" + i).withPriority(priorities[i - 1]), testMessage);
+      expected.add(priorities[i - 1]);
+    }
+
+    Uninterruptibles.awaitUninterruptibly(latch);
+    Assert.assertEquals(expected, foundPriorities);
   }
 }
