@@ -52,6 +52,7 @@ message TaskResp {
   }
 
   RetryContext retry_ctx = 6;
+  int32 priority = 7;
 }
 
 message Task {

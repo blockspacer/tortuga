@@ -69,6 +69,7 @@ class TortugaHandler : boost::noncopyable {
     std::string handle;
     std::string type;
     std::string data;
+    int priority{ 0 };
     int retries{ 0 };
     std::string progress_metadata;
   };
