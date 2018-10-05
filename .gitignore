@@ -19,3 +19,4 @@ CTestTestfile.cmake
 /bazel-testlogs
 /bazel-tortuga
 
+/.vscode
