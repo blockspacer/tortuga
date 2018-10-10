@@ -25,6 +25,11 @@ class TortugaBridgeOptsDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<TortugaBridgeOpts>
       _instance;
 } _TortugaBridgeOpts_default_instance_;
+class TortugaOutputDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<TortugaOutput>
+      _instance;
+} _TortugaOutput_default_instance_;
 }  // namespace tortuga
 namespace protobuf_tortuga_2ftortuga_5fparams_2eproto {
 void InitDefaultsTortugaBridgeOptsImpl() {
@@ -48,7 +53,28 @@ void InitDefaultsTortugaBridgeOpts() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsTortugaBridgeOptsImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[1];
+void InitDefaultsTortugaOutputImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::tortuga::_TortugaOutput_default_instance_;
+    new (ptr) ::tortuga::TortugaOutput();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::TortugaOutput::InitAsDefaultInstance();
+}
+
+void InitDefaultsTortugaOutput() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsTortugaOutputImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TortugaBridgeOpts, _has_bits_),
@@ -58,13 +84,22 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TortugaBridgeOpts, timeout_seconds_),
   0,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TortugaOutput, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TortugaOutput, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::TortugaOutput, output_),
+  0,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 6, sizeof(::tortuga::TortugaBridgeOpts)},
+  { 7, 13, sizeof(::tortuga::TortugaOutput)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TortugaBridgeOpts_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TortugaOutput_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -83,7 +118,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 2);
 }
 
 void AddDescriptorsImpl() {
@@ -91,13 +126,14 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\034tortuga/tortuga_params.proto\022\007tortuga\032"
       " google/protobuf/descriptor.proto\",\n\021Tor"
-      "tugaBridgeOpts\022\027\n\017timeout_seconds\030\001 \001(\005:"
-      "L\n\006bridge\022\036.google.protobuf.MethodOption"
-      "s\030\327\206\003 \001(\0132\032.tortuga.TortugaBridgeOptsB \n"
-      "\nio.tortugaB\022TortugaParamsProto"
+      "tugaBridgeOpts\022\027\n\017timeout_seconds\030\001 \001(\005\""
+      "\037\n\rTortugaOutput\022\016\n\006output\030\001 \001(\t:L\n\006brid"
+      "ge\022\036.google.protobuf.MethodOptions\030\327\206\003 \001"
+      "(\0132\032.tortuga.TortugaBridgeOptsB \n\nio.tor"
+      "tugaB\022TortugaParamsProto"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 231);
+      descriptor, 264);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tortuga/tortuga_params.proto", &protobuf_RegisterTypes);
   ::protobuf_google_2fprotobuf_2fdescriptor_2eproto::AddDescriptors();
@@ -354,6 +390,271 @@ void TortugaBridgeOpts::InternalSwap(TortugaBridgeOpts* other) {
 }
 
 ::google::protobuf::Metadata TortugaBridgeOpts::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_5fparams_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_5fparams_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void TortugaOutput::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int TortugaOutput::kOutputFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+TortugaOutput::TortugaOutput()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_5fparams_2eproto::InitDefaultsTortugaOutput();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.TortugaOutput)
+}
+TortugaOutput::TortugaOutput(const TortugaOutput& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  output_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.has_output()) {
+    output_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.output_);
+  }
+  // @@protoc_insertion_point(copy_constructor:tortuga.TortugaOutput)
+}
+
+void TortugaOutput::SharedCtor() {
+  _cached_size_ = 0;
+  output_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+TortugaOutput::~TortugaOutput() {
+  // @@protoc_insertion_point(destructor:tortuga.TortugaOutput)
+  SharedDtor();
+}
+
+void TortugaOutput::SharedDtor() {
+  output_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void TortugaOutput::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* TortugaOutput::descriptor() {
+  ::protobuf_tortuga_2ftortuga_5fparams_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_5fparams_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const TortugaOutput& TortugaOutput::default_instance() {
+  ::protobuf_tortuga_2ftortuga_5fparams_2eproto::InitDefaultsTortugaOutput();
+  return *internal_default_instance();
+}
+
+TortugaOutput* TortugaOutput::New(::google::protobuf::Arena* arena) const {
+  TortugaOutput* n = new TortugaOutput;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void TortugaOutput::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.TortugaOutput)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    GOOGLE_DCHECK(!output_.IsDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited()));
+    (*output_.UnsafeRawStringPointer())->clear();
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool TortugaOutput::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.TortugaOutput)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string output = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_output()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->output().data(), static_cast<int>(this->output().length()),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "tortuga.TortugaOutput.output");
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.TortugaOutput)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.TortugaOutput)
+  return false;
+#undef DO_
+}
+
+void TortugaOutput::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.TortugaOutput)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // optional string output = 1;
+  if (cached_has_bits & 0x00000001u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->output().data(), static_cast<int>(this->output().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "tortuga.TortugaOutput.output");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->output(), output);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        _internal_metadata_.unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.TortugaOutput)
+}
+
+::google::protobuf::uint8* TortugaOutput::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.TortugaOutput)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // optional string output = 1;
+  if (cached_has_bits & 0x00000001u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->output().data(), static_cast<int>(this->output().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "tortuga.TortugaOutput.output");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->output(), target);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.TortugaOutput)
+  return target;
+}
+
+size_t TortugaOutput::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.TortugaOutput)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        _internal_metadata_.unknown_fields());
+  }
+  // optional string output = 1;
+  if (has_output()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->output());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void TortugaOutput::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.TortugaOutput)
+  GOOGLE_DCHECK_NE(&from, this);
+  const TortugaOutput* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const TortugaOutput>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.TortugaOutput)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.TortugaOutput)
+    MergeFrom(*source);
+  }
+}
+
+void TortugaOutput::MergeFrom(const TortugaOutput& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.TortugaOutput)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_output()) {
+    set_has_output();
+    output_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.output_);
+  }
+}
+
+void TortugaOutput::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.TortugaOutput)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void TortugaOutput::CopyFrom(const TortugaOutput& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.TortugaOutput)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TortugaOutput::IsInitialized() const {
+  return true;
+}
+
+void TortugaOutput::Swap(TortugaOutput* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void TortugaOutput::InternalSwap(TortugaOutput* other) {
+  using std::swap;
+  output_.Swap(&other->output_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata TortugaOutput::GetMetadata() const {
   protobuf_tortuga_2ftortuga_5fparams_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_tortuga_2ftortuga_5fparams_2eproto::file_level_metadata[kIndexInFileMessages];
 }
