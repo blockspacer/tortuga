@@ -37,7 +37,7 @@ namespace protobuf_tortuga_2ftortuga_5fparams_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[1];
+  static const ::google::protobuf::internal::ParseTable schema[2];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -45,14 +45,20 @@ struct TableStruct {
 void AddDescriptors();
 void InitDefaultsTortugaBridgeOptsImpl();
 void InitDefaultsTortugaBridgeOpts();
+void InitDefaultsTortugaOutputImpl();
+void InitDefaultsTortugaOutput();
 inline void InitDefaults() {
   InitDefaultsTortugaBridgeOpts();
+  InitDefaultsTortugaOutput();
 }
 }  // namespace protobuf_tortuga_2ftortuga_5fparams_2eproto
 namespace tortuga {
 class TortugaBridgeOpts;
 class TortugaBridgeOptsDefaultTypeInternal;
 extern TortugaBridgeOptsDefaultTypeInternal _TortugaBridgeOpts_default_instance_;
+class TortugaOutput;
+class TortugaOutputDefaultTypeInternal;
+extern TortugaOutputDefaultTypeInternal _TortugaOutput_default_instance_;
 }  // namespace tortuga
 namespace tortuga {
 
@@ -166,6 +172,124 @@ class TortugaBridgeOpts : public ::google::protobuf::Message /* @@protoc_inserti
   friend struct ::protobuf_tortuga_2ftortuga_5fparams_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_5fparams_2eproto::InitDefaultsTortugaBridgeOptsImpl();
 };
+// -------------------------------------------------------------------
+
+class TortugaOutput : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.TortugaOutput) */ {
+ public:
+  TortugaOutput();
+  virtual ~TortugaOutput();
+
+  TortugaOutput(const TortugaOutput& from);
+
+  inline TortugaOutput& operator=(const TortugaOutput& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  TortugaOutput(TortugaOutput&& from) noexcept
+    : TortugaOutput() {
+    *this = ::std::move(from);
+  }
+
+  inline TortugaOutput& operator=(TortugaOutput&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const TortugaOutput& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const TortugaOutput* internal_default_instance() {
+    return reinterpret_cast<const TortugaOutput*>(
+               &_TortugaOutput_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    1;
+
+  void Swap(TortugaOutput* other);
+  friend void swap(TortugaOutput& a, TortugaOutput& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline TortugaOutput* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  TortugaOutput* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const TortugaOutput& from);
+  void MergeFrom(const TortugaOutput& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(TortugaOutput* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string output = 1;
+  bool has_output() const;
+  void clear_output();
+  static const int kOutputFieldNumber = 1;
+  const ::std::string& output() const;
+  void set_output(const ::std::string& value);
+  #if LANG_CXX11
+  void set_output(::std::string&& value);
+  #endif
+  void set_output(const char* value);
+  void set_output(const char* value, size_t size);
+  ::std::string* mutable_output();
+  ::std::string* release_output();
+  void set_allocated_output(::std::string* output);
+
+  // @@protoc_insertion_point(class_scope:tortuga.TortugaOutput)
+ private:
+  void set_has_output();
+  void clear_has_output();
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
+  mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr output_;
+  friend struct ::protobuf_tortuga_2ftortuga_5fparams_2eproto::TableStruct;
+  friend void ::protobuf_tortuga_2ftortuga_5fparams_2eproto::InitDefaultsTortugaOutputImpl();
+};
 // ===================================================================
 
 static const int kBridgeFieldNumber = 50007;
@@ -205,9 +329,78 @@ inline void TortugaBridgeOpts::set_timeout_seconds(::google::protobuf::int32 val
   // @@protoc_insertion_point(field_set:tortuga.TortugaBridgeOpts.timeout_seconds)
 }
 
+// -------------------------------------------------------------------
+
+// TortugaOutput
+
+// optional string output = 1;
+inline bool TortugaOutput::has_output() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void TortugaOutput::set_has_output() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void TortugaOutput::clear_has_output() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void TortugaOutput::clear_output() {
+  output_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_output();
+}
+inline const ::std::string& TortugaOutput::output() const {
+  // @@protoc_insertion_point(field_get:tortuga.TortugaOutput.output)
+  return output_.GetNoArena();
+}
+inline void TortugaOutput::set_output(const ::std::string& value) {
+  set_has_output();
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.TortugaOutput.output)
+}
+#if LANG_CXX11
+inline void TortugaOutput::set_output(::std::string&& value) {
+  set_has_output();
+  output_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.TortugaOutput.output)
+}
+#endif
+inline void TortugaOutput::set_output(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  set_has_output();
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.TortugaOutput.output)
+}
+inline void TortugaOutput::set_output(const char* value, size_t size) {
+  set_has_output();
+  output_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.TortugaOutput.output)
+}
+inline ::std::string* TortugaOutput::mutable_output() {
+  set_has_output();
+  // @@protoc_insertion_point(field_mutable:tortuga.TortugaOutput.output)
+  return output_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* TortugaOutput::release_output() {
+  // @@protoc_insertion_point(field_release:tortuga.TortugaOutput.output)
+  clear_has_output();
+  return output_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void TortugaOutput::set_allocated_output(::std::string* output) {
+  if (output != NULL) {
+    set_has_output();
+  } else {
+    clear_has_output();
+  }
+  output_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), output);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.TortugaOutput.output)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 

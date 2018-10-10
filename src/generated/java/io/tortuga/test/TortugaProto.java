@@ -555,17 +555,17 @@ public final class TortugaProto {
     java.lang.String[] descriptorData = {
       "\n\022tortuga/test.proto\022\014tortuga.test\032\033goog" +
       "le/protobuf/empty.proto\032\036google/protobuf" +
-      "/wrappers.proto\"\031\n\013TestMessage\022\n\n\002id\030\001 \001" +
-      "(\t2\233\001\n\013TestService\022B\n\nHandleTask\022\034.googl" +
-      "e.protobuf.StringValue\032\026.google.protobuf" +
-      ".Empty\022H\n\023HandleCustomMessage\022\031.tortuga." +
-      "test.TestMessage\032\026.google.protobuf.Empty" +
-      "2\236\001\n\014TestService2\022C\n\013HandleTask2\022\034.googl" +
-      "e.protobuf.StringValue\032\026.google.protobuf" +
-      ".Empty\022I\n\024HandleCustomMessage2\022\031.tortuga" +
-      ".test.TestMessage\032\026.google.protobuf.Empt" +
-      "yB\037\n\017io.tortuga.testB\014TortugaProtob\006prot" +
-      "o3"
+      "/wrappers.proto\032\034tortuga/tortuga_params." +
+      "proto\"\031\n\013TestMessage\022\n\n\002id\030\001 \001(\t2\233\001\n\013Tes" +
+      "tService\022B\n\nHandleTask\022\034.google.protobuf" +
+      ".StringValue\032\026.google.protobuf.Empty\022H\n\023" +
+      "HandleCustomMessage\022\031.tortuga.test.TestM" +
+      "essage\032\026.google.protobuf.Empty2\236\001\n\014TestS" +
+      "ervice2\022C\n\013HandleTask2\022\034.google.protobuf" +
+      ".StringValue\032\026.google.protobuf.Empty\022I\n\024" +
+      "HandleCustomMessage2\022\031.tortuga.test.Test" +
+      "Message\032\026.tortuga.TortugaOutputB\037\n\017io.to" +
+      "rtuga.testB\014TortugaProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -580,6 +580,7 @@ public final class TortugaProto {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.EmptyProto.getDescriptor(),
           com.google.protobuf.WrappersProto.getDescriptor(),
+          io.tortuga.TortugaParamsProto.getDescriptor(),
         }, assigner);
     internal_static_tortuga_test_TestMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -589,6 +590,7 @@ public final class TortugaProto {
         new java.lang.String[] { "Id", });
     com.google.protobuf.EmptyProto.getDescriptor();
     com.google.protobuf.WrappersProto.getDescriptor();
+    io.tortuga.TortugaParamsProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

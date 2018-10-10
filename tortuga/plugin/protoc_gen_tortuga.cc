@@ -211,6 +211,7 @@ void GenerateService(const ServiceDescriptor* service,
   for (int i = 0; i < service->method_count(); ++i) {
     const MethodDescriptor* method = service->method(i);
     std::string t_type = FullyQualifiedJava(method->input_type());
+    bool supports_output = method->output_type()->full_name() == "tortuga.TortugaOutput";
     out << "    private ListenableFuture<Status> do_" << JavaMethodName(method) << "Impl(com.google.protobuf.Any data, TortugaContext ctx) {\n";
     out << "      " << t_type << " t = null;\n";    
     out << "      try {\n";
@@ -222,7 +223,12 @@ void GenerateService(const ServiceDescriptor* service,
     out << "      " << FullyQualifiedServiceClass(service) << "." << service->name() << "BlockingStub stub = " << FullyQualifiedServiceClass(service) << ".newBlockingStub(this.chan);\n";
     out << "      stub = stub.withDeadlineAfter(" << TortugaDeadlineSeconds(method) << ", TimeUnit.SECONDS);\n";
     out << "      try {\n";
-    out << "        stub." << JavaMethodName(method) << "(t);\n";
+    if (supports_output) {
+      out << "        io.tortuga.TortugaParamsProto.TortugaOutput output = stub." << JavaMethodName(method) << "(t);\n";
+      out << "        ctx.setOutput(output.getOutput());\n";
+    } else {
+      out << "        stub." << JavaMethodName(method) << "(t);\n";
+    }
     out << "        return Futures.immediateFuture(Status.OK);\n";
     out << "      } catch (StatusRuntimeException ex) {\n";
     out << "        return Futures.immediateFuture(ex.getStatus());\n";
