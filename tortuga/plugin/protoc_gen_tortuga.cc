@@ -222,6 +222,7 @@ void GenerateService(const ServiceDescriptor* service,
     out << "      }\n";
     out << "      " << FullyQualifiedServiceClass(service) << "." << service->name() << "BlockingStub stub = " << FullyQualifiedServiceClass(service) << ".newBlockingStub(this.chan);\n";
     out << "      stub = stub.withDeadlineAfter(" << TortugaDeadlineSeconds(method) << ", TimeUnit.SECONDS);\n";
+    out << "      stub = io.tortuga.TortugaHandlers.withHandleMetadata(stub, ctx);\n";
     out << "      try {\n";
     if (supports_output) {
       out << "        io.tortuga.TortugaParamsProto.TortugaOutput output = stub." << JavaMethodName(method) << "(t);\n";
