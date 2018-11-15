@@ -301,72 +301,72 @@ impl FirestoreClient {
 }
 
 pub trait Firestore {
-    fn get_document(&self, ctx: ::grpcio::RpcContext, req: super::firestore::GetDocumentRequest, sink: ::grpcio::UnarySink<super::document::Document>);
-    fn list_documents(&self, ctx: ::grpcio::RpcContext, req: super::firestore::ListDocumentsRequest, sink: ::grpcio::UnarySink<super::firestore::ListDocumentsResponse>);
-    fn create_document(&self, ctx: ::grpcio::RpcContext, req: super::firestore::CreateDocumentRequest, sink: ::grpcio::UnarySink<super::document::Document>);
-    fn update_document(&self, ctx: ::grpcio::RpcContext, req: super::firestore::UpdateDocumentRequest, sink: ::grpcio::UnarySink<super::document::Document>);
-    fn delete_document(&self, ctx: ::grpcio::RpcContext, req: super::firestore::DeleteDocumentRequest, sink: ::grpcio::UnarySink<super::empty::Empty>);
-    fn batch_get_documents(&self, ctx: ::grpcio::RpcContext, req: super::firestore::BatchGetDocumentsRequest, sink: ::grpcio::ServerStreamingSink<super::firestore::BatchGetDocumentsResponse>);
-    fn begin_transaction(&self, ctx: ::grpcio::RpcContext, req: super::firestore::BeginTransactionRequest, sink: ::grpcio::UnarySink<super::firestore::BeginTransactionResponse>);
-    fn commit(&self, ctx: ::grpcio::RpcContext, req: super::firestore::CommitRequest, sink: ::grpcio::UnarySink<super::firestore::CommitResponse>);
-    fn rollback(&self, ctx: ::grpcio::RpcContext, req: super::firestore::RollbackRequest, sink: ::grpcio::UnarySink<super::empty::Empty>);
-    fn run_query(&self, ctx: ::grpcio::RpcContext, req: super::firestore::RunQueryRequest, sink: ::grpcio::ServerStreamingSink<super::firestore::RunQueryResponse>);
-    fn write(&self, ctx: ::grpcio::RpcContext, stream: ::grpcio::RequestStream<super::firestore::WriteRequest>, sink: ::grpcio::DuplexSink<super::firestore::WriteResponse>);
-    fn listen(&self, ctx: ::grpcio::RpcContext, stream: ::grpcio::RequestStream<super::firestore::ListenRequest>, sink: ::grpcio::DuplexSink<super::firestore::ListenResponse>);
-    fn list_collection_ids(&self, ctx: ::grpcio::RpcContext, req: super::firestore::ListCollectionIdsRequest, sink: ::grpcio::UnarySink<super::firestore::ListCollectionIdsResponse>);
+    fn get_document(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::GetDocumentRequest, sink: ::grpcio::UnarySink<super::document::Document>);
+    fn list_documents(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::ListDocumentsRequest, sink: ::grpcio::UnarySink<super::firestore::ListDocumentsResponse>);
+    fn create_document(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::CreateDocumentRequest, sink: ::grpcio::UnarySink<super::document::Document>);
+    fn update_document(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::UpdateDocumentRequest, sink: ::grpcio::UnarySink<super::document::Document>);
+    fn delete_document(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::DeleteDocumentRequest, sink: ::grpcio::UnarySink<super::empty::Empty>);
+    fn batch_get_documents(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::BatchGetDocumentsRequest, sink: ::grpcio::ServerStreamingSink<super::firestore::BatchGetDocumentsResponse>);
+    fn begin_transaction(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::BeginTransactionRequest, sink: ::grpcio::UnarySink<super::firestore::BeginTransactionResponse>);
+    fn commit(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::CommitRequest, sink: ::grpcio::UnarySink<super::firestore::CommitResponse>);
+    fn rollback(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::RollbackRequest, sink: ::grpcio::UnarySink<super::empty::Empty>);
+    fn run_query(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::RunQueryRequest, sink: ::grpcio::ServerStreamingSink<super::firestore::RunQueryResponse>);
+    fn write(&mut self, ctx: ::grpcio::RpcContext, stream: ::grpcio::RequestStream<super::firestore::WriteRequest>, sink: ::grpcio::DuplexSink<super::firestore::WriteResponse>);
+    fn listen(&mut self, ctx: ::grpcio::RpcContext, stream: ::grpcio::RequestStream<super::firestore::ListenRequest>, sink: ::grpcio::DuplexSink<super::firestore::ListenResponse>);
+    fn list_collection_ids(&mut self, ctx: ::grpcio::RpcContext, req: super::firestore::ListCollectionIdsRequest, sink: ::grpcio::UnarySink<super::firestore::ListCollectionIdsResponse>);
 }
 
 pub fn create_firestore<S: Firestore + Send + Clone + 'static>(s: S) -> ::grpcio::Service {
     let mut builder = ::grpcio::ServiceBuilder::new();
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_GET_DOCUMENT, move |ctx, req, resp| {
         instance.get_document(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_LIST_DOCUMENTS, move |ctx, req, resp| {
         instance.list_documents(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_CREATE_DOCUMENT, move |ctx, req, resp| {
         instance.create_document(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_UPDATE_DOCUMENT, move |ctx, req, resp| {
         instance.update_document(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_DELETE_DOCUMENT, move |ctx, req, resp| {
         instance.delete_document(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_server_streaming_handler(&METHOD_FIRESTORE_BATCH_GET_DOCUMENTS, move |ctx, req, resp| {
         instance.batch_get_documents(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_BEGIN_TRANSACTION, move |ctx, req, resp| {
         instance.begin_transaction(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_COMMIT, move |ctx, req, resp| {
         instance.commit(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_ROLLBACK, move |ctx, req, resp| {
         instance.rollback(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_server_streaming_handler(&METHOD_FIRESTORE_RUN_QUERY, move |ctx, req, resp| {
         instance.run_query(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_duplex_streaming_handler(&METHOD_FIRESTORE_WRITE, move |ctx, req, resp| {
         instance.write(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_duplex_streaming_handler(&METHOD_FIRESTORE_LISTEN, move |ctx, req, resp| {
         instance.listen(ctx, req, resp)
     });
-    let instance = s.clone();
+    let mut instance = s.clone();
     builder = builder.add_unary_handler(&METHOD_FIRESTORE_LIST_COLLECTION_IDS, move |ctx, req, resp| {
         instance.list_collection_ids(ctx, req, resp)
     });
