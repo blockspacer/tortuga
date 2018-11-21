@@ -132,6 +132,9 @@ void TortugaHandler::HandleRequestTask() {
     if (res.none) {
       reply.set_none(true);
     } else {
+      // update firestore to set it worked on.
+      MaybeNotifyModulesOfAssignment(res);
+
       reply.set_id(res.id);
       reply.set_type(res.type);
       CHECK(reply.mutable_data()->ParseFromString(res.data));
@@ -302,6 +305,7 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   int priority = select_task_stmt->ColumnInt(4);
   int retries = select_task_stmt->ColumnInt(5);
   std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty(6);
+  std::string modules = select_task_stmt->ColumnTextOrEmpty(7);
 
   SqliteReset x2(&assign_task_stmt_);
   assign_task_stmt_.BindInt(1, retries + 1);
@@ -319,6 +323,8 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   res.priority = priority;
   res.retries = retries + 1;
   std::swap(res.progress_metadata, progress_metadata);
+  folly::split(",", modules, res.modules);
+
   return res;
 }
 
@@ -345,7 +351,7 @@ SqliteStatement* TortugaHandler::GetOrCreateSelectStmtInExec(const Worker& worke
   }
 
   std::string tpl = R"(
-    select rowid, id, task_type, data, priority, retries, progress_metadata from tasks where
+    select rowid, id, task_type, data, priority, retries, progress_metadata, modules from tasks where
         worked_on != 1
         and done != 1
         and task_type IN (%s)
@@ -608,6 +614,22 @@ void TortugaHandler::MaybeNotifyModulesOfCreation(const std::string& handle,
     const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
     if (module != nullptr) {
       VLOG(2) << "notifying module: " << module_name << " of task creation: " << progress.id();
+      (*module)->OnProgressUpdate(progress);
+    }
+  }
+}
+
+void TortugaHandler::MaybeNotifyModulesOfAssignment(const RequestTaskResult& res) {
+  TaskProgress progress;
+  progress.set_handle(folly::to<std::string>(res.handle));
+  progress.set_worked_on(true);
+  progress.set_retries(res.retries);
+  progress.set_done(false);
+
+  for (const auto& module_name : res.modules) {
+    const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
+    if (module != nullptr) {
+      VLOG(2) << "notifying module: " << module_name << " of task assignment: " << progress.id();
       (*module)->OnProgressUpdate(progress);
     }
   }
