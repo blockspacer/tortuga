@@ -28,6 +28,9 @@ java_test(
         "src/test/java/io/tortuga/TortugaIntegrationTest.java",
     ],
     test_class = "io.tortuga.TortugaIntegrationTest",
+    tags = [
+        "exclusive"
+    ],
     deps = [
         ":com_google_guava_guava",
         ":com_google_protobuf_protobuf_java",

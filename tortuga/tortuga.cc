@@ -600,7 +600,7 @@ void TortugaHandler::MaybeNotifyModulesOfUpdate(const UpdatedTask& task) {
 void TortugaHandler::MaybeNotifyModulesOfCreation(const std::string& handle,
                                                   const std::vector<std::string> modules) {
   TaskProgress progress;
-  progress.set_id(handle);
+  progress.set_handle(handle);
   *progress.mutable_created() = TimeUtil::GetCurrentTime();
   // any remaining fields as defaults is fine (worked_on = false etc...).
 
