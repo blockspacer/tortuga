@@ -89,6 +89,12 @@ void TortugaHandler::HandleCreateTask() {
   VLOG(3) << "received CreateTask RPC: " << req.ShortDebugString();
 
   CreateTaskResult res = CreateTask(req.task());
+  if (res.created) {
+    const auto& modules = req.task().modules();
+    std::vector<std::string> mods_vec(modules.begin(), modules.end());
+    MaybeNotifyModulesOfCreation(res.handle, mods_vec);
+  }
+
   CreateResp reply;
   reply.set_handle(res.handle);
   reply.set_created(res.created);
@@ -409,7 +415,7 @@ void TortugaHandler::HandleCompleteTask() {
   VLOG(3) << "received CompleteTask RPC: " << req.ShortDebugString();
   std::unique_ptr<UpdatedTask> progress(CompleteTask(req));
   if (progress != nullptr) {
-    MaybeNotifyModules(*progress);
+    MaybeNotifyModulesOfUpdate(*progress);
     UpdateProgressManagerCache(*progress);
     workers_manager_->OnTaskComplete(folly::to<int64_t>(progress->progress->handle()),
         req.worker());
@@ -499,7 +505,7 @@ void TortugaHandler::HandleUpdateProgress() {
   VLOG(3) << "received HandleUpdateProgress RPC: " << req.ShortDebugString();
   std::unique_ptr<UpdatedTask> progress(UpdateProgress(req));
   if (progress != nullptr) {
-    MaybeNotifyModules(*progress);
+    MaybeNotifyModulesOfUpdate(*progress);
     UpdateProgressManagerCache(*progress);
   }
 
@@ -581,12 +587,28 @@ UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) 
   return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
 
-void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {
+void TortugaHandler::MaybeNotifyModulesOfUpdate(const UpdatedTask& task) {
   for (const auto& module_name : task.modules) {
     const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
     if (module != nullptr) {
       VLOG(2) << "notifying module: " << module_name << " of task progres: " << task.progress->id();
       (*module)->OnProgressUpdate(*task.progress);
+    }
+  }
+}
+
+void TortugaHandler::MaybeNotifyModulesOfCreation(const std::string& handle,
+                                                  const std::vector<std::string> modules) {
+  TaskProgress progress;
+  progress.set_id(handle);
+  *progress.mutable_created() = TimeUtil::GetCurrentTime();
+  // any remaining fields as defaults is fine (worked_on = false etc...).
+
+  for (const auto& module_name : modules) {
+    const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
+    if (module != nullptr) {
+      VLOG(2) << "notifying module: " << module_name << " of task creation: " << progress.id();
+      (*module)->OnProgressUpdate(progress);
     }
   }
 }

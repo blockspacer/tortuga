@@ -88,7 +88,9 @@ class TortugaHandler : boost::noncopyable {
   UpdatedTask* UpdateProgress(const UpdateProgressReq& req);
   UpdatedTask* UpdateProgressInExec(const UpdateProgressReq& req);
 
-  void MaybeNotifyModules(const UpdatedTask& task);
+  void MaybeNotifyModulesOfUpdate(const UpdatedTask& task);
+  void MaybeNotifyModulesOfCreation(const std::string& handle,
+                                    const std::vector<std::string> modules);
   void UpdateProgressManagerCache(const UpdatedTask& task);
 
   // Caller doesn't take ownership.
