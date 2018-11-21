@@ -48,6 +48,12 @@ void FirestoreModule::OnProgressUpdate(const TaskProgress& task) {
   }
 
   {
+    Value worked_on_value;
+    worked_on_value.set_boolean_value(task.worked_on());
+    (*fields)["worked_on"] = worked_on_value;
+  }
+
+  {
     Value progress_value;
     progress_value.set_double_value(static_cast<double>(task.progress()));
     (*fields)["progress"] = progress_value;
