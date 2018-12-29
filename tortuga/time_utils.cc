@@ -8,6 +8,11 @@ int64_t CurrentTimeMillis() {
   return now_ms.count();
 }
 
+int64_t CurrentTimeMicros() {
+  auto now_ms = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch());
+  return now_ms.count();
+}
+
 google::protobuf::Timestamp FromEpochMillis(int64_t millis) {
   google::protobuf::Timestamp t;
   t.set_seconds(millis / 1000L);

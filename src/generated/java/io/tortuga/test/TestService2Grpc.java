@@ -55,16 +55,16 @@ public final class TestService2Grpc {
   }
 
   private static volatile io.grpc.MethodDescriptor<io.tortuga.test.TortugaProto.TestMessage,
-      com.google.protobuf.Empty> getHandleCustomMessage2Method;
+      io.tortuga.TortugaParamsProto.TortugaOutput> getHandleCustomMessage2Method;
 
   public static io.grpc.MethodDescriptor<io.tortuga.test.TortugaProto.TestMessage,
-      com.google.protobuf.Empty> getHandleCustomMessage2Method() {
-    io.grpc.MethodDescriptor<io.tortuga.test.TortugaProto.TestMessage, com.google.protobuf.Empty> getHandleCustomMessage2Method;
+      io.tortuga.TortugaParamsProto.TortugaOutput> getHandleCustomMessage2Method() {
+    io.grpc.MethodDescriptor<io.tortuga.test.TortugaProto.TestMessage, io.tortuga.TortugaParamsProto.TortugaOutput> getHandleCustomMessage2Method;
     if ((getHandleCustomMessage2Method = TestService2Grpc.getHandleCustomMessage2Method) == null) {
       synchronized (TestService2Grpc.class) {
         if ((getHandleCustomMessage2Method = TestService2Grpc.getHandleCustomMessage2Method) == null) {
           TestService2Grpc.getHandleCustomMessage2Method = getHandleCustomMessage2Method = 
-              io.grpc.MethodDescriptor.<io.tortuga.test.TortugaProto.TestMessage, com.google.protobuf.Empty>newBuilder()
+              io.grpc.MethodDescriptor.<io.tortuga.test.TortugaProto.TestMessage, io.tortuga.TortugaParamsProto.TortugaOutput>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "tortuga.test.TestService2", "HandleCustomMessage2"))
@@ -72,7 +72,7 @@ public final class TestService2Grpc {
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   io.tortuga.test.TortugaProto.TestMessage.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.protobuf.Empty.getDefaultInstance()))
+                  io.tortuga.TortugaParamsProto.TortugaOutput.getDefaultInstance()))
                   .setSchemaDescriptor(new TestService2MethodDescriptorSupplier("HandleCustomMessage2"))
                   .build();
           }
@@ -118,7 +118,7 @@ public final class TestService2Grpc {
     /**
      */
     public void handleCustomMessage2(io.tortuga.test.TortugaProto.TestMessage request,
-        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+        io.grpc.stub.StreamObserver<io.tortuga.TortugaParamsProto.TortugaOutput> responseObserver) {
       asyncUnimplementedUnaryCall(getHandleCustomMessage2Method(), responseObserver);
     }
 
@@ -136,7 +136,7 @@ public final class TestService2Grpc {
             asyncUnaryCall(
               new MethodHandlers<
                 io.tortuga.test.TortugaProto.TestMessage,
-                com.google.protobuf.Empty>(
+                io.tortuga.TortugaParamsProto.TortugaOutput>(
                   this, METHODID_HANDLE_CUSTOM_MESSAGE2)))
           .build();
     }
@@ -171,7 +171,7 @@ public final class TestService2Grpc {
     /**
      */
     public void handleCustomMessage2(io.tortuga.test.TortugaProto.TestMessage request,
-        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+        io.grpc.stub.StreamObserver<io.tortuga.TortugaParamsProto.TortugaOutput> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getHandleCustomMessage2Method(), getCallOptions()), request, responseObserver);
     }
@@ -204,7 +204,7 @@ public final class TestService2Grpc {
 
     /**
      */
-    public com.google.protobuf.Empty handleCustomMessage2(io.tortuga.test.TortugaProto.TestMessage request) {
+    public io.tortuga.TortugaParamsProto.TortugaOutput handleCustomMessage2(io.tortuga.test.TortugaProto.TestMessage request) {
       return blockingUnaryCall(
           getChannel(), getHandleCustomMessage2Method(), getCallOptions(), request);
     }
@@ -238,7 +238,7 @@ public final class TestService2Grpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> handleCustomMessage2(
+    public com.google.common.util.concurrent.ListenableFuture<io.tortuga.TortugaParamsProto.TortugaOutput> handleCustomMessage2(
         io.tortuga.test.TortugaProto.TestMessage request) {
       return futureUnaryCall(
           getChannel().newCall(getHandleCustomMessage2Method(), getCallOptions()), request);
@@ -271,7 +271,7 @@ public final class TestService2Grpc {
           break;
         case METHODID_HANDLE_CUSTOM_MESSAGE2:
           serviceImpl.handleCustomMessage2((io.tortuga.test.TortugaProto.TestMessage) request,
-              (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
+              (io.grpc.stub.StreamObserver<io.tortuga.TortugaParamsProto.TortugaOutput>) responseObserver);
           break;
         default:
           throw new AssertionError();

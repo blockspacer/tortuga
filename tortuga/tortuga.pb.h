@@ -42,7 +42,7 @@ namespace protobuf_tortuga_2ftortuga_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[14];
+  static const ::google::protobuf::internal::ParseTable schema[16];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -50,8 +50,10 @@ struct TableStruct {
 void AddDescriptors();
 void InitDefaultsWorkerImpl();
 void InitDefaultsWorker();
-void InitDefaultsHeartbeatImpl();
-void InitDefaultsHeartbeat();
+void InitDefaultsHeartbeatReq_WorkerBeatImpl();
+void InitDefaultsHeartbeatReq_WorkerBeat();
+void InitDefaultsHeartbeatReqImpl();
+void InitDefaultsHeartbeatReq();
 void InitDefaultsTaskReqImpl();
 void InitDefaultsTaskReq();
 void InitDefaultsTaskResp_RetryContextImpl();
@@ -76,9 +78,12 @@ void InitDefaultsProgressRespImpl();
 void InitDefaultsProgressResp();
 void InitDefaultsTaskIdentifierImpl();
 void InitDefaultsTaskIdentifier();
+void InitDefaultsFindTaskReqImpl();
+void InitDefaultsFindTaskReq();
 inline void InitDefaults() {
   InitDefaultsWorker();
-  InitDefaultsHeartbeat();
+  InitDefaultsHeartbeatReq_WorkerBeat();
+  InitDefaultsHeartbeatReq();
   InitDefaultsTaskReq();
   InitDefaultsTaskResp_RetryContext();
   InitDefaultsTaskResp();
@@ -91,6 +96,7 @@ inline void InitDefaults() {
   InitDefaultsProgressReq();
   InitDefaultsProgressResp();
   InitDefaultsTaskIdentifier();
+  InitDefaultsFindTaskReq();
 }
 }  // namespace protobuf_tortuga_2ftortuga_2eproto
 namespace tortuga {
@@ -103,9 +109,15 @@ extern CreateReqDefaultTypeInternal _CreateReq_default_instance_;
 class CreateResp;
 class CreateRespDefaultTypeInternal;
 extern CreateRespDefaultTypeInternal _CreateResp_default_instance_;
-class Heartbeat;
-class HeartbeatDefaultTypeInternal;
-extern HeartbeatDefaultTypeInternal _Heartbeat_default_instance_;
+class FindTaskReq;
+class FindTaskReqDefaultTypeInternal;
+extern FindTaskReqDefaultTypeInternal _FindTaskReq_default_instance_;
+class HeartbeatReq;
+class HeartbeatReqDefaultTypeInternal;
+extern HeartbeatReqDefaultTypeInternal _HeartbeatReq_default_instance_;
+class HeartbeatReq_WorkerBeat;
+class HeartbeatReq_WorkerBeatDefaultTypeInternal;
+extern HeartbeatReq_WorkerBeatDefaultTypeInternal _HeartbeatReq_WorkerBeat_default_instance_;
 class ProgressReq;
 class ProgressReqDefaultTypeInternal;
 extern ProgressReqDefaultTypeInternal _ProgressReq_default_instance_;
@@ -286,24 +298,24 @@ class Worker : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
 };
 // -------------------------------------------------------------------
 
-class Heartbeat : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.Heartbeat) */ {
+class HeartbeatReq_WorkerBeat : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.HeartbeatReq.WorkerBeat) */ {
  public:
-  Heartbeat();
-  virtual ~Heartbeat();
+  HeartbeatReq_WorkerBeat();
+  virtual ~HeartbeatReq_WorkerBeat();
 
-  Heartbeat(const Heartbeat& from);
+  HeartbeatReq_WorkerBeat(const HeartbeatReq_WorkerBeat& from);
 
-  inline Heartbeat& operator=(const Heartbeat& from) {
+  inline HeartbeatReq_WorkerBeat& operator=(const HeartbeatReq_WorkerBeat& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  Heartbeat(Heartbeat&& from) noexcept
-    : Heartbeat() {
+  HeartbeatReq_WorkerBeat(HeartbeatReq_WorkerBeat&& from) noexcept
+    : HeartbeatReq_WorkerBeat() {
     *this = ::std::move(from);
   }
 
-  inline Heartbeat& operator=(Heartbeat&& from) noexcept {
+  inline HeartbeatReq_WorkerBeat& operator=(HeartbeatReq_WorkerBeat&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -313,30 +325,30 @@ class Heartbeat : public ::google::protobuf::Message /* @@protoc_insertion_point
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Heartbeat& default_instance();
+  static const HeartbeatReq_WorkerBeat& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Heartbeat* internal_default_instance() {
-    return reinterpret_cast<const Heartbeat*>(
-               &_Heartbeat_default_instance_);
+  static inline const HeartbeatReq_WorkerBeat* internal_default_instance() {
+    return reinterpret_cast<const HeartbeatReq_WorkerBeat*>(
+               &_HeartbeatReq_WorkerBeat_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     1;
 
-  void Swap(Heartbeat* other);
-  friend void swap(Heartbeat& a, Heartbeat& b) {
+  void Swap(HeartbeatReq_WorkerBeat* other);
+  friend void swap(HeartbeatReq_WorkerBeat& a, HeartbeatReq_WorkerBeat& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline Heartbeat* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline HeartbeatReq_WorkerBeat* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  Heartbeat* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  HeartbeatReq_WorkerBeat* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const Heartbeat& from);
-  void MergeFrom(const Heartbeat& from);
+  void CopyFrom(const HeartbeatReq_WorkerBeat& from);
+  void MergeFrom(const HeartbeatReq_WorkerBeat& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -352,7 +364,7 @@ class Heartbeat : public ::google::protobuf::Message /* @@protoc_insertion_point
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(Heartbeat* other);
+  void InternalSwap(HeartbeatReq_WorkerBeat* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -368,6 +380,18 @@ class Heartbeat : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
+  // repeated int64 current_task_handles = 2;
+  int current_task_handles_size() const;
+  void clear_current_task_handles();
+  static const int kCurrentTaskHandlesFieldNumber = 2;
+  ::google::protobuf::int64 current_task_handles(int index) const;
+  void set_current_task_handles(int index, ::google::protobuf::int64 value);
+  void add_current_task_handles(::google::protobuf::int64 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+      current_task_handles() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+      mutable_current_task_handles();
+
   // .tortuga.Worker worker = 1;
   bool has_worker() const;
   void clear_worker();
@@ -377,14 +401,123 @@ class Heartbeat : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::tortuga::Worker* mutable_worker();
   void set_allocated_worker(::tortuga::Worker* worker);
 
-  // @@protoc_insertion_point(class_scope:tortuga.Heartbeat)
+  // @@protoc_insertion_point(class_scope:tortuga.HeartbeatReq.WorkerBeat)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int64 > current_task_handles_;
+  mutable int _current_task_handles_cached_byte_size_;
   ::tortuga::Worker* worker_;
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
-  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeatImpl();
+  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeatReq_WorkerBeatImpl();
+};
+// -------------------------------------------------------------------
+
+class HeartbeatReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.HeartbeatReq) */ {
+ public:
+  HeartbeatReq();
+  virtual ~HeartbeatReq();
+
+  HeartbeatReq(const HeartbeatReq& from);
+
+  inline HeartbeatReq& operator=(const HeartbeatReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  HeartbeatReq(HeartbeatReq&& from) noexcept
+    : HeartbeatReq() {
+    *this = ::std::move(from);
+  }
+
+  inline HeartbeatReq& operator=(HeartbeatReq&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HeartbeatReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const HeartbeatReq* internal_default_instance() {
+    return reinterpret_cast<const HeartbeatReq*>(
+               &_HeartbeatReq_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    2;
+
+  void Swap(HeartbeatReq* other);
+  friend void swap(HeartbeatReq& a, HeartbeatReq& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline HeartbeatReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  HeartbeatReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const HeartbeatReq& from);
+  void MergeFrom(const HeartbeatReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(HeartbeatReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef HeartbeatReq_WorkerBeat WorkerBeat;
+
+  // accessors -------------------------------------------------------
+
+  // repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;
+  int worker_beats_size() const;
+  void clear_worker_beats();
+  static const int kWorkerBeatsFieldNumber = 1;
+  const ::tortuga::HeartbeatReq_WorkerBeat& worker_beats(int index) const;
+  ::tortuga::HeartbeatReq_WorkerBeat* mutable_worker_beats(int index);
+  ::tortuga::HeartbeatReq_WorkerBeat* add_worker_beats();
+  ::google::protobuf::RepeatedPtrField< ::tortuga::HeartbeatReq_WorkerBeat >*
+      mutable_worker_beats();
+  const ::google::protobuf::RepeatedPtrField< ::tortuga::HeartbeatReq_WorkerBeat >&
+      worker_beats() const;
+
+  // @@protoc_insertion_point(class_scope:tortuga.HeartbeatReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::tortuga::HeartbeatReq_WorkerBeat > worker_beats_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
+  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsHeartbeatReqImpl();
 };
 // -------------------------------------------------------------------
 
@@ -423,7 +556,7 @@ class TaskReq : public ::google::protobuf::Message /* @@protoc_insertion_point(c
                &_TaskReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    2;
+    3;
 
   void Swap(TaskReq* other);
   friend void swap(TaskReq& a, TaskReq& b) {
@@ -525,7 +658,7 @@ class TaskResp_RetryContext : public ::google::protobuf::Message /* @@protoc_ins
                &_TaskResp_RetryContext_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    3;
+    4;
 
   void Swap(TaskResp_RetryContext* other);
   friend void swap(TaskResp_RetryContext& a, TaskResp_RetryContext& b) {
@@ -639,7 +772,7 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_TaskResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    4;
+    5;
 
   void Swap(TaskResp* other);
   friend void swap(TaskResp& a, TaskResp& b) {
@@ -754,6 +887,12 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
   bool none() const;
   void set_none(bool value);
 
+  // int32 priority = 7;
+  void clear_priority();
+  static const int kPriorityFieldNumber = 7;
+  ::google::protobuf::int32 priority() const;
+  void set_priority(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:tortuga.TaskResp)
  private:
 
@@ -764,6 +903,7 @@ class TaskResp : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::Any* data_;
   ::tortuga::TaskResp_RetryContext* retry_ctx_;
   bool none_;
+  ::google::protobuf::int32 priority_;
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskRespImpl();
@@ -805,7 +945,7 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
                &_Task_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
+    6;
 
   void Swap(Task* other);
   friend void swap(Task& a, Task& b) {
@@ -990,7 +1130,7 @@ class TaskProgress : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_TaskProgress_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
+    7;
 
   void Swap(TaskProgress* other);
   friend void swap(TaskProgress& a, TaskProgress& b) {
@@ -1284,7 +1424,7 @@ class CreateReq : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_CreateReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
+    8;
 
   void Swap(CreateReq* other);
   friend void swap(CreateReq& a, CreateReq& b) {
@@ -1386,7 +1526,7 @@ class CreateResp : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_CreateResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    8;
+    9;
 
   void Swap(CreateResp* other);
   friend void swap(CreateResp& a, CreateResp& b) {
@@ -1500,7 +1640,7 @@ class CompleteTaskReq : public ::google::protobuf::Message /* @@protoc_insertion
                &_CompleteTaskReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    9;
+    10;
 
   void Swap(CompleteTaskReq* other);
   friend void swap(CompleteTaskReq& a, CompleteTaskReq& b) {
@@ -1669,7 +1809,7 @@ class UpdateProgressReq : public ::google::protobuf::Message /* @@protoc_inserti
                &_UpdateProgressReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    10;
+    11;
 
   void Swap(UpdateProgressReq* other);
   friend void swap(UpdateProgressReq& a, UpdateProgressReq& b) {
@@ -1816,7 +1956,7 @@ class ProgressReq : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ProgressReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    11;
+    12;
 
   void Swap(ProgressReq* other);
   friend void swap(ProgressReq& a, ProgressReq& b) {
@@ -1923,7 +2063,7 @@ class ProgressResp : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_ProgressResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    12;
+    13;
 
   void Swap(ProgressResp* other);
   friend void swap(ProgressResp& a, ProgressResp& b) {
@@ -2040,7 +2180,7 @@ class TaskIdentifier : public ::google::protobuf::Message /* @@protoc_insertion_
                &_TaskIdentifier_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    13;
+    14;
 
   void Swap(TaskIdentifier* other);
   friend void swap(TaskIdentifier& a, TaskIdentifier& b) {
@@ -2124,6 +2264,112 @@ class TaskIdentifier : public ::google::protobuf::Message /* @@protoc_insertion_
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsTaskIdentifierImpl();
+};
+// -------------------------------------------------------------------
+
+class FindTaskReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.FindTaskReq) */ {
+ public:
+  FindTaskReq();
+  virtual ~FindTaskReq();
+
+  FindTaskReq(const FindTaskReq& from);
+
+  inline FindTaskReq& operator=(const FindTaskReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  FindTaskReq(FindTaskReq&& from) noexcept
+    : FindTaskReq() {
+    *this = ::std::move(from);
+  }
+
+  inline FindTaskReq& operator=(FindTaskReq&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const FindTaskReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const FindTaskReq* internal_default_instance() {
+    return reinterpret_cast<const FindTaskReq*>(
+               &_FindTaskReq_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    15;
+
+  void Swap(FindTaskReq* other);
+  friend void swap(FindTaskReq& a, FindTaskReq& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline FindTaskReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  FindTaskReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const FindTaskReq& from);
+  void MergeFrom(const FindTaskReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(FindTaskReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int64 handle = 1;
+  void clear_handle();
+  static const int kHandleFieldNumber = 1;
+  ::google::protobuf::int64 handle() const;
+  void set_handle(::google::protobuf::int64 value);
+
+  // bool is_for_done_only = 2;
+  void clear_is_for_done_only();
+  static const int kIsForDoneOnlyFieldNumber = 2;
+  bool is_for_done_only() const;
+  void set_is_for_done_only(bool value);
+
+  // @@protoc_insertion_point(class_scope:tortuga.FindTaskReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int64 handle_;
+  bool is_for_done_only_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
+  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsFindTaskReqImpl();
 };
 // ===================================================================
 
@@ -2313,40 +2559,40 @@ Worker::mutable_capabilities() {
 
 // -------------------------------------------------------------------
 
-// Heartbeat
+// HeartbeatReq_WorkerBeat
 
 // .tortuga.Worker worker = 1;
-inline bool Heartbeat::has_worker() const {
+inline bool HeartbeatReq_WorkerBeat::has_worker() const {
   return this != internal_default_instance() && worker_ != NULL;
 }
-inline void Heartbeat::clear_worker() {
+inline void HeartbeatReq_WorkerBeat::clear_worker() {
   if (GetArenaNoVirtual() == NULL && worker_ != NULL) {
     delete worker_;
   }
   worker_ = NULL;
 }
-inline const ::tortuga::Worker& Heartbeat::worker() const {
+inline const ::tortuga::Worker& HeartbeatReq_WorkerBeat::worker() const {
   const ::tortuga::Worker* p = worker_;
-  // @@protoc_insertion_point(field_get:tortuga.Heartbeat.worker)
+  // @@protoc_insertion_point(field_get:tortuga.HeartbeatReq.WorkerBeat.worker)
   return p != NULL ? *p : *reinterpret_cast<const ::tortuga::Worker*>(
       &::tortuga::_Worker_default_instance_);
 }
-inline ::tortuga::Worker* Heartbeat::release_worker() {
-  // @@protoc_insertion_point(field_release:tortuga.Heartbeat.worker)
+inline ::tortuga::Worker* HeartbeatReq_WorkerBeat::release_worker() {
+  // @@protoc_insertion_point(field_release:tortuga.HeartbeatReq.WorkerBeat.worker)
   
   ::tortuga::Worker* temp = worker_;
   worker_ = NULL;
   return temp;
 }
-inline ::tortuga::Worker* Heartbeat::mutable_worker() {
+inline ::tortuga::Worker* HeartbeatReq_WorkerBeat::mutable_worker() {
   
   if (worker_ == NULL) {
     worker_ = new ::tortuga::Worker;
   }
-  // @@protoc_insertion_point(field_mutable:tortuga.Heartbeat.worker)
+  // @@protoc_insertion_point(field_mutable:tortuga.HeartbeatReq.WorkerBeat.worker)
   return worker_;
 }
-inline void Heartbeat::set_allocated_worker(::tortuga::Worker* worker) {
+inline void HeartbeatReq_WorkerBeat::set_allocated_worker(::tortuga::Worker* worker) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete worker_;
@@ -2362,7 +2608,71 @@ inline void Heartbeat::set_allocated_worker(::tortuga::Worker* worker) {
     
   }
   worker_ = worker;
-  // @@protoc_insertion_point(field_set_allocated:tortuga.Heartbeat.worker)
+  // @@protoc_insertion_point(field_set_allocated:tortuga.HeartbeatReq.WorkerBeat.worker)
+}
+
+// repeated int64 current_task_handles = 2;
+inline int HeartbeatReq_WorkerBeat::current_task_handles_size() const {
+  return current_task_handles_.size();
+}
+inline void HeartbeatReq_WorkerBeat::clear_current_task_handles() {
+  current_task_handles_.Clear();
+}
+inline ::google::protobuf::int64 HeartbeatReq_WorkerBeat::current_task_handles(int index) const {
+  // @@protoc_insertion_point(field_get:tortuga.HeartbeatReq.WorkerBeat.current_task_handles)
+  return current_task_handles_.Get(index);
+}
+inline void HeartbeatReq_WorkerBeat::set_current_task_handles(int index, ::google::protobuf::int64 value) {
+  current_task_handles_.Set(index, value);
+  // @@protoc_insertion_point(field_set:tortuga.HeartbeatReq.WorkerBeat.current_task_handles)
+}
+inline void HeartbeatReq_WorkerBeat::add_current_task_handles(::google::protobuf::int64 value) {
+  current_task_handles_.Add(value);
+  // @@protoc_insertion_point(field_add:tortuga.HeartbeatReq.WorkerBeat.current_task_handles)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int64 >&
+HeartbeatReq_WorkerBeat::current_task_handles() const {
+  // @@protoc_insertion_point(field_list:tortuga.HeartbeatReq.WorkerBeat.current_task_handles)
+  return current_task_handles_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
+HeartbeatReq_WorkerBeat::mutable_current_task_handles() {
+  // @@protoc_insertion_point(field_mutable_list:tortuga.HeartbeatReq.WorkerBeat.current_task_handles)
+  return &current_task_handles_;
+}
+
+// -------------------------------------------------------------------
+
+// HeartbeatReq
+
+// repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;
+inline int HeartbeatReq::worker_beats_size() const {
+  return worker_beats_.size();
+}
+inline void HeartbeatReq::clear_worker_beats() {
+  worker_beats_.Clear();
+}
+inline const ::tortuga::HeartbeatReq_WorkerBeat& HeartbeatReq::worker_beats(int index) const {
+  // @@protoc_insertion_point(field_get:tortuga.HeartbeatReq.worker_beats)
+  return worker_beats_.Get(index);
+}
+inline ::tortuga::HeartbeatReq_WorkerBeat* HeartbeatReq::mutable_worker_beats(int index) {
+  // @@protoc_insertion_point(field_mutable:tortuga.HeartbeatReq.worker_beats)
+  return worker_beats_.Mutable(index);
+}
+inline ::tortuga::HeartbeatReq_WorkerBeat* HeartbeatReq::add_worker_beats() {
+  // @@protoc_insertion_point(field_add:tortuga.HeartbeatReq.worker_beats)
+  return worker_beats_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::tortuga::HeartbeatReq_WorkerBeat >*
+HeartbeatReq::mutable_worker_beats() {
+  // @@protoc_insertion_point(field_mutable_list:tortuga.HeartbeatReq.worker_beats)
+  return &worker_beats_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::tortuga::HeartbeatReq_WorkerBeat >&
+HeartbeatReq::worker_beats() const {
+  // @@protoc_insertion_point(field_list:tortuga.HeartbeatReq.worker_beats)
+  return worker_beats_;
 }
 
 // -------------------------------------------------------------------
@@ -2759,6 +3069,20 @@ inline void TaskResp::set_allocated_retry_ctx(::tortuga::TaskResp_RetryContext* 
   }
   retry_ctx_ = retry_ctx;
   // @@protoc_insertion_point(field_set_allocated:tortuga.TaskResp.retry_ctx)
+}
+
+// int32 priority = 7;
+inline void TaskResp::clear_priority() {
+  priority_ = 0;
+}
+inline ::google::protobuf::int32 TaskResp::priority() const {
+  // @@protoc_insertion_point(field_get:tortuga.TaskResp.priority)
+  return priority_;
+}
+inline void TaskResp::set_priority(::google::protobuf::int32 value) {
+  
+  priority_ = value;
+  // @@protoc_insertion_point(field_set:tortuga.TaskResp.priority)
 }
 
 // -------------------------------------------------------------------
@@ -4725,9 +5049,45 @@ inline void TaskIdentifier::set_allocated_type(::std::string* type) {
   // @@protoc_insertion_point(field_set_allocated:tortuga.TaskIdentifier.type)
 }
 
+// -------------------------------------------------------------------
+
+// FindTaskReq
+
+// int64 handle = 1;
+inline void FindTaskReq::clear_handle() {
+  handle_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FindTaskReq::handle() const {
+  // @@protoc_insertion_point(field_get:tortuga.FindTaskReq.handle)
+  return handle_;
+}
+inline void FindTaskReq::set_handle(::google::protobuf::int64 value) {
+  
+  handle_ = value;
+  // @@protoc_insertion_point(field_set:tortuga.FindTaskReq.handle)
+}
+
+// bool is_for_done_only = 2;
+inline void FindTaskReq::clear_is_for_done_only() {
+  is_for_done_only_ = false;
+}
+inline bool FindTaskReq::is_for_done_only() const {
+  // @@protoc_insertion_point(field_get:tortuga.FindTaskReq.is_for_done_only)
+  return is_for_done_only_;
+}
+inline void FindTaskReq::set_is_for_done_only(bool value) {
+  
+  is_for_done_only_ = value;
+  // @@protoc_insertion_point(field_set:tortuga.FindTaskReq.is_for_done_only)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

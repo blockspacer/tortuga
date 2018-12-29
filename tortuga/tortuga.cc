@@ -6,6 +6,7 @@
 
 #include "folly/Conv.h"
 #include "folly/MapUtil.h"
+#include "folly/ScopeGuard.h"
 #include "folly/String.h"
 #include "folly/Unit.h"
 #include "glog/logging.h"
@@ -28,21 +29,7 @@ static const char* const kSelectExistingTaskStmt = "select rowid from tasks wher
 static const char* const kInsertTaskStmt = R"(
     insert into tasks (id, task_type, data, max_retries, priority, delayed_time, modules, created) values (?, ?, ?, ?, ?, ?, ?, ?);
 )";
-
-static const char* const kSelectWorkerUuidStmt = "select uuid from workers where worker_id = ? LIMIT 1";
-
-static const char* const kUpdateWorkerBeatStmt = R"(
-  update workers set last_beat=? where worker_id=? ;
-)";
       
-static const char* const kUpdateWorkerStmt = R"(
-  update workers set uuid=?, capabilities=?, last_beat=? where worker_id=? ;
-)";
-
-static const char* const kInsertWorkerStmt = R"(
-  insert into workers (uuid, worker_id, capabilities, last_beat) values (?, ?, ?, ?);
-)";
-
 static const char* const kAssignTaskStmt = R"(
     update tasks set retries=?, worked_on=1, worker_uuid=?, started_time=? where rowid=? ;
 )";
@@ -63,25 +50,6 @@ static const char* const kCompleteTaskStmt = R"(
     output=?
     where rowid=? ;
 )";
-
-static const char* const kSelectExpiredWorkersStmt = R"(
-    select uuid, last_invalidated_uuid from workers where last_beat < ?;
-)";
-
-static const char* const kUnassignTasksStmt = R"(
-    update tasks set
-    worked_on=0,
-    worker_uuid=NULL
-    where worker_uuid=? and done=0;
-)";
-
-static const char* const kUpdateWorkerInvalidatedUuidStmt = R"(
-    update workers set last_invalidated_uuid=? where uuid=?;
-)";
-
-static const char* const kInsertHistoricWorkerStmt = R"(
-    insert into historic_workers(uuid, worker_id, created) values (?, ?, ?);
-)";
 }  // anonymous namespace
 
 TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules)
@@ -89,19 +57,17 @@ TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::stri
       rpc_opts_(rpc_opts),
       select_existing_task_stmt_(db, kSelectExistingTaskStmt),
       insert_task_stmt_(db_, kInsertTaskStmt),
-      select_worker_uuid_stmt_(db, kSelectWorkerUuidStmt),
-      update_worker_beat_stmt_(db, kUpdateWorkerBeatStmt),
-      update_worker_stmt_(db, kUpdateWorkerStmt),
-      insert_worker_stmt_(db, kInsertWorkerStmt),
       assign_task_stmt_(db, kAssignTaskStmt),
       select_task_to_complete_stmt_(db, kSelectTaskToCompleteStmt),
       complete_task_stmt_(db, kCompleteTaskStmt),
-      select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
-      unassign_tasks_stmt_(db, kUnassignTasksStmt),
-      update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
-      insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt),
       modules_(std::move(modules)) {
   progress_mgr_.reset(new ProgressManager(db, &exec_, rpc_opts));
+  workers_manager_.reset(new WorkersManager(db, &exec_, [this](const std::string& uuid) {
+    // cleanup the prepared statement that would otherwise take up memory.
+    select_task_stmts_.erase(uuid);
+  }));
+
+  workers_manager_->LoadWorkers();
 }
 
 void TortugaHandler::HandleCreateTask() {
@@ -123,6 +89,12 @@ void TortugaHandler::HandleCreateTask() {
   VLOG(3) << "received CreateTask RPC: " << req.ShortDebugString();
 
   CreateTaskResult res = CreateTask(req.task());
+  if (res.created) {
+    const auto& modules = req.task().modules();
+    std::vector<std::string> mods_vec(modules.begin(), modules.end());
+    MaybeNotifyModulesOfCreation(res.handle, mods_vec);
+  }
+
   CreateResp reply;
   reply.set_handle(res.handle);
   reply.set_created(res.created);
@@ -149,18 +121,28 @@ void TortugaHandler::HandleRequestTask() {
   });
 
   VLOG(3) << "received RequestTask RPC: " << req.ShortDebugString();
-  MaybeUpdateWorker(req.worker());
-  RequestTaskResult res = RequestTask(req.worker());
   TaskResp reply;
-  if (res.none) {
+
+  if (!workers_manager_->IsKnownWorker(req.worker())) {
+    // For simplicity reasons, if this is a new worker, we never send it tasks until it has been declared.
+    // Hopefully this worker has a functioning Heartbeat() that will declare it real soon.
     reply.set_none(true);
   } else {
-    reply.set_id(res.id);
-    reply.set_type(res.type);
-    CHECK(reply.mutable_data()->ParseFromString(res.data));
-    reply.set_handle(res.handle);
-    reply.mutable_retry_ctx()->set_retries(res.retries);
-    reply.mutable_retry_ctx()->set_progress_metadata(res.progress_metadata);
+    RequestTaskResult res = RequestTask(req.worker(), ctx.deadline(), true);
+    if (res.none) {
+      reply.set_none(true);
+    } else {
+      // update firestore to set it worked on.
+      MaybeNotifyModulesOfAssignment(res);
+
+      reply.set_id(res.id);
+      reply.set_type(res.type);
+      CHECK(reply.mutable_data()->ParseFromString(res.data));
+      reply.set_handle(folly::to<std::string>(res.handle));
+      reply.mutable_retry_ctx()->set_retries(res.retries);
+      reply.mutable_retry_ctx()->set_progress_metadata(res.progress_metadata);
+      reply.set_priority(res.priority);
+    }
   }
 
   handler.Reset();
@@ -169,11 +151,22 @@ void TortugaHandler::HandleRequestTask() {
 }
 
 TortugaHandler::CreateTaskResult TortugaHandler::CreateTask(const Task& task) {
-  return folly::fibers::await([&](folly::fibers::Promise<CreateTaskResult> p) {
+  auto result = folly::fibers::await([&](folly::fibers::Promise<CreateTaskResult> p) {
     exec_.add([this, &task, promise = std::move(p)]() mutable {
       promise.setValue(CreateTaskInExec(task));
     });
   });
+
+  // See if we can notify someone.
+  std::set<folly::fibers::Baton*>& batons = waiting_for_tasks_[task.type()];
+  if (!batons.empty()) {
+    auto it = batons.begin();
+    folly::fibers::Baton* baton = *it;
+    batons.erase(it);
+    baton->post();
+  }
+
+  return result;
 }
 
 TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& task) {
@@ -244,83 +237,41 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
   return res;
 }
 
-void TortugaHandler::MaybeUpdateWorker(const Worker& worker) {
-  folly::fibers::await([&](folly::fibers::Promise<folly::Unit> p) {
-    exec_.add([this, &worker, promise = std::move(p)]() mutable {
-      MaybeUpdateWorkerInExec(worker);
-      promise.setValue(folly::Unit());
-    });
-  });
-}
-
-std::string JoinCapabilities(const Worker& worker) {
-  std::ostringstream o;
-  for (const std::string& cap : worker.capabilities()) {
-    o << cap << " ";
-  }
-
-  return o.str();
-}
-
-void TortugaHandler::MaybeUpdateWorkerInExec(const Worker& worker) {
-  SqliteReset x1(&select_worker_uuid_stmt_);
-  select_worker_uuid_stmt_.BindText(1, worker.worker_id());
-
-  int stepped = select_worker_uuid_stmt_.Step();
-  if (stepped == SQLITE_ROW) {
-    std::string uuid = select_worker_uuid_stmt_.ColumnText(0);
-    if (worker.uuid() == uuid) {
-      VLOG(3) << "worker: " << uuid << " is up to date.";
-
-      SqliteReset x2(&update_worker_beat_stmt_);
-      update_worker_beat_stmt_.BindLong(1, CurrentTimeMillis());
-      update_worker_beat_stmt_.BindText(2, worker.worker_id());
-      update_worker_beat_stmt_.ExecuteOrDie();
-      return;
-    } else {
-      // The worker existed before but is outdated.
-      VLOG(1) << "outdated worker: " << worker.ShortDebugString() << " versus existing uuid: " << uuid;
-      UnassignTaskInExec(uuid);
-  
-      SqliteReset x2(&update_worker_stmt_);
-      update_worker_stmt_.BindText(1, worker.uuid());
-      update_worker_stmt_.BindText(2, JoinCapabilities(worker));
-      update_worker_stmt_.BindLong(3, CurrentTimeMillis());
-      update_worker_stmt_.BindText(4, worker.worker_id());
-
-      update_worker_stmt_.ExecuteOrDie();
-      
-      InsertHistoricWorkerInExec(worker.uuid(), worker.worker_id());
-    }  
-  } else {
-    LOG(INFO) << "We are welcoming Tortuga worker to this cluster for the first time! " << worker.ShortDebugString();
-    SqliteReset x2(&insert_worker_stmt_);
-    insert_worker_stmt_.BindText(1, worker.uuid());
-    insert_worker_stmt_.BindText(2, worker.worker_id());
-    insert_worker_stmt_.BindText(3, JoinCapabilities(worker));
-    insert_worker_stmt_.BindLong(4, CurrentTimeMillis());
-    insert_worker_stmt_.ExecuteOrDie();
-
-    InsertHistoricWorkerInExec(worker.uuid(), worker.worker_id());
-  }
-}
-
-void TortugaHandler::InsertHistoricWorkerInExec(const std::string& uuid,
-                                                const std::string& worker_id) {
-  SqliteReset x(&insert_historic_worker_stmt_);
-  insert_historic_worker_stmt_.BindText(1, uuid);
-  insert_historic_worker_stmt_.BindText(2, worker_id);
-  insert_historic_worker_stmt_.BindLong(3, CurrentTimeMillis());
-
-  insert_historic_worker_stmt_.ExecuteOrDie();
-}
-
-TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& worker) {
-  return folly::fibers::await([&](folly::fibers::Promise<RequestTaskResult> p) {
+TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& worker,
+                                                              std::chrono::system_clock::time_point rpc_exp,
+                                                              bool first_try) {
+  RequestTaskResult res = folly::fibers::await([&](folly::fibers::Promise<RequestTaskResult> p) {
     exec_.add([this, &worker, promise = std::move(p)]() mutable {
       promise.setValue(RequestTaskInExec(worker));
     });
   });
+
+  if (!res.none) {
+    workers_manager_->OnTaskAssign(res.handle, worker.worker_id(), worker.uuid());
+  } else {
+    if (first_try) {
+      auto now = std::chrono::system_clock::now();
+      auto delay = rpc_exp - now;
+      if (delay > std::chrono::seconds(1)) {
+        // If there is no task, then we can sleep in the hope that there can be one soon.
+        // we only do that if there is a second or more left to the RPC deadline.
+        VLOG(2) << "worker: " << worker.uuid() << "will be waiting in case a task shows up";
+        folly::fibers::Baton baton;
+        RegisterWaitingWorker(worker, &baton);
+        // we leave a second to answer and end the RPC without deadlock.
+        auto wait_duration = delay - std::chrono::seconds(1);
+        SCOPE_EXIT {
+          UnregisterWaitingWorker(worker, &baton);
+        };
+        if (baton.try_wait_for(wait_duration)) {
+          VLOG(1) << "cool, it was worth waiting, requesting task for: " << worker.uuid();
+          return RequestTask(worker, rpc_exp, false);
+        }
+      }
+    }
+  }
+
+  return res;
 }
 
 TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker& worker) {
@@ -351,8 +302,10 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   std::string id = select_task_stmt->ColumnText(1);
   std::string task_type = select_task_stmt->ColumnText(2);
   std::string data = select_task_stmt->ColumnBlob(3);
-  int retries = select_task_stmt->ColumnInt(4);
-  std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty(5);
+  int priority = select_task_stmt->ColumnInt(4);
+  int retries = select_task_stmt->ColumnInt(5);
+  std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty(6);
+  std::string modules = select_task_stmt->ColumnTextOrEmpty(7);
 
   SqliteReset x2(&assign_task_stmt_);
   assign_task_stmt_.BindInt(1, retries + 1);
@@ -364,12 +317,27 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   RequestTaskResult res;
   res.none = false;
   res.id = id;
-  res.handle = folly::to<std::string>(rowid);
+  res.handle = rowid;
   res.type = task_type;
   res.data = data;
+  res.priority = priority;
   res.retries = retries + 1;
   std::swap(res.progress_metadata, progress_metadata);
+  folly::split(",", modules, res.modules);
+
   return res;
+}
+
+void TortugaHandler::RegisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton) {
+  for (const auto& cap : worker.capabilities()) {
+    waiting_for_tasks_[cap].insert(baton);
+  }
+}
+
+void TortugaHandler::UnregisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton) {
+  for (const auto& cap : worker.capabilities()) {
+    waiting_for_tasks_[cap].erase(baton);
+  }
 }
 
 SqliteStatement* TortugaHandler::GetOrCreateSelectStmtInExec(const Worker& worker) {
@@ -383,7 +351,7 @@ SqliteStatement* TortugaHandler::GetOrCreateSelectStmtInExec(const Worker& worke
   }
 
   std::string tpl = R"(
-    select rowid, id, task_type, data, retries, progress_metadata from tasks where
+    select rowid, id, task_type, data, priority, retries, progress_metadata, modules from tasks where
         worked_on != 1
         and done != 1
         and task_type IN (%s)
@@ -408,7 +376,7 @@ void TortugaHandler::HandleHeartbeat() {
   BatonHandler handler;
 
   grpc::ServerContext ctx;
-  Worker req;
+  HeartbeatReq req;
   grpc::ServerAsyncResponseWriter<google::protobuf::Empty> resp(&ctx);
 
   // start a new RPC and wait.
@@ -421,7 +389,12 @@ void TortugaHandler::HandleHeartbeat() {
   });
 
   VLOG(3) << "received Heartbeat RPC: " << req.ShortDebugString();
-  MaybeUpdateWorker(req);
+  VLOG(3) << "after this req the fibers allocated is: " << rpc_opts_.fibers->fibersAllocated()
+          << " pool size: " << rpc_opts_.fibers->fibersPoolSize();
+
+  for (const auto& worker_beat : req.worker_beats()) {
+    workers_manager_->Beat(worker_beat);
+  }
 
   google::protobuf::Empty reply;
   handler.Reset();
@@ -448,7 +421,10 @@ void TortugaHandler::HandleCompleteTask() {
   VLOG(3) << "received CompleteTask RPC: " << req.ShortDebugString();
   std::unique_ptr<UpdatedTask> progress(CompleteTask(req));
   if (progress != nullptr) {
-    MaybeNotifyModules(*progress);
+    MaybeNotifyModulesOfUpdate(*progress);
+    UpdateProgressManagerCache(*progress);
+    workers_manager_->OnTaskComplete(folly::to<int64_t>(progress->progress->handle()),
+        req.worker());
   }
 
   google::protobuf::Empty reply;
@@ -503,7 +479,7 @@ UpdatedTask* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
 
   complete_task_stmt_.ExecuteOrDie();
   
-  return progress_mgr_->FindTaskByHandleInExec(req.handle());
+  return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
 
 void TortugaHandler::CheckHeartbeatsLoop() {
@@ -512,66 +488,8 @@ void TortugaHandler::CheckHeartbeatsLoop() {
   for (;;) {
     folly::fibers::Baton baton;
     CHECK(!baton.timed_wait(std::chrono::milliseconds(500)));
-    CheckHeartbeats();
+    workers_manager_->CheckHeartbeats();
   }
-}
-
-void TortugaHandler::CheckHeartbeats() {
-  VLOG(3) << "checking heartbeats";
-
-  folly::fibers::await([&](folly::fibers::Promise<folly::Unit> p) {
-    exec_.add([this, promise = std::move(p)]() mutable {
-      std::vector<std::string> uuids = ExpiredWorkersInExec();
-      UnassignTasksInExec(uuids);
-      promise.setValue(folly::Unit());
-    });
-  });
-
-  VLOG(3) << "done checking heartbeats...";
-}
-
-std::vector<std::string> TortugaHandler::ExpiredWorkersInExec() {
-  SqliteReset x1(&select_expired_workers_stmt_);
-  // a worker shall not miss a heartbeat in 30 seconds.
-  int64_t expired_millis = CurrentTimeMillis() - 30000L;
-  select_expired_workers_stmt_.BindLong(1, expired_millis);
-
-  std::vector<std::string> res;
-
-  while (SQLITE_ROW == select_expired_workers_stmt_.Step()) {
-    std::string uuid = select_expired_workers_stmt_.ColumnText(0);
-    std::string last_invalidated_uuid = select_expired_workers_stmt_.ColumnTextOrEmpty(1);
-
-    if (uuid != last_invalidated_uuid) {
-      res.push_back(uuid);
-    }
-  }
-
-  VLOG(1) << "Found: " << res.size() << " expired workers.";
-  return res;
-}
-
-void TortugaHandler::UnassignTasksInExec(const std::vector<std::string>& uuids) {
-  for (const auto& uuid : uuids) {
-    UnassignTaskInExec(uuid);
-  }
-}
-
-void TortugaHandler::UnassignTaskInExec(const std::string& uuid) {
-  VLOG(2) << "unassigning tasks of expired worker: " << uuid;
-
-  SqliteTx tx(db_);
-  SqliteReset x1(&unassign_tasks_stmt_);
-  unassign_tasks_stmt_.BindText(1, uuid);
-  unassign_tasks_stmt_.ExecuteOrDie();
-
-  SqliteReset x2(&update_worker_invalidated_uuid_stmt_);
-  update_worker_invalidated_uuid_stmt_.BindText(1, uuid);
-  update_worker_invalidated_uuid_stmt_.BindText(2, uuid);
-  update_worker_invalidated_uuid_stmt_.ExecuteOrDie();
-
-  // cleanup the prepared statement that would otherwise take up memory.
-  select_task_stmts_.erase(uuid);
 }
 
 void TortugaHandler::HandleUpdateProgress() {
@@ -593,7 +511,8 @@ void TortugaHandler::HandleUpdateProgress() {
   VLOG(3) << "received HandleUpdateProgress RPC: " << req.ShortDebugString();
   std::unique_ptr<UpdatedTask> progress(UpdateProgress(req));
   if (progress != nullptr) {
-    MaybeNotifyModules(*progress);
+    MaybeNotifyModulesOfUpdate(*progress);
+    UpdateProgressManagerCache(*progress);
   }
 
   google::protobuf::Empty reply;
@@ -671,10 +590,10 @@ UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) 
   SqliteReset x2(&stmt);
   stmt.ExecuteOrDie();
 
-  return progress_mgr_->FindTaskByHandleInExec(req.handle());
+  return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
 
-void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {
+void TortugaHandler::MaybeNotifyModulesOfUpdate(const UpdatedTask& task) {
   for (const auto& module_name : task.modules) {
     const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
     if (module != nullptr) {
@@ -682,6 +601,42 @@ void TortugaHandler::MaybeNotifyModules(const UpdatedTask& task) {
       (*module)->OnProgressUpdate(*task.progress);
     }
   }
+}
+
+void TortugaHandler::MaybeNotifyModulesOfCreation(const std::string& handle,
+                                                  const std::vector<std::string> modules) {
+  TaskProgress progress;
+  progress.set_handle(handle);
+  *progress.mutable_created() = TimeUtil::GetCurrentTime();
+  // any remaining fields as defaults is fine (worked_on = false etc...).
+
+  for (const auto& module_name : modules) {
+    const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
+    if (module != nullptr) {
+      VLOG(2) << "notifying module: " << module_name << " of task creation: " << progress.id();
+      (*module)->OnProgressUpdate(progress);
+    }
+  }
+}
+
+void TortugaHandler::MaybeNotifyModulesOfAssignment(const RequestTaskResult& res) {
+  TaskProgress progress;
+  progress.set_handle(folly::to<std::string>(res.handle));
+  progress.set_worked_on(true);
+  progress.set_retries(res.retries);
+  progress.set_done(false);
+
+  for (const auto& module_name : res.modules) {
+    const std::unique_ptr<Module>* module = folly::get_ptr(modules_, module_name);
+    if (module != nullptr) {
+      VLOG(2) << "notifying module: " << module_name << " of task assignment: " << progress.id();
+      (*module)->OnProgressUpdate(progress);
+    }
+  }
+}
+
+void TortugaHandler::UpdateProgressManagerCache(const UpdatedTask& task) {
+  progress_mgr_->UpdateTaskProgressCache(*task.progress);
 }
 
 void TortugaHandler::HandlePing() {

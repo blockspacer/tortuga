@@ -8,6 +8,7 @@
 namespace tortuga {
 // Current millis since epoch.
 int64_t CurrentTimeMillis();
+int64_t CurrentTimeMicros();
 
 google::protobuf::Timestamp FromEpochMillis(int64_t millis);
 

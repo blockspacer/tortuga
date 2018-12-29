@@ -21,8 +21,16 @@ message Worker {
   repeated string capabilities = 3;
 }
 
-message Heartbeat {
-  Worker worker = 1;
+message HeartbeatReq {
+  // a connection handling multiple workers will beat for all of them at once
+  // hence this is repeated.
+  message WorkerBeat {
+    Worker worker = 1;
+
+    repeated int64 current_task_handles = 2;
+  }
+
+  repeated WorkerBeat worker_beats = 1;
 }
 
 message TaskReq {
@@ -43,6 +51,7 @@ message TaskResp {
   }
 
   RetryContext retry_ctx = 6;
+  int32 priority = 7;
 }
 
 message Task {
@@ -133,17 +142,22 @@ message TaskIdentifier {
   string type = 2;
 }
 
+message FindTaskReq {
+  int64 handle = 1;
+  bool is_for_done_only = 2;
+}
+
 service Tortuga {
   rpc CreateTask(CreateReq) returns (CreateResp);
   rpc RequestTask(TaskReq) returns (TaskResp);
-  rpc Heartbeat(Worker) returns (google.protobuf.Empty);
+  rpc Heartbeat(HeartbeatReq) returns (google.protobuf.Empty);
   rpc CompleteTask(CompleteTaskReq) returns (google.protobuf.Empty);
   rpc UpdateProgress(UpdateProgressReq) returns (google.protobuf.Empty);
 
   // Finds a task by id and type.
   rpc FindTask(TaskIdentifier) returns (TaskProgress);
   // Finds a task by specific handle.
-  rpc FindTaskByHandle(google.protobuf.StringValue) returns (TaskProgress);
+  rpc FindTaskByHandle(FindTaskReq) returns (TaskProgress);
 
   // admin commands (for now these are for tests)
   rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);

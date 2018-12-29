@@ -495,6 +495,576 @@ public final class TortugaParamsProto {
 
   }
 
+  public interface TortugaOutputOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.TortugaOutput)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string output = 1;</code>
+     */
+    boolean hasOutput();
+    /**
+     * <code>optional string output = 1;</code>
+     */
+    java.lang.String getOutput();
+    /**
+     * <code>optional string output = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getOutputBytes();
+  }
+  /**
+   * <pre>
+   * This message is to be used by tortuga &lt;&gt; GRPR bridge.
+   * If and only if the service returns this Type, and 'output' is not empty, then the
+   * tortuga bridge will write this as output of the task.
+   * </pre>
+   *
+   * Protobuf type {@code tortuga.TortugaOutput}
+   */
+  public  static final class TortugaOutput extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:tortuga.TortugaOutput)
+      TortugaOutputOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TortugaOutput.newBuilder() to construct.
+    private TortugaOutput(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TortugaOutput() {
+      output_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TortugaOutput(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              output_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return io.tortuga.TortugaParamsProto.internal_static_tortuga_TortugaOutput_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return io.tortuga.TortugaParamsProto.internal_static_tortuga_TortugaOutput_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              io.tortuga.TortugaParamsProto.TortugaOutput.class, io.tortuga.TortugaParamsProto.TortugaOutput.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int OUTPUT_FIELD_NUMBER = 1;
+    private volatile java.lang.Object output_;
+    /**
+     * <code>optional string output = 1;</code>
+     */
+    public boolean hasOutput() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string output = 1;</code>
+     */
+    public java.lang.String getOutput() {
+      java.lang.Object ref = output_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          output_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string output = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOutputBytes() {
+      java.lang.Object ref = output_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        output_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, output_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, output_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof io.tortuga.TortugaParamsProto.TortugaOutput)) {
+        return super.equals(obj);
+      }
+      io.tortuga.TortugaParamsProto.TortugaOutput other = (io.tortuga.TortugaParamsProto.TortugaOutput) obj;
+
+      boolean result = true;
+      result = result && (hasOutput() == other.hasOutput());
+      if (hasOutput()) {
+        result = result && getOutput()
+            .equals(other.getOutput());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasOutput()) {
+        hash = (37 * hash) + OUTPUT_FIELD_NUMBER;
+        hash = (53 * hash) + getOutput().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaParamsProto.TortugaOutput parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(io.tortuga.TortugaParamsProto.TortugaOutput prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * This message is to be used by tortuga &lt;&gt; GRPR bridge.
+     * If and only if the service returns this Type, and 'output' is not empty, then the
+     * tortuga bridge will write this as output of the task.
+     * </pre>
+     *
+     * Protobuf type {@code tortuga.TortugaOutput}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:tortuga.TortugaOutput)
+        io.tortuga.TortugaParamsProto.TortugaOutputOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaParamsProto.internal_static_tortuga_TortugaOutput_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaParamsProto.internal_static_tortuga_TortugaOutput_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaParamsProto.TortugaOutput.class, io.tortuga.TortugaParamsProto.TortugaOutput.Builder.class);
+      }
+
+      // Construct using io.tortuga.TortugaParamsProto.TortugaOutput.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        output_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return io.tortuga.TortugaParamsProto.internal_static_tortuga_TortugaOutput_descriptor;
+      }
+
+      public io.tortuga.TortugaParamsProto.TortugaOutput getDefaultInstanceForType() {
+        return io.tortuga.TortugaParamsProto.TortugaOutput.getDefaultInstance();
+      }
+
+      public io.tortuga.TortugaParamsProto.TortugaOutput build() {
+        io.tortuga.TortugaParamsProto.TortugaOutput result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public io.tortuga.TortugaParamsProto.TortugaOutput buildPartial() {
+        io.tortuga.TortugaParamsProto.TortugaOutput result = new io.tortuga.TortugaParamsProto.TortugaOutput(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.output_ = output_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof io.tortuga.TortugaParamsProto.TortugaOutput) {
+          return mergeFrom((io.tortuga.TortugaParamsProto.TortugaOutput)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(io.tortuga.TortugaParamsProto.TortugaOutput other) {
+        if (other == io.tortuga.TortugaParamsProto.TortugaOutput.getDefaultInstance()) return this;
+        if (other.hasOutput()) {
+          bitField0_ |= 0x00000001;
+          output_ = other.output_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        io.tortuga.TortugaParamsProto.TortugaOutput parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (io.tortuga.TortugaParamsProto.TortugaOutput) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object output_ = "";
+      /**
+       * <code>optional string output = 1;</code>
+       */
+      public boolean hasOutput() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string output = 1;</code>
+       */
+      public java.lang.String getOutput() {
+        java.lang.Object ref = output_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            output_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string output = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOutputBytes() {
+        java.lang.Object ref = output_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          output_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string output = 1;</code>
+       */
+      public Builder setOutput(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        output_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string output = 1;</code>
+       */
+      public Builder clearOutput() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        output_ = getDefaultInstance().getOutput();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string output = 1;</code>
+       */
+      public Builder setOutputBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        output_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:tortuga.TortugaOutput)
+    }
+
+    // @@protoc_insertion_point(class_scope:tortuga.TortugaOutput)
+    private static final io.tortuga.TortugaParamsProto.TortugaOutput DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new io.tortuga.TortugaParamsProto.TortugaOutput();
+    }
+
+    public static io.tortuga.TortugaParamsProto.TortugaOutput getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<TortugaOutput>
+        PARSER = new com.google.protobuf.AbstractParser<TortugaOutput>() {
+      public TortugaOutput parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TortugaOutput(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TortugaOutput> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TortugaOutput> getParserForType() {
+      return PARSER;
+    }
+
+    public io.tortuga.TortugaParamsProto.TortugaOutput getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public static final int BRIDGE_FIELD_NUMBER = 50007;
   /**
    * <code>extend .google.protobuf.MethodOptions { ... }</code>
@@ -511,6 +1081,11 @@ public final class TortugaParamsProto {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_tortuga_TortugaBridgeOpts_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_TortugaOutput_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_TortugaOutput_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -522,10 +1097,11 @@ public final class TortugaParamsProto {
     java.lang.String[] descriptorData = {
       "\n\034tortuga/tortuga_params.proto\022\007tortuga\032" +
       " google/protobuf/descriptor.proto\",\n\021Tor" +
-      "tugaBridgeOpts\022\027\n\017timeout_seconds\030\001 \001(\005:" +
-      "L\n\006bridge\022\036.google.protobuf.MethodOption" +
-      "s\030\327\206\003 \001(\0132\032.tortuga.TortugaBridgeOptsB \n" +
-      "\nio.tortugaB\022TortugaParamsProto"
+      "tugaBridgeOpts\022\027\n\017timeout_seconds\030\001 \001(\005\"" +
+      "\037\n\rTortugaOutput\022\016\n\006output\030\001 \001(\t:L\n\006brid" +
+      "ge\022\036.google.protobuf.MethodOptions\030\327\206\003 \001" +
+      "(\0132\032.tortuga.TortugaBridgeOptsB \n\nio.tor" +
+      "tugaB\022TortugaParamsProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -546,6 +1122,12 @@ public final class TortugaParamsProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_TortugaBridgeOpts_descriptor,
         new java.lang.String[] { "TimeoutSeconds", });
+    internal_static_tortuga_TortugaOutput_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_tortuga_TortugaOutput_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_TortugaOutput_descriptor,
+        new java.lang.String[] { "Output", });
     bridge.internalInit(descriptor.getExtensions().get(0));
     com.google.protobuf.DescriptorProtos.getDescriptor();
   }

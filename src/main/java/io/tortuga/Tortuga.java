@@ -13,6 +13,7 @@ import com.google.protobuf.Empty;
 import io.grpc.Channel;
 import io.grpc.Status;
 import io.tortuga.TortugaProto.CompleteTaskReq;
+import io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat;
 import io.tortuga.TortugaProto.TaskReq;
 import io.tortuga.TortugaProto.TaskResp;
 import io.tortuga.TortugaProto.Worker;
@@ -22,6 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -36,6 +39,7 @@ public class Tortuga {
   private final Channel chan;
   // Single thread that handles the heartbeat and the GRPC communication to server.
   private final ListeningScheduledExecutorService maintenanceService;
+  private final TortugaConnection tortugaConn;
   // Executor where performing tasks.
   private ListeningExecutorService workersPool;
 
@@ -44,14 +48,19 @@ public class Tortuga {
   private int concurrency = 4;
   private Semaphore semaphore;
 
-  private ListenableScheduledFuture<?> heartbeatSchedulation;
   private ListenableScheduledFuture<?> pollSchedulation;
   private final AtomicBoolean shuttingDown = new AtomicBoolean();
 
   private final TaskHandlerRegistry registry = new TaskHandlerRegistry();
+  // access must be synchronized on it.
+  private final Set<String> currentTasks = new HashSet<>();
 
-  Tortuga(String workerId, Channel chan, ListeningScheduledExecutorService maintenanceService) {
+  Tortuga(String workerId,
+          Channel chan,
+          TortugaConnection tortugaConn,
+          ListeningScheduledExecutorService maintenanceService) {
     this.chan = chan;
+    this.tortugaConn = tortugaConn;
     this.maintenanceService = maintenanceService;
 
     worker = Worker.newBuilder()
@@ -80,6 +89,8 @@ public class Tortuga {
         .addAllCapabilities(registry.capabilities())
         .build();
 
+    tortugaConn.workerIsStarted(this);
+
     if (workersPool == null) {
       // If the caller didn't specify a executor service for workers we default to a cached thread pool.
       ThreadFactory workersTf = new ThreadFactoryBuilder()
@@ -90,9 +101,7 @@ public class Tortuga {
 
     semaphore = new Semaphore(concurrency);
 
-    heartbeatSchedulation = maintenanceService.scheduleWithFixedDelay(() -> {
-      heartbeat();
-    }, 1L, 1L, TimeUnit.SECONDS);
+    // Tell the connection that at least one worker is started so it can start scheduling heartbeats.
 
     pollSchedulation = maintenanceService.scheduleWithFixedDelay(() -> {
       try {
@@ -100,24 +109,7 @@ public class Tortuga {
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-    }, 500L, 500L, TimeUnit.MILLISECONDS);
-  }
-
-  private void heartbeat() {
-    LOG.debug("sending heartbeat");
-    ListenableFuture<Empty> done = TortugaGrpc.newFutureStub(chan)
-        .withDeadlineAfter(5L, TimeUnit.SECONDS)
-        .heartbeat(worker);
-    Futures.addCallback(done, new FutureCallback<Empty>() {
-      @Override
-      public void onSuccess(Empty result) {
-      }
-
-      @Override
-      public void onFailure(Throwable t) {
-        LOG.error("heartbeats are failing: ", t);
-      }
-    });
+    }, 50L, 50L, TimeUnit.MILLISECONDS);
   }
 
   private void pollTask() {
@@ -140,7 +132,7 @@ public class Tortuga {
         .setWorker(worker)
         .build();
     ListenableFuture<TaskResp> respF = TortugaGrpc.newFutureStub(chan)
-        .withDeadlineAfter(5L, TimeUnit.SECONDS)
+        .withDeadlineAfter(15L, TimeUnit.SECONDS)
         .requestTask(req);
 
     Futures.addCallback(respF, new FutureCallback<TaskResp>() {
@@ -153,6 +145,12 @@ public class Tortuga {
         }
 
         LOG.debug("got task: {}", resp);
+
+        // as soon as we got a new task, record that...
+        synchronized (currentTasks) {
+          currentTasks.add(resp.getHandle());
+        }
+
         TaskHandler handler = registry.get(resp.getType());
         if (handler == null) {
           // something is really wrong at the server level if we get tasks that we shouldn't get.
@@ -162,7 +160,7 @@ public class Tortuga {
         }
 
         ListenableFuture<Void> xf = Futures.immediateFuture(null);
-        TortugaContext ctx = new TortugaContext(resp.getHandle(), resp.getRetryCtx(), chan, worker);
+        TortugaContext ctx = new TortugaContext(resp.getHandle(), resp.getRetryCtx(), chan, worker, resp.getPriority());
         ListenableFuture<Status> statusF = Futures.transformAsync(xf, x-> handler.execute(resp.getData(), ctx), workersPool);
         statusF = Futures.catching(statusF, Exception.class, ex-> {
           StringBuilder sb = new StringBuilder();
@@ -205,12 +203,21 @@ public class Tortuga {
           public void onSuccess(Empty result) {
             semaphore.release();
             LOG.debug("completed task {}.", resp.getHandle());
+
+            synchronized (currentTasks) {
+              currentTasks.remove(resp.getHandle());
+            }
           }
 
           @Override
           public void onFailure(Throwable t) {
             semaphore.release();
             LOG.error("couldn't complete task {}.", resp.getHandle(), t);
+
+            // If we couldn't complete a task, that task will be assigned to us forever and whoever is
+            // waiting on its success will never complete. It's better that we commit suicide here.
+            // TODO(christian) Reschedule that completion call for later.
+            System.exit(1);
           }
         });
       }
@@ -225,15 +232,30 @@ public class Tortuga {
 
   public void shutdown() {
     shuttingDown.set(true);
-    heartbeatSchedulation.cancel(false);
     pollSchedulation.cancel(false);
+
+    // remove self from heartbeats.
+    tortugaConn.workerShutdown(this);
 
     try {
       semaphore.acquire(concurrency);
       workersPool.shutdown();
     } catch (InterruptedException ex) {
       Thread.currentThread().interrupt();
-      throw new IllegalStateException("interrupted while shuting down", ex);
+      throw new IllegalStateException("interrupted while shutting down", ex);
     }
+  }
+
+  WorkerBeat toWorkerBeat() {
+    WorkerBeat.Builder b = WorkerBeat.newBuilder()
+        .setWorker(worker);
+
+    synchronized (currentTasks) {
+      for (String handle : currentTasks) {
+        b.addCurrentTaskHandles(Long.parseLong(handle));
+      }
+    }
+
+    return b.build();
   }
 }

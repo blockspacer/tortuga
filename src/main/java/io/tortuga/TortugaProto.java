@@ -938,36 +938,48 @@ public final class TortugaProto {
 
   }
 
-  public interface HeartbeatOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:tortuga.Heartbeat)
+  public interface HeartbeatReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.HeartbeatReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.tortuga.Worker worker = 1;</code>
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
      */
-    boolean hasWorker();
+    java.util.List<io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat> 
+        getWorkerBeatsList();
     /**
-     * <code>.tortuga.Worker worker = 1;</code>
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
      */
-    io.tortuga.TortugaProto.Worker getWorker();
+    io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat getWorkerBeats(int index);
     /**
-     * <code>.tortuga.Worker worker = 1;</code>
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
      */
-    io.tortuga.TortugaProto.WorkerOrBuilder getWorkerOrBuilder();
+    int getWorkerBeatsCount();
+    /**
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+     */
+    java.util.List<? extends io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder> 
+        getWorkerBeatsOrBuilderList();
+    /**
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+     */
+    io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder getWorkerBeatsOrBuilder(
+        int index);
   }
   /**
-   * Protobuf type {@code tortuga.Heartbeat}
+   * Protobuf type {@code tortuga.HeartbeatReq}
    */
-  public  static final class Heartbeat extends
+  public  static final class HeartbeatReq extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:tortuga.Heartbeat)
-      HeartbeatOrBuilder {
+      // @@protoc_insertion_point(message_implements:tortuga.HeartbeatReq)
+      HeartbeatReqOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use Heartbeat.newBuilder() to construct.
-    private Heartbeat(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use HeartbeatReq.newBuilder() to construct.
+    private HeartbeatReq(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Heartbeat() {
+    private HeartbeatReq() {
+      workerBeats_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -975,7 +987,7 @@ public final class TortugaProto {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Heartbeat(
+    private HeartbeatReq(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1002,16 +1014,12 @@ public final class TortugaProto {
               break;
             }
             case 10: {
-              io.tortuga.TortugaProto.Worker.Builder subBuilder = null;
-              if (worker_ != null) {
-                subBuilder = worker_.toBuilder();
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                workerBeats_ = new java.util.ArrayList<io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat>();
+                mutable_bitField0_ |= 0x00000001;
               }
-              worker_ = input.readMessage(io.tortuga.TortugaProto.Worker.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(worker_);
-                worker_ = subBuilder.buildPartial();
-              }
-
+              workerBeats_.add(
+                  input.readMessage(io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.parser(), extensionRegistry));
               break;
             }
           }
@@ -1022,41 +1030,827 @@ public final class TortugaProto {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          workerBeats_ = java.util.Collections.unmodifiableList(workerBeats_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return io.tortuga.TortugaProto.internal_static_tortuga_Heartbeat_descriptor;
+      return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return io.tortuga.TortugaProto.internal_static_tortuga_Heartbeat_fieldAccessorTable
+      return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              io.tortuga.TortugaProto.Heartbeat.class, io.tortuga.TortugaProto.Heartbeat.Builder.class);
+              io.tortuga.TortugaProto.HeartbeatReq.class, io.tortuga.TortugaProto.HeartbeatReq.Builder.class);
     }
 
-    public static final int WORKER_FIELD_NUMBER = 1;
-    private io.tortuga.TortugaProto.Worker worker_;
-    /**
-     * <code>.tortuga.Worker worker = 1;</code>
-     */
-    public boolean hasWorker() {
-      return worker_ != null;
+    public interface WorkerBeatOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:tortuga.HeartbeatReq.WorkerBeat)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>.tortuga.Worker worker = 1;</code>
+       */
+      boolean hasWorker();
+      /**
+       * <code>.tortuga.Worker worker = 1;</code>
+       */
+      io.tortuga.TortugaProto.Worker getWorker();
+      /**
+       * <code>.tortuga.Worker worker = 1;</code>
+       */
+      io.tortuga.TortugaProto.WorkerOrBuilder getWorkerOrBuilder();
+
+      /**
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      java.util.List<java.lang.Long> getCurrentTaskHandlesList();
+      /**
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      int getCurrentTaskHandlesCount();
+      /**
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      long getCurrentTaskHandles(int index);
     }
     /**
-     * <code>.tortuga.Worker worker = 1;</code>
+     * <pre>
+     * a connection handling multiple workers will beat for all of them at once
+     * hence this is repeated.
+     * </pre>
+     *
+     * Protobuf type {@code tortuga.HeartbeatReq.WorkerBeat}
      */
-    public io.tortuga.TortugaProto.Worker getWorker() {
-      return worker_ == null ? io.tortuga.TortugaProto.Worker.getDefaultInstance() : worker_;
+    public  static final class WorkerBeat extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:tortuga.HeartbeatReq.WorkerBeat)
+        WorkerBeatOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use WorkerBeat.newBuilder() to construct.
+      private WorkerBeat(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private WorkerBeat() {
+        currentTaskHandles_ = java.util.Collections.emptyList();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private WorkerBeat(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownFieldProto3(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 10: {
+                io.tortuga.TortugaProto.Worker.Builder subBuilder = null;
+                if (worker_ != null) {
+                  subBuilder = worker_.toBuilder();
+                }
+                worker_ = input.readMessage(io.tortuga.TortugaProto.Worker.parser(), extensionRegistry);
+                if (subBuilder != null) {
+                  subBuilder.mergeFrom(worker_);
+                  worker_ = subBuilder.buildPartial();
+                }
+
+                break;
+              }
+              case 16: {
+                if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                  currentTaskHandles_ = new java.util.ArrayList<java.lang.Long>();
+                  mutable_bitField0_ |= 0x00000002;
+                }
+                currentTaskHandles_.add(input.readInt64());
+                break;
+              }
+              case 18: {
+                int length = input.readRawVarint32();
+                int limit = input.pushLimit(length);
+                if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
+                  currentTaskHandles_ = new java.util.ArrayList<java.lang.Long>();
+                  mutable_bitField0_ |= 0x00000002;
+                }
+                while (input.getBytesUntilLimit() > 0) {
+                  currentTaskHandles_.add(input.readInt64());
+                }
+                input.popLimit(limit);
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+            currentTaskHandles_ = java.util.Collections.unmodifiableList(currentTaskHandles_);
+          }
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_WorkerBeat_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_WorkerBeat_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.class, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder.class);
+      }
+
+      private int bitField0_;
+      public static final int WORKER_FIELD_NUMBER = 1;
+      private io.tortuga.TortugaProto.Worker worker_;
+      /**
+       * <code>.tortuga.Worker worker = 1;</code>
+       */
+      public boolean hasWorker() {
+        return worker_ != null;
+      }
+      /**
+       * <code>.tortuga.Worker worker = 1;</code>
+       */
+      public io.tortuga.TortugaProto.Worker getWorker() {
+        return worker_ == null ? io.tortuga.TortugaProto.Worker.getDefaultInstance() : worker_;
+      }
+      /**
+       * <code>.tortuga.Worker worker = 1;</code>
+       */
+      public io.tortuga.TortugaProto.WorkerOrBuilder getWorkerOrBuilder() {
+        return getWorker();
+      }
+
+      public static final int CURRENT_TASK_HANDLES_FIELD_NUMBER = 2;
+      private java.util.List<java.lang.Long> currentTaskHandles_;
+      /**
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public java.util.List<java.lang.Long>
+          getCurrentTaskHandlesList() {
+        return currentTaskHandles_;
+      }
+      /**
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public int getCurrentTaskHandlesCount() {
+        return currentTaskHandles_.size();
+      }
+      /**
+       * <code>repeated int64 current_task_handles = 2;</code>
+       */
+      public long getCurrentTaskHandles(int index) {
+        return currentTaskHandles_.get(index);
+      }
+      private int currentTaskHandlesMemoizedSerializedSize = -1;
+
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (worker_ != null) {
+          output.writeMessage(1, getWorker());
+        }
+        if (getCurrentTaskHandlesList().size() > 0) {
+          output.writeUInt32NoTag(18);
+          output.writeUInt32NoTag(currentTaskHandlesMemoizedSerializedSize);
+        }
+        for (int i = 0; i < currentTaskHandles_.size(); i++) {
+          output.writeInt64NoTag(currentTaskHandles_.get(i));
+        }
+        unknownFields.writeTo(output);
+      }
+
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (worker_ != null) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(1, getWorker());
+        }
+        {
+          int dataSize = 0;
+          for (int i = 0; i < currentTaskHandles_.size(); i++) {
+            dataSize += com.google.protobuf.CodedOutputStream
+              .computeInt64SizeNoTag(currentTaskHandles_.get(i));
+          }
+          size += dataSize;
+          if (!getCurrentTaskHandlesList().isEmpty()) {
+            size += 1;
+            size += com.google.protobuf.CodedOutputStream
+                .computeInt32SizeNoTag(dataSize);
+          }
+          currentTaskHandlesMemoizedSerializedSize = dataSize;
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat)) {
+          return super.equals(obj);
+        }
+        io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat other = (io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat) obj;
+
+        boolean result = true;
+        result = result && (hasWorker() == other.hasWorker());
+        if (hasWorker()) {
+          result = result && getWorker()
+              .equals(other.getWorker());
+        }
+        result = result && getCurrentTaskHandlesList()
+            .equals(other.getCurrentTaskHandlesList());
+        result = result && unknownFields.equals(other.unknownFields);
+        return result;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasWorker()) {
+          hash = (37 * hash) + WORKER_FIELD_NUMBER;
+          hash = (53 * hash) + getWorker().hashCode();
+        }
+        if (getCurrentTaskHandlesCount() > 0) {
+          hash = (37 * hash) + CURRENT_TASK_HANDLES_FIELD_NUMBER;
+          hash = (53 * hash) + getCurrentTaskHandlesList().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * a connection handling multiple workers will beat for all of them at once
+       * hence this is repeated.
+       * </pre>
+       *
+       * Protobuf type {@code tortuga.HeartbeatReq.WorkerBeat}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:tortuga.HeartbeatReq.WorkerBeat)
+          io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_WorkerBeat_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_WorkerBeat_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.class, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder.class);
+        }
+
+        // Construct using io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        public Builder clear() {
+          super.clear();
+          if (workerBuilder_ == null) {
+            worker_ = null;
+          } else {
+            worker_ = null;
+            workerBuilder_ = null;
+          }
+          currentTaskHandles_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          return this;
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_WorkerBeat_descriptor;
+        }
+
+        public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat getDefaultInstanceForType() {
+          return io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.getDefaultInstance();
+        }
+
+        public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat build() {
+          io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat buildPartial() {
+          io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat result = new io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (workerBuilder_ == null) {
+            result.worker_ = worker_;
+          } else {
+            result.worker_ = workerBuilder_.build();
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            currentTaskHandles_ = java.util.Collections.unmodifiableList(currentTaskHandles_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.currentTaskHandles_ = currentTaskHandles_;
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder clone() {
+          return (Builder) super.clone();
+        }
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return (Builder) super.setField(field, value);
+        }
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return (Builder) super.clearField(field);
+        }
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return (Builder) super.clearOneof(oneof);
+        }
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return (Builder) super.setRepeatedField(field, index, value);
+        }
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return (Builder) super.addRepeatedField(field, value);
+        }
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat) {
+            return mergeFrom((io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat other) {
+          if (other == io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.getDefaultInstance()) return this;
+          if (other.hasWorker()) {
+            mergeWorker(other.getWorker());
+          }
+          if (!other.currentTaskHandles_.isEmpty()) {
+            if (currentTaskHandles_.isEmpty()) {
+              currentTaskHandles_ = other.currentTaskHandles_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureCurrentTaskHandlesIsMutable();
+              currentTaskHandles_.addAll(other.currentTaskHandles_);
+            }
+            onChanged();
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        private io.tortuga.TortugaProto.Worker worker_ = null;
+        private com.google.protobuf.SingleFieldBuilderV3<
+            io.tortuga.TortugaProto.Worker, io.tortuga.TortugaProto.Worker.Builder, io.tortuga.TortugaProto.WorkerOrBuilder> workerBuilder_;
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        public boolean hasWorker() {
+          return workerBuilder_ != null || worker_ != null;
+        }
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        public io.tortuga.TortugaProto.Worker getWorker() {
+          if (workerBuilder_ == null) {
+            return worker_ == null ? io.tortuga.TortugaProto.Worker.getDefaultInstance() : worker_;
+          } else {
+            return workerBuilder_.getMessage();
+          }
+        }
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        public Builder setWorker(io.tortuga.TortugaProto.Worker value) {
+          if (workerBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            worker_ = value;
+            onChanged();
+          } else {
+            workerBuilder_.setMessage(value);
+          }
+
+          return this;
+        }
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        public Builder setWorker(
+            io.tortuga.TortugaProto.Worker.Builder builderForValue) {
+          if (workerBuilder_ == null) {
+            worker_ = builderForValue.build();
+            onChanged();
+          } else {
+            workerBuilder_.setMessage(builderForValue.build());
+          }
+
+          return this;
+        }
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        public Builder mergeWorker(io.tortuga.TortugaProto.Worker value) {
+          if (workerBuilder_ == null) {
+            if (worker_ != null) {
+              worker_ =
+                io.tortuga.TortugaProto.Worker.newBuilder(worker_).mergeFrom(value).buildPartial();
+            } else {
+              worker_ = value;
+            }
+            onChanged();
+          } else {
+            workerBuilder_.mergeFrom(value);
+          }
+
+          return this;
+        }
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        public Builder clearWorker() {
+          if (workerBuilder_ == null) {
+            worker_ = null;
+            onChanged();
+          } else {
+            worker_ = null;
+            workerBuilder_ = null;
+          }
+
+          return this;
+        }
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        public io.tortuga.TortugaProto.Worker.Builder getWorkerBuilder() {
+          
+          onChanged();
+          return getWorkerFieldBuilder().getBuilder();
+        }
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        public io.tortuga.TortugaProto.WorkerOrBuilder getWorkerOrBuilder() {
+          if (workerBuilder_ != null) {
+            return workerBuilder_.getMessageOrBuilder();
+          } else {
+            return worker_ == null ?
+                io.tortuga.TortugaProto.Worker.getDefaultInstance() : worker_;
+          }
+        }
+        /**
+         * <code>.tortuga.Worker worker = 1;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<
+            io.tortuga.TortugaProto.Worker, io.tortuga.TortugaProto.Worker.Builder, io.tortuga.TortugaProto.WorkerOrBuilder> 
+            getWorkerFieldBuilder() {
+          if (workerBuilder_ == null) {
+            workerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+                io.tortuga.TortugaProto.Worker, io.tortuga.TortugaProto.Worker.Builder, io.tortuga.TortugaProto.WorkerOrBuilder>(
+                    getWorker(),
+                    getParentForChildren(),
+                    isClean());
+            worker_ = null;
+          }
+          return workerBuilder_;
+        }
+
+        private java.util.List<java.lang.Long> currentTaskHandles_ = java.util.Collections.emptyList();
+        private void ensureCurrentTaskHandlesIsMutable() {
+          if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+            currentTaskHandles_ = new java.util.ArrayList<java.lang.Long>(currentTaskHandles_);
+            bitField0_ |= 0x00000002;
+           }
+        }
+        /**
+         * <code>repeated int64 current_task_handles = 2;</code>
+         */
+        public java.util.List<java.lang.Long>
+            getCurrentTaskHandlesList() {
+          return java.util.Collections.unmodifiableList(currentTaskHandles_);
+        }
+        /**
+         * <code>repeated int64 current_task_handles = 2;</code>
+         */
+        public int getCurrentTaskHandlesCount() {
+          return currentTaskHandles_.size();
+        }
+        /**
+         * <code>repeated int64 current_task_handles = 2;</code>
+         */
+        public long getCurrentTaskHandles(int index) {
+          return currentTaskHandles_.get(index);
+        }
+        /**
+         * <code>repeated int64 current_task_handles = 2;</code>
+         */
+        public Builder setCurrentTaskHandles(
+            int index, long value) {
+          ensureCurrentTaskHandlesIsMutable();
+          currentTaskHandles_.set(index, value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated int64 current_task_handles = 2;</code>
+         */
+        public Builder addCurrentTaskHandles(long value) {
+          ensureCurrentTaskHandlesIsMutable();
+          currentTaskHandles_.add(value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated int64 current_task_handles = 2;</code>
+         */
+        public Builder addAllCurrentTaskHandles(
+            java.lang.Iterable<? extends java.lang.Long> values) {
+          ensureCurrentTaskHandlesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, currentTaskHandles_);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated int64 current_task_handles = 2;</code>
+         */
+        public Builder clearCurrentTaskHandles() {
+          currentTaskHandles_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+          return this;
+        }
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFieldsProto3(unknownFields);
+        }
+
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:tortuga.HeartbeatReq.WorkerBeat)
+      }
+
+      // @@protoc_insertion_point(class_scope:tortuga.HeartbeatReq.WorkerBeat)
+      private static final io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat();
+      }
+
+      public static io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<WorkerBeat>
+          PARSER = new com.google.protobuf.AbstractParser<WorkerBeat>() {
+        public WorkerBeat parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new WorkerBeat(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<WorkerBeat> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<WorkerBeat> getParserForType() {
+        return PARSER;
+      }
+
+      public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public static final int WORKER_BEATS_FIELD_NUMBER = 1;
+    private java.util.List<io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat> workerBeats_;
+    /**
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+     */
+    public java.util.List<io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat> getWorkerBeatsList() {
+      return workerBeats_;
     }
     /**
-     * <code>.tortuga.Worker worker = 1;</code>
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
      */
-    public io.tortuga.TortugaProto.WorkerOrBuilder getWorkerOrBuilder() {
-      return getWorker();
+    public java.util.List<? extends io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder> 
+        getWorkerBeatsOrBuilderList() {
+      return workerBeats_;
+    }
+    /**
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+     */
+    public int getWorkerBeatsCount() {
+      return workerBeats_.size();
+    }
+    /**
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+     */
+    public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat getWorkerBeats(int index) {
+      return workerBeats_.get(index);
+    }
+    /**
+     * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+     */
+    public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder getWorkerBeatsOrBuilder(
+        int index) {
+      return workerBeats_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1071,8 +1865,8 @@ public final class TortugaProto {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (worker_ != null) {
-        output.writeMessage(1, getWorker());
+      for (int i = 0; i < workerBeats_.size(); i++) {
+        output.writeMessage(1, workerBeats_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -1082,9 +1876,9 @@ public final class TortugaProto {
       if (size != -1) return size;
 
       size = 0;
-      if (worker_ != null) {
+      for (int i = 0; i < workerBeats_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getWorker());
+          .computeMessageSize(1, workerBeats_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1096,17 +1890,14 @@ public final class TortugaProto {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof io.tortuga.TortugaProto.Heartbeat)) {
+      if (!(obj instanceof io.tortuga.TortugaProto.HeartbeatReq)) {
         return super.equals(obj);
       }
-      io.tortuga.TortugaProto.Heartbeat other = (io.tortuga.TortugaProto.Heartbeat) obj;
+      io.tortuga.TortugaProto.HeartbeatReq other = (io.tortuga.TortugaProto.HeartbeatReq) obj;
 
       boolean result = true;
-      result = result && (hasWorker() == other.hasWorker());
-      if (hasWorker()) {
-        result = result && getWorker()
-            .equals(other.getWorker());
-      }
+      result = result && getWorkerBeatsList()
+          .equals(other.getWorkerBeatsList());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1118,78 +1909,78 @@ public final class TortugaProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasWorker()) {
-        hash = (37 * hash) + WORKER_FIELD_NUMBER;
-        hash = (53 * hash) + getWorker().hashCode();
+      if (getWorkerBeatsCount() > 0) {
+        hash = (37 * hash) + WORKER_BEATS_FIELD_NUMBER;
+        hash = (53 * hash) + getWorkerBeatsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(byte[] data)
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(java.io.InputStream input)
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseDelimitedFrom(java.io.InputStream input)
+    public static io.tortuga.TortugaProto.HeartbeatReq parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseDelimitedFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static io.tortuga.TortugaProto.Heartbeat parseFrom(
+    public static io.tortuga.TortugaProto.HeartbeatReq parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1201,7 +1992,7 @@ public final class TortugaProto {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(io.tortuga.TortugaProto.Heartbeat prototype) {
+    public static Builder newBuilder(io.tortuga.TortugaProto.HeartbeatReq prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -1216,25 +2007,25 @@ public final class TortugaProto {
       return builder;
     }
     /**
-     * Protobuf type {@code tortuga.Heartbeat}
+     * Protobuf type {@code tortuga.HeartbeatReq}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:tortuga.Heartbeat)
-        io.tortuga.TortugaProto.HeartbeatOrBuilder {
+        // @@protoc_insertion_point(builder_implements:tortuga.HeartbeatReq)
+        io.tortuga.TortugaProto.HeartbeatReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return io.tortuga.TortugaProto.internal_static_tortuga_Heartbeat_descriptor;
+        return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return io.tortuga.TortugaProto.internal_static_tortuga_Heartbeat_fieldAccessorTable
+        return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                io.tortuga.TortugaProto.Heartbeat.class, io.tortuga.TortugaProto.Heartbeat.Builder.class);
+                io.tortuga.TortugaProto.HeartbeatReq.class, io.tortuga.TortugaProto.HeartbeatReq.Builder.class);
       }
 
-      // Construct using io.tortuga.TortugaProto.Heartbeat.newBuilder()
+      // Construct using io.tortuga.TortugaProto.HeartbeatReq.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1247,42 +2038,48 @@ public final class TortugaProto {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getWorkerBeatsFieldBuilder();
         }
       }
       public Builder clear() {
         super.clear();
-        if (workerBuilder_ == null) {
-          worker_ = null;
+        if (workerBeatsBuilder_ == null) {
+          workerBeats_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          worker_ = null;
-          workerBuilder_ = null;
+          workerBeatsBuilder_.clear();
         }
         return this;
       }
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return io.tortuga.TortugaProto.internal_static_tortuga_Heartbeat_descriptor;
+        return io.tortuga.TortugaProto.internal_static_tortuga_HeartbeatReq_descriptor;
       }
 
-      public io.tortuga.TortugaProto.Heartbeat getDefaultInstanceForType() {
-        return io.tortuga.TortugaProto.Heartbeat.getDefaultInstance();
+      public io.tortuga.TortugaProto.HeartbeatReq getDefaultInstanceForType() {
+        return io.tortuga.TortugaProto.HeartbeatReq.getDefaultInstance();
       }
 
-      public io.tortuga.TortugaProto.Heartbeat build() {
-        io.tortuga.TortugaProto.Heartbeat result = buildPartial();
+      public io.tortuga.TortugaProto.HeartbeatReq build() {
+        io.tortuga.TortugaProto.HeartbeatReq result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public io.tortuga.TortugaProto.Heartbeat buildPartial() {
-        io.tortuga.TortugaProto.Heartbeat result = new io.tortuga.TortugaProto.Heartbeat(this);
-        if (workerBuilder_ == null) {
-          result.worker_ = worker_;
+      public io.tortuga.TortugaProto.HeartbeatReq buildPartial() {
+        io.tortuga.TortugaProto.HeartbeatReq result = new io.tortuga.TortugaProto.HeartbeatReq(this);
+        int from_bitField0_ = bitField0_;
+        if (workerBeatsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            workerBeats_ = java.util.Collections.unmodifiableList(workerBeats_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.workerBeats_ = workerBeats_;
         } else {
-          result.worker_ = workerBuilder_.build();
+          result.workerBeats_ = workerBeatsBuilder_.build();
         }
         onBuilt();
         return result;
@@ -1315,18 +2112,41 @@ public final class TortugaProto {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof io.tortuga.TortugaProto.Heartbeat) {
-          return mergeFrom((io.tortuga.TortugaProto.Heartbeat)other);
+        if (other instanceof io.tortuga.TortugaProto.HeartbeatReq) {
+          return mergeFrom((io.tortuga.TortugaProto.HeartbeatReq)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(io.tortuga.TortugaProto.Heartbeat other) {
-        if (other == io.tortuga.TortugaProto.Heartbeat.getDefaultInstance()) return this;
-        if (other.hasWorker()) {
-          mergeWorker(other.getWorker());
+      public Builder mergeFrom(io.tortuga.TortugaProto.HeartbeatReq other) {
+        if (other == io.tortuga.TortugaProto.HeartbeatReq.getDefaultInstance()) return this;
+        if (workerBeatsBuilder_ == null) {
+          if (!other.workerBeats_.isEmpty()) {
+            if (workerBeats_.isEmpty()) {
+              workerBeats_ = other.workerBeats_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureWorkerBeatsIsMutable();
+              workerBeats_.addAll(other.workerBeats_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.workerBeats_.isEmpty()) {
+            if (workerBeatsBuilder_.isEmpty()) {
+              workerBeatsBuilder_.dispose();
+              workerBeatsBuilder_ = null;
+              workerBeats_ = other.workerBeats_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              workerBeatsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getWorkerBeatsFieldBuilder() : null;
+            } else {
+              workerBeatsBuilder_.addAllMessages(other.workerBeats_);
+            }
+          }
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1341,11 +2161,11 @@ public final class TortugaProto {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        io.tortuga.TortugaProto.Heartbeat parsedMessage = null;
+        io.tortuga.TortugaProto.HeartbeatReq parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (io.tortuga.TortugaProto.Heartbeat) e.getUnfinishedMessage();
+          parsedMessage = (io.tortuga.TortugaProto.HeartbeatReq) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -1354,122 +2174,246 @@ public final class TortugaProto {
         }
         return this;
       }
+      private int bitField0_;
 
-      private io.tortuga.TortugaProto.Worker worker_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          io.tortuga.TortugaProto.Worker, io.tortuga.TortugaProto.Worker.Builder, io.tortuga.TortugaProto.WorkerOrBuilder> workerBuilder_;
-      /**
-       * <code>.tortuga.Worker worker = 1;</code>
-       */
-      public boolean hasWorker() {
-        return workerBuilder_ != null || worker_ != null;
+      private java.util.List<io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat> workerBeats_ =
+        java.util.Collections.emptyList();
+      private void ensureWorkerBeatsIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          workerBeats_ = new java.util.ArrayList<io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat>(workerBeats_);
+          bitField0_ |= 0x00000001;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder> workerBeatsBuilder_;
+
       /**
-       * <code>.tortuga.Worker worker = 1;</code>
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
        */
-      public io.tortuga.TortugaProto.Worker getWorker() {
-        if (workerBuilder_ == null) {
-          return worker_ == null ? io.tortuga.TortugaProto.Worker.getDefaultInstance() : worker_;
+      public java.util.List<io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat> getWorkerBeatsList() {
+        if (workerBeatsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(workerBeats_);
         } else {
-          return workerBuilder_.getMessage();
+          return workerBeatsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>.tortuga.Worker worker = 1;</code>
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
        */
-      public Builder setWorker(io.tortuga.TortugaProto.Worker value) {
-        if (workerBuilder_ == null) {
+      public int getWorkerBeatsCount() {
+        if (workerBeatsBuilder_ == null) {
+          return workerBeats_.size();
+        } else {
+          return workerBeatsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat getWorkerBeats(int index) {
+        if (workerBeatsBuilder_ == null) {
+          return workerBeats_.get(index);
+        } else {
+          return workerBeatsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public Builder setWorkerBeats(
+          int index, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat value) {
+        if (workerBeatsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          worker_ = value;
+          ensureWorkerBeatsIsMutable();
+          workerBeats_.set(index, value);
           onChanged();
         } else {
-          workerBuilder_.setMessage(value);
+          workerBeatsBuilder_.setMessage(index, value);
         }
-
         return this;
       }
       /**
-       * <code>.tortuga.Worker worker = 1;</code>
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
        */
-      public Builder setWorker(
-          io.tortuga.TortugaProto.Worker.Builder builderForValue) {
-        if (workerBuilder_ == null) {
-          worker_ = builderForValue.build();
+      public Builder setWorkerBeats(
+          int index, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder builderForValue) {
+        if (workerBeatsBuilder_ == null) {
+          ensureWorkerBeatsIsMutable();
+          workerBeats_.set(index, builderForValue.build());
           onChanged();
         } else {
-          workerBuilder_.setMessage(builderForValue.build());
+          workerBeatsBuilder_.setMessage(index, builderForValue.build());
         }
-
         return this;
       }
       /**
-       * <code>.tortuga.Worker worker = 1;</code>
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
        */
-      public Builder mergeWorker(io.tortuga.TortugaProto.Worker value) {
-        if (workerBuilder_ == null) {
-          if (worker_ != null) {
-            worker_ =
-              io.tortuga.TortugaProto.Worker.newBuilder(worker_).mergeFrom(value).buildPartial();
-          } else {
-            worker_ = value;
+      public Builder addWorkerBeats(io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat value) {
+        if (workerBeatsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
           }
+          ensureWorkerBeatsIsMutable();
+          workerBeats_.add(value);
           onChanged();
         } else {
-          workerBuilder_.mergeFrom(value);
+          workerBeatsBuilder_.addMessage(value);
         }
-
         return this;
       }
       /**
-       * <code>.tortuga.Worker worker = 1;</code>
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
        */
-      public Builder clearWorker() {
-        if (workerBuilder_ == null) {
-          worker_ = null;
+      public Builder addWorkerBeats(
+          int index, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat value) {
+        if (workerBeatsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureWorkerBeatsIsMutable();
+          workerBeats_.add(index, value);
           onChanged();
         } else {
-          worker_ = null;
-          workerBuilder_ = null;
+          workerBeatsBuilder_.addMessage(index, value);
         }
-
         return this;
       }
       /**
-       * <code>.tortuga.Worker worker = 1;</code>
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
        */
-      public io.tortuga.TortugaProto.Worker.Builder getWorkerBuilder() {
-        
-        onChanged();
-        return getWorkerFieldBuilder().getBuilder();
+      public Builder addWorkerBeats(
+          io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder builderForValue) {
+        if (workerBeatsBuilder_ == null) {
+          ensureWorkerBeatsIsMutable();
+          workerBeats_.add(builderForValue.build());
+          onChanged();
+        } else {
+          workerBeatsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
       }
       /**
-       * <code>.tortuga.Worker worker = 1;</code>
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
        */
-      public io.tortuga.TortugaProto.WorkerOrBuilder getWorkerOrBuilder() {
-        if (workerBuilder_ != null) {
-          return workerBuilder_.getMessageOrBuilder();
+      public Builder addWorkerBeats(
+          int index, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder builderForValue) {
+        if (workerBeatsBuilder_ == null) {
+          ensureWorkerBeatsIsMutable();
+          workerBeats_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          return worker_ == null ?
-              io.tortuga.TortugaProto.Worker.getDefaultInstance() : worker_;
+          workerBeatsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public Builder addAllWorkerBeats(
+          java.lang.Iterable<? extends io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat> values) {
+        if (workerBeatsBuilder_ == null) {
+          ensureWorkerBeatsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, workerBeats_);
+          onChanged();
+        } else {
+          workerBeatsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public Builder clearWorkerBeats() {
+        if (workerBeatsBuilder_ == null) {
+          workerBeats_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          workerBeatsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public Builder removeWorkerBeats(int index) {
+        if (workerBeatsBuilder_ == null) {
+          ensureWorkerBeatsIsMutable();
+          workerBeats_.remove(index);
+          onChanged();
+        } else {
+          workerBeatsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder getWorkerBeatsBuilder(
+          int index) {
+        return getWorkerBeatsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder getWorkerBeatsOrBuilder(
+          int index) {
+        if (workerBeatsBuilder_ == null) {
+          return workerBeats_.get(index);  } else {
+          return workerBeatsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>.tortuga.Worker worker = 1;</code>
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          io.tortuga.TortugaProto.Worker, io.tortuga.TortugaProto.Worker.Builder, io.tortuga.TortugaProto.WorkerOrBuilder> 
-          getWorkerFieldBuilder() {
-        if (workerBuilder_ == null) {
-          workerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              io.tortuga.TortugaProto.Worker, io.tortuga.TortugaProto.Worker.Builder, io.tortuga.TortugaProto.WorkerOrBuilder>(
-                  getWorker(),
+      public java.util.List<? extends io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder> 
+           getWorkerBeatsOrBuilderList() {
+        if (workerBeatsBuilder_ != null) {
+          return workerBeatsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(workerBeats_);
+        }
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder addWorkerBeatsBuilder() {
+        return getWorkerBeatsFieldBuilder().addBuilder(
+            io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder addWorkerBeatsBuilder(
+          int index) {
+        return getWorkerBeatsFieldBuilder().addBuilder(
+            index, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .tortuga.HeartbeatReq.WorkerBeat worker_beats = 1;</code>
+       */
+      public java.util.List<io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder> 
+           getWorkerBeatsBuilderList() {
+        return getWorkerBeatsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder> 
+          getWorkerBeatsFieldBuilder() {
+        if (workerBeatsBuilder_ == null) {
+          workerBeatsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeat.Builder, io.tortuga.TortugaProto.HeartbeatReq.WorkerBeatOrBuilder>(
+                  workerBeats_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
                   getParentForChildren(),
                   isClean());
-          worker_ = null;
+          workerBeats_ = null;
         }
-        return workerBuilder_;
+        return workerBeatsBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1482,39 +2426,39 @@ public final class TortugaProto {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:tortuga.Heartbeat)
+      // @@protoc_insertion_point(builder_scope:tortuga.HeartbeatReq)
     }
 
-    // @@protoc_insertion_point(class_scope:tortuga.Heartbeat)
-    private static final io.tortuga.TortugaProto.Heartbeat DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:tortuga.HeartbeatReq)
+    private static final io.tortuga.TortugaProto.HeartbeatReq DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.Heartbeat();
+      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.HeartbeatReq();
     }
 
-    public static io.tortuga.TortugaProto.Heartbeat getDefaultInstance() {
+    public static io.tortuga.TortugaProto.HeartbeatReq getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<Heartbeat>
-        PARSER = new com.google.protobuf.AbstractParser<Heartbeat>() {
-      public Heartbeat parsePartialFrom(
+    private static final com.google.protobuf.Parser<HeartbeatReq>
+        PARSER = new com.google.protobuf.AbstractParser<HeartbeatReq>() {
+      public HeartbeatReq parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Heartbeat(input, extensionRegistry);
+        return new HeartbeatReq(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Heartbeat> parser() {
+    public static com.google.protobuf.Parser<HeartbeatReq> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Heartbeat> getParserForType() {
+    public com.google.protobuf.Parser<HeartbeatReq> getParserForType() {
       return PARSER;
     }
 
-    public io.tortuga.TortugaProto.Heartbeat getDefaultInstanceForType() {
+    public io.tortuga.TortugaProto.HeartbeatReq getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -2166,6 +3110,11 @@ public final class TortugaProto {
      * <code>.tortuga.TaskResp.RetryContext retry_ctx = 6;</code>
      */
     io.tortuga.TortugaProto.TaskResp.RetryContextOrBuilder getRetryCtxOrBuilder();
+
+    /**
+     * <code>int32 priority = 7;</code>
+     */
+    int getPriority();
   }
   /**
    * Protobuf type {@code tortuga.TaskResp}
@@ -2184,6 +3133,7 @@ public final class TortugaProto {
       type_ = "";
       handle_ = "";
       none_ = false;
+      priority_ = 0;
     }
 
     @java.lang.Override
@@ -2264,6 +3214,11 @@ public final class TortugaProto {
                 retryCtx_ = subBuilder.buildPartial();
               }
 
+              break;
+            }
+            case 56: {
+
+              priority_ = input.readInt32();
               break;
             }
           }
@@ -3067,6 +4022,15 @@ public final class TortugaProto {
       return getRetryCtx();
     }
 
+    public static final int PRIORITY_FIELD_NUMBER = 7;
+    private int priority_;
+    /**
+     * <code>int32 priority = 7;</code>
+     */
+    public int getPriority() {
+      return priority_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3097,6 +4061,9 @@ public final class TortugaProto {
       if (retryCtx_ != null) {
         output.writeMessage(6, getRetryCtx());
       }
+      if (priority_ != 0) {
+        output.writeInt32(7, priority_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3125,6 +4092,10 @@ public final class TortugaProto {
       if (retryCtx_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, getRetryCtx());
+      }
+      if (priority_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, priority_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3160,6 +4131,8 @@ public final class TortugaProto {
         result = result && getRetryCtx()
             .equals(other.getRetryCtx());
       }
+      result = result && (getPriority()
+          == other.getPriority());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -3188,6 +4161,8 @@ public final class TortugaProto {
         hash = (37 * hash) + RETRY_CTX_FIELD_NUMBER;
         hash = (53 * hash) + getRetryCtx().hashCode();
       }
+      hash = (37 * hash) + PRIORITY_FIELD_NUMBER;
+      hash = (53 * hash) + getPriority();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3337,6 +4312,8 @@ public final class TortugaProto {
           retryCtx_ = null;
           retryCtxBuilder_ = null;
         }
+        priority_ = 0;
+
         return this;
       }
 
@@ -3373,6 +4350,7 @@ public final class TortugaProto {
         } else {
           result.retryCtx_ = retryCtxBuilder_.build();
         }
+        result.priority_ = priority_;
         onBuilt();
         return result;
       }
@@ -3434,6 +4412,9 @@ public final class TortugaProto {
         }
         if (other.hasRetryCtx()) {
           mergeRetryCtx(other.getRetryCtx());
+        }
+        if (other.getPriority() != 0) {
+          setPriority(other.getPriority());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3927,6 +4908,32 @@ public final class TortugaProto {
           retryCtx_ = null;
         }
         return retryCtxBuilder_;
+      }
+
+      private int priority_ ;
+      /**
+       * <code>int32 priority = 7;</code>
+       */
+      public int getPriority() {
+        return priority_;
+      }
+      /**
+       * <code>int32 priority = 7;</code>
+       */
+      public Builder setPriority(int value) {
+        
+        priority_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 priority = 7;</code>
+       */
+      public Builder clearPriority() {
+        
+        priority_ = 0;
+        onChanged();
+        return this;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -14136,16 +15143,537 @@ public final class TortugaProto {
 
   }
 
+  public interface FindTaskReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:tortuga.FindTaskReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int64 handle = 1;</code>
+     */
+    long getHandle();
+
+    /**
+     * <code>bool is_for_done_only = 2;</code>
+     */
+    boolean getIsForDoneOnly();
+  }
+  /**
+   * Protobuf type {@code tortuga.FindTaskReq}
+   */
+  public  static final class FindTaskReq extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:tortuga.FindTaskReq)
+      FindTaskReqOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use FindTaskReq.newBuilder() to construct.
+    private FindTaskReq(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private FindTaskReq() {
+      handle_ = 0L;
+      isForDoneOnly_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FindTaskReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              handle_ = input.readInt64();
+              break;
+            }
+            case 16: {
+
+              isForDoneOnly_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_FindTaskReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return io.tortuga.TortugaProto.internal_static_tortuga_FindTaskReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              io.tortuga.TortugaProto.FindTaskReq.class, io.tortuga.TortugaProto.FindTaskReq.Builder.class);
+    }
+
+    public static final int HANDLE_FIELD_NUMBER = 1;
+    private long handle_;
+    /**
+     * <code>int64 handle = 1;</code>
+     */
+    public long getHandle() {
+      return handle_;
+    }
+
+    public static final int IS_FOR_DONE_ONLY_FIELD_NUMBER = 2;
+    private boolean isForDoneOnly_;
+    /**
+     * <code>bool is_for_done_only = 2;</code>
+     */
+    public boolean getIsForDoneOnly() {
+      return isForDoneOnly_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (handle_ != 0L) {
+        output.writeInt64(1, handle_);
+      }
+      if (isForDoneOnly_ != false) {
+        output.writeBool(2, isForDoneOnly_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (handle_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, handle_);
+      }
+      if (isForDoneOnly_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, isForDoneOnly_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof io.tortuga.TortugaProto.FindTaskReq)) {
+        return super.equals(obj);
+      }
+      io.tortuga.TortugaProto.FindTaskReq other = (io.tortuga.TortugaProto.FindTaskReq) obj;
+
+      boolean result = true;
+      result = result && (getHandle()
+          == other.getHandle());
+      result = result && (getIsForDoneOnly()
+          == other.getIsForDoneOnly());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + HANDLE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getHandle());
+      hash = (37 * hash) + IS_FOR_DONE_ONLY_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsForDoneOnly());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static io.tortuga.TortugaProto.FindTaskReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(io.tortuga.TortugaProto.FindTaskReq prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code tortuga.FindTaskReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:tortuga.FindTaskReq)
+        io.tortuga.TortugaProto.FindTaskReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_FindTaskReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_FindTaskReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                io.tortuga.TortugaProto.FindTaskReq.class, io.tortuga.TortugaProto.FindTaskReq.Builder.class);
+      }
+
+      // Construct using io.tortuga.TortugaProto.FindTaskReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        handle_ = 0L;
+
+        isForDoneOnly_ = false;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return io.tortuga.TortugaProto.internal_static_tortuga_FindTaskReq_descriptor;
+      }
+
+      public io.tortuga.TortugaProto.FindTaskReq getDefaultInstanceForType() {
+        return io.tortuga.TortugaProto.FindTaskReq.getDefaultInstance();
+      }
+
+      public io.tortuga.TortugaProto.FindTaskReq build() {
+        io.tortuga.TortugaProto.FindTaskReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public io.tortuga.TortugaProto.FindTaskReq buildPartial() {
+        io.tortuga.TortugaProto.FindTaskReq result = new io.tortuga.TortugaProto.FindTaskReq(this);
+        result.handle_ = handle_;
+        result.isForDoneOnly_ = isForDoneOnly_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof io.tortuga.TortugaProto.FindTaskReq) {
+          return mergeFrom((io.tortuga.TortugaProto.FindTaskReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(io.tortuga.TortugaProto.FindTaskReq other) {
+        if (other == io.tortuga.TortugaProto.FindTaskReq.getDefaultInstance()) return this;
+        if (other.getHandle() != 0L) {
+          setHandle(other.getHandle());
+        }
+        if (other.getIsForDoneOnly() != false) {
+          setIsForDoneOnly(other.getIsForDoneOnly());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        io.tortuga.TortugaProto.FindTaskReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (io.tortuga.TortugaProto.FindTaskReq) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long handle_ ;
+      /**
+       * <code>int64 handle = 1;</code>
+       */
+      public long getHandle() {
+        return handle_;
+      }
+      /**
+       * <code>int64 handle = 1;</code>
+       */
+      public Builder setHandle(long value) {
+        
+        handle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 handle = 1;</code>
+       */
+      public Builder clearHandle() {
+        
+        handle_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private boolean isForDoneOnly_ ;
+      /**
+       * <code>bool is_for_done_only = 2;</code>
+       */
+      public boolean getIsForDoneOnly() {
+        return isForDoneOnly_;
+      }
+      /**
+       * <code>bool is_for_done_only = 2;</code>
+       */
+      public Builder setIsForDoneOnly(boolean value) {
+        
+        isForDoneOnly_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool is_for_done_only = 2;</code>
+       */
+      public Builder clearIsForDoneOnly() {
+        
+        isForDoneOnly_ = false;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:tortuga.FindTaskReq)
+    }
+
+    // @@protoc_insertion_point(class_scope:tortuga.FindTaskReq)
+    private static final io.tortuga.TortugaProto.FindTaskReq DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new io.tortuga.TortugaProto.FindTaskReq();
+    }
+
+    public static io.tortuga.TortugaProto.FindTaskReq getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<FindTaskReq>
+        PARSER = new com.google.protobuf.AbstractParser<FindTaskReq>() {
+      public FindTaskReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FindTaskReq(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<FindTaskReq> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FindTaskReq> getParserForType() {
+      return PARSER;
+    }
+
+    public io.tortuga.TortugaProto.FindTaskReq getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_tortuga_Worker_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_tortuga_Worker_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tortuga_Heartbeat_descriptor;
+    internal_static_tortuga_HeartbeatReq_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tortuga_Heartbeat_fieldAccessorTable;
+      internal_static_tortuga_HeartbeatReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_HeartbeatReq_WorkerBeat_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_HeartbeatReq_WorkerBeat_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_tortuga_TaskReq_descriptor;
   private static final 
@@ -14206,6 +15734,11 @@ public final class TortugaProto {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_tortuga_TaskIdentifier_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tortuga_FindTaskReq_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tortuga_FindTaskReq_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -14221,62 +15754,66 @@ public final class TortugaProto {
       "\032\037google/protobuf/timestamp.proto\032\036googl" +
       "e/protobuf/wrappers.proto\032\027google/rpc/st" +
       "atus.proto\"?\n\006Worker\022\021\n\tworker_id\030\001 \001(\t\022" +
-      "\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003 \003(\t\",\n\tH" +
-      "eartbeat\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worke" +
-      "r\"*\n\007TaskReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.W" +
-      "orker\"\325\001\n\010TaskResp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002" +
-      " \001(\t\022\"\n\004data\030\003 \001(\0132\024.google.protobuf.Any" +
-      "\022\016\n\006handle\030\004 \001(\t\022\014\n\004none\030\005 \001(\010\0221\n\tretry_" +
-      "ctx\030\006 \001(\0132\036.tortuga.TaskResp.RetryContex" +
-      "t\032:\n\014RetryContext\022\017\n\007retries\030\001 \001(\005\022\031\n\021pr" +
-      "ogress_metadata\030\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001 \001" +
-      "(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.google." +
-      "protobuf.Any\022-\n\010priority\030\004 \001(\0132\033.google." +
-      "protobuf.Int32Value\0220\n\013max_retries\030\005 \001(\013" +
-      "2\033.google.protobuf.Int32Value\022(\n\005delay\030\006" +
-      " \001(\0132\031.google.protobuf.Duration\022\017\n\007modul" +
-      "es\030\007 \003(\t\"\273\003\n\014TaskProgress\022\016\n\006handle\030\001 \001(" +
-      "\t\022\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_retri" +
-      "es\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030\006 " +
-      "\001(\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+\n\007" +
-      "created\030\t \001(\0132\032.google.protobuf.Timestam" +
-      "p\0220\n\014started_time\030\n \001(\0132\032.google.protobu" +
-      "f.Timestamp\022-\n\tdone_time\030\013 \001(\0132\032.google." +
-      "protobuf.Timestamp\022\"\n\006status\030\014 \001(\0132\022.goo" +
-      "gle.rpc.Status\022\020\n\010progress\030\r \001(\002\022\030\n\020prog" +
-      "ress_message\030\016 \001(\t\022\031\n\021progress_metadata\030" +
-      "\022 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker_id\030\020 \001(\t\022\016" +
-      "\n\006output\030\021 \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 \001(" +
-      "\0132\r.tortuga.Task\"-\n\nCreateResp\022\016\n\006handle" +
-      "\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"\205\001\n\017CompleteTask" +
-      "Req\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016\n\006" +
-      "handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_mess" +
-      "age\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t\022\016\n\006output\030\006 \001(\t\"" +
-      "\344\001\n\021UpdateProgressReq\022\037\n\006worker\030\001 \001(\0132\017." +
-      "tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022-\n\010progre" +
-      "ss\030\003 \001(\0132\033.google.protobuf.FloatValue\0226\n" +
-      "\020progress_message\030\004 \001(\0132\034.google.protobu" +
-      "f.StringValue\0227\n\021progress_metadata\030\005 \001(\013" +
-      "2\034.google.protobuf.StringValue\"\035\n\013Progre" +
-      "ssReq\022\016\n\006handle\030\001 \001(\t\"B\n\014ProgressResp\022\016\n" +
-      "\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\0132\022.google.r" +
-      "pc.Status\"*\n\016TaskIdentifier\022\n\n\002id\030\001 \001(\t\022" +
-      "\014\n\004type\030\002 \001(\t2\257\004\n\007Tortuga\0225\n\nCreateTask\022" +
-      "\022.tortuga.CreateReq\032\023.tortuga.CreateResp" +
-      "\0222\n\013RequestTask\022\020.tortuga.TaskReq\032\021.tort" +
-      "uga.TaskResp\0224\n\tHeartbeat\022\017.tortuga.Work" +
-      "er\032\026.google.protobuf.Empty\022@\n\014CompleteTa" +
-      "sk\022\030.tortuga.CompleteTaskReq\032\026.google.pr" +
-      "otobuf.Empty\022D\n\016UpdateProgress\022\032.tortuga" +
-      ".UpdateProgressReq\032\026.google.protobuf.Emp" +
-      "ty\022:\n\010FindTask\022\027.tortuga.TaskIdentifier\032" +
-      "\025.tortuga.TaskProgress\022G\n\020FindTaskByHand" +
-      "le\022\034.google.protobuf.StringValue\032\025.tortu" +
-      "ga.TaskProgress\0226\n\004Ping\022\026.google.protobu" +
-      "f.Empty\032\026.google.protobuf.Empty\022>\n\014QuitQ" +
-      "uitQuit\022\026.google.protobuf.Empty\032\026.google" +
-      ".protobuf.EmptyB\032\n\nio.tortugaB\014TortugaPr" +
-      "otob\006proto3"
+      "\014\n\004uuid\030\002 \001(\t\022\024\n\014capabilities\030\003 \003(\t\"\223\001\n\014" +
+      "HeartbeatReq\0226\n\014worker_beats\030\001 \003(\0132 .tor" +
+      "tuga.HeartbeatReq.WorkerBeat\032K\n\nWorkerBe" +
+      "at\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\034\n\024c" +
+      "urrent_task_handles\030\002 \003(\003\"*\n\007TaskReq\022\037\n\006" +
+      "worker\030\001 \001(\0132\017.tortuga.Worker\"\347\001\n\010TaskRe" +
+      "sp\022\n\n\002id\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001" +
+      "(\0132\024.google.protobuf.Any\022\016\n\006handle\030\004 \001(\t" +
+      "\022\014\n\004none\030\005 \001(\010\0221\n\tretry_ctx\030\006 \001(\0132\036.tort" +
+      "uga.TaskResp.RetryContext\022\020\n\010priority\030\007 " +
+      "\001(\005\032:\n\014RetryContext\022\017\n\007retries\030\001 \001(\005\022\031\n\021" +
+      "progress_metadata\030\002 \001(\t\"\340\001\n\004Task\022\n\n\002id\030\001" +
+      " \001(\t\022\014\n\004type\030\002 \001(\t\022\"\n\004data\030\003 \001(\0132\024.googl" +
+      "e.protobuf.Any\022-\n\010priority\030\004 \001(\0132\033.googl" +
+      "e.protobuf.Int32Value\0220\n\013max_retries\030\005 \001" +
+      "(\0132\033.google.protobuf.Int32Value\022(\n\005delay" +
+      "\030\006 \001(\0132\031.google.protobuf.Duration\022\017\n\007mod" +
+      "ules\030\007 \003(\t\"\273\003\n\014TaskProgress\022\016\n\006handle\030\001 " +
+      "\001(\t\022\n\n\002id\030\002 \001(\t\022\014\n\004type\030\003 \001(\t\022\023\n\013max_ret" +
+      "ries\030\004 \001(\005\022\017\n\007retries\030\005 \001(\005\022\020\n\010priority\030" +
+      "\006 \001(\005\022\021\n\tworked_on\030\007 \001(\010\022\014\n\004done\030\010 \001(\010\022+" +
+      "\n\007created\030\t \001(\0132\032.google.protobuf.Timest" +
+      "amp\0220\n\014started_time\030\n \001(\0132\032.google.proto" +
+      "buf.Timestamp\022-\n\tdone_time\030\013 \001(\0132\032.googl" +
+      "e.protobuf.Timestamp\022\"\n\006status\030\014 \001(\0132\022.g" +
+      "oogle.rpc.Status\022\020\n\010progress\030\r \001(\002\022\030\n\020pr" +
+      "ogress_message\030\016 \001(\t\022\031\n\021progress_metadat" +
+      "a\030\022 \001(\t\022\014\n\004logs\030\017 \001(\t\022\021\n\tworker_id\030\020 \001(\t" +
+      "\022\016\n\006output\030\021 \001(\t\"(\n\tCreateReq\022\033\n\004task\030\001 " +
+      "\001(\0132\r.tortuga.Task\"-\n\nCreateResp\022\016\n\006hand" +
+      "le\030\001 \001(\t\022\017\n\007created\030\002 \001(\010\"\205\001\n\017CompleteTa" +
+      "skReq\022\037\n\006worker\030\001 \001(\0132\017.tortuga.Worker\022\016" +
+      "\n\006handle\030\002 \001(\t\022\014\n\004code\030\003 \001(\005\022\025\n\rerror_me" +
+      "ssage\030\004 \001(\t\022\014\n\004logs\030\005 \001(\t\022\016\n\006output\030\006 \001(" +
+      "\t\"\344\001\n\021UpdateProgressReq\022\037\n\006worker\030\001 \001(\0132" +
+      "\017.tortuga.Worker\022\016\n\006handle\030\002 \001(\t\022-\n\010prog" +
+      "ress\030\003 \001(\0132\033.google.protobuf.FloatValue\022" +
+      "6\n\020progress_message\030\004 \001(\0132\034.google.proto" +
+      "buf.StringValue\0227\n\021progress_metadata\030\005 \001" +
+      "(\0132\034.google.protobuf.StringValue\"\035\n\013Prog" +
+      "ressReq\022\016\n\006handle\030\001 \001(\t\"B\n\014ProgressResp\022" +
+      "\016\n\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\0132\022.google" +
+      ".rpc.Status\"*\n\016TaskIdentifier\022\n\n\002id\030\001 \001(" +
+      "\t\022\014\n\004type\030\002 \001(\t\"7\n\013FindTaskReq\022\016\n\006handle" +
+      "\030\001 \001(\003\022\030\n\020is_for_done_only\030\002 \001(\0102\255\004\n\007Tor" +
+      "tuga\0225\n\nCreateTask\022\022.tortuga.CreateReq\032\023" +
+      ".tortuga.CreateResp\0222\n\013RequestTask\022\020.tor" +
+      "tuga.TaskReq\032\021.tortuga.TaskResp\022:\n\tHeart" +
+      "beat\022\025.tortuga.HeartbeatReq\032\026.google.pro" +
+      "tobuf.Empty\022@\n\014CompleteTask\022\030.tortuga.Co" +
+      "mpleteTaskReq\032\026.google.protobuf.Empty\022D\n" +
+      "\016UpdateProgress\022\032.tortuga.UpdateProgress" +
+      "Req\032\026.google.protobuf.Empty\022:\n\010FindTask\022" +
+      "\027.tortuga.TaskIdentifier\032\025.tortuga.TaskP" +
+      "rogress\022?\n\020FindTaskByHandle\022\024.tortuga.Fi" +
+      "ndTaskReq\032\025.tortuga.TaskProgress\0226\n\004Ping" +
+      "\022\026.google.protobuf.Empty\032\026.google.protob" +
+      "uf.Empty\022>\n\014QuitQuitQuit\022\026.google.protob" +
+      "uf.Empty\032\026.google.protobuf.EmptyB\032\n\nio.t" +
+      "ortugaB\014TortugaProtob\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14302,12 +15839,18 @@ public final class TortugaProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_Worker_descriptor,
         new java.lang.String[] { "WorkerId", "Uuid", "Capabilities", });
-    internal_static_tortuga_Heartbeat_descriptor =
+    internal_static_tortuga_HeartbeatReq_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_tortuga_Heartbeat_fieldAccessorTable = new
+    internal_static_tortuga_HeartbeatReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tortuga_Heartbeat_descriptor,
-        new java.lang.String[] { "Worker", });
+        internal_static_tortuga_HeartbeatReq_descriptor,
+        new java.lang.String[] { "WorkerBeats", });
+    internal_static_tortuga_HeartbeatReq_WorkerBeat_descriptor =
+      internal_static_tortuga_HeartbeatReq_descriptor.getNestedTypes().get(0);
+    internal_static_tortuga_HeartbeatReq_WorkerBeat_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_HeartbeatReq_WorkerBeat_descriptor,
+        new java.lang.String[] { "Worker", "CurrentTaskHandles", });
     internal_static_tortuga_TaskReq_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_tortuga_TaskReq_fieldAccessorTable = new
@@ -14319,7 +15862,7 @@ public final class TortugaProto {
     internal_static_tortuga_TaskResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_TaskResp_descriptor,
-        new java.lang.String[] { "Id", "Type", "Data", "Handle", "None", "RetryCtx", });
+        new java.lang.String[] { "Id", "Type", "Data", "Handle", "None", "RetryCtx", "Priority", });
     internal_static_tortuga_TaskResp_RetryContext_descriptor =
       internal_static_tortuga_TaskResp_descriptor.getNestedTypes().get(0);
     internal_static_tortuga_TaskResp_RetryContext_fieldAccessorTable = new
@@ -14380,6 +15923,12 @@ public final class TortugaProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tortuga_TaskIdentifier_descriptor,
         new java.lang.String[] { "Id", "Type", });
+    internal_static_tortuga_FindTaskReq_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_tortuga_FindTaskReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tortuga_FindTaskReq_descriptor,
+        new java.lang.String[] { "Handle", "IsForDoneOnly", });
     com.google.protobuf.AnyProto.getDescriptor();
     com.google.protobuf.DurationProto.getDescriptor();
     com.google.protobuf.EmptyProto.getDescriptor();

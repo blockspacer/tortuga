@@ -12,6 +12,6 @@ class TimeLogger {
 
  private:
   std::string label_;
-  std::chrono::milliseconds start_;
+  std::chrono::microseconds start_;
 };
 }  // tortuga

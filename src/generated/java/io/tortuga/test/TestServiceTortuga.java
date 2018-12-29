@@ -71,6 +71,7 @@ public class TestServiceTortuga {
       }
       io.tortuga.test.TestServiceGrpc.TestServiceBlockingStub stub = io.tortuga.test.TestServiceGrpc.newBlockingStub(this.chan);
       stub = stub.withDeadlineAfter(30, TimeUnit.SECONDS);
+      stub = io.tortuga.TortugaHandlers.withHandleMetadata(stub, ctx);
       try {
         stub.handleTask(t);
         return Futures.immediateFuture(Status.OK);
@@ -89,6 +90,7 @@ public class TestServiceTortuga {
       }
       io.tortuga.test.TestServiceGrpc.TestServiceBlockingStub stub = io.tortuga.test.TestServiceGrpc.newBlockingStub(this.chan);
       stub = stub.withDeadlineAfter(30, TimeUnit.SECONDS);
+      stub = io.tortuga.TortugaHandlers.withHandleMetadata(stub, ctx);
       try {
         stub.handleCustomMessage(t);
         return Futures.immediateFuture(Status.OK);

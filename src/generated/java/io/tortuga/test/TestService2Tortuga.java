@@ -71,6 +71,7 @@ public class TestService2Tortuga {
       }
       io.tortuga.test.TestService2Grpc.TestService2BlockingStub stub = io.tortuga.test.TestService2Grpc.newBlockingStub(this.chan);
       stub = stub.withDeadlineAfter(30, TimeUnit.SECONDS);
+      stub = io.tortuga.TortugaHandlers.withHandleMetadata(stub, ctx);
       try {
         stub.handleTask2(t);
         return Futures.immediateFuture(Status.OK);
@@ -89,8 +90,10 @@ public class TestService2Tortuga {
       }
       io.tortuga.test.TestService2Grpc.TestService2BlockingStub stub = io.tortuga.test.TestService2Grpc.newBlockingStub(this.chan);
       stub = stub.withDeadlineAfter(30, TimeUnit.SECONDS);
+      stub = io.tortuga.TortugaHandlers.withHandleMetadata(stub, ctx);
       try {
-        stub.handleCustomMessage2(t);
+        io.tortuga.TortugaParamsProto.TortugaOutput output = stub.handleCustomMessage2(t);
+        ctx.setOutput(output.getOutput());
         return Futures.immediateFuture(Status.OK);
       } catch (StatusRuntimeException ex) {
         return Futures.immediateFuture(ex.getStatus());
