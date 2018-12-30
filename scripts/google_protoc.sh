@@ -7,13 +7,6 @@ generate_google() {
     --grpc_out=.                                      \
     --plugin=protoc-gen-grpc=`which grpc_cpp_plugin`  \
     $1
-
-/usr/local/bin/protoc --proto_path=.                       \
-    --proto_path=$HOME/opt/googleapis                      \
-    --rust_out=src/googleapis                              \
-    --grpc_out=src/googleapis                              \
-    --plugin=protoc-gen-grpc=`which grpc_rust_plugin`      \
-    $1
 }
 
 generate_google google/api/annotations.proto

@@ -31,3 +31,7 @@ GRPC_JAVA_COMPILER=/opt/grpc-java/compiler/build/exe/java_plugin/protoc-gen-grpc
     --java_plugin_out=src/main/java                          \
     --plugin=protoc-gen-java_plugin=$GRPC_JAVA_COMPILER      \
     tortuga/tortuga_params.proto
+
+/usr/local/bin/protoc --proto_path=.                   \
+    --rust_out=tortuga/src                             \
+    tortuga/tortuga_test.proto
