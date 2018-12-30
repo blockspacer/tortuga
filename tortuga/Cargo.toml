@@ -1,0 +1,15 @@
+[package]
+name = "tortuga"
+version = "0.1.0"
+authors = ["Christian <christian@lefty.io>"]
+edition = "2018"
+
+[dependencies]
+log = "0.4"
+simplelog = "^0.5.0"
+protobuf = { version = "~2.0", features = ["with-bytes"] }
+grpcio = { version = "0.4", default-features = false, features = ["protobuf-codec"] }
+futures = "0.1.25"
+diesel = { version = "1.0.0", features = ["sqlite"] }
+
+google = { path = "../google" }
