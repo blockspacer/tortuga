@@ -9,7 +9,7 @@
 #include "grpc++/grpc++.h"
 #include "sqlite3.h"
 
-#include "tortuga/sqlite_statement.h"
+#include "tortuga/storage/sqlite_statement.h"
 #include "tortuga/rpc_opts.h"
 #include "tortuga/tortuga.pb.h"
 

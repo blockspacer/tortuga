@@ -11,7 +11,7 @@
 #include "folly/executors/CPUThreadPoolExecutor.h"
 #include "sqlite3.h"
 
-#include "tortuga/sqlite_statement.h"
+#include "tortuga/storage/sqlite_statement.h"
 #include "tortuga/time_utils.h"
 #include "tortuga/tortuga.pb.h"
 

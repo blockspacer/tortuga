@@ -41,7 +41,6 @@ add_library (tortuga_lib
   tortuga/module.cc
   tortuga/progress_manager.cc
   tortuga/rpc_opts.cc  
-  tortuga/sqlite_statement.cc
   tortuga/time_logger.cc
   tortuga/time_utils.cc
   tortuga/tortuga.cc
@@ -50,6 +49,8 @@ add_library (tortuga_lib
   tortuga/tortuga_params.pb.cc
   tortuga/tortuga_params.grpc.pb.cc
   tortuga/workers_manager.cc
+  tortuga/storage/sqlite_statement.cc
+  tortuga/storage/tortuga_storage.cc
 )
 
 target_link_libraries(tortuga_lib

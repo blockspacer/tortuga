@@ -16,10 +16,10 @@
 #include "tortuga/module.h"
 #include "tortuga/progress_manager.h"
 #include "tortuga/rpc_opts.h"
-#include "tortuga/sqlite_statement.h"
 #include "tortuga/tortuga.grpc.pb.h"
 #include "tortuga/tortuga.pb.h"
 #include "tortuga/workers_manager.h"
+#include "tortuga/storage/sqlite_statement.h"
 
 namespace tortuga {
 struct RegisteredWorker {

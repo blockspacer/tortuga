@@ -7,9 +7,9 @@
 #include "glog/logging.h"
 
 #include "tortuga/fields.h"
-#include "tortuga/sqlite_statement.h"
 #include "tortuga/time_logger.h"
 #include "tortuga/time_utils.h"
+#include "tortuga/storage/sqlite_statement.h"
 
 namespace tortuga {
 namespace {

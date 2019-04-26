@@ -15,9 +15,9 @@
 #include "google/protobuf/util/time_util.h"
 
 #include "tortuga/baton_handler.h"
-#include "tortuga/sqlite_statement.h"
 #include "tortuga/time_logger.h"
 #include "tortuga/time_utils.h"
+#include "tortuga/storage/sqlite_statement.h"
 
 using google::protobuf::Timestamp;
 using google::protobuf::util::TimeUtil;
