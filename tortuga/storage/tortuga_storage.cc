@@ -56,9 +56,15 @@ const char* const kCreateTortuga = R"(
 
   CREATE INDEX IF NOT EXISTS historic_workers_uuid_idx ON historic_workers (uuid);
 )";
+
+// task statements
+static const char* const kSelectExistingTaskStmt = "select rowid from tasks where id = ? and done != 1 LIMIT 1";
+
 }
 
-TortugaStorage::TortugaStorage(sqlite3* db) : db_(db) {
+TortugaStorage::TortugaStorage(sqlite3* db)
+    : db_(db),
+      select_existing_task_stmt_(db, kSelectExistingTaskStmt) {
 
 }
 
@@ -86,4 +92,17 @@ std::shared_ptr<TortugaStorage> TortugaStorage::Init() {
 
   return std::shared_ptr<TortugaStorage>(new TortugaStorage(db));
 }
+
+folly::Optional<int64_t> TortugaStorage::FindTaskById(const std::string& id) {
+  SqliteReset x(&select_existing_task_stmt_);
+  select_existing_task_stmt_.BindText(1, id);
+  int stepped = select_existing_task_stmt_.Step();
+  if (stepped == SQLITE_ROW) {
+    int64_t rowid = select_existing_task_stmt_.ColumnLong(0);
+    return rowid;
+  } else {
+    return folly::none;
+  }
+}
+
 }  // tortuga

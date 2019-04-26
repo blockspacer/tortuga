@@ -20,6 +20,7 @@
 #include "tortuga/tortuga.pb.h"
 #include "tortuga/workers_manager.h"
 #include "tortuga/storage/sqlite_statement.h"
+#include "tortuga/storage/tortuga_storage.h"
 
 namespace tortuga {
 struct RegisteredWorker {
@@ -33,7 +34,7 @@ struct RegisteredWorker {
 
 class TortugaHandler : boost::noncopyable {
  public:
-  TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules);
+  TortugaHandler(std::shared_ptr<TortugaStorage> storage, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules);
   ~TortugaHandler() {
   }
 
@@ -103,6 +104,7 @@ class TortugaHandler : boost::noncopyable {
   void RegisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton);
   void UnregisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton);
 
+  std::shared_ptr<TortugaStorage> storage_;
   sqlite3* db_{ nullptr };
   RpcOpts rpc_opts_;
 
@@ -114,7 +116,6 @@ class TortugaHandler : boost::noncopyable {
 
   // All our sqlite statements nice and prepared :).
 
-  SqliteStatement select_existing_task_stmt_;
   SqliteStatement insert_task_stmt_;
   SqliteStatement assign_task_stmt_;
 

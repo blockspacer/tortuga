@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
   std::map<std::string, std::unique_ptr<tortuga::Module>> modules;
   modules["firestore"] = std::make_unique<tortuga::FirestoreModule>(cq.get());
 
-  tortuga::TortugaHandler tortuga(storage->db(), rpc_opts, std::move(modules));
+  tortuga::TortugaHandler tortuga(storage, rpc_opts, std::move(modules));
 
   fibers.addTask([&tortuga]() {
     tortuga.HandleCreateTask();

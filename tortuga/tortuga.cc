@@ -24,8 +24,6 @@ using google::protobuf::util::TimeUtil;
 
 namespace tortuga {
 namespace {
-static const char* const kSelectExistingTaskStmt = "select rowid from tasks where id = ? and done != 1 LIMIT 1";
-
 static const char* const kInsertTaskStmt = R"(
     insert into tasks (id, task_type, data, max_retries, priority, delayed_time, modules, created) values (?, ?, ?, ?, ?, ?, ?, ?);
 )";
@@ -52,17 +50,17 @@ static const char* const kCompleteTaskStmt = R"(
 )";
 }  // anonymous namespace
 
-TortugaHandler::TortugaHandler(sqlite3* db, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules)
-    : db_(db),
+TortugaHandler::TortugaHandler(std::shared_ptr<TortugaStorage> storage, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules)
+    : storage_(storage),
+      db_(storage->db()),
       rpc_opts_(rpc_opts),
-      select_existing_task_stmt_(db, kSelectExistingTaskStmt),
       insert_task_stmt_(db_, kInsertTaskStmt),
-      assign_task_stmt_(db, kAssignTaskStmt),
-      select_task_to_complete_stmt_(db, kSelectTaskToCompleteStmt),
-      complete_task_stmt_(db, kCompleteTaskStmt),
+      assign_task_stmt_(db_, kAssignTaskStmt),
+      select_task_to_complete_stmt_(db_, kSelectTaskToCompleteStmt),
+      complete_task_stmt_(db_, kCompleteTaskStmt),
       modules_(std::move(modules)) {
-  progress_mgr_.reset(new ProgressManager(db, &exec_, rpc_opts));
-  workers_manager_.reset(new WorkersManager(db, &exec_, [this](const std::string& uuid) {
+  progress_mgr_.reset(new ProgressManager(db_, &exec_, rpc_opts));
+  workers_manager_.reset(new WorkersManager(db_, &exec_, [this](const std::string& uuid) {
     // cleanup the prepared statement that would otherwise take up memory.
     select_task_stmts_.erase(uuid);
   }));
@@ -172,14 +170,11 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTask(const Task& task) {
 TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& task) {
   TimeLogger create_timer("insert_task");
   SqliteTx tx(db_);
-  SqliteReset x1(&select_existing_task_stmt_);
   SqliteReset x2(&insert_task_stmt_);
 
-  select_existing_task_stmt_.BindText(1, task.id());
-
-  int stepped = select_existing_task_stmt_.Step();
-  if (stepped == SQLITE_ROW) {
-    int64_t rowid = select_existing_task_stmt_.ColumnLong(0);
+  folly::Optional<int64_t> rowid_opt = storage_->FindTaskById(task.id());
+  if (rowid_opt) {
+    int64_t rowid = *rowid_opt;
     VLOG(3) << "CreateTask found existing rowid: " << rowid;
     CreateTaskResult res;
     res.handle = folly::to<std::string>(rowid);
