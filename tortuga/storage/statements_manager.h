@@ -3,7 +3,7 @@
 #include <string>
 
 #include "tortuga/tortuga.pb.h"
-#include "tortuga/storage/sqlite_statement.h"
+#include "tortuga/storage/database_statement.h"
 
 namespace tortuga {
 class StatementsManager {

@@ -9,9 +9,7 @@
 #include "boost/utility.hpp"
 
 #include "folly/executors/CPUThreadPoolExecutor.h"
-#include "sqlite3.h"
 
-#include "tortuga/storage/sqlite_statement.h"
 #include "tortuga/storage/tortuga_storage.h"
 #include "tortuga/time_utils.h"
 #include "tortuga/tortuga.pb.h"
@@ -72,7 +70,6 @@ class WorkersManager : boost::noncopyable {
   void NewWorkerBeat(const Worker& worker);
 
   folly::CPUThreadPoolExecutor* exec_{ nullptr };
-  sqlite3* db_{ nullptr };
   
   std::shared_ptr<TortugaStorage> storage_;
 

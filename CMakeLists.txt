@@ -36,7 +36,6 @@ target_link_libraries(firestore_proto_lib
 add_library (tortuga_lib
   sqlite3.c
   tortuga/baton_handler.cc
-  tortuga/fields.cc
   tortuga/modules/firestore.cc
   tortuga/module.cc
   tortuga/progress_manager.cc
@@ -49,7 +48,8 @@ add_library (tortuga_lib
   tortuga/tortuga_params.pb.cc
   tortuga/tortuga_params.grpc.pb.cc
   tortuga/workers_manager.cc
-  tortuga/storage/sqlite_statement.cc
+  tortuga/storage/fields.cc
+  tortuga/storage/database_statement.cc
   tortuga/storage/statements_manager.cc
   tortuga/storage/tortuga_storage.cc
 )

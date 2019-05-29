@@ -18,7 +18,6 @@ ProgressManager::ProgressManager(std::shared_ptr<TortugaStorage> storage,
                                  folly::CPUThreadPoolExecutor* exec,
                                  RpcOpts rpc_opts)
     : storage_(storage),
-      db_(storage->db()),
       exec_(exec),
       rpc_opts_(rpc_opts) {  
 }

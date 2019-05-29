@@ -25,7 +25,6 @@ namespace tortuga {
 
 TortugaHandler::TortugaHandler(std::shared_ptr<TortugaStorage> storage, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules)
     : storage_(storage),
-      db_(storage->db()),
       rpc_opts_(rpc_opts),
       modules_(std::move(modules)) {
   progress_mgr_.reset(new ProgressManager(storage, &exec_, rpc_opts));
@@ -138,7 +137,7 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTask(const Task& task) {
 
 TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& task) {
   TimeLogger create_timer("insert_task");
-  SqliteTx tx(db_);
+  Tx tx(storage_->StartTx());
 
   folly::Optional<int64_t> rowid_opt = storage_->FindTaskById(task.id());
   if (rowid_opt) {
@@ -200,7 +199,7 @@ RequestTaskResult TortugaHandler::RequestTask(const Worker& worker,
 
 RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker& worker) {
   TimeLogger get_task_timer("get_task");
-  SqliteTx tx(db_);
+  Tx tx(storage_->StartTx());
 
   RequestTaskResult res = storage_->RequestTaskNotCommit(worker);
   if (res.none) {

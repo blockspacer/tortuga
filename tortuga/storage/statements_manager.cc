@@ -49,14 +49,6 @@ static const char* const kSelectWorkerIdByUuidStmt = R"(
 
 // worker manager statements
 
-static const char* const kSelectTasksWorkedOnStmt = R"(
-  select rowid, * from tasks where worked_on = 1 and done = 0;
-)";
-
-static const char* const kSelectWorkerByUuidStmt = R"(
-  select * from workers where uuid = ?;
-)";
-
 static const char* const kUpdateWorkerStmt = R"(
   update workers set uuid=?, capabilities=?, last_beat=? where worker_id=? ;
 )";

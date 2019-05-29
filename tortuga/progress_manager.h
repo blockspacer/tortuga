@@ -7,7 +7,6 @@
 #include "folly/container/EvictingCacheMap.h"
 #include "folly/executors/CPUThreadPoolExecutor.h"
 #include "grpc++/grpc++.h"
-#include "sqlite3.h"
 
 #include "tortuga/storage/tortuga_storage.h"
 #include "tortuga/rpc_opts.h"
@@ -36,7 +35,6 @@ class ProgressManager : boost::noncopyable {
   UpdatedTask* FindTaskByBoundStmtInExec(SqliteStatement* stmt);
 
   folly::CPUThreadPoolExecutor* exec_{ nullptr };
-  sqlite3* db_{ nullptr };
   RpcOpts rpc_opts_;
 
   std::shared_ptr<TortugaStorage> storage_;

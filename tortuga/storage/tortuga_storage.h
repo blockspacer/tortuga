@@ -17,6 +17,39 @@ struct TaskToComplete {
   int retries{ 0 };
 };
 
+struct TaskWorkedOn {
+  int64_t row_id{ 0 };
+  std::string worker_uuid;
+};
+
+class TasksWorkedOnIterator {
+ public:
+  explicit TasksWorkedOnIterator(sqlite3* db);
+
+  folly::Optional<TaskWorkedOn> Next();
+
+ private:
+  sqlite3* db_{ nullptr };
+  SqliteStatement tasks_;
+};
+
+class TortugaStorage;
+
+class Tx {
+ public:
+  Tx(Tx&& tx);
+  ~Tx();
+
+ private:
+  friend class TortugaStorage;
+
+  explicit Tx(sqlite3* db);
+  Tx(const Tx& tx) = delete;
+  Tx(Tx& tx) = delete;
+ 
+  sqlite3* db_{ nullptr };
+};
+
 class TortugaStorage {
  public:
   static std::shared_ptr<TortugaStorage> Init();
@@ -24,7 +57,9 @@ class TortugaStorage {
   explicit TortugaStorage(sqlite3* db);
   ~TortugaStorage();
 
-  sqlite3* db() const { return db_; }
+  Tx StartTx() {
+    return Tx(db_);
+  }
 
   folly::Optional<int64_t> FindTaskById(const std::string& id);
   int64_t InsertTaskNotCommit(const Task& task);
@@ -54,6 +89,10 @@ class TortugaStorage {
   void UnassignTasksOfWorkerNotCommit(const std::string& uuid);
   void InvalidateExpiredWorkerNotCommit(const std::string& uuid);
   void UnassignTaskNotCommit(int64_t handle);
+
+  folly::Optional<std::string> FindWorkerIdByUuidUnprepared(const std::string& uuid);
+
+  TasksWorkedOnIterator IterateTasksWorkedOn();
 
  private:
   UpdatedTask* FindTaskByBoundStmt(SqliteStatement* stmt);

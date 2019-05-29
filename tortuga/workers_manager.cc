@@ -6,71 +6,53 @@
 #include "folly/fibers/Promise.h"
 #include "glog/logging.h"
 
-#include "tortuga/fields.h"
 #include "tortuga/time_logger.h"
 #include "tortuga/time_utils.h"
-#include "tortuga/storage/sqlite_statement.h"
 
 namespace tortuga {
-namespace {
-static const char* const kSelectTasksWorkedOnStmt = R"(
-  select rowid, * from tasks where worked_on = 1 and done = 0;
-)";
-
-static const char* const kSelectWorkerByUuidStmt = R"(
-  select * from workers where uuid = ?;
-)" ;
-}  // anonymous namespace
-
 WorkersManager::WorkersManager(std::shared_ptr<TortugaStorage> storage,
                                folly::CPUThreadPoolExecutor* exec, 
                                OnWorkerDeath on_worker_death)
     : storage_(storage),
-      db_(storage->db()),
       exec_(exec),
       on_worker_death_(std::move(on_worker_death)) {
 }
 
 WorkersManager::~WorkersManager() {
-  db_ = nullptr;
   exec_ = nullptr;
 }
 
 void WorkersManager::LoadWorkers() {
   LOG(INFO) << "rebuilding workers cache from base.";
   std::vector<int64_t> to_unassign;
-  SqliteStatement tasks(db_, kSelectTasksWorkedOnStmt);
+  TasksWorkedOnIterator it = storage_->IterateTasksWorkedOn();
   
   for (;;) {
-    int stepped = tasks.Step();
-    CHECK(stepped == SQLITE_ROW || stepped == SQLITE_DONE) << "sql err: " << stepped
-        << " err msg: " << sqlite3_errmsg(db_);
-    if (stepped == SQLITE_DONE) {
+    folly::Optional<TaskWorkedOn> task_opt = it.Next();
+
+    if (!task_opt) {
       break;
     }
 
-    const std::string uuid = tasks.ColumnTextOrEmpty(TasksFields::kWorkerUuid + 1);  //  +1 cause we selected rowid
-    const int64_t row_id = tasks.ColumnLong(0);
+    const TaskWorkedOn& task = *task_opt;
 
-    SqliteStatement select_task_worker(db_, kSelectWorkerByUuidStmt);
-    select_task_worker.BindText(1, uuid);
-    int found_worker = select_task_worker.Step();
-    CHECK(found_worker == SQLITE_ROW || found_worker == SQLITE_DONE);
-    if (found_worker == SQLITE_DONE) {
-      LOG(WARNING) << "Task: " << row_id << " belonging to unknown worker: " << uuid << ", we will unassign";
-      to_unassign.push_back(row_id);
+    folly::Optional<std::string> id_opt = storage_->FindWorkerIdByUuidUnprepared(task.worker_uuid);
+
+    if (!id_opt) {
+      LOG(WARNING) << "Task: " << task.row_id << " belonging to unknown worker: " << task.worker_uuid << ", we will unassign";
+      to_unassign.push_back(task.row_id);
     } else {
-      std::string id = select_task_worker.ColumnText(WorkersFields::kWorkerId);
+      std::string id = *id_opt;
       WorkerInfo* worker_info = folly::get_ptr(workers_, id);
       if (worker_info == nullptr) {
         WorkerInfo& w = workers_[id];
-        w.uuid = uuid;
+        w.uuid = task.worker_uuid;
         w.id = id;
         w.last_beat_millis = CurrentTimeMillis();
         worker_info = folly::get_ptr(workers_, id);
       }
 
-      worker_info->tasks[row_id].handle = row_id;
+      worker_info->tasks[task.row_id].handle = task.row_id;
     }
   }
 
@@ -89,7 +71,7 @@ void WorkersManager::InsertHistoricWorkerInExec(const std::string& uuid,
 void WorkersManager::UnassignTasksOfWorkerInExec(const std::string& uuid) {
   VLOG(2) << "unassigning tasks of expired worker: " << uuid;
 
-  SqliteTx tx(db_);
+  Tx tx(storage_->StartTx());
   storage_->UnassignTasksOfWorkerNotCommit(uuid);
   storage_->InvalidateExpiredWorkerNotCommit(uuid);
 

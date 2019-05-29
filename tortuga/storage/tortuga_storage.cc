@@ -11,6 +11,7 @@
 
 #include "tortuga/time_utils.h"
 #include "tortuga/tortuga.pb.h"
+#include "tortuga/storage/fields.h"
 
 DEFINE_string(db_file, "tortuga.db", "path to db file.");
 
@@ -69,6 +70,21 @@ const char* const kCreateTortuga = R"(
 std::string JoinCapabilities(const Worker& worker) {
   return folly::join(" ", worker.capabilities());
 }
+}
+
+Tx::Tx(sqlite3* db) : db_(db) {
+  CHECK_EQ(SQLITE_OK, sqlite3_exec(db, "begin transaction;", nullptr, nullptr, nullptr)) << sqlite3_errmsg(db_);
+}
+
+Tx::Tx(Tx&& tx) {
+  db_ = tx.db_;
+  tx.db_ = nullptr;
+}
+
+Tx::~Tx() {
+  if (db_ != nullptr) {
+    CHECK_EQ(SQLITE_OK, sqlite3_exec(db_, "end transaction;", nullptr, nullptr, nullptr)) << sqlite3_errmsg(db_);
+  }
 }
 
 TortugaStorage::TortugaStorage(sqlite3* db)
@@ -434,5 +450,51 @@ void TortugaStorage::UnassignTaskNotCommit(int64_t handle) {
   SqliteReset x(unassign_single_task_stmt);
   unassign_single_task_stmt->BindLong(1, handle);
   unassign_single_task_stmt->ExecuteOrDie();
+}
+
+namespace {
+static const char* const kSelectWorkerByUuidStmt = R"(
+  select * from workers where uuid = ?;
+)" ;
+}
+
+folly::Optional<std::string> TortugaStorage::FindWorkerIdByUuidUnprepared(const std::string& uuid) {
+  SqliteStatement select_task_worker(db_, kSelectWorkerByUuidStmt);
+  select_task_worker.BindText(1, uuid);
+  int found_worker = select_task_worker.Step();
+  CHECK(found_worker == SQLITE_ROW || found_worker == SQLITE_DONE);
+  if (found_worker == SQLITE_DONE) {
+    return folly::none;
+  } else {
+    return select_task_worker.ColumnText(WorkersFields::kWorkerId);
+  }
+}
+
+namespace {
+static const char* const kSelectTasksWorkedOnStmt = R"(
+  select rowid, * from tasks where worked_on = 1 and done = 0;
+)";
+}
+
+TasksWorkedOnIterator::TasksWorkedOnIterator(sqlite3* db) : db_(db), tasks_(db, kSelectTasksWorkedOnStmt) {
+}
+
+folly::Optional<TaskWorkedOn> TasksWorkedOnIterator::Next() {
+  int stepped = tasks_.Step();
+  CHECK(stepped == SQLITE_ROW || stepped == SQLITE_DONE) << "sql err: " << stepped
+      << " err msg: " << sqlite3_errmsg(db_);
+  if (stepped == SQLITE_DONE) {
+    return folly::none;
+  }
+
+  TaskWorkedOn res;
+  res.row_id = tasks_.ColumnLong(0);
+  res.worker_uuid = tasks_.ColumnTextOrEmpty(TasksFields::kWorkerUuid + 1);  //  +1 cause we selected rowid
+
+  return res;
+}
+
+TasksWorkedOnIterator TortugaStorage::IterateTasksWorkedOn() {
+  return TasksWorkedOnIterator(db_);
 }
 }  // tortuga

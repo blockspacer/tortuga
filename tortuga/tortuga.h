@@ -11,7 +11,6 @@
 #include "folly/executors/CPUThreadPoolExecutor.h" 
 #include "folly/fibers/Baton.h" 
 #include "grpc++/grpc++.h"
-#include "sqlite3.h"
 
 #include "tortuga/module.h"
 #include "tortuga/progress_manager.h"
@@ -20,7 +19,6 @@
 #include "tortuga/tortuga.grpc.pb.h"
 #include "tortuga/tortuga.pb.h"
 #include "tortuga/workers_manager.h"
-#include "tortuga/storage/sqlite_statement.h"
 #include "tortuga/storage/tortuga_storage.h"
 
 namespace tortuga {
@@ -90,7 +88,6 @@ class TortugaHandler : boost::noncopyable {
   void UnregisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton);
 
   std::shared_ptr<TortugaStorage> storage_;
-  sqlite3* db_{ nullptr };
   RpcOpts rpc_opts_;
 
   // executor in which we perform sqlite tasks.
