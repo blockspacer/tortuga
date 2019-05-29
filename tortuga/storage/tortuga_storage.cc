@@ -2,11 +2,19 @@
 
 #include <string>
 
+#include "folly/String.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
+#include "google/protobuf/timestamp.pb.h"
+#include "google/protobuf/util/time_util.h"
 #include "sqlite3.h"
 
+#include "tortuga/time_utils.h"
+
 DEFINE_string(db_file, "tortuga.db", "path to db file.");
+
+using google::protobuf::Timestamp;
+using google::protobuf::util::TimeUtil;
 
 namespace tortuga {
 namespace {
@@ -56,16 +64,11 @@ const char* const kCreateTortuga = R"(
 
   CREATE INDEX IF NOT EXISTS historic_workers_uuid_idx ON historic_workers (uuid);
 )";
-
-// task statements
-static const char* const kSelectExistingTaskStmt = "select rowid from tasks where id = ? and done != 1 LIMIT 1";
-
 }
 
 TortugaStorage::TortugaStorage(sqlite3* db)
-    : db_(db),
-      select_existing_task_stmt_(db, kSelectExistingTaskStmt) {
-
+    : db_(db) {
+  statements_.reset(new StatementsManager(db));
 }
 
 TortugaStorage::~TortugaStorage() {
@@ -94,15 +97,147 @@ std::shared_ptr<TortugaStorage> TortugaStorage::Init() {
 }
 
 folly::Optional<int64_t> TortugaStorage::FindTaskById(const std::string& id) {
-  SqliteReset x(&select_existing_task_stmt_);
-  select_existing_task_stmt_.BindText(1, id);
-  int stepped = select_existing_task_stmt_.Step();
+  auto* select_existing_task_stmt = statements_->select_existing_task_stmt();
+  SqliteReset x(select_existing_task_stmt);
+  select_existing_task_stmt->BindText(1, id);
+  int stepped = select_existing_task_stmt->Step();
   if (stepped == SQLITE_ROW) {
-    int64_t rowid = select_existing_task_stmt_.ColumnLong(0);
+    int64_t rowid = select_existing_task_stmt->ColumnLong(0);
     return rowid;
   } else {
     return folly::none;
   }
 }
 
+int64_t TortugaStorage::InsertTaskNotCommit(const Task& task) {
+  auto* insert_task_stmt = statements_->insert_task_stmt();
+  SqliteReset x2(insert_task_stmt);
+
+  insert_task_stmt->BindText(1, task.id());
+  insert_task_stmt->BindText(2, task.type());
+
+  std::string data_str;
+  CHECK(task.data().SerializeToString(&data_str));
+  insert_task_stmt->BindBlob(3, data_str);
+   
+  int max_retries = 3;
+  if (task.has_max_retries()) {
+    max_retries = task.max_retries().value();
+  }
+
+  insert_task_stmt->BindInt(4, max_retries);
+
+  int priority = 0;
+  if (task.has_priority()) {
+    priority = task.priority().value();
+  }
+
+  insert_task_stmt->BindInt(5, priority);
+  if (task.has_delay()) {
+    Timestamp now = TimeUtil::GetCurrentTime();
+    Timestamp delayed_time = now + task.delay();
+
+    insert_task_stmt->BindLong(6, TimeUtil::TimestampToMilliseconds(delayed_time));
+  } else {
+    insert_task_stmt->BindNull(6);
+  }
+
+  if (task.modules_size() == 0) {
+    insert_task_stmt->BindNull(7);
+  } else {
+    std::string modules = folly::join(",", task.modules());
+    insert_task_stmt->BindText(7, modules);
+  }
+
+  insert_task_stmt->BindLong(8, CurrentTimeMillis());
+
+  insert_task_stmt->ExecuteOrDie();
+  return sqlite3_last_insert_rowid(db_);
+}
+
+void TortugaStorage::AssignNotCommit(int retries, const std::string& worked_uuid, int64_t task_row_id) {
+  auto* assign_task_stmt = statements_->assign_task_stmt();
+  SqliteReset x2(assign_task_stmt);
+  assign_task_stmt->BindInt(1, retries + 1);
+  assign_task_stmt->BindText(2, worked_uuid);
+  assign_task_stmt->BindLong(3, CurrentTimeMillis());
+  assign_task_stmt->BindLong(4, task_row_id);
+  assign_task_stmt->ExecuteOrDie();
+}
+
+void TortugaStorage::CompleteTaskNotCommit(int64_t task_id, const CompleteTaskReq& req, bool done) {
+  auto* complete_task_stmt = statements_->complete_task_stmt();
+  SqliteReset x2(complete_task_stmt);
+
+  complete_task_stmt->BindInt(1, req.code());
+  complete_task_stmt->BindText(2, req.error_message());
+  complete_task_stmt->BindBool(3, done);
+  complete_task_stmt->BindLong(4, CurrentTimeMillis());  // done_time
+  complete_task_stmt->BindText(5, req.logs());
+  complete_task_stmt->BindText(6, req.output());
+  complete_task_stmt->BindLong(7, task_id);
+
+  complete_task_stmt->ExecuteOrDie();
+}
+
+folly::Optional<TaskToComplete> TortugaStorage::SelectTaskToCompleteNotCommit(int64_t task_id) {
+  auto* select_task_to_complete_stmt = statements_->select_task_to_complete_stmt();
+
+  SqliteReset x(select_task_to_complete_stmt);
+
+  select_task_to_complete_stmt->BindLong(1, task_id);
+  int rc = select_task_to_complete_stmt->Step();
+
+  if (rc == SQLITE_DONE) {
+    return folly::none;
+  }
+
+  TaskToComplete res;
+  res.worker_uuid = select_task_to_complete_stmt->ColumnTextOrEmpty(0);
+  res.max_retries = select_task_to_complete_stmt->ColumnInt(1);
+  res.retries = select_task_to_complete_stmt->ColumnInt(2);
+  return res;
+}
+
+void TortugaStorage::UpdateProgressNotCommit(int64_t task_id, const UpdateProgressReq& req) {
+  std::ostringstream query;
+  query << "update tasks set ";
+
+  std::vector<std::string> setters;
+  if (req.has_progress()) {
+    setters.push_back("progress=?");
+  }
+
+  if (req.has_progress_message()) {
+    setters.push_back("progress_message=?");    
+  }
+
+  if (req.has_progress_metadata()) {
+    setters.push_back("progress_metadata=?");    
+  }
+
+  query << folly::join(", ", setters);
+  query << " where rowid=? ;";
+
+  std::string query_str = query.str();
+  SqliteStatement stmt(db_, query_str);
+
+  int idx = 0;
+  if (req.has_progress()) {
+    stmt.BindFloat(++idx, req.progress().value());
+  }
+
+  if (req.has_progress_message()) {
+    stmt.BindText(++idx, req.progress_message().value());
+  }
+
+  if (req.has_progress_metadata()) {
+    stmt.BindText(++idx, req.progress_metadata().value());
+  }
+
+  stmt.BindLong(++idx, task_id);
+
+  SqliteReset x(&stmt);
+  stmt.ExecuteOrDie();
+}
 }  // tortuga

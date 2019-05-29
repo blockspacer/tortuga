@@ -50,6 +50,7 @@ add_library (tortuga_lib
   tortuga/tortuga_params.grpc.pb.cc
   tortuga/workers_manager.cc
   tortuga/storage/sqlite_statement.cc
+  tortuga/storage/statements_manager.cc
   tortuga/storage/tortuga_storage.cc
 )
 

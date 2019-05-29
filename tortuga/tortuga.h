@@ -114,14 +114,6 @@ class TortugaHandler : boost::noncopyable {
   // progress manager
   std::unique_ptr<ProgressManager> progress_mgr_;
 
-  // All our sqlite statements nice and prepared :).
-
-  SqliteStatement insert_task_stmt_;
-  SqliteStatement assign_task_stmt_;
-
-  SqliteStatement select_task_to_complete_stmt_;
-  SqliteStatement complete_task_stmt_;
-
   // map from worker UUID to its select statement.
   std::map<std::string, std::unique_ptr<SqliteStatement>> select_task_stmts_;
 

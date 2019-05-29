@@ -23,41 +23,11 @@ using google::protobuf::Timestamp;
 using google::protobuf::util::TimeUtil;
 
 namespace tortuga {
-namespace {
-static const char* const kInsertTaskStmt = R"(
-    insert into tasks (id, task_type, data, max_retries, priority, delayed_time, modules, created) values (?, ?, ?, ?, ?, ?, ?, ?);
-)";
-      
-static const char* const kAssignTaskStmt = R"(
-    update tasks set retries=?, worked_on=1, worker_uuid=?, started_time=? where rowid=? ;
-)";
-
-static const char* const kSelectTaskToCompleteStmt = R"(
-    select worker_uuid, max_retries, retries from tasks where rowid=? ;
-)";
-
-static const char* const kCompleteTaskStmt = R"(
-    update tasks set
-    worked_on=0,
-    progress=100.0,
-    status_code=?,
-    status_message=?,
-    done=?,
-    done_time=?,
-    logs=?,
-    output=?
-    where rowid=? ;
-)";
-}  // anonymous namespace
 
 TortugaHandler::TortugaHandler(std::shared_ptr<TortugaStorage> storage, RpcOpts rpc_opts, std::map<std::string, std::unique_ptr<Module>> modules)
     : storage_(storage),
       db_(storage->db()),
       rpc_opts_(rpc_opts),
-      insert_task_stmt_(db_, kInsertTaskStmt),
-      assign_task_stmt_(db_, kAssignTaskStmt),
-      select_task_to_complete_stmt_(db_, kSelectTaskToCompleteStmt),
-      complete_task_stmt_(db_, kCompleteTaskStmt),
       modules_(std::move(modules)) {
   progress_mgr_.reset(new ProgressManager(db_, &exec_, rpc_opts));
   workers_manager_.reset(new WorkersManager(db_, &exec_, [this](const std::string& uuid) {
@@ -170,7 +140,6 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTask(const Task& task) {
 TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& task) {
   TimeLogger create_timer("insert_task");
   SqliteTx tx(db_);
-  SqliteReset x2(&insert_task_stmt_);
 
   folly::Optional<int64_t> rowid_opt = storage_->FindTaskById(task.id());
   if (rowid_opt) {
@@ -184,46 +153,7 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
   }
 
   VLOG(3) << "CreateTask: no existing row found for id: " << task.id();
-  insert_task_stmt_.BindText(1, task.id());
-  insert_task_stmt_.BindText(2, task.type());
-
-  std::string data_str;
-  CHECK(task.data().SerializeToString(&data_str));
-  insert_task_stmt_.BindBlob(3, data_str);
-   
-  int max_retries = 3;
-  if (task.has_max_retries()) {
-    max_retries = task.max_retries().value();
-  }
-
-  insert_task_stmt_.BindInt(4, max_retries);
-
-  int priority = 0;
-  if (task.has_priority()) {
-    priority = task.priority().value();
-  }
-
-  insert_task_stmt_.BindInt(5, priority);
-  if (task.has_delay()) {
-    Timestamp now = TimeUtil::GetCurrentTime();
-    Timestamp delayed_time = now + task.delay();
-
-    insert_task_stmt_.BindLong(6, TimeUtil::TimestampToMilliseconds(delayed_time));
-  } else {
-    insert_task_stmt_.BindNull(6);
-  }
-
-  if (task.modules_size() == 0) {
-    insert_task_stmt_.BindNull(7);
-  } else {
-    std::string modules = folly::join(",", task.modules());
-    insert_task_stmt_.BindText(7, modules);
-  }
-
-  insert_task_stmt_.BindLong(8, CurrentTimeMillis());
-
-  insert_task_stmt_.ExecuteOrDie();
-  sqlite3_int64 rowid = sqlite3_last_insert_rowid(db_);
+  int64_t rowid = storage_->InsertTaskNotCommit(task);
 
   CreateTaskResult res;
   res.handle = folly::to<std::string>(rowid);
@@ -302,12 +232,7 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker
   std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty(6);
   std::string modules = select_task_stmt->ColumnTextOrEmpty(7);
 
-  SqliteReset x2(&assign_task_stmt_);
-  assign_task_stmt_.BindInt(1, retries + 1);
-  assign_task_stmt_.BindText(2, worker.uuid());
-  assign_task_stmt_.BindLong(3, CurrentTimeMillis());
-  assign_task_stmt_.BindLong(4, rowid);
-  assign_task_stmt_.ExecuteOrDie();
+  storage_->AssignNotCommit(retries, worker.uuid(), rowid);
 
   RequestTaskResult res;
   res.none = false;
@@ -439,41 +364,28 @@ UpdatedTask* TortugaHandler::CompleteTask(const CompleteTaskReq& req) {
 UpdatedTask* TortugaHandler::CompleteTaskInExec(const CompleteTaskReq& req) {
   int64_t rowid = folly::to<int64_t>(req.handle());
   VLOG(3) << "completing task of handle: " << rowid;
-  SqliteReset x1(&select_task_to_complete_stmt_);
 
-  select_task_to_complete_stmt_.BindLong(1, rowid);
-  int rc = select_task_to_complete_stmt_.Step();
+  folly::Optional<TaskToComplete> task_opt = storage_->SelectTaskToCompleteNotCommit(rowid);
 
-  if (rc == SQLITE_DONE) {
+  if (!task_opt) {
     LOG(WARNING) << "completed task doesn't exist! " << req.ShortDebugString();
     return nullptr;
   }
 
-  std::string uuid = select_task_to_complete_stmt_.ColumnTextOrEmpty(0);
-
+  const std::string& uuid = task_opt->worker_uuid;
   const std::string& worker_uuid = req.worker().uuid();
   if (uuid != worker_uuid) {
     VLOG(1) << "Task doesn't belong to the worker anymore (uuid is: " << uuid << " while worker is: " << worker_uuid << ")";
     return nullptr;
   }
 
-  int max_retries = select_task_to_complete_stmt_.ColumnInt(1);
-  int retries = select_task_to_complete_stmt_.ColumnInt(2);
-
-  SqliteReset x2(&complete_task_stmt_);
-  complete_task_stmt_.BindInt(1, req.code());
-  complete_task_stmt_.BindText(2, req.error_message());
-
+  int max_retries = task_opt->max_retries;
+  int retries = task_opt->retries;
   bool ok = req.code() == grpc::StatusCode::OK;
   bool done = ok ? true : (retries >= max_retries);
-  complete_task_stmt_.BindBool(3, done);
-  complete_task_stmt_.BindLong(4, CurrentTimeMillis());  // done_time
-  complete_task_stmt_.BindText(5, req.logs());
-  complete_task_stmt_.BindText(6, req.output());
-  complete_task_stmt_.BindLong(7, rowid);
 
-  complete_task_stmt_.ExecuteOrDie();
-  
+  storage_->CompleteTaskNotCommit(rowid, req, done);
+
   return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
 
@@ -527,63 +439,22 @@ UpdatedTask* TortugaHandler::UpdateProgress(const UpdateProgressReq& req) {
 UpdatedTask* TortugaHandler::UpdateProgressInExec(const UpdateProgressReq& req) {
   int64_t rowid = folly::to<int64_t>(req.handle());
   VLOG(3) << "updating task of handle: " << rowid;
-  SqliteReset x1(&select_task_to_complete_stmt_);
+  folly::Optional<TaskToComplete> task_opt = storage_->SelectTaskToCompleteNotCommit(rowid);
 
-  select_task_to_complete_stmt_.BindLong(1, rowid);
-  int rc = select_task_to_complete_stmt_.Step();
-
-  if (rc == SQLITE_DONE) {
+  if (!task_opt) {
     LOG(WARNING) << "updating task doesn't exist! " << req.ShortDebugString();
     return nullptr;
   }
 
-  std::string uuid = select_task_to_complete_stmt_.ColumnTextOrEmpty(0);
+  const auto& task = *task_opt;
 
   const std::string& worker_uuid = req.worker().uuid();
-  if (uuid != worker_uuid) {
-    VLOG(1) << "Task doesn't belong to the worker anymore (uuid is: " << uuid << " while worker is: " << worker_uuid << ")";
+  if (task.worker_uuid != worker_uuid) {
+    VLOG(1) << "Task doesn't belong to the worker anymore (uuid is: " << task.worker_uuid << " while worker is: " << worker_uuid << ")";
     return nullptr;
   }
 
-  std::ostringstream query;
-  query << "update tasks set ";
-
-  std::vector<std::string> setters;
-  if (req.has_progress()) {
-    setters.push_back("progress=?");
-  }
-
-  if (req.has_progress_message()) {
-    setters.push_back("progress_message=?");    
-  }
-
-  if (req.has_progress_metadata()) {
-    setters.push_back("progress_metadata=?");    
-  }
-
-  query << folly::join(", ", setters);
-  query << " where rowid=? ;";
-
-  std::string query_str = query.str();
-  SqliteStatement stmt(db_, query_str);
-
-  int idx = 0;
-  if (req.has_progress()) {
-    stmt.BindFloat(++idx, req.progress().value());
-  }
-
-  if (req.has_progress_message()) {
-    stmt.BindText(++idx, req.progress_message().value());
-  }
-
-  if (req.has_progress_metadata()) {
-    stmt.BindText(++idx, req.progress_metadata().value());
-  }
-
-  stmt.BindLong(++idx, rowid);
-
-  SqliteReset x2(&stmt);
-  stmt.ExecuteOrDie();
+  storage_->UpdateProgressNotCommit(rowid, req);
 
   return progress_mgr_->FindTaskByHandleInExec(rowid);
 }
