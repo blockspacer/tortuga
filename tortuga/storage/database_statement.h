@@ -54,10 +54,10 @@ class DatabaseStatement {
   sqlite3_stmt* stmt_ { nullptr };
 };
 
-class SqliteReset : boost::noncopyable {
+class DatabaseReset : boost::noncopyable {
  public:
-  explicit SqliteReset(DatabaseStatement* stmt);
-  ~SqliteReset();
+  explicit DatabaseReset(DatabaseStatement* stmt);
+  ~DatabaseReset();
 
  private:
   // not owned.

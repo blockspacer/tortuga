@@ -114,10 +114,10 @@ void DatabaseStatement::ResetOrDie() {
   CHECK_EQ(SQLITE_OK, sqlite3_clear_bindings(stmt_));
 }
 
-SqliteReset::SqliteReset(DatabaseStatement* stmt) : stmt_(stmt) {
+DatabaseReset::DatabaseReset(DatabaseStatement* stmt) : stmt_(stmt) {
 }
 
-SqliteReset::~SqliteReset() {
+DatabaseReset::~DatabaseReset() {
   stmt_->ResetOrDie();
 }
 }  // namespace tortuga

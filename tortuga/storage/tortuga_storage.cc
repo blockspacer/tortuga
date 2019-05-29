@@ -119,7 +119,7 @@ std::shared_ptr<TortugaStorage> TortugaStorage::Init() {
 
 folly::Optional<int64_t> TortugaStorage::FindTaskById(const std::string& id) {
   auto* select_existing_task_stmt = statements_->select_existing_task_stmt();
-  SqliteReset x(select_existing_task_stmt);
+  DatabaseReset x(select_existing_task_stmt);
   select_existing_task_stmt->BindText(1, id);
   int stepped = select_existing_task_stmt->Step();
   if (stepped == SQLITE_ROW) {
@@ -132,7 +132,7 @@ folly::Optional<int64_t> TortugaStorage::FindTaskById(const std::string& id) {
 
 int64_t TortugaStorage::InsertTaskNotCommit(const Task& task) {
   auto* insert_task_stmt = statements_->insert_task_stmt();
-  SqliteReset x2(insert_task_stmt);
+  DatabaseReset x2(insert_task_stmt);
 
   insert_task_stmt->BindText(1, task.id());
   insert_task_stmt->BindText(2, task.type());
@@ -178,7 +178,7 @@ int64_t TortugaStorage::InsertTaskNotCommit(const Task& task) {
 
 void TortugaStorage::AssignNotCommit(int retries, const std::string& worked_uuid, int64_t task_row_id) {
   auto* assign_task_stmt = statements_->assign_task_stmt();
-  SqliteReset x2(assign_task_stmt);
+  DatabaseReset x2(assign_task_stmt);
   assign_task_stmt->BindInt(1, retries + 1);
   assign_task_stmt->BindText(2, worked_uuid);
   assign_task_stmt->BindLong(3, CurrentTimeMillis());
@@ -188,7 +188,7 @@ void TortugaStorage::AssignNotCommit(int retries, const std::string& worked_uuid
 
 void TortugaStorage::CompleteTaskNotCommit(int64_t task_id, const CompleteTaskReq& req, bool done) {
   auto* complete_task_stmt = statements_->complete_task_stmt();
-  SqliteReset x2(complete_task_stmt);
+  DatabaseReset x2(complete_task_stmt);
 
   complete_task_stmt->BindInt(1, req.code());
   complete_task_stmt->BindText(2, req.error_message());
@@ -204,7 +204,7 @@ void TortugaStorage::CompleteTaskNotCommit(int64_t task_id, const CompleteTaskRe
 folly::Optional<TaskToComplete> TortugaStorage::SelectTaskToCompleteNotCommit(int64_t task_id) {
   auto* select_task_to_complete_stmt = statements_->select_task_to_complete_stmt();
 
-  SqliteReset x(select_task_to_complete_stmt);
+  DatabaseReset x(select_task_to_complete_stmt);
 
   select_task_to_complete_stmt->BindLong(1, task_id);
   int rc = select_task_to_complete_stmt->Step();
@@ -258,7 +258,7 @@ void TortugaStorage::UpdateProgressNotCommit(int64_t task_id, const UpdateProgre
 
   stmt.BindLong(++idx, task_id);
 
-  SqliteReset x(&stmt);
+  DatabaseReset x(&stmt);
   stmt.ExecuteOrDie();
 }
 
@@ -272,7 +272,7 @@ RequestTaskResult TortugaStorage::RequestTaskNotCommit(const Worker& worker) {
     return res;
   }
 
-  SqliteReset x(select_task_stmt);
+  DatabaseReset x(select_task_stmt);
   Timestamp now = TimeUtil::GetCurrentTime();
   select_task_stmt->BindLong(1, TimeUtil::TimestampToMilliseconds(now));
 
@@ -324,7 +324,7 @@ UpdatedTask* TortugaStorage::FindUpdatedTask(const TaskIdentifier& t_id) {
 }
 
 UpdatedTask* TortugaStorage::FindTaskByBoundStmt(DatabaseStatement* stmt) {
-  SqliteReset x(stmt);
+  DatabaseReset x(stmt);
 
   int rc = stmt->Step();
   if (rc == SQLITE_DONE) {
@@ -375,7 +375,7 @@ UpdatedTask* TortugaStorage::FindTaskByBoundStmt(DatabaseStatement* stmt) {
 
   if (!worker_uuid.empty()) {
     auto* select_worker_id_by_uuid_stmt = statements_->select_worker_id_by_uuid_stmt();
-    SqliteReset x2(select_worker_id_by_uuid_stmt);
+    DatabaseReset x2(select_worker_id_by_uuid_stmt);
     select_worker_id_by_uuid_stmt->BindText(1, worker_uuid);
     
     // This shall alwawys be true because if a task has a worker uuid then that worker must be in the historic table.
@@ -394,7 +394,7 @@ UpdatedTask* TortugaStorage::FindTaskByBoundStmt(DatabaseStatement* stmt) {
 void TortugaStorage::UpdateNewWorkerNotCommit(const Worker& worker) {
   auto* update_worker_stmt = statements_->update_worker_stmt();
 
-  SqliteReset x(update_worker_stmt);
+  DatabaseReset x(update_worker_stmt);
   update_worker_stmt->BindText(1, worker.uuid());
   update_worker_stmt->BindText(2, JoinCapabilities(worker));
   update_worker_stmt->BindLong(3, CurrentTimeMillis());
@@ -406,7 +406,7 @@ void TortugaStorage::UpdateNewWorkerNotCommit(const Worker& worker) {
 void TortugaStorage::InsertWorkerNotCommit(const Worker& worker) {
   auto* insert_worker_stmt = statements_->insert_worker_stmt();
   
-  SqliteReset x(insert_worker_stmt);
+  DatabaseReset x(insert_worker_stmt);
   
   insert_worker_stmt->BindText(1, worker.uuid());
   insert_worker_stmt->BindText(2, worker.worker_id());
@@ -419,7 +419,7 @@ void TortugaStorage::InsertHistoricWorkerNotCommit(const std::string& uuid,
                                                    const std::string& worker_id) {
   auto* insert_historic_worker_stmt = statements_->insert_historic_worker_stmt();
                                                   
-  SqliteReset x(insert_historic_worker_stmt);
+  DatabaseReset x(insert_historic_worker_stmt);
   insert_historic_worker_stmt->BindText(1, uuid);
   insert_historic_worker_stmt->BindText(2, worker_id);
   insert_historic_worker_stmt->BindLong(3, CurrentTimeMillis());
@@ -430,7 +430,7 @@ void TortugaStorage::InsertHistoricWorkerNotCommit(const std::string& uuid,
 void TortugaStorage::UnassignTasksOfWorkerNotCommit(const std::string& uuid) {
   auto* unassign_tasks_stmt = statements_->unassign_tasks_stmt();
 
-  SqliteReset x(unassign_tasks_stmt);
+  DatabaseReset x(unassign_tasks_stmt);
   unassign_tasks_stmt->BindText(1, uuid);
   unassign_tasks_stmt->ExecuteOrDie();
 }
@@ -438,7 +438,7 @@ void TortugaStorage::UnassignTasksOfWorkerNotCommit(const std::string& uuid) {
 void TortugaStorage::InvalidateExpiredWorkerNotCommit(const std::string& uuid) {
   auto* update_worker_invalidated_uuid_stmt = statements_->update_worker_invalidated_uuid_stmt();
 
-  SqliteReset x(update_worker_invalidated_uuid_stmt);
+  DatabaseReset x(update_worker_invalidated_uuid_stmt);
   update_worker_invalidated_uuid_stmt->BindText(1, uuid);
   update_worker_invalidated_uuid_stmt->BindText(2, uuid);
   update_worker_invalidated_uuid_stmt->ExecuteOrDie();
@@ -447,7 +447,7 @@ void TortugaStorage::InvalidateExpiredWorkerNotCommit(const std::string& uuid) {
 void TortugaStorage::UnassignTaskNotCommit(int64_t handle) {
   auto* unassign_single_task_stmt = statements_->unassign_single_task_stmt();
 
-  SqliteReset x(unassign_single_task_stmt);
+  DatabaseReset x(unassign_single_task_stmt);
   unassign_single_task_stmt->BindLong(1, handle);
   unassign_single_task_stmt->ExecuteOrDie();
 }
