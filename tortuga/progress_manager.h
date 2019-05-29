@@ -32,8 +32,6 @@ class ProgressManager : boost::noncopyable {
   UpdatedTask* FindTaskInExec(const TaskIdentifier& t_id);
   UpdatedTask* FindTaskByHandle(const FindTaskReq& req);
 
-  UpdatedTask* FindTaskByBoundStmtInExec(SqliteStatement* stmt);
-
   folly::CPUThreadPoolExecutor* exec_{ nullptr };
   RpcOpts rpc_opts_;
 

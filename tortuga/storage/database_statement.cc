@@ -5,88 +5,88 @@
 #include "tortuga/time_utils.h"
 
 namespace tortuga {
-SqliteStatement::SqliteStatement(sqlite3* db, const std::string& stmt) {
+DatabaseStatement::DatabaseStatement(sqlite3* db, const std::string& stmt) {
   db_ = db;
   int rc = sqlite3_prepare(db, stmt.c_str(), strlen(stmt.c_str()), &stmt_, nullptr);
   CHECK_EQ(SQLITE_OK, rc) << sqlite3_errmsg(db) << "\nstatement was: " << stmt;
 }
 
-SqliteStatement::~SqliteStatement() {
+DatabaseStatement::~DatabaseStatement() {
   if (db_ != nullptr && stmt_ != nullptr) {
     CHECK_EQ(SQLITE_OK, sqlite3_finalize(stmt_));
   }  // else we were probably moved.
 }
 
-void SqliteStatement::BindText(int pos, const std::string& val) {
+void DatabaseStatement::BindText(int pos, const std::string& val) {
   int rc = sqlite3_bind_text(stmt_, pos, val.c_str(), val.size(), SQLITE_TRANSIENT);
   CHECK_EQ(SQLITE_OK, rc) << sqlite3_errmsg(db_);
 }
 
-void SqliteStatement::BindBlob(int pos, const std::string& val) {
+void DatabaseStatement::BindBlob(int pos, const std::string& val) {
   int rc = sqlite3_bind_blob(stmt_, pos, val.data(), val.size(), SQLITE_TRANSIENT);
   CHECK_EQ(SQLITE_OK, rc) << sqlite3_errmsg(db_);;
 }
 
-void SqliteStatement::BindBool(int pos, bool val) {
+void DatabaseStatement::BindBool(int pos, bool val) {
   BindInt(pos, val ? 1 : 0);
 }
 
-void SqliteStatement::BindInt(int pos, int val) {
+void DatabaseStatement::BindInt(int pos, int val) {
   int rc = sqlite3_bind_int(stmt_, pos, val);
   CHECK_EQ(SQLITE_OK, rc);
 }
 
-void SqliteStatement::BindLong(int pos, int64_t val) {
+void DatabaseStatement::BindLong(int pos, int64_t val) {
   int rc = sqlite3_bind_int64(stmt_, pos, val);
   CHECK_EQ(SQLITE_OK, rc);
 }
 
-void SqliteStatement::BindFloat(int pos, float val) {
+void DatabaseStatement::BindFloat(int pos, float val) {
   int rc = sqlite3_bind_double(stmt_, pos, static_cast<double>(val));
   CHECK_EQ(SQLITE_OK, rc);
 }
 
-void SqliteStatement::BindNull(int pos) {
+void DatabaseStatement::BindNull(int pos) {
   int rc = sqlite3_bind_null(stmt_, pos);
   CHECK_EQ(SQLITE_OK, rc);
 }
 
-int SqliteStatement::Step() {
+int DatabaseStatement::Step() {
   return sqlite3_step(stmt_);
 }
 
-void SqliteStatement::ExecuteOrDie() {
+void DatabaseStatement::ExecuteOrDie() {
   CHECK_EQ(SQLITE_DONE, Step()) << sqlite3_errmsg(db_);
 }
 
-bool SqliteStatement::IsNullColumn(int pos) {
+bool DatabaseStatement::IsNullColumn(int pos) {
   return sqlite3_column_type(stmt_, pos) == SQLITE_NULL;
 }
 
-int SqliteStatement::ColumnInt(int pos) {
+int DatabaseStatement::ColumnInt(int pos) {
   return sqlite3_column_int(stmt_, pos);
 }
 
-bool SqliteStatement::ColumnBool(int pos) {
+bool DatabaseStatement::ColumnBool(int pos) {
   int val = ColumnInt(pos);
   return val != 0;
 }
 
-int64_t SqliteStatement::ColumnLong(int pos) {
+int64_t DatabaseStatement::ColumnLong(int pos) {
   return sqlite3_column_int64(stmt_, pos);
 }
 
-float SqliteStatement::ColumnFloat(int pos) {
+float DatabaseStatement::ColumnFloat(int pos) {
   return static_cast<float>(sqlite3_column_double(stmt_, pos));
 }
 
-std::string SqliteStatement::ColumnText(int pos) {
+std::string DatabaseStatement::ColumnText(int pos) {
   CHECK(!IsNullColumn(pos));
   const char* text_str = reinterpret_cast<const char*>(sqlite3_column_text(stmt_, pos));
   return std::string(text_str);
 }
 
-std::string SqliteStatement::ColumnTextOrEmpty(int pos) {
+std::string DatabaseStatement::ColumnTextOrEmpty(int pos) {
   if (IsNullColumn(pos)) {
     return "";
   }
@@ -94,7 +94,7 @@ std::string SqliteStatement::ColumnTextOrEmpty(int pos) {
   return ColumnText(pos);
 }
 
-std::unique_ptr<google::protobuf::Timestamp> SqliteStatement::ColumnTimestamp(int pos) {
+std::unique_ptr<google::protobuf::Timestamp> DatabaseStatement::ColumnTimestamp(int pos) {
   if (IsNullColumn(pos)) {
     return nullptr;
   }
@@ -103,18 +103,18 @@ std::unique_ptr<google::protobuf::Timestamp> SqliteStatement::ColumnTimestamp(in
   return std::make_unique<google::protobuf::Timestamp>(FromEpochMillis(millis));
 }
 
-std::string SqliteStatement::ColumnBlob(int pos) {
+std::string DatabaseStatement::ColumnBlob(int pos) {
   const void* data = sqlite3_column_blob(stmt_, pos);
   int size = sqlite3_column_bytes(stmt_, pos);
   return std::string(reinterpret_cast<const char*>(data), size);
 }
 
-void SqliteStatement::ResetOrDie() {
+void DatabaseStatement::ResetOrDie() {
   CHECK_EQ(SQLITE_OK, sqlite3_reset(stmt_));
   CHECK_EQ(SQLITE_OK, sqlite3_clear_bindings(stmt_));
 }
 
-SqliteReset::SqliteReset(SqliteStatement* stmt) : stmt_(stmt) {
+SqliteReset::SqliteReset(DatabaseStatement* stmt) : stmt_(stmt) {
 }
 
 SqliteReset::~SqliteReset() {

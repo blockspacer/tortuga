@@ -30,7 +30,7 @@ class TasksWorkedOnIterator {
 
  private:
   sqlite3* db_{ nullptr };
-  SqliteStatement tasks_;
+  DatabaseStatement tasks_;
 };
 
 class TortugaStorage;
@@ -95,7 +95,7 @@ class TortugaStorage {
   TasksWorkedOnIterator IterateTasksWorkedOn();
 
  private:
-  UpdatedTask* FindTaskByBoundStmt(SqliteStatement* stmt);
+  UpdatedTask* FindTaskByBoundStmt(DatabaseStatement* stmt);
 
   // owned
   sqlite3* db_;

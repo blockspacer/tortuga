@@ -8,13 +8,13 @@
 #include "sqlite3.h"
 
 namespace tortuga {
-class SqliteStatement {
+class DatabaseStatement {
  public:
-  SqliteStatement(sqlite3* db, const std::string& stmt);
-  ~SqliteStatement();
+  DatabaseStatement(sqlite3* db, const std::string& stmt);
+  ~DatabaseStatement();
 
-  SqliteStatement(const SqliteStatement& other) = delete;
-  SqliteStatement(SqliteStatement&& other) {
+  DatabaseStatement(const DatabaseStatement& other) = delete;
+  DatabaseStatement(DatabaseStatement&& other) {
     db_ = other.db_;
     stmt_ = other.stmt_;
 
@@ -56,11 +56,11 @@ class SqliteStatement {
 
 class SqliteReset : boost::noncopyable {
  public:
-  explicit SqliteReset(SqliteStatement* stmt);
+  explicit SqliteReset(DatabaseStatement* stmt);
   ~SqliteReset();
 
  private:
   // not owned.
-  SqliteStatement* stmt_{ nullptr };
+  DatabaseStatement* stmt_{ nullptr };
 };
 }  // namespace tortuga

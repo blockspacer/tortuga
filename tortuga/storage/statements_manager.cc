@@ -106,8 +106,8 @@ StatementsManager::StatementsManager(sqlite3* db)
 
 StatementsManager::~StatementsManager() {}
 
-SqliteStatement* StatementsManager::GetOrCreateSelectStmtInExec(const Worker& worker) {
-  std::unique_ptr<SqliteStatement>* found = folly::get_ptr(select_task_stmts_, worker.uuid());
+DatabaseStatement* StatementsManager::GetOrCreateSelectStmtInExec(const Worker& worker) {
+  std::unique_ptr<DatabaseStatement>* found = folly::get_ptr(select_task_stmts_, worker.uuid());
   if (found != nullptr) {
     return found->get();
   }
@@ -133,8 +133,8 @@ SqliteStatement* StatementsManager::GetOrCreateSelectStmtInExec(const Worker& wo
   std::string capabilities = folly::join(", ", quoted_capabilities);
   std::string stmt_str = folly::stringPrintf(tpl.c_str(), capabilities.c_str());
 
-  SqliteStatement* stmt = new SqliteStatement(db_, stmt_str);
-  select_task_stmts_[worker.uuid()] = std::unique_ptr<SqliteStatement>(stmt);
+  DatabaseStatement* stmt = new DatabaseStatement(db_, stmt_str);
+  select_task_stmts_[worker.uuid()] = std::unique_ptr<DatabaseStatement>(stmt);
   return stmt;
 }
 }  // tortuga

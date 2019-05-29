@@ -241,7 +241,7 @@ void TortugaStorage::UpdateProgressNotCommit(int64_t task_id, const UpdateProgre
   query << " where rowid=? ;";
 
   std::string query_str = query.str();
-  SqliteStatement stmt(db_, query_str);
+  DatabaseStatement stmt(db_, query_str);
 
   int idx = 0;
   if (req.has_progress()) {
@@ -263,7 +263,7 @@ void TortugaStorage::UpdateProgressNotCommit(int64_t task_id, const UpdateProgre
 }
 
 RequestTaskResult TortugaStorage::RequestTaskNotCommit(const Worker& worker) {
-  SqliteStatement* select_task_stmt = statements_->GetOrCreateSelectStmtInExec(worker);
+  DatabaseStatement* select_task_stmt = statements_->GetOrCreateSelectStmtInExec(worker);
 
   if (select_task_stmt == nullptr) {
     VLOG(3) << "This worker: " << worker.uuid() << " has no capabilities!";
@@ -323,7 +323,7 @@ UpdatedTask* TortugaStorage::FindUpdatedTask(const TaskIdentifier& t_id) {
   return FindTaskByBoundStmt(select_task_by_identifier_stmt);
 }
 
-UpdatedTask* TortugaStorage::FindTaskByBoundStmt(SqliteStatement* stmt) {
+UpdatedTask* TortugaStorage::FindTaskByBoundStmt(DatabaseStatement* stmt) {
   SqliteReset x(stmt);
 
   int rc = stmt->Step();
@@ -459,7 +459,7 @@ static const char* const kSelectWorkerByUuidStmt = R"(
 }
 
 folly::Optional<std::string> TortugaStorage::FindWorkerIdByUuidUnprepared(const std::string& uuid) {
-  SqliteStatement select_task_worker(db_, kSelectWorkerByUuidStmt);
+  DatabaseStatement select_task_worker(db_, kSelectWorkerByUuidStmt);
   select_task_worker.BindText(1, uuid);
   int found_worker = select_task_worker.Step();
   CHECK(found_worker == SQLITE_ROW || found_worker == SQLITE_DONE);
