@@ -9,19 +9,17 @@
 #include "grpc++/grpc++.h"
 #include "sqlite3.h"
 
-#include "tortuga/storage/sqlite_statement.h"
+#include "tortuga/storage/tortuga_storage.h"
 #include "tortuga/rpc_opts.h"
 #include "tortuga/tortuga.pb.h"
+#include "tortuga/updated_task.h"
 
 namespace tortuga {
-struct UpdatedTask {
-  std::unique_ptr<TaskProgress> progress;
-  std::vector<std::string> modules;
-};
+
 
 class ProgressManager : boost::noncopyable {
  public:
-  ProgressManager(sqlite3* db, folly::CPUThreadPoolExecutor* exec, RpcOpts rpc_opts);
+  ProgressManager(std::shared_ptr<TortugaStorage> storage, folly::CPUThreadPoolExecutor* exec, RpcOpts rpc_opts);
   ~ProgressManager();
 
   void HandleFindTask();
@@ -41,9 +39,7 @@ class ProgressManager : boost::noncopyable {
   sqlite3* db_{ nullptr };
   RpcOpts rpc_opts_;
 
-  SqliteStatement select_task_stmt_;
-  SqliteStatement select_task_by_identifier_stmt_;
-  SqliteStatement select_worker_id_by_uuid_stmt_;
+  std::shared_ptr<TortugaStorage> storage_;
 
   folly::EvictingCacheMap<int64_t, TaskProgress> progress_cache_{ 8192, 128 };
 };

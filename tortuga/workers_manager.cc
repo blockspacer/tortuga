@@ -19,67 +19,15 @@ static const char* const kSelectTasksWorkedOnStmt = R"(
 
 static const char* const kSelectWorkerByUuidStmt = R"(
   select * from workers where uuid = ?;
-)";
-
-static const char* const kSelectWorkerUuidStmt = "select uuid from workers where worker_id = ? LIMIT 1";
-
-static const char* const kUpdateWorkerBeatStmt = R"(
-  update workers set last_beat=? where worker_id=? ;
-)";
-
-static const char* const kUpdateWorkerStmt = R"(
-  update workers set uuid=?, capabilities=?, last_beat=? where worker_id=? ;
-)";
-
-static const char* const kInsertWorkerStmt = R"(
-  insert into workers (uuid, worker_id, capabilities, last_beat) values (?, ?, ?, ?);
-)";
-
-static const char* const kInsertHistoricWorkerStmt = R"(
-    insert into historic_workers(uuid, worker_id, created) values (?, ?, ?);
-)";
-
-static const char* const kUnassignTasksStmt = R"(
-    update tasks set
-    worked_on=0,
-    worker_uuid=NULL
-    where worker_uuid=? and done=0;
-)";
-
-static const char* const kUnassignSingleTaskByRowidStmt = R"(
-    update tasks set
-    worked_on=0,
-    worker_uuid=NULL
-    where rowid = ?;
-)";
-
-static const char* const kUpdateWorkerInvalidatedUuidStmt = R"(
-    update workers set last_invalidated_uuid=? where uuid=?;
-)";
-
-static const char* const kSelectExpiredWorkersStmt = R"(
-    select uuid, last_invalidated_uuid from workers where last_beat < ?;
-)";
-
-std::string JoinCapabilities(const Worker& worker) {
-  return folly::join(" ", worker.capabilities());
-}
+)" ;
 }  // anonymous namespace
 
-WorkersManager::WorkersManager(sqlite3* db,
+WorkersManager::WorkersManager(std::shared_ptr<TortugaStorage> storage,
                                folly::CPUThreadPoolExecutor* exec, 
                                OnWorkerDeath on_worker_death)
-    : db_(db),
+    : storage_(storage),
+      db_(storage->db()),
       exec_(exec),
-      select_worker_uuid_stmt_(db, kSelectWorkerUuidStmt),
-      update_worker_beat_stmt_(db, kUpdateWorkerBeatStmt),
-      update_worker_stmt_(db, kUpdateWorkerStmt),
-      insert_worker_stmt_(db, kInsertWorkerStmt),
-      insert_historic_worker_stmt_(db, kInsertHistoricWorkerStmt),
-      unassign_tasks_stmt_(db, kUnassignTasksStmt),
-      unassign_single_task_stmt_(db, kUnassignSingleTaskByRowidStmt),
-      update_worker_invalidated_uuid_stmt_(db, kUpdateWorkerInvalidatedUuidStmt),
-      select_expired_workers_stmt_(db, kSelectExpiredWorkersStmt),
       on_worker_death_(std::move(on_worker_death)) {
 }
 
@@ -127,45 +75,29 @@ void WorkersManager::LoadWorkers() {
   }
 
   LOG(INFO) << "successfully loaded: " << workers_.size() << " workers";
-  SqliteStatement unassign(db_, kUnassignSingleTaskByRowidStmt);
   for (int64_t row_id : to_unassign) {
-    SqliteReset x(&unassign);
-    unassign.BindLong(1, row_id);
-    unassign.ExecuteOrDie();
+    storage_->UnassignTaskNotCommit(row_id);
     LOG(INFO) << "unassigned orphan: " << row_id;
   }
 }
 
 void WorkersManager::InsertHistoricWorkerInExec(const std::string& uuid,
                                                 const std::string& worker_id) {
-  SqliteReset x(&insert_historic_worker_stmt_);
-  insert_historic_worker_stmt_.BindText(1, uuid);
-  insert_historic_worker_stmt_.BindText(2, worker_id);
-  insert_historic_worker_stmt_.BindLong(3, CurrentTimeMillis());
-
-  insert_historic_worker_stmt_.ExecuteOrDie();
+  storage_->InsertHistoricWorkerNotCommit(uuid, worker_id);
 }
 
 void WorkersManager::UnassignTasksOfWorkerInExec(const std::string& uuid) {
   VLOG(2) << "unassigning tasks of expired worker: " << uuid;
 
   SqliteTx tx(db_);
-  SqliteReset x1(&unassign_tasks_stmt_);
-  unassign_tasks_stmt_.BindText(1, uuid);
-  unassign_tasks_stmt_.ExecuteOrDie();
-
-  SqliteReset x2(&update_worker_invalidated_uuid_stmt_);
-  update_worker_invalidated_uuid_stmt_.BindText(1, uuid);
-  update_worker_invalidated_uuid_stmt_.BindText(2, uuid);
-  update_worker_invalidated_uuid_stmt_.ExecuteOrDie();
+  storage_->UnassignTasksOfWorkerNotCommit(uuid);
+  storage_->InvalidateExpiredWorkerNotCommit(uuid);
 
   on_worker_death_(uuid);
 }
 
 void WorkersManager::UnassignTaskInExec(int64_t handle) {
-  SqliteReset x(&unassign_single_task_stmt_);
-  unassign_single_task_stmt_.BindLong(1, handle);
-  unassign_single_task_stmt_.ExecuteOrDie();
+  storage_->UnassignTaskNotCommit(handle);
 
   LOG(WARNING) << "reclaimed dead task: " << handle;
 }
@@ -280,14 +212,7 @@ void WorkersManager::WorkerChangeBeat(const Worker& worker,  WorkerInfo* worker_
     exec_->add([this, promise = std::move(p), old_uuid = worker_info->uuid, &worker]() mutable {
       // invalidate all the tasks assigned to this whole worker.
       UnassignTasksOfWorkerInExec(old_uuid);
-      // insert the new one
-      SqliteReset x2(&update_worker_stmt_);
-      update_worker_stmt_.BindText(1, worker.uuid());
-      update_worker_stmt_.BindText(2, JoinCapabilities(worker));
-      update_worker_stmt_.BindLong(3, CurrentTimeMillis());
-      update_worker_stmt_.BindText(4, worker.worker_id());
-
-      update_worker_stmt_.ExecuteOrDie();
+      storage_->UpdateNewWorkerNotCommit(worker);
       
       InsertHistoricWorkerInExec(worker.uuid(), worker.worker_id());
       promise.setValue(folly::Unit());
@@ -304,12 +229,7 @@ void WorkersManager::NewWorkerBeat(const Worker& worker) {
 
   folly::fibers::await([&](folly::fibers::Promise<folly::Unit> p) {
     exec_->add([this, promise = std::move(p), &worker]() mutable {
-      SqliteReset x2(&insert_worker_stmt_);
-      insert_worker_stmt_.BindText(1, worker.uuid());
-      insert_worker_stmt_.BindText(2, worker.worker_id());
-      insert_worker_stmt_.BindText(3, JoinCapabilities(worker));
-      insert_worker_stmt_.BindLong(4, CurrentTimeMillis());
-      insert_worker_stmt_.ExecuteOrDie();
+      storage_->InsertWorkerNotCommit(worker);
 
       InsertHistoricWorkerInExec(worker.uuid(), worker.worker_id());
       promise.setValue(folly::Unit());

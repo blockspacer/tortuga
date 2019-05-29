@@ -5,7 +5,9 @@
 #include "folly/Optional.h"
 #include "sqlite3.h"
 
+#include "tortuga/request_task_result.h"
 #include "tortuga/tortuga.pb.h"
+#include "tortuga/updated_task.h"
 #include "tortuga/storage/statements_manager.h"
 
 namespace tortuga {
@@ -34,7 +36,28 @@ class TortugaStorage {
 
   void UpdateProgressNotCommit(int64_t task_id, const UpdateProgressReq& req);
 
+  void Cleanup(const std::string& uuid) {
+    statements_->Cleanup(uuid);
+  }
+
+  RequestTaskResult RequestTaskNotCommit(const Worker& worker);
+
+  // Caller takes ownership!
+  UpdatedTask* FindUpdatedTaskByHandle(int64_t handle);
+  UpdatedTask* FindUpdatedTask(const TaskIdentifier& t_id);
+
+  // workers
+  void UpdateNewWorkerNotCommit(const Worker& worker);
+  void InsertWorkerNotCommit(const Worker& worker);
+  void InsertHistoricWorkerNotCommit(const std::string& uuid,
+                                     const std::string& worker_id);
+  void UnassignTasksOfWorkerNotCommit(const std::string& uuid);
+  void InvalidateExpiredWorkerNotCommit(const std::string& uuid);
+  void UnassignTaskNotCommit(int64_t handle);
+
  private:
+  UpdatedTask* FindTaskByBoundStmt(SqliteStatement* stmt);
+
   // owned
   sqlite3* db_;
 

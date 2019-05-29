@@ -17,7 +17,6 @@
 #include "tortuga/baton_handler.h"
 #include "tortuga/time_logger.h"
 #include "tortuga/time_utils.h"
-#include "tortuga/storage/sqlite_statement.h"
 
 using google::protobuf::Timestamp;
 using google::protobuf::util::TimeUtil;
@@ -29,10 +28,10 @@ TortugaHandler::TortugaHandler(std::shared_ptr<TortugaStorage> storage, RpcOpts 
       db_(storage->db()),
       rpc_opts_(rpc_opts),
       modules_(std::move(modules)) {
-  progress_mgr_.reset(new ProgressManager(db_, &exec_, rpc_opts));
-  workers_manager_.reset(new WorkersManager(db_, &exec_, [this](const std::string& uuid) {
+  progress_mgr_.reset(new ProgressManager(storage, &exec_, rpc_opts));
+  workers_manager_.reset(new WorkersManager(storage, &exec_, [this](const std::string& uuid) {
     // cleanup the prepared statement that would otherwise take up memory.
-    select_task_stmts_.erase(uuid);
+    storage_->Cleanup(uuid);
   }));
 
   workers_manager_->LoadWorkers();
@@ -162,7 +161,7 @@ TortugaHandler::CreateTaskResult TortugaHandler::CreateTaskInExec(const Task& ta
   return res;
 }
 
-TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& worker,
+RequestTaskResult TortugaHandler::RequestTask(const Worker& worker,
                                                               std::chrono::system_clock::time_point rpc_exp,
                                                               bool first_try) {
   RequestTaskResult res = folly::fibers::await([&](folly::fibers::Promise<RequestTaskResult> p) {
@@ -199,52 +198,16 @@ TortugaHandler::RequestTaskResult TortugaHandler::RequestTask(const Worker& work
   return res;
 }
 
-TortugaHandler::RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker& worker) {
+RequestTaskResult TortugaHandler::RequestTaskInExec(const Worker& worker) {
   TimeLogger get_task_timer("get_task");
   SqliteTx tx(db_);
-  SqliteStatement* select_task_stmt = GetOrCreateSelectStmtInExec(worker);
 
-  if (select_task_stmt == nullptr) {
-    VLOG(3) << "This worker: " << worker.uuid() << " has no capabilities!";
-    RequestTaskResult res;
-    res.none = true;
+  RequestTaskResult res = storage_->RequestTaskNotCommit(worker);
+  if (res.none) {
     return res;
   }
 
-  SqliteReset x(select_task_stmt);
-  Timestamp now = TimeUtil::GetCurrentTime();
-  select_task_stmt->BindLong(1, TimeUtil::TimestampToMilliseconds(now));
-
-  int rc = select_task_stmt->Step();
-  if (rc == SQLITE_DONE) {
-    VLOG(3) << "Tortuga has no task at the moment";
-    RequestTaskResult res;
-    res.none = true;
-    return res;
-  }
-  
-  int64_t rowid = select_task_stmt->ColumnLong(0);
-  std::string id = select_task_stmt->ColumnText(1);
-  std::string task_type = select_task_stmt->ColumnText(2);
-  std::string data = select_task_stmt->ColumnBlob(3);
-  int priority = select_task_stmt->ColumnInt(4);
-  int retries = select_task_stmt->ColumnInt(5);
-  std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty(6);
-  std::string modules = select_task_stmt->ColumnTextOrEmpty(7);
-
-  storage_->AssignNotCommit(retries, worker.uuid(), rowid);
-
-  RequestTaskResult res;
-  res.none = false;
-  res.id = id;
-  res.handle = rowid;
-  res.type = task_type;
-  res.data = data;
-  res.priority = priority;
-  res.retries = retries + 1;
-  std::swap(res.progress_metadata, progress_metadata);
-  folly::split(",", modules, res.modules);
-
+  storage_->AssignNotCommit(res.retries, worker.uuid(), res.handle);
   return res;
 }
 
@@ -258,38 +221,6 @@ void TortugaHandler::UnregisterWaitingWorker(const Worker& worker, folly::fibers
   for (const auto& cap : worker.capabilities()) {
     waiting_for_tasks_[cap].erase(baton);
   }
-}
-
-SqliteStatement* TortugaHandler::GetOrCreateSelectStmtInExec(const Worker& worker) {
-  std::unique_ptr<SqliteStatement>* found = folly::get_ptr(select_task_stmts_, worker.uuid());
-  if (found != nullptr) {
-    return found->get();
-  }
-
-  if (worker.capabilities_size() == 0) {
-    return nullptr;
-  }
-
-  std::string tpl = R"(
-    select rowid, id, task_type, data, priority, retries, progress_metadata, modules from tasks where
-        worked_on != 1
-        and done != 1
-        and task_type IN (%s)
-        and ((delayed_time IS NULL) OR (delayed_time < ?))
-        order by priority desc limit 1;
-  )";
-
-  std::vector<std::string> quoted_capabilities;
-  for (const auto& capa : worker.capabilities()) {
-    quoted_capabilities.push_back("'" + capa + "'");
-  }
-  
-  std::string capabilities = folly::join(", ", quoted_capabilities);
-  std::string stmt_str = folly::stringPrintf(tpl.c_str(), capabilities.c_str());
-
-  SqliteStatement* stmt = new SqliteStatement(db_, stmt_str);
-  select_task_stmts_[worker.uuid()] = std::unique_ptr<SqliteStatement>(stmt);
-  return stmt;
 }
 
 void TortugaHandler::HandleHeartbeat() {

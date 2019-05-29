@@ -15,6 +15,7 @@
 
 #include "tortuga/module.h"
 #include "tortuga/progress_manager.h"
+#include "tortuga/request_task_result.h"
 #include "tortuga/rpc_opts.h"
 #include "tortuga/tortuga.grpc.pb.h"
 #include "tortuga/tortuga.pb.h"
@@ -67,18 +68,6 @@ class TortugaHandler : boost::noncopyable {
   CreateTaskResult CreateTask(const Task& task);
   CreateTaskResult CreateTaskInExec(const Task& task);
 
-  struct RequestTaskResult {
-    bool none { false };
-    std::string id;
-    int64_t handle{ 0 };
-    std::string type;
-    std::string data;
-    int priority{ 0 };
-    int retries{ 0 };
-    std::string progress_metadata;
-    std::vector<std::string> modules;
-  };
-
   RequestTaskResult RequestTask(const Worker& worker,
                                 std::chrono::system_clock::time_point rpc_exp,
                                 bool first_try);
@@ -97,10 +86,6 @@ class TortugaHandler : boost::noncopyable {
 
   void UpdateProgressManagerCache(const UpdatedTask& task);
 
-  // Caller doesn't take ownership.
-  // This may return nullptr if the caller has no capabilities. 
-  SqliteStatement* GetOrCreateSelectStmtInExec(const Worker& worker);
-
   void RegisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton);
   void UnregisterWaitingWorker(const Worker& worker, folly::fibers::Baton* baton);
 
@@ -113,9 +98,6 @@ class TortugaHandler : boost::noncopyable {
 
   // progress manager
   std::unique_ptr<ProgressManager> progress_mgr_;
-
-  // map from worker UUID to its select statement.
-  std::map<std::string, std::unique_ptr<SqliteStatement>> select_task_stmts_;
 
   // all modules
   const std::map<std::string, std::unique_ptr<Module>> modules_;

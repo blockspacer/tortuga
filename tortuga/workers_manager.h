@@ -12,6 +12,7 @@
 #include "sqlite3.h"
 
 #include "tortuga/storage/sqlite_statement.h"
+#include "tortuga/storage/tortuga_storage.h"
 #include "tortuga/time_utils.h"
 #include "tortuga/tortuga.pb.h"
 
@@ -38,7 +39,7 @@ typedef folly::Function<void(const std::string&)> OnWorkerDeath;
 
 class WorkersManager : boost::noncopyable {
  public:
-  WorkersManager(sqlite3* db,
+  WorkersManager(std::shared_ptr<TortugaStorage> storage,
                  folly::CPUThreadPoolExecutor* exec,
                  OnWorkerDeath on_worker_death);
   ~WorkersManager();
@@ -73,19 +74,10 @@ class WorkersManager : boost::noncopyable {
   folly::CPUThreadPoolExecutor* exec_{ nullptr };
   sqlite3* db_{ nullptr };
   
+  std::shared_ptr<TortugaStorage> storage_;
+
   // by id...
   std::map<std::string, WorkerInfo> workers_;
-
-  SqliteStatement select_worker_uuid_stmt_;
-  SqliteStatement update_worker_beat_stmt_;
-  SqliteStatement update_worker_stmt_;
-  SqliteStatement insert_worker_stmt_;
-  SqliteStatement insert_historic_worker_stmt_;
-
-  SqliteStatement unassign_tasks_stmt_;
-  SqliteStatement unassign_single_task_stmt_;
-  SqliteStatement update_worker_invalidated_uuid_stmt_;
-  SqliteStatement select_expired_workers_stmt_;
 
   OnWorkerDeath on_worker_death_;
 };
