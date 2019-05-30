@@ -100,6 +100,11 @@ class FindTaskReqDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<FindTaskReq>
       _instance;
 } _FindTaskReq_default_instance_;
+class MysqlParamsDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<MysqlParams>
+      _instance;
+} _MysqlParams_default_instance_;
 }  // namespace tortuga
 namespace protobuf_tortuga_2ftortuga_2eproto {
 void InitDefaultsWorkerImpl() {
@@ -454,7 +459,28 @@ void InitDefaultsFindTaskReq() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsFindTaskReqImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[16];
+void InitDefaultsMysqlParamsImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::tortuga::_MysqlParams_default_instance_;
+    new (ptr) ::tortuga::MysqlParams();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tortuga::MysqlParams::InitAsDefaultInstance();
+}
+
+void InitDefaultsMysqlParams() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsMysqlParamsImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[17];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -599,6 +625,16 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::FindTaskReq, handle_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::FindTaskReq, is_for_done_only_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::MysqlParams, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::MysqlParams, host_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::MysqlParams, port_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::MysqlParams, user_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::MysqlParams, password_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tortuga::MysqlParams, database_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::tortuga::Worker)},
@@ -617,6 +653,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 121, -1, sizeof(::tortuga::ProgressResp)},
   { 128, -1, sizeof(::tortuga::TaskIdentifier)},
   { 135, -1, sizeof(::tortuga::FindTaskReq)},
+  { 142, -1, sizeof(::tortuga::MysqlParams)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -636,6 +673,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_ProgressResp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_TaskIdentifier_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_FindTaskReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::tortuga::_MysqlParams_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -654,7 +692,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 16);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 17);
 }
 
 void AddDescriptorsImpl() {
@@ -710,25 +748,28 @@ void AddDescriptorsImpl() {
       "\016\n\006handle\030\001 \001(\t\022\"\n\006status\030\002 \001(\0132\022.google"
       ".rpc.Status\"*\n\016TaskIdentifier\022\n\n\002id\030\001 \001("
       "\t\022\014\n\004type\030\002 \001(\t\"7\n\013FindTaskReq\022\016\n\006handle"
-      "\030\001 \001(\003\022\030\n\020is_for_done_only\030\002 \001(\0102\255\004\n\007Tor"
-      "tuga\0225\n\nCreateTask\022\022.tortuga.CreateReq\032\023"
-      ".tortuga.CreateResp\0222\n\013RequestTask\022\020.tor"
-      "tuga.TaskReq\032\021.tortuga.TaskResp\022:\n\tHeart"
-      "beat\022\025.tortuga.HeartbeatReq\032\026.google.pro"
-      "tobuf.Empty\022@\n\014CompleteTask\022\030.tortuga.Co"
-      "mpleteTaskReq\032\026.google.protobuf.Empty\022D\n"
-      "\016UpdateProgress\022\032.tortuga.UpdateProgress"
-      "Req\032\026.google.protobuf.Empty\022:\n\010FindTask\022"
-      "\027.tortuga.TaskIdentifier\032\025.tortuga.TaskP"
-      "rogress\022\?\n\020FindTaskByHandle\022\024.tortuga.Fi"
-      "ndTaskReq\032\025.tortuga.TaskProgress\0226\n\004Ping"
-      "\022\026.google.protobuf.Empty\032\026.google.protob"
-      "uf.Empty\022>\n\014QuitQuitQuit\022\026.google.protob"
-      "uf.Empty\032\026.google.protobuf.EmptyB\032\n\nio.t"
-      "ortugaB\014TortugaProtob\006proto3"
+      "\030\001 \001(\003\022\030\n\020is_for_done_only\030\002 \001(\010\"[\n\013Mysq"
+      "lParams\022\014\n\004host\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022\014\n\004u"
+      "ser\030\003 \001(\t\022\020\n\010password\030\004 \001(\t\022\020\n\010database\030"
+      "\005 \001(\t2\255\004\n\007Tortuga\0225\n\nCreateTask\022\022.tortug"
+      "a.CreateReq\032\023.tortuga.CreateResp\0222\n\013Requ"
+      "estTask\022\020.tortuga.TaskReq\032\021.tortuga.Task"
+      "Resp\022:\n\tHeartbeat\022\025.tortuga.HeartbeatReq"
+      "\032\026.google.protobuf.Empty\022@\n\014CompleteTask"
+      "\022\030.tortuga.CompleteTaskReq\032\026.google.prot"
+      "obuf.Empty\022D\n\016UpdateProgress\022\032.tortuga.U"
+      "pdateProgressReq\032\026.google.protobuf.Empty"
+      "\022:\n\010FindTask\022\027.tortuga.TaskIdentifier\032\025."
+      "tortuga.TaskProgress\022\?\n\020FindTaskByHandle"
+      "\022\024.tortuga.FindTaskReq\032\025.tortuga.TaskPro"
+      "gress\0226\n\004Ping\022\026.google.protobuf.Empty\032\026."
+      "google.protobuf.Empty\022>\n\014QuitQuitQuit\022\026."
+      "google.protobuf.Empty\032\026.google.protobuf."
+      "EmptyB\032\n\nio.tortugaB\014TortugaProtob\006proto"
+      "3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2628);
+      descriptor, 2721);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tortuga/tortuga.proto", &protobuf_RegisterTypes);
   ::protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptors();
@@ -7132,6 +7173,472 @@ void FindTaskReq::InternalSwap(FindTaskReq* other) {
 }
 
 ::google::protobuf::Metadata FindTaskReq::GetMetadata() const {
+  protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void MysqlParams::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int MysqlParams::kHostFieldNumber;
+const int MysqlParams::kPortFieldNumber;
+const int MysqlParams::kUserFieldNumber;
+const int MysqlParams::kPasswordFieldNumber;
+const int MysqlParams::kDatabaseFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+MysqlParams::MysqlParams()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsMysqlParams();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:tortuga.MysqlParams)
+}
+MysqlParams::MysqlParams(const MysqlParams& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  host_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.host().size() > 0) {
+    host_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.host_);
+  }
+  user_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.user().size() > 0) {
+    user_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.user_);
+  }
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.password().size() > 0) {
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
+  database_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.database().size() > 0) {
+    database_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.database_);
+  }
+  port_ = from.port_;
+  // @@protoc_insertion_point(copy_constructor:tortuga.MysqlParams)
+}
+
+void MysqlParams::SharedCtor() {
+  host_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  user_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  database_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  port_ = 0;
+  _cached_size_ = 0;
+}
+
+MysqlParams::~MysqlParams() {
+  // @@protoc_insertion_point(destructor:tortuga.MysqlParams)
+  SharedDtor();
+}
+
+void MysqlParams::SharedDtor() {
+  host_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  user_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  database_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void MysqlParams::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* MysqlParams::descriptor() {
+  ::protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const MysqlParams& MysqlParams::default_instance() {
+  ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsMysqlParams();
+  return *internal_default_instance();
+}
+
+MysqlParams* MysqlParams::New(::google::protobuf::Arena* arena) const {
+  MysqlParams* n = new MysqlParams;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void MysqlParams::Clear() {
+// @@protoc_insertion_point(message_clear_start:tortuga.MysqlParams)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  host_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  user_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  database_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  port_ = 0;
+  _internal_metadata_.Clear();
+}
+
+bool MysqlParams::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tortuga.MysqlParams)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string host = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_host()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->host().data(), static_cast<int>(this->host().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.MysqlParams.host"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 port = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &port_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string user = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_user()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->user().data(), static_cast<int>(this->user().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.MysqlParams.user"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string password = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_password()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->password().data(), static_cast<int>(this->password().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.MysqlParams.password"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string database = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_database()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->database().data(), static_cast<int>(this->database().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "tortuga.MysqlParams.database"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:tortuga.MysqlParams)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:tortuga.MysqlParams)
+  return false;
+#undef DO_
+}
+
+void MysqlParams::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:tortuga.MysqlParams)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string host = 1;
+  if (this->host().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->host().data(), static_cast<int>(this->host().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.MysqlParams.host");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->host(), output);
+  }
+
+  // int32 port = 2;
+  if (this->port() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->port(), output);
+  }
+
+  // string user = 3;
+  if (this->user().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->user().data(), static_cast<int>(this->user().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.MysqlParams.user");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->user(), output);
+  }
+
+  // string password = 4;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), static_cast<int>(this->password().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.MysqlParams.password");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->password(), output);
+  }
+
+  // string database = 5;
+  if (this->database().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->database().data(), static_cast<int>(this->database().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.MysqlParams.database");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->database(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tortuga.MysqlParams)
+}
+
+::google::protobuf::uint8* MysqlParams::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tortuga.MysqlParams)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string host = 1;
+  if (this->host().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->host().data(), static_cast<int>(this->host().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.MysqlParams.host");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->host(), target);
+  }
+
+  // int32 port = 2;
+  if (this->port() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->port(), target);
+  }
+
+  // string user = 3;
+  if (this->user().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->user().data(), static_cast<int>(this->user().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.MysqlParams.user");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->user(), target);
+  }
+
+  // string password = 4;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), static_cast<int>(this->password().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.MysqlParams.password");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->password(), target);
+  }
+
+  // string database = 5;
+  if (this->database().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->database().data(), static_cast<int>(this->database().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "tortuga.MysqlParams.database");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->database(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:tortuga.MysqlParams)
+  return target;
+}
+
+size_t MysqlParams::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:tortuga.MysqlParams)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string host = 1;
+  if (this->host().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->host());
+  }
+
+  // string user = 3;
+  if (this->user().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->user());
+  }
+
+  // string password = 4;
+  if (this->password().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->password());
+  }
+
+  // string database = 5;
+  if (this->database().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->database());
+  }
+
+  // int32 port = 2;
+  if (this->port() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->port());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void MysqlParams::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:tortuga.MysqlParams)
+  GOOGLE_DCHECK_NE(&from, this);
+  const MysqlParams* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const MysqlParams>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tortuga.MysqlParams)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:tortuga.MysqlParams)
+    MergeFrom(*source);
+  }
+}
+
+void MysqlParams::MergeFrom(const MysqlParams& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:tortuga.MysqlParams)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.host().size() > 0) {
+
+    host_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.host_);
+  }
+  if (from.user().size() > 0) {
+
+    user_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.user_);
+  }
+  if (from.password().size() > 0) {
+
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
+  if (from.database().size() > 0) {
+
+    database_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.database_);
+  }
+  if (from.port() != 0) {
+    set_port(from.port());
+  }
+}
+
+void MysqlParams::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:tortuga.MysqlParams)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void MysqlParams::CopyFrom(const MysqlParams& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:tortuga.MysqlParams)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool MysqlParams::IsInitialized() const {
+  return true;
+}
+
+void MysqlParams::Swap(MysqlParams* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void MysqlParams::InternalSwap(MysqlParams* other) {
+  using std::swap;
+  host_.Swap(&other->host_);
+  user_.Swap(&other->user_);
+  password_.Swap(&other->password_);
+  database_.Swap(&other->database_);
+  swap(port_, other->port_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata MysqlParams::GetMetadata() const {
   protobuf_tortuga_2ftortuga_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_tortuga_2ftortuga_2eproto::file_level_metadata[kIndexInFileMessages];
 }

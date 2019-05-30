@@ -2,8 +2,12 @@
 
 #include <memory>
 
+#include "cppconn/driver.h"
+#include "cppconn/exception.h"
+#include "cppconn/resultset.h"
+#include "cppconn/statement.h"
+#include "cppconn/prepared_statement.h"
 #include "folly/Optional.h"
-#include "sqlite3.h"
 
 #include "tortuga/request_task_result.h"
 #include "tortuga/tortuga.pb.h"
@@ -24,12 +28,12 @@ struct TaskWorkedOn {
 
 class TasksWorkedOnIterator {
  public:
-  explicit TasksWorkedOnIterator(sqlite3* db);
+  explicit TasksWorkedOnIterator(sql::Connection* conn);
 
   folly::Optional<TaskWorkedOn> Next();
 
  private:
-  sqlite3* db_{ nullptr };
+  sql::Connection* conn_{ nullptr };
   DatabaseStatement tasks_;
 };
 
@@ -43,22 +47,22 @@ class Tx {
  private:
   friend class TortugaStorage;
 
-  explicit Tx(sqlite3* db);
+  explicit Tx(sql::Connection* conn);
   Tx(const Tx& tx) = delete;
   Tx(Tx& tx) = delete;
  
-  sqlite3* db_{ nullptr };
+  sql::Connection* conn_{ nullptr };
 };
 
 class TortugaStorage {
  public:
   static std::shared_ptr<TortugaStorage> Init();
 
-  explicit TortugaStorage(sqlite3* db);
+  explicit TortugaStorage(std::unique_ptr<sql::Connection> conn);
   ~TortugaStorage();
 
   Tx StartTx() {
-    return Tx(db_);
+    return Tx(conn_.get());
   }
 
   folly::Optional<int64_t> FindTaskById(const std::string& id);
@@ -97,8 +101,7 @@ class TortugaStorage {
  private:
   UpdatedTask* FindTaskByBoundStmt(DatabaseStatement* stmt);
 
-  // owned
-  sqlite3* db_;
+  std::unique_ptr<sql::Connection> conn_;
 
   std::unique_ptr<StatementsManager> statements_;
 };

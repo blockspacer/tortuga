@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.8)
 project (tortuga)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} /usr/include/mysql)
 
 add_definitions("-std=c++14")
 add_definitions(-DGTEST_HAS_TR1_TUPLE=1)
@@ -34,7 +34,6 @@ target_link_libraries(firestore_proto_lib
 )
 
 add_library (tortuga_lib
-  sqlite3.c
   tortuga/baton_handler.cc
   tortuga/modules/firestore.cc
   tortuga/module.cc
@@ -66,6 +65,7 @@ target_link_libraries(tortuga_lib
   grpc++
   gpr
   folly
+  mysqlcppconn
   protobuf
   pthread
   jemalloc

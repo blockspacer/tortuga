@@ -58,14 +58,7 @@ public class TortugaIntegrationTest {
       Files.createDirectory(testDir);
     }
 
-    Path tortugaDB = testDir.resolve("tortuga.db");
     Path tortugaLogs = testDir.resolve("tortuga.logs");
-
-    if (Files.exists(tortugaDB) && !keepDb) {
-      Files.delete(tortugaDB);
-      Files.delete(testDir.resolve("tortuga.db-shm"));
-      Files.delete(testDir.resolve("tortuga.db-wal"));
-    }
 
     if (Files.exists(tortugaLogs)) {
       Files.delete(tortugaLogs);
@@ -78,8 +71,13 @@ public class TortugaIntegrationTest {
     tortugaCmd.add("5");
     tortugaCmd.add("--addr");
     tortugaCmd.add("127.0.0.1");
-    tortugaCmd.add("--db_file");
-    tortugaCmd.add("test_dir/tortuga.db");
+    tortugaCmd.add("--database_conn_file");
+    tortugaCmd.add("test_dir/.mysql.pbtext");
+
+    if (!keepDb) {
+      tortugaCmd.add("--truncate_for_test");
+    }
+
     tortugaCmd.add("--firestore_collection");
     tortugaCmd.add("tortuga_tests");
 

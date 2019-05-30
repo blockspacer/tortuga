@@ -2,128 +2,103 @@
 
 #include <string>
 
+#include "folly/FileUtil.h"
 #include "folly/String.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
+#include "google/protobuf/text_format.h"
 #include "google/protobuf/timestamp.pb.h"
 #include "google/protobuf/util/time_util.h"
-#include "sqlite3.h"
 
 #include "tortuga/time_utils.h"
 #include "tortuga/tortuga.pb.h"
 #include "tortuga/storage/fields.h"
 
-DEFINE_string(db_file, "tortuga.db", "path to db file.");
+DEFINE_bool(truncate_for_test, false, "Truncate tables on startup! WARNING DO NOT USE BUT FOR TESTS");
+DEFINE_string(database_conn_file, ".mysql.pbtext", "path to a file that defines params for the mysql connection.");
 
 using google::protobuf::Timestamp;
 using google::protobuf::util::TimeUtil;
 
 namespace tortuga {
 namespace {
-// all our times are in millis since epoch.
-const char* const kCreateTortuga = R"(
-  CREATE TABLE IF NOT EXISTS tasks(
-    id TEXT NOT NULL,
-    task_type TEXT NOT NULL,
-    data BLOB NOT NULL,
-    created INTEGER NOT NULL,
-    max_retries INTEGER NOT NULL,
-    retries INTEGER NOT NULL DEFAULT 0,
-    priority INTEGER NOT NULL,
-    delayed_time INTEGER NULL DEFAULT NULL,
-    modules TEXT NULL DEFAULT NULL,
-    worked_on BOOLEAN NOT NULL DEFAULT false,
-    worker_uuid TEXT NULL DEFAULT NULL,
-    progress FLOAT NOT NULL DEFAULT 0.0,
-    progress_message TEXT NULL,
-    progress_metadata TEXT NULL DEFAULT NULL,
-    status_code INTEGER NULL DEFAULT NULL,
-    status_message TEXT NULL DEFAULT NULL,
-    done BOOLEAN NOT NULL DEFAULT false,
-    started_time INTEGER NULL DEFAULT NULL,
-    done_time INTEGER NULL DEFAULT NULL,
-    logs TEXT NULL,
-    output TEXT NULL DEFAULT NULL
-  );
-
-  CREATE INDEX IF NOT EXISTS tasks_id_idx ON tasks (id);
-
-  CREATE TABLE IF NOT EXISTS workers(
-    worker_id TEXT NOT NULL,
-    uuid TEXT NOT NULL,
-    capabilities TEXT NOT NULL DEFAULT '',
-    last_beat INTEGER NOT NULL,
-    last_invalidated_uuid TEXT NULL DEFAULT NULL
-  );
-
-  CREATE INDEX IF NOT EXISTS workers_worker_id_idx ON workers (worker_id);
-
-  CREATE TABLE IF NOT EXISTS historic_workers(
-    uuid TEXT NOT NULL,
-    worker_id TEXT NOT NULL,
-    created INTEGER NOT NULL
-  );
-
-  CREATE INDEX IF NOT EXISTS historic_workers_uuid_idx ON historic_workers (uuid);
-)";
-
 std::string JoinCapabilities(const Worker& worker) {
   return folly::join(" ", worker.capabilities());
 }
-}
 
-Tx::Tx(sqlite3* db) : db_(db) {
-  CHECK_EQ(SQLITE_OK, sqlite3_exec(db, "begin transaction;", nullptr, nullptr, nullptr)) << sqlite3_errmsg(db_);
+MysqlParams LoadConnectionParams() {
+  std::string content;
+  CHECK(folly::readFile(FLAGS_database_conn_file.c_str(), content));
+
+  MysqlParams params;
+  CHECK(google::protobuf::TextFormat::ParseFromString(content, &params));
+  return params;
+}
+}  // anonymous
+
+Tx::Tx(sql::Connection* conn) : conn_(conn) {
+  // TODO(christian) start TX.
 }
 
 Tx::Tx(Tx&& tx) {
-  db_ = tx.db_;
-  tx.db_ = nullptr;
+  conn_ = tx.conn_;
+  tx.conn_ = nullptr;
 }
 
 Tx::~Tx() {
-  if (db_ != nullptr) {
-    CHECK_EQ(SQLITE_OK, sqlite3_exec(db_, "end transaction;", nullptr, nullptr, nullptr)) << sqlite3_errmsg(db_);
+  if (conn_ != nullptr) {
+    // TODO(christian) end TX.
   }
 }
 
-TortugaStorage::TortugaStorage(sqlite3* db)
-    : db_(db) {
-  statements_.reset(new StatementsManager(db));
+TortugaStorage::TortugaStorage(std::unique_ptr<sql::Connection> conn) : conn_(std::move(conn)) {
+  statements_.reset(new StatementsManager(conn_.get()));
 }
 
 TortugaStorage::~TortugaStorage() {
-  sqlite3_close(db_);
-  db_ = nullptr;
 }
 
 std::shared_ptr<TortugaStorage> TortugaStorage::Init() {
-  sqlite3* db = nullptr;
-  char* err_msg = nullptr;
-  int rc = sqlite3_open(FLAGS_db_file.c_str(), &db);
-  CHECK_EQ(SQLITE_OK, rc) << "cound't open database "
-                          << FLAGS_db_file << ": " << sqlite3_errmsg(db);
+  try {
+    /* Connect to the mySQL instance */
+    const auto params = LoadConnectionParams();
 
-  rc = sqlite3_exec(db, kCreateTortuga, nullptr, nullptr, &err_msg);
-  if (rc != SQLITE_OK) {
-    sqlite3_close(db);
-    LOG(FATAL) << "couldn't create tortuga database: " << err_msg;
+    sql::Driver* driver = get_driver_instance();
+
+    sql::ConnectOptionsMap connection_properties;
+    connection_properties["hostName"] = params.host();
+    connection_properties["userName"] = params.user();
+    connection_properties["password"] = params.password();
+    connection_properties["schema"] = params.database();
+    connection_properties["port"] = params.port();
+    connection_properties["OPT_RECONNECT"] = true;
+
+    std::unique_ptr<sql::Connection> conn(driver->connect(connection_properties));
+    conn->setSchema(params.database());
+
+    if (FLAGS_truncate_for_test) {
+      LOG(INFO) << "Truncating all tables for tests";
+      std::vector<std::string> tables = { "tasks", "workers", "historic_workers" };
+
+      for (const auto& table : tables) {
+        std::unique_ptr<sql::Statement> truncate_stmt(conn->createStatement());
+        truncate_stmt->execute("TRUNCATE TABLE " + table + " ;");
+      }
+    }
+
+    return std::make_shared<TortugaStorage>(std::move(conn));
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
   }
-
-  // This makes sqlite inserts much faster.
-  CHECK_EQ(SQLITE_OK, sqlite3_exec(db, "PRAGMA journal_mode = WAL", nullptr, nullptr, &err_msg)) << err_msg;
-  CHECK_EQ(SQLITE_OK, sqlite3_exec(db, "PRAGMA synchronous = NORMAL", nullptr, nullptr, &err_msg)) << err_msg;
-
-  return std::shared_ptr<TortugaStorage>(new TortugaStorage(db));
 }
 
 folly::Optional<int64_t> TortugaStorage::FindTaskById(const std::string& id) {
   auto* select_existing_task_stmt = statements_->select_existing_task_stmt();
   DatabaseReset x(select_existing_task_stmt);
   select_existing_task_stmt->BindText(1, id);
-  int stepped = select_existing_task_stmt->Step();
-  if (stepped == SQLITE_ROW) {
-    int64_t rowid = select_existing_task_stmt->ColumnLong(0);
+  bool stepped = select_existing_task_stmt->Step();
+  if (stepped) {
+    int64_t rowid = select_existing_task_stmt->ColumnLong("id");
     return rowid;
   } else {
     return folly::none;
@@ -158,7 +133,7 @@ int64_t TortugaStorage::InsertTaskNotCommit(const Task& task) {
     Timestamp now = TimeUtil::GetCurrentTime();
     Timestamp delayed_time = now + task.delay();
 
-    insert_task_stmt->BindLong(6, TimeUtil::TimestampToMilliseconds(delayed_time));
+    insert_task_stmt->BindTimestamp(6, delayed_time);
   } else {
     insert_task_stmt->BindNull(6);
   }
@@ -170,10 +145,14 @@ int64_t TortugaStorage::InsertTaskNotCommit(const Task& task) {
     insert_task_stmt->BindText(7, modules);
   }
 
-  insert_task_stmt->BindLong(8, CurrentTimeMillis());
+  insert_task_stmt->BindTimestamp(8, TimeUtil::GetCurrentTime());
 
   insert_task_stmt->ExecuteOrDie();
-  return sqlite3_last_insert_rowid(db_);
+
+  std::unique_ptr<sql::Statement> last_insert_stmt(conn_->createStatement());
+  std::unique_ptr<sql::ResultSet> last_res(last_insert_stmt->executeQuery("SELECT LAST_INSERT_ID();"));
+  CHECK(last_res->next());
+  return last_res->getInt64(1);
 }
 
 void TortugaStorage::AssignNotCommit(int retries, const std::string& worked_uuid, int64_t task_row_id) {
@@ -207,16 +186,16 @@ folly::Optional<TaskToComplete> TortugaStorage::SelectTaskToCompleteNotCommit(in
   DatabaseReset x(select_task_to_complete_stmt);
 
   select_task_to_complete_stmt->BindLong(1, task_id);
-  int rc = select_task_to_complete_stmt->Step();
+  bool rc = select_task_to_complete_stmt->Step();
 
-  if (rc == SQLITE_DONE) {
+  if (!rc) {
     return folly::none;
   }
 
   TaskToComplete res;
-  res.worker_uuid = select_task_to_complete_stmt->ColumnTextOrEmpty(0);
-  res.max_retries = select_task_to_complete_stmt->ColumnInt(1);
-  res.retries = select_task_to_complete_stmt->ColumnInt(2);
+  res.worker_uuid = select_task_to_complete_stmt->ColumnTextOrEmpty("worker_uuid");
+  res.max_retries = select_task_to_complete_stmt->ColumnInt("max_retries");
+  res.retries = select_task_to_complete_stmt->ColumnInt("retries");
   return res;
 }
 
@@ -238,10 +217,10 @@ void TortugaStorage::UpdateProgressNotCommit(int64_t task_id, const UpdateProgre
   }
 
   query << folly::join(", ", setters);
-  query << " where rowid=? ;";
+  query << " where id=? ;";
 
   std::string query_str = query.str();
-  DatabaseStatement stmt(db_, query_str);
+  DatabaseStatement stmt(conn_.get(), query_str);
 
   int idx = 0;
   if (req.has_progress()) {
@@ -276,22 +255,22 @@ RequestTaskResult TortugaStorage::RequestTaskNotCommit(const Worker& worker) {
   Timestamp now = TimeUtil::GetCurrentTime();
   select_task_stmt->BindLong(1, TimeUtil::TimestampToMilliseconds(now));
 
-  int rc = select_task_stmt->Step();
-  if (rc == SQLITE_DONE) {
+  bool rc = select_task_stmt->Step();
+  if (!rc) {
     VLOG(3) << "Tortuga has no task at the moment";
     RequestTaskResult res;
     res.none = true;
     return res;
   }
-  
-  int64_t rowid = select_task_stmt->ColumnLong(0);
-  std::string id = select_task_stmt->ColumnText(1);
-  std::string task_type = select_task_stmt->ColumnText(2);
-  std::string data = select_task_stmt->ColumnBlob(3);
-  int priority = select_task_stmt->ColumnInt(4);
-  int retries = select_task_stmt->ColumnInt(5);
-  std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty(6);
-  std::string modules = select_task_stmt->ColumnTextOrEmpty(7);
+
+  int64_t rowid = select_task_stmt->ColumnLong("id");
+  std::string id = select_task_stmt->ColumnText("task_id");
+  std::string task_type = select_task_stmt->ColumnText("task_type");
+  std::string data = select_task_stmt->ColumnBlob("data");
+  int priority = select_task_stmt->ColumnInt("priority");
+  int retries = select_task_stmt->ColumnInt("retries");
+  std::string progress_metadata = select_task_stmt->ColumnTextOrEmpty("progress_metadata");
+  std::string modules = select_task_stmt->ColumnTextOrEmpty("modules");
 
   RequestTaskResult res;
   res.none = false;
@@ -326,61 +305,61 @@ UpdatedTask* TortugaStorage::FindUpdatedTask(const TaskIdentifier& t_id) {
 UpdatedTask* TortugaStorage::FindTaskByBoundStmt(DatabaseStatement* stmt) {
   DatabaseReset x(stmt);
 
-  int rc = stmt->Step();
-  if (rc == SQLITE_DONE) {
+  bool rc = stmt->Step();
+  if (!rc) {
     return nullptr;
   }
 
   TaskProgress res;
-  int64_t handle = stmt->ColumnLong(0);
+  int64_t handle = stmt->ColumnLong("id");
   res.set_handle(folly::to<std::string>(handle));
-  res.set_id(stmt->ColumnText(1));
-  res.set_type(stmt->ColumnText(2));
+  res.set_id(stmt->ColumnText("task_id"));
+  res.set_type(stmt->ColumnText("task_type"));
 
-  auto created_opt = stmt->ColumnTimestamp(4);
+  auto created_opt = stmt->ColumnTimestamp("created");
   if (created_opt != nullptr) {
     *res.mutable_created() = *created_opt;
   }
 
-  res.set_max_retries(stmt->ColumnInt(5));
-  res.set_retries(stmt->ColumnInt(6));
-  res.set_priority(stmt->ColumnInt(7));
+  res.set_max_retries(stmt->ColumnInt("max_retries"));
+  res.set_retries(stmt->ColumnInt("retries"));
+  res.set_priority(stmt->ColumnInt("priority"));
 
-  std::string modules = stmt->ColumnTextOrEmpty(9);
-  res.set_worked_on(stmt->ColumnBool(10));
+  std::string modules = stmt->ColumnTextOrEmpty("modules");
+  res.set_worked_on(stmt->ColumnBool("worked_on"));
 
-  std::string worker_uuid = stmt->ColumnTextOrEmpty(11);
+  std::string worker_uuid = stmt->ColumnTextOrEmpty("worker_uuid");
 
-  res.set_progress(stmt->ColumnFloat(12));
-  res.set_progress_message(stmt->ColumnTextOrEmpty(13));
-  res.set_progress_metadata(stmt->ColumnTextOrEmpty(14));
+  res.set_progress(stmt->ColumnFloat("progress"));
+  res.set_progress_message(stmt->ColumnTextOrEmpty("progress_message"));
+  res.set_progress_metadata(stmt->ColumnTextOrEmpty("progress_metadata"));
 
-  res.mutable_status()->set_code(stmt->ColumnInt(15));
-  res.mutable_status()->set_message(stmt->ColumnTextOrEmpty(16));
+  res.mutable_status()->set_code(stmt->ColumnInt("status_code"));
+  res.mutable_status()->set_message(stmt->ColumnTextOrEmpty("status_message"));
 
-  res.set_done(stmt->ColumnBool(17));
+  res.set_done(stmt->ColumnBool("done"));
 
-  auto started_time_opt = stmt->ColumnTimestamp(18);
+  auto started_time_opt = stmt->ColumnTimestamp("started_time");
   if (started_time_opt != nullptr) {
     *res.mutable_started_time() = *started_time_opt;
   }
 
-  auto done_time_opt = stmt->ColumnTimestamp(19);
+  auto done_time_opt = stmt->ColumnTimestamp("done_time");
   if (done_time_opt != nullptr) {
     *res.mutable_done_time() = *done_time_opt;
   }
 
-  res.set_logs(stmt->ColumnTextOrEmpty(20));
-  res.set_output(stmt->ColumnTextOrEmpty(21));
+  res.set_logs(stmt->ColumnTextOrEmpty("logs"));
+  res.set_output(stmt->ColumnTextOrEmpty("output"));
 
   if (!worker_uuid.empty()) {
     auto* select_worker_id_by_uuid_stmt = statements_->select_worker_id_by_uuid_stmt();
     DatabaseReset x2(select_worker_id_by_uuid_stmt);
     select_worker_id_by_uuid_stmt->BindText(1, worker_uuid);
     
-    // This shall alwawys be true because if a task has a worker uuid then that worker must be in the historic table.
-    if (SQLITE_ROW == select_worker_id_by_uuid_stmt->Step()) {
-      res.set_worker_id(select_worker_id_by_uuid_stmt->ColumnText(0));
+    // This shall always be true because if a task has a worker uuid then that worker must be in the historic table.
+    if (select_worker_id_by_uuid_stmt->Step()) {
+      res.set_worker_id(select_worker_id_by_uuid_stmt->ColumnText("worker_id"));
     }
   }
 
@@ -459,42 +438,40 @@ static const char* const kSelectWorkerByUuidStmt = R"(
 }
 
 folly::Optional<std::string> TortugaStorage::FindWorkerIdByUuidUnprepared(const std::string& uuid) {
-  DatabaseStatement select_task_worker(db_, kSelectWorkerByUuidStmt);
+  DatabaseStatement select_task_worker(conn_.get(), kSelectWorkerByUuidStmt);
   select_task_worker.BindText(1, uuid);
-  int found_worker = select_task_worker.Step();
-  CHECK(found_worker == SQLITE_ROW || found_worker == SQLITE_DONE);
-  if (found_worker == SQLITE_DONE) {
+  bool found_worker = select_task_worker.Step();
+  if (!found_worker) {
     return folly::none;
   } else {
-    return select_task_worker.ColumnText(WorkersFields::kWorkerId);
+    return select_task_worker.ColumnText("worker_id");
   }
 }
 
 namespace {
 static const char* const kSelectTasksWorkedOnStmt = R"(
-  select rowid, * from tasks where worked_on = 1 and done = 0;
+  select * from tasks where worked_on = 1 and done = 0;
 )";
 }
 
-TasksWorkedOnIterator::TasksWorkedOnIterator(sqlite3* db) : db_(db), tasks_(db, kSelectTasksWorkedOnStmt) {
+TasksWorkedOnIterator::TasksWorkedOnIterator(sql::Connection* conn) : conn_(conn), tasks_(conn, kSelectTasksWorkedOnStmt) {
 }
 
 folly::Optional<TaskWorkedOn> TasksWorkedOnIterator::Next() {
-  int stepped = tasks_.Step();
-  CHECK(stepped == SQLITE_ROW || stepped == SQLITE_DONE) << "sql err: " << stepped
-      << " err msg: " << sqlite3_errmsg(db_);
-  if (stepped == SQLITE_DONE) {
+  bool stepped = tasks_.Step();
+
+  if (!stepped) {
     return folly::none;
   }
 
   TaskWorkedOn res;
-  res.row_id = tasks_.ColumnLong(0);
-  res.worker_uuid = tasks_.ColumnTextOrEmpty(TasksFields::kWorkerUuid + 1);  //  +1 cause we selected rowid
+  res.row_id = tasks_.ColumnLong("id");
+  res.worker_uuid = tasks_.ColumnTextOrEmpty("worker_uuid");
 
   return res;
 }
 
 TasksWorkedOnIterator TortugaStorage::IterateTasksWorkedOn() {
-  return TasksWorkedOnIterator(db_);
+  return TasksWorkedOnIterator(conn_.get());
 }
 }  // tortuga

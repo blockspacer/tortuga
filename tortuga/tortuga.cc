@@ -56,10 +56,12 @@ void TortugaHandler::HandleCreateTask() {
 
   CreateTaskResult res = CreateTask(req.task());
   if (res.created) {
+    LOG(INFO) << "IN THIS";
     const auto& modules = req.task().modules();
     std::vector<std::string> mods_vec(modules.begin(), modules.end());
     MaybeNotifyModulesOfCreation(res.handle, mods_vec);
   }
+    LOG(INFO) << "IN THAT";
 
   CreateResp reply;
   reply.set_handle(res.handle);

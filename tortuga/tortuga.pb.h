@@ -42,7 +42,7 @@ namespace protobuf_tortuga_2ftortuga_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[16];
+  static const ::google::protobuf::internal::ParseTable schema[17];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -80,6 +80,8 @@ void InitDefaultsTaskIdentifierImpl();
 void InitDefaultsTaskIdentifier();
 void InitDefaultsFindTaskReqImpl();
 void InitDefaultsFindTaskReq();
+void InitDefaultsMysqlParamsImpl();
+void InitDefaultsMysqlParams();
 inline void InitDefaults() {
   InitDefaultsWorker();
   InitDefaultsHeartbeatReq_WorkerBeat();
@@ -97,6 +99,7 @@ inline void InitDefaults() {
   InitDefaultsProgressResp();
   InitDefaultsTaskIdentifier();
   InitDefaultsFindTaskReq();
+  InitDefaultsMysqlParams();
 }
 }  // namespace protobuf_tortuga_2ftortuga_2eproto
 namespace tortuga {
@@ -118,6 +121,9 @@ extern HeartbeatReqDefaultTypeInternal _HeartbeatReq_default_instance_;
 class HeartbeatReq_WorkerBeat;
 class HeartbeatReq_WorkerBeatDefaultTypeInternal;
 extern HeartbeatReq_WorkerBeatDefaultTypeInternal _HeartbeatReq_WorkerBeat_default_instance_;
+class MysqlParams;
+class MysqlParamsDefaultTypeInternal;
+extern MysqlParamsDefaultTypeInternal _MysqlParams_default_instance_;
 class ProgressReq;
 class ProgressReqDefaultTypeInternal;
 extern ProgressReqDefaultTypeInternal _ProgressReq_default_instance_;
@@ -2370,6 +2376,165 @@ class FindTaskReq : public ::google::protobuf::Message /* @@protoc_insertion_poi
   mutable int _cached_size_;
   friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
   friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsFindTaskReqImpl();
+};
+// -------------------------------------------------------------------
+
+class MysqlParams : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:tortuga.MysqlParams) */ {
+ public:
+  MysqlParams();
+  virtual ~MysqlParams();
+
+  MysqlParams(const MysqlParams& from);
+
+  inline MysqlParams& operator=(const MysqlParams& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  MysqlParams(MysqlParams&& from) noexcept
+    : MysqlParams() {
+    *this = ::std::move(from);
+  }
+
+  inline MysqlParams& operator=(MysqlParams&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const MysqlParams& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const MysqlParams* internal_default_instance() {
+    return reinterpret_cast<const MysqlParams*>(
+               &_MysqlParams_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    16;
+
+  void Swap(MysqlParams* other);
+  friend void swap(MysqlParams& a, MysqlParams& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline MysqlParams* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  MysqlParams* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const MysqlParams& from);
+  void MergeFrom(const MysqlParams& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(MysqlParams* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string host = 1;
+  void clear_host();
+  static const int kHostFieldNumber = 1;
+  const ::std::string& host() const;
+  void set_host(const ::std::string& value);
+  #if LANG_CXX11
+  void set_host(::std::string&& value);
+  #endif
+  void set_host(const char* value);
+  void set_host(const char* value, size_t size);
+  ::std::string* mutable_host();
+  ::std::string* release_host();
+  void set_allocated_host(::std::string* host);
+
+  // string user = 3;
+  void clear_user();
+  static const int kUserFieldNumber = 3;
+  const ::std::string& user() const;
+  void set_user(const ::std::string& value);
+  #if LANG_CXX11
+  void set_user(::std::string&& value);
+  #endif
+  void set_user(const char* value);
+  void set_user(const char* value, size_t size);
+  ::std::string* mutable_user();
+  ::std::string* release_user();
+  void set_allocated_user(::std::string* user);
+
+  // string password = 4;
+  void clear_password();
+  static const int kPasswordFieldNumber = 4;
+  const ::std::string& password() const;
+  void set_password(const ::std::string& value);
+  #if LANG_CXX11
+  void set_password(::std::string&& value);
+  #endif
+  void set_password(const char* value);
+  void set_password(const char* value, size_t size);
+  ::std::string* mutable_password();
+  ::std::string* release_password();
+  void set_allocated_password(::std::string* password);
+
+  // string database = 5;
+  void clear_database();
+  static const int kDatabaseFieldNumber = 5;
+  const ::std::string& database() const;
+  void set_database(const ::std::string& value);
+  #if LANG_CXX11
+  void set_database(::std::string&& value);
+  #endif
+  void set_database(const char* value);
+  void set_database(const char* value, size_t size);
+  ::std::string* mutable_database();
+  ::std::string* release_database();
+  void set_allocated_database(::std::string* database);
+
+  // int32 port = 2;
+  void clear_port();
+  static const int kPortFieldNumber = 2;
+  ::google::protobuf::int32 port() const;
+  void set_port(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:tortuga.MysqlParams)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr host_;
+  ::google::protobuf::internal::ArenaStringPtr user_;
+  ::google::protobuf::internal::ArenaStringPtr password_;
+  ::google::protobuf::internal::ArenaStringPtr database_;
+  ::google::protobuf::int32 port_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_tortuga_2ftortuga_2eproto::TableStruct;
+  friend void ::protobuf_tortuga_2ftortuga_2eproto::InitDefaultsMysqlParamsImpl();
 };
 // ===================================================================
 
@@ -5081,9 +5246,241 @@ inline void FindTaskReq::set_is_for_done_only(bool value) {
   // @@protoc_insertion_point(field_set:tortuga.FindTaskReq.is_for_done_only)
 }
 
+// -------------------------------------------------------------------
+
+// MysqlParams
+
+// string host = 1;
+inline void MysqlParams::clear_host() {
+  host_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MysqlParams::host() const {
+  // @@protoc_insertion_point(field_get:tortuga.MysqlParams.host)
+  return host_.GetNoArena();
+}
+inline void MysqlParams::set_host(const ::std::string& value) {
+  
+  host_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.MysqlParams.host)
+}
+#if LANG_CXX11
+inline void MysqlParams::set_host(::std::string&& value) {
+  
+  host_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.MysqlParams.host)
+}
+#endif
+inline void MysqlParams::set_host(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  host_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.MysqlParams.host)
+}
+inline void MysqlParams::set_host(const char* value, size_t size) {
+  
+  host_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.MysqlParams.host)
+}
+inline ::std::string* MysqlParams::mutable_host() {
+  
+  // @@protoc_insertion_point(field_mutable:tortuga.MysqlParams.host)
+  return host_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MysqlParams::release_host() {
+  // @@protoc_insertion_point(field_release:tortuga.MysqlParams.host)
+  
+  return host_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MysqlParams::set_allocated_host(::std::string* host) {
+  if (host != NULL) {
+    
+  } else {
+    
+  }
+  host_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), host);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.MysqlParams.host)
+}
+
+// int32 port = 2;
+inline void MysqlParams::clear_port() {
+  port_ = 0;
+}
+inline ::google::protobuf::int32 MysqlParams::port() const {
+  // @@protoc_insertion_point(field_get:tortuga.MysqlParams.port)
+  return port_;
+}
+inline void MysqlParams::set_port(::google::protobuf::int32 value) {
+  
+  port_ = value;
+  // @@protoc_insertion_point(field_set:tortuga.MysqlParams.port)
+}
+
+// string user = 3;
+inline void MysqlParams::clear_user() {
+  user_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MysqlParams::user() const {
+  // @@protoc_insertion_point(field_get:tortuga.MysqlParams.user)
+  return user_.GetNoArena();
+}
+inline void MysqlParams::set_user(const ::std::string& value) {
+  
+  user_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.MysqlParams.user)
+}
+#if LANG_CXX11
+inline void MysqlParams::set_user(::std::string&& value) {
+  
+  user_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.MysqlParams.user)
+}
+#endif
+inline void MysqlParams::set_user(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  user_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.MysqlParams.user)
+}
+inline void MysqlParams::set_user(const char* value, size_t size) {
+  
+  user_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.MysqlParams.user)
+}
+inline ::std::string* MysqlParams::mutable_user() {
+  
+  // @@protoc_insertion_point(field_mutable:tortuga.MysqlParams.user)
+  return user_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MysqlParams::release_user() {
+  // @@protoc_insertion_point(field_release:tortuga.MysqlParams.user)
+  
+  return user_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MysqlParams::set_allocated_user(::std::string* user) {
+  if (user != NULL) {
+    
+  } else {
+    
+  }
+  user_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), user);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.MysqlParams.user)
+}
+
+// string password = 4;
+inline void MysqlParams::clear_password() {
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MysqlParams::password() const {
+  // @@protoc_insertion_point(field_get:tortuga.MysqlParams.password)
+  return password_.GetNoArena();
+}
+inline void MysqlParams::set_password(const ::std::string& value) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.MysqlParams.password)
+}
+#if LANG_CXX11
+inline void MysqlParams::set_password(::std::string&& value) {
+  
+  password_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.MysqlParams.password)
+}
+#endif
+inline void MysqlParams::set_password(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.MysqlParams.password)
+}
+inline void MysqlParams::set_password(const char* value, size_t size) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.MysqlParams.password)
+}
+inline ::std::string* MysqlParams::mutable_password() {
+  
+  // @@protoc_insertion_point(field_mutable:tortuga.MysqlParams.password)
+  return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MysqlParams::release_password() {
+  // @@protoc_insertion_point(field_release:tortuga.MysqlParams.password)
+  
+  return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MysqlParams::set_allocated_password(::std::string* password) {
+  if (password != NULL) {
+    
+  } else {
+    
+  }
+  password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), password);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.MysqlParams.password)
+}
+
+// string database = 5;
+inline void MysqlParams::clear_database() {
+  database_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MysqlParams::database() const {
+  // @@protoc_insertion_point(field_get:tortuga.MysqlParams.database)
+  return database_.GetNoArena();
+}
+inline void MysqlParams::set_database(const ::std::string& value) {
+  
+  database_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:tortuga.MysqlParams.database)
+}
+#if LANG_CXX11
+inline void MysqlParams::set_database(::std::string&& value) {
+  
+  database_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:tortuga.MysqlParams.database)
+}
+#endif
+inline void MysqlParams::set_database(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  database_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:tortuga.MysqlParams.database)
+}
+inline void MysqlParams::set_database(const char* value, size_t size) {
+  
+  database_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:tortuga.MysqlParams.database)
+}
+inline ::std::string* MysqlParams::mutable_database() {
+  
+  // @@protoc_insertion_point(field_mutable:tortuga.MysqlParams.database)
+  return database_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MysqlParams::release_database() {
+  // @@protoc_insertion_point(field_release:tortuga.MysqlParams.database)
+  
+  return database_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MysqlParams::set_allocated_database(::std::string* database) {
+  if (database != NULL) {
+    
+  } else {
+    
+  }
+  database_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), database);
+  // @@protoc_insertion_point(field_set_allocated:tortuga.MysqlParams.database)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

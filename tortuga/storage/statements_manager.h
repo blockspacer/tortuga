@@ -2,13 +2,19 @@
 
 #include <string>
 
+#include "cppconn/driver.h"
+#include "cppconn/exception.h"
+#include "cppconn/resultset.h"
+#include "cppconn/statement.h"
+#include "cppconn/prepared_statement.h"
+
 #include "tortuga/tortuga.pb.h"
 #include "tortuga/storage/database_statement.h"
 
 namespace tortuga {
 class StatementsManager {
  public:
-  explicit StatementsManager(sqlite3* db);
+  explicit StatementsManager(sql::Connection* conn);
   ~StatementsManager();
 
   DatabaseStatement* select_existing_task_stmt() { return &select_existing_task_stmt_; }
@@ -41,7 +47,7 @@ class StatementsManager {
 
  private:
   // not owned
-  sqlite3* db_;
+  sql::Connection* conn_;
 
   // All our sqlite statements nice and prepared :).
   // Tortuga statements:

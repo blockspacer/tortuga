@@ -515,7 +515,7 @@ public final class TortugaParamsProto {
   }
   /**
    * <pre>
-   * This message is to be used by tortuga &lt;&gt; GRPR bridge.
+   * This message is to be used by tortuga &lt;&gt; GRPC bridge.
    * If and only if the service returns this Type, and 'output' is not empty, then the
    * tortuga bridge will write this as output of the task.
    * </pre>
@@ -796,7 +796,7 @@ public final class TortugaParamsProto {
     }
     /**
      * <pre>
-     * This message is to be used by tortuga &lt;&gt; GRPR bridge.
+     * This message is to be used by tortuga &lt;&gt; GRPC bridge.
      * If and only if the service returns this Type, and 'output' is not empty, then the
      * tortuga bridge will write this as output of the task.
      * </pre>

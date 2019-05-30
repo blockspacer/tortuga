@@ -1,92 +1,170 @@
 #include "tortuga/storage/database_statement.h"
 
 #include "glog/logging.h"
+#include "google/protobuf/util/time_util.h"
 
 #include "tortuga/time_utils.h"
 
 namespace tortuga {
-DatabaseStatement::DatabaseStatement(sqlite3* db, const std::string& stmt) {
-  db_ = db;
-  int rc = sqlite3_prepare(db, stmt.c_str(), strlen(stmt.c_str()), &stmt_, nullptr);
-  CHECK_EQ(SQLITE_OK, rc) << sqlite3_errmsg(db) << "\nstatement was: " << stmt;
+DatabaseStatement::DatabaseStatement(sql::Connection* conn, const std::string& stmt) {
+  conn_ = conn;
+  stmt_ = conn_->prepareStatement(stmt);
+  CHECK(stmt_ != nullptr);
 }
 
 DatabaseStatement::~DatabaseStatement() {
-  if (db_ != nullptr && stmt_ != nullptr) {
-    CHECK_EQ(SQLITE_OK, sqlite3_finalize(stmt_));
+  if (conn_ != nullptr && stmt_ != nullptr) {
+    delete stmt_;
   }  // else we were probably moved.
 }
 
 void DatabaseStatement::BindText(int pos, const std::string& val) {
-  int rc = sqlite3_bind_text(stmt_, pos, val.c_str(), val.size(), SQLITE_TRANSIENT);
-  CHECK_EQ(SQLITE_OK, rc) << sqlite3_errmsg(db_);
+  try {
+    stmt_->setString(pos, val);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
 void DatabaseStatement::BindBlob(int pos, const std::string& val) {
-  int rc = sqlite3_bind_blob(stmt_, pos, val.data(), val.size(), SQLITE_TRANSIENT);
-  CHECK_EQ(SQLITE_OK, rc) << sqlite3_errmsg(db_);;
+  try {
+    auto* is = new std::istringstream(val);
+    streams_.emplace_back(is);
+    stmt_->setBlob(pos, is);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
 void DatabaseStatement::BindBool(int pos, bool val) {
-  BindInt(pos, val ? 1 : 0);
+  try {
+    stmt_->setBoolean(pos, val);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
 void DatabaseStatement::BindInt(int pos, int val) {
-  int rc = sqlite3_bind_int(stmt_, pos, val);
-  CHECK_EQ(SQLITE_OK, rc);
+  try {
+    stmt_->setInt(pos, val);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
 void DatabaseStatement::BindLong(int pos, int64_t val) {
-  int rc = sqlite3_bind_int64(stmt_, pos, val);
-  CHECK_EQ(SQLITE_OK, rc);
+  try {
+    stmt_->setInt64(pos, val);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
+}
+
+void DatabaseStatement::BindTimestamp(int pos, const google::protobuf::Timestamp& val) {
+  try {
+    stmt_->setInt64(pos, google::protobuf::util::TimeUtil::TimestampToSeconds(val));
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
 void DatabaseStatement::BindFloat(int pos, float val) {
-  int rc = sqlite3_bind_double(stmt_, pos, static_cast<double>(val));
-  CHECK_EQ(SQLITE_OK, rc);
+  try {
+    stmt_->setDouble(pos, val);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
 void DatabaseStatement::BindNull(int pos) {
-  int rc = sqlite3_bind_null(stmt_, pos);
-  CHECK_EQ(SQLITE_OK, rc);
+  try {
+    stmt_->setNull(pos, 0);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
-int DatabaseStatement::Step() {
-  return sqlite3_step(stmt_);
+bool DatabaseStatement::Step() {
+  try {
+    if (res_ != nullptr) {
+      bool more = res_->next();
+      if (!more) {
+        res_.reset(nullptr);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      res_.reset(stmt_->executeQuery());
+      return Step();
+    }
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
 void DatabaseStatement::ExecuteOrDie() {
-  CHECK_EQ(SQLITE_DONE, Step()) << sqlite3_errmsg(db_);
+  try {
+    stmt_->executeUpdate();
+    streams_.clear();
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
-bool DatabaseStatement::IsNullColumn(int pos) {
-  return sqlite3_column_type(stmt_, pos) == SQLITE_NULL;
+bool DatabaseStatement::IsNullColumn(const std::string& pos) {
+  try {
+    CHECK(res_ != nullptr);
+    return res_->isNull(pos);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
-int DatabaseStatement::ColumnInt(int pos) {
-  return sqlite3_column_int(stmt_, pos);
+int DatabaseStatement::ColumnInt(const std::string& pos) {
+  try {
+    CHECK(res_ != nullptr);
+    return res_->getInt(pos);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode()
+              << ". Pos was: " << pos;
+  }
 }
 
-bool DatabaseStatement::ColumnBool(int pos) {
-  int val = ColumnInt(pos);
-  return val != 0;
+bool DatabaseStatement::ColumnBool(const std::string& pos) {
+  try {
+    CHECK(res_ != nullptr);
+    return res_->getBoolean(pos);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
-int64_t DatabaseStatement::ColumnLong(int pos) {
-  return sqlite3_column_int64(stmt_, pos);
+int64_t DatabaseStatement::ColumnLong(const std::string& pos) {
+  try {
+    CHECK(res_ != nullptr);
+    return res_->getInt64(pos);
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
-float DatabaseStatement::ColumnFloat(int pos) {
-  return static_cast<float>(sqlite3_column_double(stmt_, pos));
+float DatabaseStatement::ColumnFloat(const std::string& pos) {
+  try {
+    CHECK(res_ != nullptr);
+    return static_cast<float>(res_->getDouble(pos));
+  } catch (sql::SQLException& e) {
+    LOG(FATAL) << "SQL error: " << e.what() << ". With MYSQL code: " << e.getErrorCode();
+  }
 }
 
-std::string DatabaseStatement::ColumnText(int pos) {
+std::string DatabaseStatement::ColumnText(const std::string& pos) {
+  CHECK(res_ != nullptr);
   CHECK(!IsNullColumn(pos));
-  const char* text_str = reinterpret_cast<const char*>(sqlite3_column_text(stmt_, pos));
-  return std::string(text_str);
+  return std::string(res_->getString(pos));
 }
 
-std::string DatabaseStatement::ColumnTextOrEmpty(int pos) {
+std::string DatabaseStatement::ColumnTextOrEmpty(const std::string& pos) {
   if (IsNullColumn(pos)) {
     return "";
   }
@@ -94,24 +172,34 @@ std::string DatabaseStatement::ColumnTextOrEmpty(int pos) {
   return ColumnText(pos);
 }
 
-std::unique_ptr<google::protobuf::Timestamp> DatabaseStatement::ColumnTimestamp(int pos) {
+std::unique_ptr<google::protobuf::Timestamp> DatabaseStatement::ColumnTimestamp(const std::string& pos) {
   if (IsNullColumn(pos)) {
     return nullptr;
   }
 
-  int64_t millis = ColumnLong(pos);
-  return std::make_unique<google::protobuf::Timestamp>(FromEpochMillis(millis));
+  std::string time = ColumnTextOrEmpty(pos);
+
+  struct tm tmlol;
+  strptime(time.c_str(), "%Y-%m-%d %H:%M:%S", &tmlol);
+  time_t t = mktime(&tmlol);
+  
+  return std::make_unique<google::protobuf::Timestamp>(google::protobuf::util::TimeUtil::TimeTToTimestamp(t));
 }
 
-std::string DatabaseStatement::ColumnBlob(int pos) {
-  const void* data = sqlite3_column_blob(stmt_, pos);
-  int size = sqlite3_column_bytes(stmt_, pos);
-  return std::string(reinterpret_cast<const char*>(data), size);
+std::string DatabaseStatement::ColumnBlob(const std::string& pos) {
+  CHECK(res_ != nullptr);
+  auto* stream = res_->getBlob(pos);
+
+  std::ostringstream os;
+  os << stream->rdbuf();
+  
+  return os.str();
 }
 
 void DatabaseStatement::ResetOrDie() {
-  CHECK_EQ(SQLITE_OK, sqlite3_reset(stmt_));
-  CHECK_EQ(SQLITE_OK, sqlite3_clear_bindings(stmt_));
+  stmt_->clearParameters();
+  res_.reset(nullptr);
+  streams_.clear();
 }
 
 DatabaseReset::DatabaseReset(DatabaseStatement* stmt) : stmt_(stmt) {

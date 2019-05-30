@@ -163,3 +163,11 @@ service Tortuga {
   rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);
   rpc QuitQuitQuit(google.protobuf.Empty) returns (google.protobuf.Empty);
 }
+
+message MysqlParams {
+  string host = 1;
+  int32 port = 2;
+  string user = 3;
+  string password = 4;
+  string database = 5;
+}
